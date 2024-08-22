@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_smips.R
 \name{get_smips}
 \alias{get_smips}
-\title{Get SMIPS Data}
+\title{Get Soil Moisture Integration and Prediction System (SMIPS) Data}
 \usage{
 get_smips(start_date, end_date)
 }

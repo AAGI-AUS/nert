@@ -1,4 +1,4 @@
-#' Get SMIPS Data
+#' Get Soil Moisture Integration and Prediction System (SMIPS) Data
 #' 
 #'  Soil Moisture Integration and Prediction System (\acronym{SMIPS})
 
