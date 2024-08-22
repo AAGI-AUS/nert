@@ -1,10 +1,10 @@
 Package: nert
-Title: What the Package Does (One Line, Title Case)
+Title: An API Client for TERN Data
 Version: 0.0.0.9000
 Authors@R: c(
  .
      )
-Description: What the package does (one paragraph).
+Description: Provides access to Tern data through the API, <https://tern.org.au>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
