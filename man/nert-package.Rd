@@ -8,4 +8,13 @@
 \description{
 Provides access to Australia's TERN (Terrestrial Ecosystem Research Network) data through the API, \url{https://tern.org.au}.
 }
+\author{
+\strong{Maintainer}: Adam H. Sparks \email{adamhsparks@gmail.com} (\href{https://orcid.org/0000-0002-0061-8359}{ORCID})
+
+Authors:
+\itemize{
+  \item Russell Edson \email{russell.edson@adelaide.edu.au}
+}
+
+}
 \keyword{internal}
