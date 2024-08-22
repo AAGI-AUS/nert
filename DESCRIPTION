@@ -4,7 +4,8 @@ Version: 0.0.0.9000
 Authors@R: c(
  .
      )
-Description: Provides access to Tern data through the API, <https://tern.org.au>.
+Description: Provides access to Australia's TERN (Terrestrial Ecosystem Research
+ Network) data through the API, <https://tern.org.au>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
