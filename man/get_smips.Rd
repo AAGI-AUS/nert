@@ -9,3 +9,6 @@ get_smips(start_date, end_date)
 \description{
 Soil Moisture Integration and Prediction System (\acronym{SMIPS})
 }
+\references{
+\url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
+}
