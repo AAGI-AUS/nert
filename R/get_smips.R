@@ -29,9 +29,9 @@ get_smips <- function(collection = "totalbucket",
 
   day <- lubridate::ymd(day)
   url_date <- gsub("-", "", day)
-  url_year <- lubridate::year(url_date)
+  url_year <- lubridate::year(day)
 
-  .check_years(.collection = collection, .url_date = url_date)
+  .check_collection_agreement(.collection = collection, .url_date = url_date)
 
   approved_collections <- c("totalbucket",
                             "SMindex",
@@ -67,3 +67,14 @@ get_smips <- function(collection = "totalbucket",
   return(r)
 }
 
+.check_collection_agreement <- function(.collection, .url_date) {
+  .this_year <- lubridate::year(lubridate::today())
+  .last_week <- lubridate::today() - 7
+  .url_year <- lubridate::year(.url_date)
+
+  if (.collection == "totalbucket" &&
+      .url_year < 2005 ||
+      .url_date > .last_week) {
+    cli::cli_abort("The data are not available before 2005 and past {.last_week}")
+  }
+}
