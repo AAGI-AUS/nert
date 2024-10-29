@@ -14,9 +14,15 @@
 #' @param dates A date to query, _e.g._, `date = 2017-12-31`, both `Character` or
 #'  `Date` classes are accepted.
 #'
+#' @examples
+#' r <- get_smips(dates = "2024-01-01")
+#'
+#' # terra::plot() is re-exported for convience
+#' plot(r)
+#'
 #' @return A [terra::rast] object
-
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
+#' @export
 get_smips <- function(collection = "totalbucket",
                       dates,
                       api_key = get_key()) {
