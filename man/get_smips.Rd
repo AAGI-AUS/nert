@@ -4,13 +4,13 @@
 \alias{get_smips}
 \title{Get Soil Moisture Integration and Prediction System (SMIPS) Data}
 \usage{
-get_smips(collection = "totalbucket", dates, api_key = get_key())
+get_smips(collection = "totalbucket", day, api_key = get_key())
 }
 \arguments{
 \item{collection}{A character vector of the data collection to be queried,
 on of:
 \itemize{
-\item SMIndex
+\item SMindex
 \item bucket1
 \item bucket2
 \item deepD
@@ -19,8 +19,8 @@ on of:
 Defaults to \dQuote{totalbucket}.
 }}
 
-\item{dates}{A date to query, \emph{e.g.}, \code{date = 2017-12-31}, both \code{Character} or
-\code{Date} classes are accepted.}
+\item{day}{A single day's date to query, \emph{e.g.}, \code{day = "2017-12-31"}, both
+\code{Character} and \code{Date} classes are accepted.}
 }
 \value{
 A \link[terra:rast]{terra::rast} object
@@ -29,9 +29,9 @@ A \link[terra:rast]{terra::rast} object
 Soil Moisture Integration and Prediction System (\acronym{SMIPS}) v1.0.
 }
 \examples{
-r <- get_smips(dates = "2024-01-01")
+r <- get_smips(day = "2024-01-01")
 
-# terra::plot() is re-exported for convience
+# terra::plot() is re-exported for convenience
 plot(r)
 
 }
