@@ -4,10 +4,29 @@
 \alias{get_smips}
 \title{Get Soil Moisture Integration and Prediction System (SMIPS) Data}
 \usage{
-get_smips(start_date, end_date)
+get_smips(collection = "totalbucket", dates, api_key = get_key())
+}
+\arguments{
+\item{collection}{A character vector of the data collection to be queried,
+on of:
+\itemize{
+\item SMIndex
+\item bucket1
+\item bucket2
+\item deepD
+\item runoff
+\item totalbucket
+Defaults to \dQuote{totalbucket}.
+}}
+
+\item{dates}{A date to query, \emph{e.g.}, \code{date = 2017-12-31}, both \code{Character} or
+\code{Date} classes are accepted.}
+}
+\value{
+A \link[terra:rast]{terra::rast} object
 }
 \description{
-Soil Moisture Integration and Prediction System (\acronym{SMIPS})
+Soil Moisture Integration and Prediction System (\acronym{SMIPS}) v1.0.
 }
 \references{
 \url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}

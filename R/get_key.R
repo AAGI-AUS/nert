@@ -38,18 +38,18 @@ get_key <- function() {
 #' @keywords internal
 #' @noRd
 #' @return Called for its side-effects, opens a browser window at the TERN
-#'   weather data API key request form.
+#'   accounts page.
 .set_tern_key <- function() {
   if (interactive()) {
-    utils::browseURL("https://ternapikeydetails")
+    utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
   }
 
   stop(
-    "You need to set your TERN API key.\n",
-    "After getting your key set it as 'DPIRD_API_KEY' in .Renviron.\n",
+    "You need to create and/or set your TERN API key.\n",
+    "After getting your key set it as 'TERN_API_KEY' in .Renviron.\n",
     "TERN_API_KEY='youractualkeynotthisstring'\n",
     "For that, use `usethis::edit_r_environ()`"
   )
 
-  invisible("https://ternapikeydetails")
+  invisible("https://account.tern.org.au/authenticated_user/apikeys")
 }
