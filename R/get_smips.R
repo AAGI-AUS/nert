@@ -21,7 +21,9 @@
 #'   nothing is provided, you will be prompted on how to set up your \R session
 #'   so that it is auto-detected and a browswer window will open at the
 #'   \acronym{TERN} website for you to request a key.
-#' @examples
+#'
+#' @examplesIf interactive()
+#'
 #' r <- get_smips(day = "2024-01-01")
 #'
 #' # terra::plot() is re-exported for convenience
