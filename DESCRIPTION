@@ -19,4 +19,5 @@ Imports:
     cli,
     data.table,
     lubridate,
-    rlang
+    rlang,
+    terra
