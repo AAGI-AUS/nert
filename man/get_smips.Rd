@@ -21,6 +21,15 @@ Defaults to \dQuote{totalbucket}.
 
 \item{day}{A single day's date to query, \emph{e.g.}, \code{day = "2017-12-31"}, both
 \code{Character} and \code{Date} classes are accepted.}
+
+\item{api_key}{A \code{character} string containing your \acronym{API} key,
+a random string provided to you by \acronym{TERN}, for the request.
+Defaults to automatically detecting your key from your local .Renviron,
+.Rprofile or similar.  Alternatively, you may directly provide your key as
+a string here or use functionality like that from \CRANpkg{keyring}.  If
+nothing is provided, you will be prompted on how to set up your \R session
+so that it is auto-detected and a browswer window will open at the
+\acronym{TERN} website for you to request a key.}
 }
 \value{
 A \link[terra:rast]{terra::rast} object
