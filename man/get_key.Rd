@@ -21,6 +21,12 @@ you regularly interact with the APIs outside of \R using some other
 language you may wish to set these up in your .bashrc, .zshrc, or
 config.fish for cross-language use.
 }
+\note{
+\acronym{TERN} creates \acronym{API} keys that have special characters that
+include \dQuote{/}, which causes the query to fail. Currently, \code{get_key()}
+checks for this in the \code{API_KEY} string and replaces it with \dQuote(\%2f)
+so that the query will work properly.
+}
 \examples{
 \dontrun{
 get_key()

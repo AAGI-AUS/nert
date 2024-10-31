@@ -5,6 +5,12 @@
 #'   that your key that \R is using is the key that you wish to be using or for
 #'   guidance in setting up the keys.
 #'
+#' @note
+#' \acronym{TERN} creates \acronym{API} keys that have special characters that
+#'   include \dQuote{/}, which causes the query to fail. Currently, `get_key()`
+#'   checks for this in the `API_KEY` string and replaces it with \dQuote(%2f)
+#'   so that the query will work properly.
+#'
 #' @details
 #' The suggestion is to use your .Renviron to set up the API key. However, if
 #'  you regularly interact with the APIs outside of \R using some other
@@ -25,7 +31,7 @@ get_key <- function() {
   if (!nzchar(TERN_API_KEY)) {
     .set_tern_key()
   } else {
-    return(TERN_API_KEY)
+    return(gsub("/", "%2f", TERN_API_KEY, fixed = TRUE))
   }
 }
 
