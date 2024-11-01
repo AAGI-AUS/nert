@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
 <!-- badges: end -->
 
-The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data.
+The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
 
 ## Installation
 
