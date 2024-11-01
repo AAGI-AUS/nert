@@ -8,7 +8,7 @@
 #' @note
 #' \acronym{TERN} creates \acronym{API} keys that have special characters that
 #'   include \dQuote{/}, which causes the query to fail. Currently, `get_key()`
-#'   checks for this in the `API_KEY` string and replaces it with \dQuote(%2f)
+#'   checks for this in the `API_KEY` string and replaces it with \dQuote{%2f}
 #'   so that the query will work properly.
 #'
 #' @details
