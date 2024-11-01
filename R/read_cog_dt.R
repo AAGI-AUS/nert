@@ -25,13 +25,15 @@ read_cog_dt <- function(data = "smips",
                         collection = "totalbucket",
                         day,
                         api_key = get_key()) {
-  r <- read_cog(
-    data = data,
-    collection = collection,
-    day = day,
-    api_key = api_key
-  )
-  r <- data.table::setDT(terra::as.data.frame(r, xy = TRUE))
+  r <- data.table::setDT(terra::as.data.frame(
+    read_cog(
+      data = data,
+      collection = collection,
+      day = day,
+      api_key = api_key
+    ), xy = TRUE
+  ))
+
   data.table::setnames(r, old = c("x", "y"), new = c("lon", "lat"))
   return(r)
 }
