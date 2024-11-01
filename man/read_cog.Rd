@@ -8,7 +8,7 @@ read_cog(data = "smips", collection = "totalbucket", day, api_key = get_key())
 }
 \arguments{
 \item{data}{A character vector of the data source to be queried, currently
-only \dQuote{smips}}
+only \dQuote{smips}.}
 
 \item{collection}{A character vector of the data collection to be queried,
 currenly only \dQuote{smips} is supported with the following collections:
@@ -38,7 +38,7 @@ so that it is auto-detected and a browser window will open at the
 A \link[terra:rast]{terra::rast} object
 }
 \description{
-Read Cloud Optimised Geotiff (\acronym(COG)) files from \acronym{TERN} in
+Read Cloud Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in
 your active \R session.
 }
 \note{

@@ -1,6 +1,6 @@
 #' Read COGs from TERN
 #'
-#' Read Cloud Optimised Geotiff (\acronym(COG)) files from \acronym{TERN} in
+#' Read Cloud Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in
 #'   your active \R session.
 #'
 #' @note
@@ -8,7 +8,7 @@
 #'   (\acronym{SMIPS}) v1.0 is supported.
 #'
 #' @param data A character vector of the data source to be queried, currently
-#'   only \dQuote{smips}
+#'   only \dQuote{smips}.
 #' @param collection A character vector of the data collection to be queried,
 #'  currenly only \dQuote{smips} is supported with the following collections:
 #'  * SMindex

@@ -26,7 +26,7 @@ The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosyste
 
 You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
 
-```{r install}
+```{r install, eval=FALSE}
 if (!require("pak")) {
   install.packages("pak")
 }
@@ -34,13 +34,24 @@ if (!require("pak")) {
 pak::pak("AAGI-AUS/nert")
 ```
 
-## Example
+## Example: reading a COG as a spatial object
 
-This is a basic example which shows you how you can fetch one day's data and visualise it:
+This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
 
-```{r example}
+```{r example_cog}
 library(nert)
-r <- get_smips(day = "2024-01-01")
+r <- read_cog(day = "2024-01-01")
 
 plot(r)
+```
+
+## Example reading a COG as a data.table
+
+This is a basic example which shows you how you can fetch one day's data from the SMIPS data as a data.table:
+
+```{r example_dt}
+library(nert)
+r <- read_cog_dt(day = "2024-01-01")
+
+r
 ```
