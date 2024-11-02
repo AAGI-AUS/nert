@@ -4,7 +4,14 @@
 \alias{read_cog}
 \title{Read COGs from TERN}
 \usage{
-read_cog(data = "smips", collection = "totalbucket", day, api_key = get_key())
+read_cog(
+  data = "smips",
+  collection = "totalbucket",
+  day,
+  longitude = NULL,
+  latitude = NULL,
+  api_key = get_key()
+)
 }
 \arguments{
 \item{data}{A character vector of the data source to be queried, currently
@@ -19,10 +26,12 @@ currenly only \dQuote{smips} is supported with the following collections:
 \item deepD
 \item runoff
 \item totalbucket
-Defaults to \dQuote{totalbucket}.
+Defaults to \dQuote{totalbucket}. Multiple \code{collections} are supported,
+\emph{e.g.}, \code{collection = c("SMindex", "totalbucket")}.
 }}
 
-\item{day}{A single day's date to query, \emph{e.g.}, \code{day = "2017-12-31"}, both
+\item{day}{A vector of date(s) to query, \emph{e.g.}, \code{day = "2017-12-31"} or
+\code{day = seq.Date(as.Date("2017-12-01"), as.Date("2017-12-31"), "days")}, both
 \code{Character} and \code{Date} classes are accepted.}
 
 \item{api_key}{A \code{character} string containing your \acronym{API} key,
@@ -33,6 +42,11 @@ a string here or use functionality like that from \CRANpkg{keyring}.  If
 nothing is provided, you will be prompted on how to set up your \R session
 so that it is auto-detected and a browser window will open at the
 \acronym{TERN} website for you to request a key.}
+
+\item{lonlat}{A numeric vector of geographic coordinates for a cell or region
+entered as x, y (longitude, latitude) coordinates.  See argument details
+for more.  Defaults to \code{NULL} returning all values available in the
+\acronym{COG} for Australia.}
 }
 \value{
 A \link[terra:rast]{terra::rast} object
@@ -45,10 +59,26 @@ your active \R session.
 Currently only Soil Moisture Integration and Prediction System
 (\acronym{SMIPS}) v1.0 is supported.
 }
+\section{Argument details for \code{lonlat}}{
+
+\describe{
+\item{Single point}{To get a specific cell, 1/2 x 1/2 degree, supply a
+length-two numeric vector giving the decimal degree longitude and latitude
+in that order for data to download,\cr
+\emph{e.g.}, \code{lonlat = c(-179.5, -89.5)}.}
+
+\item{Regional coverage}{To get a region, supply a length-four numeric
+vector as lower left (lon, lat) and upper right (lon, lat) coordinates,
+\emph{e.g.}, \code{lonlat = c(xmin, ymin, xmax, ymax)} in that order for a
+given region, \emph{e.g.}, a bounding box for the south western corner of
+Australia: \code{lonlat = c(112.5, -55.5, 115.5, -50.5)}.}
+}
+}
+
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-r <- read_cog(day = "2024-01-01")
+r <- read_cog(day = "2024-01-01", api_key = "your_api_key")
 
 # terra::plot() is re-exported for convenience
 plot(r)
@@ -59,7 +89,6 @@ plot(r)
 }
 \seealso{
 Other COGs: 
-\code{\link{download_gtiff}()},
 \code{\link{read_cog_dt}()}
 }
 \concept{COGs}
