@@ -5,6 +5,16 @@
 #'   that your key that \R is using is the key that you wish to be using or for
 #'   guidance in setting up the keys.
 #'
+#' # Requesting an API Key
+#'
+#' To request an \acronym{API} key, go to
+#'   <https://account.tern.org.au/authenticated_user/apikeys> and click on
+#'   "Sign In" in the upper right corner. Sign in with your proper credentials.
+#'   Then, from the left-hand menu, click on "Create API Key".  Once this is
+#'   done, copy the key and put it in your .Renviron using
+#'   [usethis::edit_r_environ] as `TERN_API_KEY="your_api_key"`. Restart your
+#'   \R session and the query should work.
+#'
 #' @note
 #' \acronym{TERN} creates \acronym{API} keys that have special characters that
 #'   include \dQuote{/}, which causes the query to fail. Currently, `get_key()`
