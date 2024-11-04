@@ -19,7 +19,6 @@ Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
 RoxygenNote: 7.3.2
 Imports: 
     cli,
-    curl,
     data.table,
     lubridate,
     rlang,
