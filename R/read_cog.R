@@ -54,10 +54,6 @@ read_cog <- function(data = "smips",
   day <- .check_date(day)
   url_year <- lubridate::year(day)
 
-
-  user_longitude <- lonlat["longitude"]
-  user_latitude <- lonlat["latitude"]
-
   if (data == "smips") {
     collection_url <- .make_smips_url(.collection = collection, .day = day)
     r <- (terra::rast(
