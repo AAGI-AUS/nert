@@ -19,10 +19,12 @@ currenly only \dQuote{smips} is supported with the following collections:
 \item deepD
 \item runoff
 \item totalbucket
-Defaults to \dQuote{totalbucket}.
+Defaults to \dQuote{totalbucket}. Multiple \code{collections} are supported,
+\emph{e.g.}, \code{collection = c("SMindex", "totalbucket")}.
 }}
 
-\item{day}{A single day's date to query, \emph{e.g.}, \code{day = "2017-12-31"}, both
+\item{day}{A vector of date(s) to query, \emph{e.g.}, \code{day = "2017-12-31"} or
+\code{day = seq.Date(as.Date("2017-12-01"), as.Date("2017-12-31"), "days")}, both
 \code{Character} and \code{Date} classes are accepted.}
 
 \item{api_key}{A \code{character} string containing your \acronym{API} key,
