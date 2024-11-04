@@ -59,7 +59,6 @@ plot(r)
 }
 \seealso{
 Other COGs: 
-\code{\link{download_gtiff}()},
 \code{\link{read_cog_dt}()}
 }
 \concept{COGs}

@@ -63,7 +63,6 @@ r
 }
 \seealso{
 Other COGs: 
-\code{\link{download_gtiff}()},
 \code{\link{read_cog}()}
 }
 \concept{COGs}
