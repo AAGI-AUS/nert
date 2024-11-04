@@ -52,22 +52,6 @@ your active \R session as a \CRANpkg{data.table} object.
 Currently only Soil Moisture Integration and Prediction System
 (\acronym{SMIPS}) v1.0 is supported.
 }
-\section{Argument details for \code{lonlat}}{
-
-\describe{
-\item{Single point}{To get a specific cell, 1/2 x 1/2 degree, supply a
-length-two numeric vector giving the decimal degree longitude and latitude
-in that order for data to download,\cr
-\emph{e.g.}, \code{lonlat = c(-179.5, -89.5)}.}
-
-\item{Regional coverage}{To get a region, supply a length-four numeric
-vector as lower left (lon, lat) and upper right (lon, lat) coordinates,
-\emph{e.g.}, \code{lonlat = c(xmin, ymin, xmax, ymax)} in that order for a
-given region, \emph{e.g.}, a bounding box for the south western corner of
-Australia: \code{lonlat = c(112.5, -55.5, 115.5, -50.5)}.}
-}
-}
-
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
@@ -82,5 +66,8 @@ r
 \seealso{
 Other COGs: 
 \code{\link{read_cog}()}
+}
+\author{
+Adam H. Sparks \email{adamhsparks@curtin.edu.au}
 }
 \concept{COGs}

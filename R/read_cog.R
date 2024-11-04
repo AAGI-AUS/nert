@@ -31,25 +31,11 @@
 #'   so that it is auto-detected and a browser window will open at the
 #'   \acronym{TERN} website for you to request a key.
 #'
-#' @section Argument details for `lonlat`:
-#' \describe{
-#'  \item{Single point}{To get a specific cell, 1/2 x 1/2 degree, supply a
-#'  length-two numeric vector giving the decimal degree longitude and latitude
-#'  in that order for data to download,\cr
-#'  _e.g._, `lonlat = c(-179.5, -89.5)`.}
-#'
-#'  \item{Regional coverage}{To get a region, supply a length-four numeric
-#'  vector as lower left (lon, lat) and upper right (lon, lat) coordinates,
-#'  _e.g._, `lonlat = c(xmin, ymin, xmax, ymax)` in that order for a
-#'  given region, _e.g._, a bounding box for the south western corner of
-#'  Australia: `lonlat = c(112.5, -55.5, 115.5, -50.5)`.}
-#' }
-#'
 #' @family COGs
 #'
 #' @examplesIf interactive()
 #'
-#' r <- read_cog(day = "2024-01-01", api_key = "your_api_key")
+#' r <- read_cog(day = "2024-01-01")
 #'
 #' # terra::plot() is re-exported for convenience
 #' plot(r)
@@ -63,8 +49,6 @@
 read_cog <- function(data = "smips",
                      collection = "totalbucket",
                      day,
-                     longitude = NULL,
-                     latitude = NULL,
                      api_key = get_key()) {
 
   day <- .check_date(day)
@@ -92,6 +76,23 @@ read_cog <- function(data = "smips",
 
     return(r)
   }
+}
+
+#' Check that the user hasn't blindly copied the "your_api_key" string from the
+#' examples
+#'
+#' @keywords Internal
+#' @autoglobal
+#' @noRd
+
+.check_not_example_api_key <- function(.api_key) {
+  if (!is.null(.api_key) && .api_key == "your_api_key") {
+    stop("You have copied the example code and not provided a proper API key.
+         An API key may be requested from TERN to access this resource. Please
+         see the help file for {.fn get_key} for more information.",
+         call. = FALSE)
+  }
+  return(invisible(NULL))
 }
 
 #' Validate Days Requested Align With Collection
