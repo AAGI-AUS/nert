@@ -11,7 +11,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.1 (2024-06-14)",
+  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
   "author": [
     {
       "@type": "Person",
@@ -124,7 +124,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "173.769KB",
+  "fileSize": "173.911KB",
   "codeRepository": "https://github.com/AAGI-AUS/nert",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
