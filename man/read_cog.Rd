@@ -4,7 +4,14 @@
 \alias{read_cog}
 \title{Read COGs from TERN}
 \usage{
-read_cog(data = "smips", collection = "totalbucket", day, api_key = get_key())
+read_cog(
+  data = "smips",
+  collection = "totalbucket",
+  day,
+  api_key = get_key(),
+  max_tries = 3,
+  initial_delay = 1
+)
 }
 \arguments{
 \item{data}{A character vector of the data source to be queried, currently
@@ -35,6 +42,13 @@ a string here or use functionality like that from \CRANpkg{keyring}.  If
 nothing is provided, you will be prompted on how to set up your \R session
 so that it is auto-detected and a browser window will open at the
 \acronym{TERN} website for you to request a key.}
+
+\item{max_tries}{An integer \code{Integer} with the number of times to retry a
+failed download before emitting an error message.  Defaults to 3.}
+
+\item{initial_delay}{An \code{Integer} with the number of seconds to delay before
+retrying the download.  This increases as the tries increment.  Defaults to
+1.}
 }
 \value{
 A \link[terra:rast]{terra::rast} object
