@@ -30,6 +30,11 @@
 #'   nothing is provided, you will be prompted on how to set up your \R session
 #'   so that it is auto-detected and a browser window will open at the
 #'   \acronym{TERN} website for you to request a key.
+#' @param max_tries An integer `Integer` with the number of times to retry a
+#'   failed download before emitting an error message.  Defaults to 3.
+#' @param initial_delay An `Integer` with the number of seconds to delay before
+#'   retrying the download.  This increases as the tries increment.  Defaults to
+#'   1.
 #'
 #' @family COGs
 #'
@@ -49,7 +54,11 @@
 read_cog <- function(data = "smips",
                      collection = "totalbucket",
                      day,
-                     api_key = get_key()) {
+                     api_key = get_key(),
+                     max_tries = 3,
+                     initial_delay = 1) {
+  attempt <- 1
+  success <- FALSE
 
   if (missing(day)) {
     cli::cli_abort("You must provide a single day's date for this request.")
@@ -59,21 +68,36 @@ read_cog <- function(data = "smips",
 
   if (data == "smips") {
     collection_url <- .make_smips_url(.collection = collection, .day = day)
-    r <- (terra::rast(
-      paste0(
-        "/vsicurl/https://",
-        paste0("apikey:", api_key),
-        "@data.tern.org.au/model-derived/smips/v1_0/",
-        collection,
-        "/",
-        url_year,
-        "/",
-        .make_smips_url(.collection = collection, .day = day)
-      )
-    )
-    )
 
-    return(r)
+    while (attempt <= max_tries && !success)
+      tryCatch({
+        r <- (terra::rast(
+          paste0(
+            "/vsicurl/https://",
+            paste0("apikey:", api_key),
+            "@data.tern.org.au/model-derived/smips/v1_0/",
+            collection,
+            "/",
+            url_year,
+            "/",
+            .make_smips_url(.collection = collection, .day = day)
+          )
+        ))
+
+        success <- TRUE
+        return(r)
+
+      }, error = function(e) {
+        if (attempt < max_tries) {
+          delay <- initial_delay * 2 ^ (attempt - 1)
+          cli::cli_alert("Download failed on attempt { attempt }. Retrying in { delay } seconds...")
+          Sys.sleep(delay)
+          attempt <- attempt + 1
+        } else {
+          cli::cli_abort("Download failed after { .max_tries } attempts.")
+          stop(e)
+        }
+      })
   }
 }
 
@@ -92,20 +116,11 @@ read_cog <- function(data = "smips",
     cli::cli_abort("Only one day is allowed per request.")
   }
   tryCatch(
-    x <- lubridate::parse_date_time(x,
-                                    c(
-                                      "Ymd",
-                                      "dmY",
-                                      "mdY",
-                                      "BdY",
-                                      "Bdy",
-                                      "bdY",
-                                      "bdy"
-                                    ),
-                                    tz = Sys.timezone()),
+    x <- lubridate::parse_date_time(x, c(
+      "Ymd", "dmY", "mdY", "BdY", "Bdy", "bdY", "bdy"
+    ), tz = Sys.timezone()),
     warning = function(c) {
-      cli::cli_abort(
-        "{ x } is not in a valid date format. Please enter a valid date format.")
+      cli::cli_abort("{ x } is not in a valid date format. Please enter a valid date format.")
     }
   )
   return(x)
@@ -121,10 +136,12 @@ read_cog <- function(data = "smips",
 
 .check_not_example_api_key <- function(.api_key) {
   if (!is.null(.api_key) && .api_key == "your_api_key") {
-    stop("You have copied the example code and not provided a proper API key.
+    stop(
+      "You have copied the example code and not provided a proper API key.
          An API key may be requested from TERN to access this resource. Please
          see the help file for {.fn get_key} for more information.",
-         call. = FALSE)
+      call. = FALSE
+    )
   }
   return(invisible(NULL))
 }
