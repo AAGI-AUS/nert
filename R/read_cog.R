@@ -113,7 +113,7 @@ read_cog <- function(data = "smips",
   if (.collection == "totalbucket" &&
       .url_year < 2005 ||
       .day > .last_week) {
-    cli::cli_abort("The data are not available before 2005 and past {.last_week}")
+    cli::cli_abort("The data are not available before 2005 and past { .last_week }")
   }
 }
 
