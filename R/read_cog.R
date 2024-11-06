@@ -90,7 +90,8 @@ read_cog <- function(data = "smips",
       }, error = function(e) {
         if (attempt < max_tries) {
           delay <- initial_delay * 2 ^ (attempt - 1)
-          cli::cli_alert("Download failed on attempt { attempt }. Retrying in { delay } seconds...")
+          cli::cli_alert("Download failed on attempt { attempt }.
+                         Retrying in { delay } seconds...")
           Sys.sleep(delay)
           attempt <- attempt + 1
         } else {
@@ -120,7 +121,8 @@ read_cog <- function(data = "smips",
       "Ymd", "dmY", "mdY", "BdY", "Bdy", "bdY", "bdy"
     ), tz = Sys.timezone()),
     warning = function(c) {
-      cli::cli_abort("{ x } is not in a valid date format. Please enter a valid date format.")
+      cli::cli_abort("{ x } is not in a valid date format.
+                     Please enter a valid date format.")
     }
   )
   return(x)
@@ -168,7 +170,8 @@ read_cog <- function(data = "smips",
   if (.collection == "totalbucket" &&
       .url_year < 2005 ||
       .day > .last_week) {
-    cli::cli_abort("The data are not available before 2005 and past { .last_week }")
+    cli::cli_abort("The data are not available before 2005 and roughly
+                   much past { .last_week }")
   }
 }
 
