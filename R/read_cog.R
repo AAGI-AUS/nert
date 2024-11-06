@@ -51,6 +51,9 @@ read_cog <- function(data = "smips",
                      day,
                      api_key = get_key()) {
 
+  if (missing(day)) {
+    cli::cli_abort("You must provide a single day's date for this request.")
+  }
   day <- .check_date(day)
   url_year <- lubridate::year(day)
 
@@ -73,6 +76,41 @@ read_cog <- function(data = "smips",
     return(r)
   }
 }
+
+#' Check User Input Dates for Validity
+#'
+#' @param x User entered date value
+#' @return Validated date string as a `POSIXct` object.
+#' @note This was taken from \CRANpkg{nasapower}.
+#' @example .check_date(x)
+#' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
+#' @keywords Internal
+#' @autoglobal
+#' @noRd
+.check_date <- function(x) {
+  if (length(x) > 1) {
+    cli::cli_abort("Only one day is allowed per request.")
+  }
+  tryCatch(
+    x <- lubridate::parse_date_time(x,
+                                    c(
+                                      "Ymd",
+                                      "dmY",
+                                      "mdY",
+                                      "BdY",
+                                      "Bdy",
+                                      "bdY",
+                                      "bdy"
+                                    ),
+                                    tz = Sys.timezone()),
+    warning = function(c) {
+      cli::cli_abort(
+        "{ x } is not in a valid date format. Please enter a valid date format.")
+    }
+  )
+  return(x)
+}
+
 
 #' Check that the user hasn't blindly copied the "your_api_key" string from the
 #' examples
