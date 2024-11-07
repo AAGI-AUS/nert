@@ -13,7 +13,12 @@ Provides access to Australia's TERN (Terrestrial Ecosystem Research Network) dat
 
 Authors:
 \itemize{
-  \item Russell Edson \email{russell.edson@adelaide.edu.au}
+  \item Russell Edson \email{russell.edson@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Max Moldovan \email{max.moldovan@adelaide.edu.au} [contributor]
 }
 
 }

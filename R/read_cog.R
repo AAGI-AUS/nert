@@ -7,7 +7,7 @@
 #' Currently only Soil Moisture Integration and Prediction System
 #'   (\acronym{SMIPS}) v1.0 is supported.
 #'
-#' @param data A character vector of the data source to be queried, currently
+#' @param dataset A character vector of the data source to be queried, currently
 #'   only \dQuote{smips}.
 #' @param collection A character vector of the data collection to be queried,
 #'  currenly only \dQuote{smips} is supported with the following collections:
@@ -51,7 +51,7 @@
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #' @export
 
-read_cog <- function(data = "smips",
+read_cog <- function(dataset = "smips",
                      collection = "totalbucket",
                      day,
                      api_key = get_key(),
@@ -66,7 +66,7 @@ read_cog <- function(data = "smips",
   day <- .check_date(day)
   url_year <- lubridate::year(day)
 
-  if (data == "smips") {
+  if (dataset == "smips") {
     collection_url <- .make_smips_url(.collection = collection, .day = day)
 
     while (attempt <= max_tries && !success)
@@ -90,7 +90,8 @@ read_cog <- function(data = "smips",
       }, error = function(e) {
         if (attempt < max_tries) {
           delay <- initial_delay * 2 ^ (attempt - 1)
-          cli::cli_alert("Download failed on attempt { attempt }. Retrying in { delay } seconds...")
+          cli::cli_alert("Download failed on attempt { attempt }.
+                         Retrying in { delay } seconds...")
           Sys.sleep(delay)
           attempt <- attempt + 1
         } else {
@@ -120,7 +121,8 @@ read_cog <- function(data = "smips",
       "Ymd", "dmY", "mdY", "BdY", "Bdy", "bdY", "bdy"
     ), tz = Sys.timezone()),
     warning = function(c) {
-      cli::cli_abort("{ x } is not in a valid date format. Please enter a valid date format.")
+      cli::cli_abort("{ x } is not in a valid date format.
+                     Please enter a valid date format.")
     }
   )
   return(x)
@@ -168,7 +170,8 @@ read_cog <- function(data = "smips",
   if (.collection == "totalbucket" &&
       .url_year < 2005 ||
       .day > .last_week) {
-    cli::cli_abort("The data are not available before 2005 and past { .last_week }")
+    cli::cli_abort("The data are not available before 2005 and roughly
+                   much past { .last_week }")
   }
 }
 

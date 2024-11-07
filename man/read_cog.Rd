@@ -5,7 +5,7 @@
 \title{Read COGs from TERN}
 \usage{
 read_cog(
-  data = "smips",
+  dataset = "smips",
   collection = "totalbucket",
   day,
   api_key = get_key(),
@@ -14,7 +14,7 @@ read_cog(
 )
 }
 \arguments{
-\item{data}{A character vector of the data source to be queried, currently
+\item{dataset}{A character vector of the data source to be queried, currently
 only \dQuote{smips}.}
 
 \item{collection}{A character vector of the data collection to be queried,
@@ -72,9 +72,5 @@ plot(r)
 }
 \references{
 \url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
-}
-\seealso{
-Other COGs: 
-\code{\link{read_cog_dt}()}
 }
 \concept{COGs}

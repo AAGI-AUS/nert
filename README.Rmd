@@ -45,13 +45,22 @@ r <- read_cog(day = "2024-01-01")
 plot(r)
 ```
 
-## Example reading a COG as a data.table
+## Extract Values Given Lat/Lon Values
 
-This is a basic example which shows you how you can fetch one day's data from the SMIPS data as a data.table:
+Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
 
-```{r example_dt}
-library(nert)
-r <- read_cog_dt(day = "2024-01-01")
+```{r}
+df <- structure(list(
+  location = c("Corrigin", "Merredin", "Tamworth"),
+  x = c(117.87, 118.28, 150.84),
+  y = c(-32.33, -31.48, -31.07)
+),
+row.names = c(NA, -3L),
+class = "data.frame")
 
-r
+cog_df <- terra::extract(x = r, y = df[, c("x", "y")], xy = TRUE)
+
+cog_df <- cbind(df$location, cog_df)
+names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
+cog_df
 ```
