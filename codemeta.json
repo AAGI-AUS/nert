@@ -17,7 +17,16 @@
       "@type": "Person",
       "givenName": "Russell",
       "familyName": "Edson",
-      "email": "russell.edson@adelaide.edu.au"
+      "email": "russell.edson@adelaide.edu.au",
+      "@id": "https://orcid.org/0000-0002-4607-5396"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Max",
+      "familyName": "Moldovan",
+      "email": "max.moldovan@adelaide.edu.au"
     }
   ],
   "maintainer": [
@@ -124,7 +133,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "175.09KB",
+  "fileSize": "171.514KB",
   "codeRepository": "https://github.com/AAGI-AUS/nert",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]

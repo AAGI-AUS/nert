@@ -4,19 +4,13 @@ Version: 0.0.0.9000
 Authors@R: c(
     person("Adam H.", "Sparks", , "adamhsparks@gmail.com", role = "cre",
            comment = c(ORCID = "0000-0002-0061-8359")),
-    person("Russell", "Edson", , "russell.edson@adelaide.edu.au", role = "aut")
+    person("Russell", "Edson", , "russell.edson@adelaide.edu.au", role = "aut",
+           comment = c(ORCID = "0000-0002-4607-5396")),
+    person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = "ctb")
   )
 Description: Provides access to Australia's TERN (Terrestrial Ecosystem
     Research Network) data through the API, <https://tern.org.au>.
 License: MIT + file LICENSE
-Suggests: 
-    roxyglobals,
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
-    "roxyglobals::global_roclet"))
-RoxygenNote: 7.3.2
 Imports: 
     cli,
     data.table,
@@ -24,5 +18,13 @@ Imports:
     rlang,
     terra,
     utils
+Suggests: 
+    roxyglobals,
+    testthat (>= 3.0.0)
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
+    "roxyglobals::global_roclet"))
+RoxygenNote: 7.3.2

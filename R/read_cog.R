@@ -7,7 +7,7 @@
 #' Currently only Soil Moisture Integration and Prediction System
 #'   (\acronym{SMIPS}) v1.0 is supported.
 #'
-#' @param data A character vector of the data source to be queried, currently
+#' @param dataset A character vector of the data source to be queried, currently
 #'   only \dQuote{smips}.
 #' @param collection A character vector of the data collection to be queried,
 #'  currenly only \dQuote{smips} is supported with the following collections:
@@ -51,7 +51,7 @@
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #' @export
 
-read_cog <- function(data = "smips",
+read_cog <- function(dataset = "smips",
                      collection = "totalbucket",
                      day,
                      api_key = get_key(),
@@ -66,7 +66,7 @@ read_cog <- function(data = "smips",
   day <- .check_date(day)
   url_year <- lubridate::year(day)
 
-  if (data == "smips") {
+  if (dataset == "smips") {
     collection_url <- .make_smips_url(.collection = collection, .day = day)
 
     while (attempt <= max_tries && !success)
