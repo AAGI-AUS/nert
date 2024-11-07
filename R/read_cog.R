@@ -8,9 +8,9 @@
 #'   (\acronym{SMIPS}) v1.0 is supported.
 #'
 #' @param dataset A character vector of the data source to be queried, currently
-#'   only \dQuote{smips}.
+#'   only \dQuote{SMIPS}.
 #' @param collection A character vector of the data collection to be queried,
-#'  currenly only \dQuote{smips} is supported with the following collections:
+#'  currenly only \dQuote{SMIPS} is supported with the following collections:
 #'  * SMindex
 #'  * bucket1
 #'  * bucket2
