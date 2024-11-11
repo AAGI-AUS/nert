@@ -10,7 +10,7 @@
 #' @param dataset A character vector of the data source to be queried, currently
 #'   only \dQuote{SMIPS}.
 #' @param collection A character vector of the data collection to be queried,
-#'  currenly only \dQuote{SMIPS} is supported with the following collections:
+#'  currently only \dQuote{SMIPS} is supported with the following collections:
 #'  * SMindex
 #'  * bucket1
 #'  * bucket2
