@@ -50,15 +50,18 @@ plot(r)
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
 
 ```{r}
-df <- structure(list(
-  location = c("Corrigin", "Merredin", "Tamworth"),
-  x = c(117.87, 118.28, 150.84),
-  y = c(-32.33, -31.48, -31.07)
-),
-row.names = c(NA, -3L),
-class = "data.frame")
+libary(terra)
+df <- structure(
+  list(
+    location = c("Corrigin", "Merredin", "Tamworth"),
+    x = c(117.87, 118.28, 150.84),
+    y = c(-32.33, -31.48, -31.07)
+  ),
+  row.names = c(NA, -3L),
+  class = "data.frame"
+)
 
-cog_df <- terra::extract(x = r, y = df[, c("x", "y")], xy = TRUE)
+cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
 
 cog_df <- cbind(df$location, cog_df)
 names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
