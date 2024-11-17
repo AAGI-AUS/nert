@@ -2,5 +2,5 @@
 
 export(get_key)
 export(plot)
-export(read_cog)
+export(read_smips)
 importFrom(terra,plot)
