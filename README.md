@@ -1,24 +1,22 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-
 
 # nert
 
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
+[![Codecov test
+coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
 <!-- badges: end -->
 
-The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
+The goal of {nert} is to provide access to Australian TERN (Terrestrial
+Ecosystem Research Network) data in your R session.
 
 ## Installation
 
-You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
-
+You can install the development version of {nert} from
+[GitHub](https://github.com/AAGI-AUS/nert) with:
 
 ``` r
 if (!require("pak")) {
@@ -30,8 +28,9 @@ pak::pak("AAGI-AUS/nert")
 
 ## Example: reading a COG as a spatial object
 
-This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
-
+This is a basic example which shows you how you can fetch one day’s data
+from the SMIPS data (currently the only supported data set in TERN) and
+visualise it:
 
 ``` r
 library(nert)
@@ -43,24 +42,21 @@ library(nert)
 #> The following object is masked from 'package:base':
 #> 
 #>     plot
-r <- read_cog(day = "2024-01-01")
+r <- read_smips(day = "2024-01-01")
 
 plot(r)
 ```
 
-<div class="figure">
-<img src="man/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%" />
-<p class="caption">plot of chunk example_cog</p>
-</div>
+<img src="man/figures/README-example_cog-1.png" width="100%" />
 
 ## Extract Values Given Lat/Lon Values
 
-Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
-
+Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW
+given latitude and longitude values for each.
 
 ``` r
-libary(terra)
-#> Error in libary(terra): could not find function "libary"
+library(terra)
+#> terra 1.7.83
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -72,12 +68,12 @@ df <- structure(
 )
 
 cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
-#> Error in extract(x = r, y = df[, c("x", "y")], xy = TRUE): could not find function "extract"
 
 cog_df <- cbind(df$location, cog_df)
-#> Error: object 'cog_df' not found
 names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
-#> Error: object 'cog_df' not found
 cog_df
-#> Error: object 'cog_df' not found
+#>   location ID smips_totalbucket_mm_20240101        x         y
+#> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
+#> 2 Merredin  2                    0.22716530 118.2787 -31.48353
+#> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
 ```

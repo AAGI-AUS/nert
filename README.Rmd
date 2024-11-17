@@ -40,7 +40,7 @@ This is a basic example which shows you how you can fetch one day's data from th
 
 ```{r example_cog}
 library(nert)
-r <- read_cog(day = "2024-01-01")
+r <- read_smips(day = "2024-01-01")
 
 plot(r)
 ```
@@ -50,7 +50,7 @@ plot(r)
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
 
 ```{r}
-libary(terra)
+library(terra)
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
