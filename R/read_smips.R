@@ -47,10 +47,11 @@
 #' @export
 
 read_smips <- function(collection = "totalbucket",
-                     day,
-                     api_key = get_key(),
-                     max_tries = 3,
-                     initial_delay = 1) {
+                       day,
+                       api_key = get_key(),
+                       max_tries = 3L,
+                       initial_delay = 1L) {
+
   attempt <- 1
   success <- FALSE
 
