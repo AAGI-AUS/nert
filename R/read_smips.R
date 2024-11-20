@@ -117,7 +117,7 @@ read_smips <- function(collection = "totalbucket",
 
   tryCatch(
     x <- lubridate::parse_date_time(x, c(
-      "Ymd", "dmY", "mdY", "BdY", "Bdy", "bdY", "bdy"
+      "Ymd", "dmY", "BdY", "Bdy", "bdY", "bdy"
     ), tz = tz),
     warning = function(c) {
       cli::cli_abort("{ x } is not in a valid date format.
