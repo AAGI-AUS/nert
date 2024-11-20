@@ -117,6 +117,7 @@ read_smips <- function(collection = "totalbucket",
 
   tryCatch(
     x <- lubridate::parse_date_time(x, c(
+      # TODO: B and b are the same, maybe remove one later
       "Ymd", "dmY", "BdY", "Bdy", "bdY", "bdy"
     ), tz = tz),
     warning = function(c) {
