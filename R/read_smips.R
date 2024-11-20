@@ -14,9 +14,8 @@
 #'  * totalbucket
 #'  Defaults to \dQuote{totalbucket}. Multiple `collections` are supported,
 #'  _e.g._, `collection = c("SMindex", "totalbucket")`.
-#' @param day A vector of date(s) to query, _e.g._, `day = "2017-12-31"` or
-#'  `day = seq.Date(as.Date("2017-12-01"), as.Date("2017-12-31"), "days")`, both
-#'  `Character` and `Date` classes are accepted.
+#' @param day A date to query, _e.g._, `day = "2017-12-31"` or `day =
+#'  as.Date("2017-12-01")`, both `Character` and `Date` classes are accepted.
 #' @param api_key A `character` string containing your \acronym{API} key,
 #'   a random string provided to you by \acronym{TERN}, for the request.
 #'   Defaults to automatically detecting your key from your local .Renviron,
@@ -45,7 +44,6 @@
 #' @autoglobal
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #' @export
-
 read_smips <- function(collection = "totalbucket",
                        day,
                        api_key = get_key(),
@@ -74,7 +72,7 @@ read_smips <- function(collection = "totalbucket",
           "/",
           url_year,
           "/",
-          .make_smips_url(.collection = collection, .day = day)
+          collection_url
         )
       ))
 
@@ -109,10 +107,18 @@ read_smips <- function(collection = "totalbucket",
   if (length(x) > 1) {
     cli::cli_abort("Only one day is allowed per request.")
   }
+
+  if (lubridate::is.POSIXct(x) || lubridate::is.Date(x)) {
+    tz <- lubridate::tz(x)
+  }
+  else {
+    tz <- Sys.timezone()
+  }
+
   tryCatch(
     x <- lubridate::parse_date_time(x, c(
       "Ymd", "dmY", "mdY", "BdY", "Bdy", "bdY", "bdy"
-    ), tz = Sys.timezone()),
+    ), tz = tz),
     warning = function(c) {
       cli::cli_abort("{ x } is not in a valid date format.
                      Please enter a valid date format.")
