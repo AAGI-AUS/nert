@@ -26,9 +26,7 @@ Defaults to \dQuote{totalbucket}. Multiple \code{collections} are supported,
 \emph{e.g.}, \code{collection = c("SMindex", "totalbucket")}.
 }}
 
-\item{day}{A vector of date(s) to query, \emph{e.g.}, \code{day = "2017-12-31"} or
-\code{day = seq.Date(as.Date("2017-12-01"), as.Date("2017-12-31"), "days")}, both
-\code{Character} and \code{Date} classes are accepted.}
+\item{day}{A date to query, \emph{e.g.}, \code{day = "2017-12-31"} or \code{day = as.Date("2017-12-01")}, both \code{Character} and \code{Date} classes are accepted.}
 
 \item{api_key}{A \code{character} string containing your \acronym{API} key,
 a random string provided to you by \acronym{TERN}, for the request.
