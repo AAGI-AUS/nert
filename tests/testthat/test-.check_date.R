@@ -1,12 +1,19 @@
 test_that("Date validation works with valid dates", {
   reference_date <- "2020-01-01"
 
-  # Date object
+  # posix object
   date_ <- lubridate::as_datetime(reference_date)
   date_checked <- .check_date(date_)
 
   expect_true(lubridate::is.POSIXct(date_checked))
   expect_equal(date_checked, date_)
+
+  # date object
+  date_ <- as.Date(reference_date)
+  date_checked <- .check_date(date_)
+
+  expect_true(lubridate::is.POSIXct(date_checked))
+  expect_equal(toString(date_checked), toString(date_))
 
   # different timezone
   date_ <- lubridate::as_datetime(reference_date, tz = "Australia/Adelaide")
