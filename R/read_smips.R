@@ -128,7 +128,6 @@ read_smips <- function(collection = "totalbucket",
 #' @keywords Internal
 #' @autoglobal
 #' @noRd
-
 .check_not_example_api_key <- function(.api_key) {
   if (!is.null(.api_key) && .api_key == "your_api_key") {
     stop(
@@ -154,7 +153,6 @@ read_smips <- function(collection = "totalbucket",
 #'
 #' @noRd
 #' @keywords Internal
-
 .check_collection_agreement <- function(.collection, .day) {
   .this_year <- lubridate::year(lubridate::today())
   .last_week <- lubridate::today() - 7
@@ -178,7 +176,6 @@ read_smips <- function(collection = "totalbucket",
 #' @autoglobal
 #' @noRd
 #' @keywords Internal
-
 .make_smips_url <- function(.collection, .day) {
   url_date <- gsub("-", "", .day)
 

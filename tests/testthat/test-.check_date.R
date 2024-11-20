@@ -22,7 +22,7 @@ test_that("Date validation works with valid dates", {
   expect_true(lubridate::is.POSIXct(date_checked))
   expect_equal(date_checked, date_)
 
-  # various string formats: "Ymd", "dmY", "BdY", "Bdy", "bdY", "bdy"
+  # various string formats
   # Ymd
   date_checked <- .check_date("2020-01-01")
 
