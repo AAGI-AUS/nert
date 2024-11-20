@@ -2,7 +2,8 @@
 #' Read SMIPS COGs from TERN
 #'
 #' Read Soil Moisture Integration and Prediction System (\acronym{SMIPS}) Cloud
-#'  Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in your \R session.
+#'  Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in your \R
+#'  session.
 #'
 #' @param collection A character vector of the \dQuote{SMIPS} data collection to
 #' be queried:

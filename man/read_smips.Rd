@@ -51,7 +51,8 @@ A \link[terra:rast]{terra::rast} object
 }
 \description{
 Read Soil Moisture Integration and Prediction System (\acronym{SMIPS}) Cloud
-Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in your \R session.
+Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in your \R
+session.
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
