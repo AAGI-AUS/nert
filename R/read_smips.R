@@ -64,6 +64,7 @@ read_smips <- function(collection = "totalbucket",
 
   while (attempt <= max_tries && !success)
     tryCatch({
+      # TODO: move the url concatenation out
       r <- (terra::rast(
         paste0(
           "/vsicurl/https://",
@@ -192,7 +193,7 @@ read_smips <- function(collection = "totalbucket",
                             "bucket1",
                             "bucket2",
                             "deepD",
-                            "runnoff")
+                            "runoff")
   collection <- rlang::arg_match(.collection, approved_collections)
 
   .check_collection_agreement(.collection = .collection, .day = .day)
@@ -211,4 +212,6 @@ read_smips <- function(collection = "totalbucket",
     collection == "runoff",
     paste0("smips_runoff_mm_", url_date, ".tif")
   )
+
+  return(collection_url)
 }

@@ -6,7 +6,9 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-0061-8359")),
     person("Russell", "Edson", , "russell.edson@adelaide.edu.au", role = "aut",
            comment = c(ORCID = "0000-0002-4607-5396")),
-    person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = "ctb")
+    person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = "ctb"),
+    person("Wasin", "Pipattungsakul", , "wasin.pipattungsakul@adelaide.edu.au", 
+           role = "aut")
   )
 Description: Provides access to Australia's TERN (Terrestrial Ecosystem
     Research Network) data through the API, <https://tern.org.au>.
