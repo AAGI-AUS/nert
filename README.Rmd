@@ -65,10 +65,33 @@ names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
 cog_df
 ```
 
+<<<<<<< HEAD
 ## Citing {nert}
 
 To cite nert:
 
 ```{r cite}
 citation("nert")
+=======
+## Development
+
+### Dev Container
+
+Set up the container.
+
+```{bash, eval=FALSE}
+devcontainer up --workspace-folder .
+```
+
+Run tests and check stuff.
+
+```{bash, eval=FALSE}
+devcontainer exec --workspace-folder . R -e "devtools::check()"
+```
+
+Render this file.
+
+```{bash, eval=FALSE}
+devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
+>>>>>>> 91b1468 (add development section)
 ```

@@ -32,6 +32,7 @@ This is a basic example which shows you how you can fetch one day's data from th
 ``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
+#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)
@@ -71,6 +72,7 @@ cog_df
 #> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
 ```
 
+<<<<<<< HEAD
 ## Citing {nert}
 
 To cite nert:
@@ -92,4 +94,26 @@ citation("nert")
 #>     note = {R package version 0.0.0.9000, https://github.com/AAGI-AUS/nert},
 #>     url = {https://aagi-aus.github.io/nert/},
 #>   }
+=======
+## Development
+
+### Dev Container
+
+Set up the container.
+
+``` bash
+devcontainer up --workspace-folder .
+```
+
+Run tests and check stuff.
+
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::check()"
+```
+
+Render this file.
+
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
+>>>>>>> 91b1468 (add development section)
 ```
