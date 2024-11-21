@@ -43,6 +43,7 @@ library(nert)
 #> 
 #>     plot
 r <- read_smips(day = "2024-01-01")
+#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 plot(r)
 ```
@@ -76,4 +77,26 @@ cog_df
 #> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
 #> 2 Merredin  2                    0.22716530 118.2787 -31.48353
 #> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
+```
+
+## Development
+
+### Dev Container
+
+Set up the container.
+
+``` bash
+devcontainer up --workspace-folder .
+```
+
+Run tests and check stuff.
+
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::check()"
+```
+
+Render this file.
+
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 ```

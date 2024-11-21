@@ -67,3 +67,25 @@ cog_df <- cbind(df$location, cog_df)
 names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
 cog_df
 ```
+
+## Development
+
+### Dev Container
+
+Set up the container.
+
+```{bash, eval=FALSE}
+devcontainer up --workspace-folder .
+```
+
+Run tests and check stuff.
+
+```{bash, eval=FALSE}
+devcontainer exec --workspace-folder . R -e "devtools::check()"
+```
+
+Render this file.
+
+```{bash, eval=FALSE}
+devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
+```
