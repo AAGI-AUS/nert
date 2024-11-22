@@ -6,7 +6,11 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
+<<<<<<< HEAD
 [![Codecov test coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
+=======
+[![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://codecov.io/gh/AAGI-AUS/nert)
+>>>>>>> f8be0c1 (add static results, update badge)
 <!-- badges: end -->
 
 The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
@@ -32,17 +36,23 @@ This is a basic example which shows you how you can fetch one day's data from th
 ``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
-#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 
+<<<<<<< HEAD
 <div class="figure">
 <img src="man/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%" />
 <p class="caption">plot of chunk example_cog</p>
 </div>
+=======
+<figure>
+<img src="./man/figures/README-example_cog-1.png" alt="example plot" />
+<figcaption aria-hidden="true">example plot</figcaption>
+</figure>
+>>>>>>> f8be0c1 (add static results, update badge)
 
 ## Extract Values Given Lat/Lon Values
 

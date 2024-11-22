@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
+[![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://codecov.io/gh/AAGI-AUS/nert)
 <!-- badges: end -->
 
 The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
@@ -34,7 +34,7 @@ pak::pak("AAGI-AUS/nert")
 
 This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
 
-```{r example_cog}
+```{r example_cog, eval=FALSE}
 library(nert)
 r <- read_smips(day = "2024-01-01")
 
@@ -42,11 +42,13 @@ r <- read_smips(day = "2024-01-01")
 autoplot(r)
 ```
 
+![example plot](./man/figures/README-example_cog-1.png)
+
 ## Extract Values Given Lat/Lon Values
 
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
 
-```{r}
+```{r, eval=FALSE}
 library(terra)
 df <- structure(
   list(
@@ -63,6 +65,10 @@ cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
 cog_df <- cbind(df$location, cog_df)
 names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
 cog_df
+#>   location ID smips_totalbucket_mm_20240101        x         y
+#> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
+#> 2 Merredin  2                    0.22716530 118.2787 -31.48353
+#> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
 ```
 
 <<<<<<< HEAD
