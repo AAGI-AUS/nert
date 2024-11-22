@@ -6,8 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
+[![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://codecov.io/gh/AAGI-AUS/nert)
 <!-- badges: end -->
 
 The goal of {nert} is to provide access to Australian TERN (Terrestrial
@@ -34,21 +33,15 @@ visualise it:
 
 ``` r
 library(nert)
-#> 
-#> Attaching package: 'nert'
-#> The following object is masked from 'package:graphics':
-#> 
-#>     plot
-#> The following object is masked from 'package:base':
-#> 
-#>     plot
 r <- read_smips(day = "2024-01-01")
-#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 plot(r)
 ```
 
-<img src="man/figures/README-example_cog-1.png" width="100%" />
+<figure>
+<img src="./man/figures/README-example_cog-1.png" alt="example plot" />
+<figcaption aria-hidden="true">example plot</figcaption>
+</figure>
 
 ## Extract Values Given Lat/Lon Values
 
@@ -57,7 +50,6 @@ given latitude and longitude values for each.
 
 ``` r
 library(terra)
-#> terra 1.7.83
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
