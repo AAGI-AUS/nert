@@ -169,6 +169,7 @@ read_smips <- function(collection = "totalbucket",
 
   if (.collection == "totalbucket" &&
       .url_year < 2005 ||
+      # NOTE: this is throwing "'tzone' attributes are inconsistent"
       .day > .last_week) {
     cli::cli_abort("The data are not available before 2005 and roughly
                    much past { .last_week }")
