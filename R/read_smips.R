@@ -1,4 +1,3 @@
-
 #' Read SMIPS COGs from TERN
 #'
 #' Read Soil Moisture Integration and Prediction System (\acronym{SMIPS}) Cloud
@@ -50,7 +49,6 @@ read_smips <- function(collection = "totalbucket",
                        api_key = get_key(),
                        max_tries = 3L,
                        initial_delay = 1L) {
-
   attempt <- 1
   success <- FALSE
 
@@ -62,37 +60,40 @@ read_smips <- function(collection = "totalbucket",
 
   collection_url <- .make_smips_url(.collection = collection, .day = day)
 
-  while (attempt <= max_tries && !success)
-    tryCatch({
-      # TODO: move the url concatenation out
-      r <- (terra::rast(
-        paste0(
-          "/vsicurl/https://",
-          paste0("apikey:", api_key),
-          "@data.tern.org.au/model-derived/smips/v1_0/",
-          collection,
-          "/",
-          url_year,
-          "/",
-          collection_url
-        )
-      ))
+  while (attempt <= max_tries && !success) {
+    tryCatch(
+      {
+        # TODO: move the url concatenation out
+        r <- (terra::rast(
+          paste0(
+            "/vsicurl/https://",
+            paste0("apikey:", api_key),
+            "@data.tern.org.au/model-derived/smips/v1_0/",
+            collection,
+            "/",
+            url_year,
+            "/",
+            collection_url
+          )
+        ))
 
-      success <- TRUE
-      return(r)
-
-    }, error = function(e) {
-      if (attempt < max_tries) {
-        delay <- initial_delay * 2 ^ (attempt - 1)
-        cli::cli_alert("Download failed on attempt { attempt }.
+        success <- TRUE
+        return(r)
+      },
+      error = function(e) {
+        if (attempt < max_tries) {
+          delay <- initial_delay * 2^(attempt - 1)
+          cli::cli_alert("Download failed on attempt { attempt }.
                          Retrying in { delay } seconds...")
-        Sys.sleep(delay)
-        attempt <- attempt + 1
-      } else {
-        cli::cli_abort("Download failed after { .max_tries } attempts.")
-        stop(e)
+          Sys.sleep(delay)
+          attempt <- attempt + 1
+        } else {
+          cli::cli_abort("Download failed after { .max_tries } attempts.")
+          stop(e)
+        }
       }
-    })
+    )
+  }
 }
 
 #' Check User Input Dates for Validity
@@ -112,14 +113,14 @@ read_smips <- function(collection = "totalbucket",
 
   if (lubridate::is.POSIXct(x) || lubridate::is.Date(x)) {
     tz <- lubridate::tz(x)
-  }
-  else {
+  } else {
     tz <- Sys.timezone()
   }
 
   tryCatch(
     x <- lubridate::parse_date_time(x, c(
       # TODO: B and b are the same, maybe remove one later
+      # Are they? `b` should be e.g., "Jan", `B` should be, e.g., "January"
       "Ymd", "dmY", "BdY", "Bdy", "bdY", "bdy"
     ), tz = tz),
     warning = function(c) {
@@ -168,8 +169,8 @@ read_smips <- function(collection = "totalbucket",
   .url_year <- lubridate::year(.day)
 
   if (.collection == "totalbucket" &&
-      .url_year < 2005 ||
-      .day > .last_week) {
+    .url_year < 2005 ||
+    .day > .last_week) {
     cli::cli_abort("The data are not available before 2005 and roughly
                    much past { .last_week }")
   }
@@ -188,12 +189,14 @@ read_smips <- function(collection = "totalbucket",
 .make_smips_url <- function(.collection, .day) {
   url_date <- gsub("-", "", .day)
 
-  approved_collections <- c("totalbucket",
-                            "SMindex",
-                            "bucket1",
-                            "bucket2",
-                            "deepD",
-                            "runoff")
+  approved_collections <- c(
+    "totalbucket",
+    "SMindex",
+    "bucket1",
+    "bucket2",
+    "deepD",
+    "runoff"
+  )
   collection <- rlang::arg_match(.collection, approved_collections)
 
   .check_collection_agreement(.collection = .collection, .day = .day)
