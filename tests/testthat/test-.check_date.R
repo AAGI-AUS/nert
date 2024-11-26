@@ -6,56 +6,56 @@ test_that("Date validation works with valid dates", {
   date_checked <- .check_date(date_)
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(date_checked, date_)
+  expect_identical(date_checked, date_)
 
   # date object
   date_ <- as.Date(reference_date)
   date_checked <- .check_date(date_)
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(toString(date_checked), toString(date_))
+  expect_identical(toString(date_checked), toString(date_))
 
   # different timezone
   date_ <- lubridate::as_datetime(reference_date, tz = "Australia/Adelaide")
   date_checked <- .check_date(date_)
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(date_checked, date_)
+  expect_identical(date_checked, date_)
 
   # various string formats
   # Ymd
   date_checked <- .check_date("2020-01-01")
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(toString(date_checked), reference_date)
+  expect_identical(toString(date_checked), reference_date)
 
   # dmY
   date_checked <- .check_date("01-01-2020")
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(toString(date_checked), reference_date)
+  expect_identical(toString(date_checked), reference_date)
 
   # BdY, bdY
   date_checked <- .check_date("january-01-2020")
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(toString(date_checked), reference_date)
+  expect_identical(toString(date_checked), reference_date)
 
   date_checked <- .check_date("Jan-01-2020")
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(toString(date_checked), reference_date)
+  expect_identical(toString(date_checked), reference_date)
 
   # Bdy, bdy
   date_checked <- .check_date("January-01-20")
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(toString(date_checked), reference_date)
+  expect_identical(toString(date_checked), reference_date)
 
   date_checked <- .check_date("jan-01-20")
 
   expect_true(lubridate::is.POSIXct(date_checked))
-  expect_equal(toString(date_checked), reference_date)
+  expect_identical(toString(date_checked), reference_date)
 })
 
 test_that("Date validation throws error with invalid dates", {
