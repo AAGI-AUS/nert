@@ -60,12 +60,11 @@ get_key <- function() {
     utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
   }
 
-  stop(
-    "You need to create and/or set your TERN API key.\n",
-    "After getting your key set it as 'TERN_API_KEY' in .Renviron.\n",
-    "TERN_API_KEY='youractualkeynotthisstring'\n",
-    "For that, use `usethis::edit_r_environ()`"
+  cli::cli_abort(
+    "You need to create and/or set your TERN API key.
+    Go to {.url https://account.tern.org.au/authenticated_user/apikeys} to request one.
+    After getting your key, set it as 'TERN_API_KEY' in {.file ~/.Renviron}.,
+    {.emph e.g.}, {.code TERN_API_KEY='youractualkeynotthisstring'}.
+    For that, use {.fn edit_r_environ} from the {.pkg {{usethis}}} package"
   )
-
-  invisible("https://account.tern.org.au/authenticated_user/apikeys")
 }

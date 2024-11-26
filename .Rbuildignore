@@ -9,3 +9,7 @@
 ^pkgdown$
 ^codemeta\.json$
 ^.devcontainer*
+
+
+# flint files
+^flint$
