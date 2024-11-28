@@ -139,7 +139,36 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "176.359KB",
+  "fileSize": "176.643KB",
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Adam H.",
+          "familyName": "Sparks"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Wasin",
+          "familyName": "Pipattungsakul"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Russell",
+          "familyName": "Edson"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Max",
+          "familyName": "Moldovan"
+        }
+      ],
+      "name": "nert: An API Client for TERN Data"
+    }
+  ],
   "codeRepository": "https://github.com/AAGI-AUS/nert",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]

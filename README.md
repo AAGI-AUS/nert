@@ -56,7 +56,7 @@ given latitude and longitude values for each.
 
 ``` r
 library(terra)
-#> terra 1.7.83
+#> terra 1.7.78
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
