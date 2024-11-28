@@ -41,7 +41,7 @@ get_key <- function() {
   if (!nzchar(TERN_API_KEY)) {
     .set_tern_key()
   } else {
-    return(gsub("/", "%2f", TERN_API_KEY, fixed = TRUE))
+    return(TERN_API_KEY)
   }
 }
 

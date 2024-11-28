@@ -49,6 +49,10 @@ read_smips <- function(collection = "totalbucket",
                        api_key = get_key(),
                        max_tries = 3L,
                        initial_delay = 1L) {
+
+  # Fix any invalid key here, rather than in get_key() in case a user passes a key
+  api_key <- gsub("/", "%2f", api_key, fixed = TRUE)
+
   attempt <- 1
   success <- FALSE
 
