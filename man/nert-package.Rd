@@ -15,7 +15,7 @@ Authors:
 \itemize{
   \item Wasin Pipattungsakul \email{wasin.pipattungsakul@adelaide.edu.au}
   \item Russell Edson \email{russell.edson@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
-  \item Sam Rogers \email{sam.rogers@adelaide.edu.au}
+  \item Sam Rogers \email{sam.rogers@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
 }
 
 Other contributors:

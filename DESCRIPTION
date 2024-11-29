@@ -7,7 +7,8 @@ Authors@R: c(
     person("Wasin", "Pipattungsakul", , "wasin.pipattungsakul@adelaide.edu.au", role = "aut"),
     person("Russell", "Edson", , "russell.edson@adelaide.edu.au", role = "aut",
            comment = c(ORCID = "0000-0002-4607-5396")),
-    person("Sam", "Rogers", , "sam.rogers@adelaide.edu.au", role = "aut"),
+    person("Sam", "Rogers", , "sam.rogers@adelaide.edu.au", role = "aut",
+           comment = c(ORCID = "0000-0002-4607-5396")),
     person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = "ctb")
   )
 Description: Provides access to Australia's TERN (Terrestrial Ecosystem
