@@ -11,8 +11,14 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
+  "runtimePlatform": "R version 4.4.2 (2024-10-31 ucrt)",
   "author": [
+    {
+      "@type": "Person",
+      "givenName": "Wasin",
+      "familyName": "Pipattungsakul",
+      "email": "wasin.pipattungsakul@adelaide.edu.au"
+    },
     {
       "@type": "Person",
       "givenName": "Russell",
@@ -24,13 +30,8 @@
       "@type": "Person",
       "givenName": "Sam",
       "familyName": "Rogers",
-      "email": "sam.rogers@adelaide.edu.au"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Wasin",
-      "familyName": "Pipattungsakul",
-      "email": "wasin.pipattungsakul@adelaide.edu.au"
+      "email": "sam.rogers@adelaide.edu.au",
+      "@id": "https://orcid.org/0000-0002-4607-5396"
     }
   ],
   "contributor": [
@@ -145,7 +146,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "176.706KB",
+  "fileSize": "177.735KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -160,6 +161,11 @@
           "@type": "Person",
           "givenName": "Wasin",
           "familyName": "Pipattungsakul"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Sam",
+          "familyName": "Rogers"
         },
         {
           "@type": "Person",

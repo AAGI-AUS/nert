@@ -2,7 +2,7 @@ bibentry(
   bibtype = "Manual",
   author = c(person("Adam H.", "Sparks"),
              person("Wasin", "Pipattungsakul"),
-             persoon("Sam", "Rodgers"),
+             person("Sam", "Rogers"),
              person("Russell", "Edson"),
              person("Max", "Moldovan")
              ),
