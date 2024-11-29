@@ -15,6 +15,12 @@
   "author": [
     {
       "@type": "Person",
+      "givenName": "Wasin",
+      "familyName": "Pipattungsakul",
+      "email": "wasin.pipattungsakul@adelaide.edu.au"
+    },
+    {
+      "@type": "Person",
       "givenName": "Russell",
       "familyName": "Edson",
       "email": "russell.edson@adelaide.edu.au",
@@ -25,12 +31,6 @@
       "givenName": "Sam",
       "familyName": "Rogers",
       "email": "sam.rogers@adelaide.edu.au"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Wasin",
-      "familyName": "Pipattungsakul",
-      "email": "wasin.pipattungsakul@adelaide.edu.au"
     }
   ],
   "contributor": [
@@ -145,7 +145,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "176.706KB",
+  "fileSize": "176.798KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -160,6 +160,11 @@
           "@type": "Person",
           "givenName": "Wasin",
           "familyName": "Pipattungsakul"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Sam",
+          "familyName": "Rodgers"
         },
         {
           "@type": "Person",
