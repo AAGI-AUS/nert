@@ -67,3 +67,11 @@ cog_df <- cbind(df$location, cog_df)
 names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
 cog_df
 ```
+
+## Citing {nert}
+
+To cite nert:
+
+```{r cite}
+citation("nert")
+```

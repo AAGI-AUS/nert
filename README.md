@@ -77,3 +77,26 @@ cog_df
 #> 2 Merredin  2                    0.22716530 118.2787 -31.48353
 #> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
 ```
+
+## Citing {nert}
+
+To cite nert:
+
+``` r
+citation("nert")
+#> To cite package 'nert' in publications use:
+#> 
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2024).
+#>   _nert: An API Client for TERN Data_. R package version 0.0.0.9000,
+#>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {nert: An API Client for TERN Data},
+#>     author = {Adam Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
+#>     year = {2024},
+#>     note = {R package version 0.0.0.9000, https://github.com/AAGI-AUS/nert},
+#>     url = {https://aagi-aus.github.io/nert/},
+#>   }
+```
