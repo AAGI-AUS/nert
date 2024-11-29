@@ -14,6 +14,8 @@ Authors@R: c(
 Description: Provides access to Australia's TERN (Terrestrial Ecosystem
     Research Network) data through the API, <https://tern.org.au>.
 License: MIT + file LICENSE
+URL: https://aagi-aus.github.io/nert/, https://github.com/AAGI-AUS/nert
+BugReports: https://github.com/AAGI-AUS/nert/issues
 Imports: 
     cli,
     data.table,
@@ -31,4 +33,3 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxyglobals::global_roclet"))
 RoxygenNote: 7.3.2
-URL: https://aagi-aus.github.io/nert/
