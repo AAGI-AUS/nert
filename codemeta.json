@@ -4,6 +4,7 @@
   "identifier": "nert",
   "description": "Provides access to Australia's TERN (Terrestrial Ecosystem Research Network) data through the API, <https://tern.org.au>.",
   "name": "nert: An API Client for TERN Data",
+  "codeRepository": "https://github.com/AAGI-AUS/nert",
   "license": "https://spdx.org/licenses/MIT",
   "version": "0.0.0.9000",
   "programmingLanguage": {
@@ -181,7 +182,7 @@
       "name": "nert: An API Client for TERN Data"
     }
   ],
-  "codeRepository": "https://github.com/AAGI-AUS/nert",
+  "relatedLink": "https://aagi-aus.github.io/nert/",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
 }
