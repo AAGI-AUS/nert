@@ -49,7 +49,6 @@ read_smips <- function(collection = "totalbucket",
                        api_key = get_key(),
                        max_tries = 3L,
                        initial_delay = 1L) {
-
   # Fix any invalid key here, rather than in get_key() in case a user passes a key
   api_key <- gsub("/", "%2f", api_key, fixed = TRUE)
 
@@ -125,6 +124,7 @@ read_smips <- function(collection = "totalbucket",
     x <- lubridate::parse_date_time(x, c(
       # TODO: B and b are the same, maybe remove one later
       # Are they? `b` should be e.g., "Jan", `B` should be, e.g., "January"
+      # based on `base::strptime()`, https://rdrr.io/r/base/strptime.html, for parsing inputs, they are the same
       "Ymd", "dmY", "BdY", "Bdy", "bdY", "bdy"
     ), tz = tz),
     warning = function(c) {
@@ -168,7 +168,7 @@ read_smips <- function(collection = "totalbucket",
 #' @noRd
 #' @keywords Internal
 .check_collection_agreement <- function(.collection, .day) {
-  .this_year <- lubridate::year(lubridate::today())
+  # .this_year <- lubridate::year(lubridate::today())
   .last_week <- lubridate::today() - 7
   .url_year <- lubridate::year(.day)
 
