@@ -154,7 +154,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "177.686KB",
+  "fileSize": "177.406KB",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
 }

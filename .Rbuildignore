@@ -13,3 +13,4 @@
 
 # flint files
 ^flint$
+^CODE_OF_CONDUCT\.md$
