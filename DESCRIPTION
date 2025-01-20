@@ -24,6 +24,8 @@ Imports:
     terra,
     utils
 Suggests: 
+    knitr,
+    rmarkdown,
     roxyglobals,
     testthat (>= 3.0.0)
 Config/roxyglobals/filename: globals.R
@@ -34,3 +36,4 @@ Language: en-AU
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxyglobals::global_roclet"))
 RoxygenNote: 7.3.2
+VignetteBuilder: knitr
