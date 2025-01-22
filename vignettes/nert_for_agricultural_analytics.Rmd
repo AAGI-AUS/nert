@@ -24,9 +24,22 @@ in Australia. The document then showcases an example of a grain production
 experiment, and how we can use **nert** and the SMIPS soil moisture readings
 to improve our analytics and modelling.
 
-TODO: below. Vignette is a work-in-progress.
+## Setup: Acquire and specify your TERN API key
 
-## Setup: Acquire and link your TERN API key
+An API key is required to access TERN datasets (including SMIPS) through 
+their online data portal. The **nert** package streamlines the data process,
+but still requires authorisation using an API key. However, it is
+straightforward to sign up to the TERN Data Portal and acquire an API key that
+you can use, and by setting it in your R environment (via `.Renviron`) you
+can provide the **nert** package with that credential to allow convenient
+access.
+
+The following steps detail the process for signing up for a TERN account,
+generating an API key, and storing it in your R environment:
+
+ 1. Navigate to the TERN Data Discovery Portal (https://portal.tern.org.au/) in 
+a web browser
+
 
 details and screenshots for this here. 
 
@@ -43,12 +56,27 @@ library(nert)
 
 ## A synthetic dataset for a grain production experiment
 
-details here. Just create the data here and include as a (properly documented)
-dataset in /data, but briefly summarise here the
-method for how it was created as per Max's email.
+To showcase how to use the **nert** package and the TERN SMIPS soil moisture
+data to augment the analytics of an agronomics experiment, a simulated
+dataset containing yield data for a fictitious grain production experiment has
+been included with the **nert** package. The dataset is called `grain`, and 
+you can load this dataset with:
 
-Final paragraph: draw attention to the sites and their lat/long coordinates,
-this leads nicely into the next bit.
+```{r loaddata}
+data(grain)
+str(grain)
+```
+
+The `grain` dataset supposes that a fabricated grain production experiment has
+been run at a selection of ten sites across South Australia, looking at the
+effects of Nitrogen application and Seeding rate on the grain yield for some
+crop with eight varieties. 
+
+Note that we have locational coordinates (in `Latitude` and
+`Longitude`) for each of the sites, as well as dates for the crop sowing and 
+Nitrogen applications (in `SowDate` and `NitrogenDate` respectively.) This
+spatiotemporal information is useful, as it allows us to match up the
+experimental sites with the data points that we need to download from SMIPS.
 
 ## Download SMIPS data for the sites across times
 
