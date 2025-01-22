@@ -1,0 +1,34 @@
+#' Synthetic dataset for a grain production experiment in South Australia
+#'
+#' @description
+#' Data from a fabricated experiment investigating the effects of
+#' Nitrogen application and seeding rate on grain production for
+#' a crop, conducted across 10 fictional sites in South Australia.
+#' The variables are as follows:
+#'
+#' \itemize{
+#'   \item \code{Site}: The experiment site locations.
+#'   \item \code{Latitude}: Latitude for the site, recorded in
+#'     decimal degrees Northing.
+#'   \item \code{Longitude}: Longitude for the site, in decimal
+#'     degrees Easting.
+#'   \item \code{SowDate}: The date that the crops were sown.
+#'   \item \code{NitrogenDate}: The date that the Nitrogen treatments
+#'     were applied.
+#'   \item \code{Rep}: Replicate number. (Each site has 3 replicates.)
+#'   \item \code{Variety}: The anonymised variety (10 levels).
+#'   \item \code{Nitrogen_kgNha}: The applied Nitrogen rate treatment,
+#'     in kg N/ha.
+#'   \item \code{SeedRate_plantsm2}: The seeding rate, measured in
+#'     target establishment plants/m2.
+#'   \item \code{Yield_Tha}: The measured grain yield for the plot
+#'     in T/ha.
+#' }
+#'
+#' @name grain
+#' @docType data
+#' @usage data(grain)
+#' @keywords data
+#' @format A data frame with 2880 rows and 10 variables
+#'
+"grain"
