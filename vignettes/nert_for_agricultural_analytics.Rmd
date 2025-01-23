@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knitrsetup, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
@@ -98,10 +98,18 @@ generating an API key, and storing it in your R environment:
     value for the soil moisture measurement at the Adelaide CBD (at 
     approximately -34.9285 decimal degrees latitude, 138.6007 longitude):
     
-    ```{r testnert}
+    ```{r testnertcache, include = FALSE}
     library(nert)
-    #r <- read_smips(day = "2024-01-01")
-    #terra::extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+    adelaide <- readRDS("cache_adelaide.rds")
+    ```
+    
+    ```{r testnert, eval = FALSE}
+    library(nert)
+    r <- read_smips(day = "2024-01-01")
+    terra::extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+    ```
+    ```{r testnertresults, echo = FALSE}
+    adelaide
     ```
 
 At this stage your **nert** package is now working, and you can use it to
@@ -136,21 +144,92 @@ experimental sites with the data points that we need to download from SMIPS.
 
 ## Download SMIPS data for the sites across times
 
-detail + code for that here, mostly as it appears in the files Max sent in
+(detail + code for that here, mostly as it appears in the files Max sent in
 the emails. Add comments, and note that we are using the
 percentage dataset (i.e., SMIndex) rather than the totalbucket (check with 
 Max: is this the best way? Do things change too much for the worse if we
-just use the default totalbucket?)
+just use the default totalbucket?))
 
-In here: note that TERN supplies cloud-optimised GeoTIFFs, which the terra
-package knows how to work well with. Rather than downloading the entire raster,
-by providing set coordinates the `terra::extract` function only downloads the
-requested values--which is faster and less wasteful. 
+Work-in-progress:
+
+For simplicity, suppose we are interested in the SMIPS soil moisture index 
+(`SMindex`) data, for all days falling between the earliest Nitrogen 
+application date up to 30 days after the last application date, and we want the
+soil moisture index at each site (by latitude/longitude coordinates). We can
+generate this date range in a straightforward way using the `NitrogenDate`
+column of the `grain` dataset as follows:
+```{r daterange}
+start_date <- min(grain$NitrogenDate)
+end_date <- max(grain$NitrogenDate) + 30
+date_range <- seq(start_date, end_date, by = "1 day")
+
+c(date_range[1], date_range[length(date_range)])
+```
+
+We also need the latitude and longitude for the sites, which we can readily 
+retrieve from the `grain` dataset columns `Latitude` and `Longitude`:
+```{r siteslist}
+sites <- unique(grain[ , c("Site", "Latitude", "Longitude")])
+sites
+```
+
+Now TERN supplies the SMIPS daily data rasters as cloud-optimised GeoTIFFs 
+(or COGs), which contain the soil moisture point predictions across the
+entirety of Australia. However, because they are cloud-optimised, we can be
+clever in our downloading to make sure that we only download data for the
+locations of interest, rather than the entire raster. The **nert** package works
+in tandem with the **terra** package to achieve this efficiency:
+
+- First, we download the _information_ for a daily SMIPS raster 
+    using `nert::read_smips`,
+- Then we _extract only the point values we need_, using `terra::extract`.
+
+This leads to a quicker and tighter data download. The below code shows
+this process. (Note that `terra::extract` is particular about the order
+of the latitude/longitude coordinates: longitude should be specified first,
+followed by latitude.)
+
+```{r downloadsmipscache, include = FALSE}
+smips_data <- readRDS("cache_smips_data.rds")
+```
+
+```{r downloadsmips, eval = FALSE}
+smips_data <- data.frame()
+for (i in 1:length(date_range)) {
+  r <- read_smips(collection = "SMindex", day = date_range[i])
+  smips_points <- terra::extract(
+    x = r,
+    y = data.frame(lon = sites$Longitude, lat = sites$Latitude),
+    xy = TRUE
+  )
+  names(smips_points)[2] <- "smips_smi_perc"
+
+  smips_data <- rbind(
+    smips_data,
+    data.frame(
+      Date = date_range[i],
+      Latitude = smips_points$y,
+      Longitude = smips_points$x,
+      smips_smi_perc = smips_points$smips_smi_perc
+    )
+  )
+}
+head(smips_data)
+```
+
+```{r downloadsmipsresults, echo = FALSE}
+head(smips_data)
+```
+
+TODO: More here, plus forward reference to the modelling in the next bit.
+
+
 
 ## A simple model for grain yield
 
 The first model, without SMIPS. Include Max's DAGs (as jpgs?) as figures. As
-per the email Max sent.
+per the email Max sent. (assume that the Nitrogen is most active in the 30 
+days after its application, for instance.)
 
 ## Augment the yield model with soil moisture data
 
