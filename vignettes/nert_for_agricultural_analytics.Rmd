@@ -34,25 +34,81 @@ you can use, and by setting it in your R environment (via `.Renviron`) you
 can provide the **nert** package with that credential to allow convenient
 access.
 
-The following steps detail the process for signing up for a TERN account,
+The following steps detail the process for signing in to your TERN account,
 generating an API key, and storing it in your R environment:
 
- 1. Navigate to the TERN Data Discovery Portal (https://portal.tern.org.au/) in 
-a web browser
+1. Navigate to the TERN Data Discovery Portal (https://portal.tern.org.au/) in 
+ a web browser, and click the "Sign in" button that appears in the top-right
+ of the browser window.
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_1.jpg){width=80%}
+    
+1. Click the Australian Access Federation button to sign in to the TERN Data
+    Portal via your University ID (or alternatively, sign in via CILogon or
+    your Google identity).
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_2.jpg){width=80%}
+    
+1. Once signed in, click on the menu in the top-right with your name and click
+    the "TERN Account" entry to open your account profile.
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_4.jpg){width=80%}
+    
+1. On your account profile screen, navigate to the menu on the left-hand side,
+    and click the "Create API key" entry.
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_5.jpg){width=80%}
+    
+1. On this screen you can create your API key for accessing the TERN Data
+    Portal. Give your key whatever name you like (e.g., below I have called
+    the key "my_API_key" for demonstration purposes), and then click the
+    "Request API Key" button.
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_6.jpg){width=80%}
+    
+1. Your API key is now generated and appears as the string of text inside the
+    text box on the page, together with the key's creation and expiration
+    dates. Copy the API key to your clipboard, so that we can paste it into
+    the `.Renvion` file in the next step.
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_7.jpg){width=80%}
+    
+1. Open your `.Renviron` file (e.g., if you are using RStudio, an easy way to
+    open the right file is to enter `usethis::edit_r_environ()`). Add a new
+    line to the file to store your API key in the variable `TERN_API_KEY`:
+    
+    ```
+    TERN_API_KEY='<paste your key here>'
+    ```
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_8.jpg){width=80%}
+    
+1. Save your `.Renviron` file, and restart your R session so that the change is 
+    applied. You can then test that the **nert** package is reading your API 
+    key properly by entering `nert::get_key()` at the R command console. If the
+    API key was successfully read by **nert**, then you should see your API key
+    appear verbatim as output.
+ 
+    ![](nert_for_agricultural_analytics_tern_apikey_9.jpg){width=80%}
 
+1. Finally, you can quickly test that the data download from the TERN portal 
+    is working as intended by downloading a test data raster. The below code
+    downloads the SMIPS "totalbucket" soil moisture data raster for January 1st
+    2024, and uses the **terra** package's `extract` function to get a point 
+    value for the soil moisture measurement at the Adelaide CBD (at 
+    approximately -34.9285 decimal degrees latitude, 138.6007 longitude):
+    
+    ```{r testnert}
+    library(nert)
+    #r <- read_smips(day = "2024-01-01")
+    #terra::extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+    ```
 
-details and screenshots for this here. 
-
-At end: include a quick example of how to
-grab the data similar to what Adam had in the readme (e.g., just download
-data for Adelaide CBD or something and show how it appears in the data frame).
-
-```{r setup}
-library(nert)
-
-# ...
-```
-
+At this stage your **nert** package is now working, and you can use it to
+easily download SMIPS datasets from the TERN Data Portal. The rest of this
+vignette shows how you can use this downloaded soil moisture data to augment
+analytics, using a fictitious grain production experiment as an illuminating
+example.
 
 ## A synthetic dataset for a grain production experiment
 
@@ -85,6 +141,11 @@ the emails. Add comments, and note that we are using the
 percentage dataset (i.e., SMIndex) rather than the totalbucket (check with 
 Max: is this the best way? Do things change too much for the worse if we
 just use the default totalbucket?)
+
+In here: note that TERN supplies cloud-optimised GeoTIFFs, which the terra
+package knows how to work well with. Rather than downloading the entire raster,
+by providing set coordinates the `terra::extract` function only downloads the
+requested values--which is faster and less wasteful. 
 
 ## A simple model for grain yield
 
