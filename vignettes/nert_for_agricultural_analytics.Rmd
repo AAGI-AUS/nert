@@ -133,8 +133,8 @@ str(grain)
 
 The `grain` dataset supposes that a fabricated grain production experiment has
 been run at a selection of ten sites across South Australia, looking at the
-effects of Nitrogen application and Seeding rate on the grain yield for some
-crop with eight varieties. 
+effects of four different treatment levels of Nitrogen application and three 
+different seeding rates on the grain yield for some crop with eight varieties.
 
 Note that we have locational coordinates (in `Latitude` and
 `Longitude`) for each of the sites, as well as dates for the crop sowing and 
@@ -144,13 +144,9 @@ experimental sites with the data points that we need to download from SMIPS.
 
 ## Download SMIPS data for the sites across times
 
-(detail + code for that here, mostly as it appears in the files Max sent in
-the emails. Add comments, and note that we are using the
-percentage dataset (i.e., SMIndex) rather than the totalbucket (check with 
-Max: is this the best way? Do things change too much for the worse if we
-just use the default totalbucket?))
-
-Work-in-progress:
+Here we will use the **nert** package to download SMIPS soil moisture datasets
+from the TERN Data Portal, which we can use to augment our analysis of 
+the `grain` experiment data.
 
 For simplicity, suppose we are interested in the SMIPS soil moisture index 
 (`SMindex`) data, for all days falling between the earliest Nitrogen 
@@ -221,19 +217,71 @@ head(smips_data)
 head(smips_data)
 ```
 
-TODO: More here, plus forward reference to the modelling in the next bit.
+We can add the `Site` column to the `smips_data` to make it easier to use it
+in conjunction with the `grain` dataset during the analysis:
 
+```{r addbacksite}
+smips_data$Site <- sites$Site
+head(smips_data)
+```
 
+We are now ready to proceed with the analytics.
 
 ## A simple model for grain yield
 
-The first model, without SMIPS. Include Max's DAGs (as jpgs?) as figures. As
-per the email Max sent. (assume that the Nitrogen is most active in the 30 
-days after its application, for instance.)
+First, we model the grain yield simply, without any reference to the SMIPS 
+data that we have downloaded. In this case we will use the **mgcv** package 
+to model the grain yield with a GAM--taking the Variety, Nitrogen rate and
+seeding rate as fixed terms, and incorporating the Site and replicate
+structure of the experiment in a smooth random effect term.
+
+```{r simplemodel}
+library(mgcv)
+simple_model <- bam(
+  Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2
+    + s(Site, Rep, bs = "re"),
+  data = grain
+)
+
+summary(simple_model)$r.sq
+plot(simple_model, all.terms = TRUE)
+```
+
+TODO: Final paragraph here re: the simple model.
 
 ## Augment the yield model with soil moisture data
 
-The second model, including the SMIPS soil moisture as a confounder. As per
-Max's email, we perhaps expect phenomenologically that soil moisture improves 
-yield, but reduces the effect of Nitrogen in the soil due to volatilisation.
-modeling shows that this is the case.
+Next, we augment our modelling by including the SMIPS soil moisture data
+as a covariate (perhaps anticipating that the soil moisture improves the
+yield, but might reduce the effect of Nitrogen applied to the soil due
+to volatilisation). To keep things simple, for each site (and its 
+associated Nitrogen application date) we take an average of the SMIPS-reported
+soil moisture index from the date of the Nitrogen application until 30 days
+after the application, which we will store in a new column called
+`SoilMoisture_avg`.
+
+```{r smipsaverage}
+for (site in sites$Site) {
+  start_date <- unique(grain[which(grain$Site == site), "NitrogenDate"])[1]
+  dates <- seq(start_date, start_date + 30, by = "1 day")
+  smips <- smips_data[which(smips_data$Site == site & smips_data$Date %in% dates), ]
+  smips_avg <- mean(smips[["smips_smi_perc"]])
+  grain[which(grain$Site == site), "SoilMoisture_avg"] <- smips_avg
+}
+```
+
+We can then add this average soil moisture as a fixed effect to the GAM model:
+
+```{r augmentedmodel}
+augmented_model <- bam(
+  Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2 + SoilMoisture_avg
+    + s(Site, Rep, bs = "re"),
+  data = grain
+)
+
+summary(augmented_model)$r.sq
+plot(augmented_model, all.terms = TRUE)
+```
+
+TODO: Final paragraph here re: the augmented model. Ideally we expect that
+it makes the effect of Nitrogen easier to isolate.
