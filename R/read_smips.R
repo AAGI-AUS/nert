@@ -122,10 +122,7 @@ read_smips <- function(collection = "totalbucket",
 
   tryCatch(
     x <- lubridate::parse_date_time(x, c(
-      # TODO: B and b are the same, maybe remove one later
-      # Are they? `b` should be e.g., "Jan", `B` should be, e.g., "January"
-      # based on `base::strptime()`, https://rdrr.io/r/base/strptime.html, for parsing inputs, they are the same
-      "Ymd", "dmY", "BdY", "Bdy", "bdY", "bdy"
+      "Ymd", "dmY", "BdY", "Bdy"
     ), tz = tz),
     warning = function(c) {
       cli::cli_abort("{ x } is not in a valid date format.
