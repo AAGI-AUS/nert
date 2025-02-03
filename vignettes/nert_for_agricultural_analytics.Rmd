@@ -146,7 +146,14 @@ experimental sites with the data points that we need to download from SMIPS.
 
 Here we will use the **nert** package to download SMIPS soil moisture datasets
 from the TERN Data Portal, which we can use to augment our analysis of 
-the `grain` experiment data.
+the `grain` experiment data. The two key SMIPS datasets of interest are:
+
+1. `totalbucket`: an estimate of the _volumetric soil moisture_ (in units of mm)
+  from the SMIPS bucket moisture store,
+
+1. `SMindex`: the SMIPS _soil moisture index_ (i.e., a number between 0 and 1
+  that indicates how full the SMIPS bucket moisture store is relative to
+  its 90cm capacity).
 
 For simplicity, suppose we are interested in the SMIPS soil moisture index 
 (`SMindex`) data, for all days falling between the earliest Nitrogen 
@@ -229,25 +236,33 @@ We are now ready to proceed with the analytics.
 
 ## A simple model for grain yield
 
-First, we model the grain yield simply, without any reference to the SMIPS 
-data that we have downloaded. In this case we will use the **mgcv** package 
-to model the grain yield with a GAM--taking the Variety, Nitrogen rate and
-seeding rate as fixed terms, and incorporating the Site and replicate
-structure of the experiment in a smooth random effect term.
+First, we model the grain yield with a simple model without taking into account
+any soil moisture confounding---that is, without reference to the SMIPS data
+that we have just downloaded. We will later incorporate the SMIPS data to see
+how including the soil moisture as a covariate improves the modelling.
+
+Here we will use the **nlme** package to fit a linear mixed-effect model. The
+grain yield `Yield_tha` will be modelled taking the `Variety`, Nitrogen
+application rate `Nitrogen_kgNha` and seeding rate `SeedRate_plantsm2` as fixed
+terms, and incorporating the `Site` and replicate (`Rep`) structure of the
+experiment in a random effect term.
 
 ```{r simplemodel}
-library(mgcv)
-simple_model <- bam(
-  Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2
-    + s(Site, Rep, bs = "re"),
+library(nlme)
+simple_model <- lme(
+  fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2,
+  random = ~ 1 | Site/Rep,
   data = grain
 )
-
-summary(simple_model)$r.sq
-plot(simple_model, all.terms = TRUE)
 ```
 
-TODO: Final paragraph here re: the simple model.
+We can check the confidence intervals for the effect sizes of the 
+Nitrogen treatments for this simple model:
+```{r simplemodeleffects}
+simple_model.ints <- intervals(simple_model, which = "fixed")$fixed
+simple_model.Neffects <- simple_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
+simple_model.Neffects
+```
 
 ## Augment the yield model with soil moisture data
 
@@ -270,18 +285,50 @@ for (site in sites$Site) {
 }
 ```
 
-We can then add this average soil moisture as a fixed effect to the GAM model:
+We can then add this average soil moisture as a fixed effect to the linear
+mixed-effect model:
 
 ```{r augmentedmodel}
-augmented_model <- bam(
-  Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2 + SoilMoisture_avg
-    + s(Site, Rep, bs = "re"),
+augmented_model <- lme(
+  fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2 
+    + SoilMoisture_avg + SoilMoisture_avg:Nitrogen_kgNha,
+  random = ~ 1 | Site/Rep,
   data = grain
 )
 
-summary(augmented_model)$r.sq
-plot(augmented_model, all.terms = TRUE)
 ```
 
-TODO: Final paragraph here re: the augmented model. Ideally we expect that
-it makes the effect of Nitrogen easier to isolate.
+The confidence intervals for the effect sizes of the Nitrogen application
+treatments for this augmented model are then as follows:
+
+```{r augmentedmodeleffects}
+augmented_model.ints <- intervals(augmented_model, which = "fixed")$fixed
+augmented_model.Neffects <- augmented_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
+augmented_model.Neffects
+```
+
+We can use **ggplot2** plotting to graph the confidence intervals for the 
+simple model versus the augmented model, and illuminate the difference 
+attained when we include the soil moisture as a confounding term in our 
+modelling:
+
+```{r ploteffects, fig.width = 7, fig.align="center", out.width="100%"}
+library(ggplot2)
+
+ci <- rbind(
+  data.frame(simple_model.Neffects, model = "Simple Model"),
+  data.frame(augmented_model.Neffects, model = "SMIPS-Augmented Model")
+)
+ci$term <- paste0("Nitrogen_kgNha", c(30, 60, 90))
+
+pd <- position_dodge(0.4)
+ggplot(ci, aes(x = est., y = term, colour = model)) +
+  geom_point(position = pd) +
+  geom_errorbarh(aes(xmin = lower, xmax = upper), position = pd, height = 0.2) +
+  labs(y = "predictor", x = "estimate")
+```
+
+From the comparison of the effect sizes for the Nitrogen treatment, we can
+see that the simple model underestimates the treatment effect. The
+augmented model, in contrast, accounts for the soil moisture and the potential
+Nitrogen vaporisation that may occur in high soil moisture conditions.
