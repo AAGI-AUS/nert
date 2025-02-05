@@ -39,7 +39,7 @@
 #' # terra::plot() is re-exported for convenience
 #' plot(r)
 #'
-#' @return A [terra::rast] object
+#' @returns A [terra::rast] object
 #'
 #' @autoglobal
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
@@ -102,7 +102,7 @@ read_smips <- function(collection = "totalbucket",
 #' Check User Input Dates for Validity
 #'
 #' @param x User entered date value
-#' @return Validated date string as a `POSIXct` object.
+#' @returns Validated date string as a `POSIXct` object.
 #' @note This was taken from \CRANpkg{nasapower}.
 #' @example .check_date(x)
 #' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
@@ -185,8 +185,8 @@ read_smips <- function(collection = "totalbucket",
 #' @param .day The user-supplied date being asked for.
 #'
 #' @autoglobal
-#' @noRd
-#' @keywords Internal
+#' @dev
+
 .make_smips_url <- function(.collection, .day) {
   url_date <- gsub("-", "", .day)
 
