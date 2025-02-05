@@ -1,0 +1,133 @@
+---
+title: "nert"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{nert}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{knitr}
+  %VignetteDepends{keyring}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To get started with {nert} you will need an API key from TERN.
+This can be obtained by registering at <https://portal.tern.org.au>.
+Once you have your API key, you can store it in your system's keychain using the [{keyring}](https://keyring.r-lib.org/index.html package.
+
+We'll walk through this process in this vignette with screenshots to help you get set up.
+
+First, load {nert} in your R session:
+
+```{r setup, eval=FALSE}
+library(nert)
+```
+
+Then, use the `r get_api_key()` function to get your API key from TERN.
+This function will automatically laucnch your default broswer at the [TERN web page](https://www.tern.org.au).
+
+First, on the landing page, click the "Login" button in the top right corner.
+
+![]("01 login.png")
+
+Second, choose your method for logging in.
+You can use your AARNET institutional credentials, Google, or CILogon.
+
+![]("02 sign in.png")
+
+Next, click on "New API Key" in the left-hand menu.
+
+![]("03 create_api_key.png")
+
+Give the key a name and click "Request API Key".
+
+![]("04 select_name.png")
+
+Now you have your API key.
+You won't be shown it again, so make sure to copy it to your clipboard and perhaps store it in your password manager or your local .Renviron file.
+Alternatively, you can use the [{keyring}](https://keyring.r-lib.org/index.html) package to store it in your system's keychain.
+
+## Saving Your API Key
+
+### Using Your .Renviron File
+
+To save your API key in your .Renviron file, open it with `usethis::edit_r_environ()` and add the following line:
+
+```
+TERN_API_KEY="your_api_key"
+```
+
+It is important to keep the name as "TERN_API_KEY" as this is what {nert} looks for when it loads your API key from the .Renviron file.
+By default, {nert} will use the `get_api_key()` function to load your API key from the .Renviron file and you don't need to do anything else.
+It's possible for you to just paste your API key directly into the `api_key` argument, but this is not recommended as it is less secure and you must do this every time you make a request from the API.
+
+For example, you can use the following code to get data for Jan 1 2024:
+
+```{r, default-example, eval=FALSE}
+library(nert)
+r <- get_smips(day = "2024-01-01")
+```
+Note that there is no API key specified here, as it is loaded from the .Renviron file automatically.
+
+### Using the {keyring} Package
+
+However, if you prefer a more secure method, you can use the {keyring} package to store your API key in your system's keychain.
+If you don't have the {keyring} package installed, you can install it with:
+
+```{r, keyring, eval=FALSE}
+install.packages("keyring")
+```
+
+Once it's installed, you can store your API key with:
+
+```{r, save-key, eval=FALSE}
+library(keyring)
+keyring_create("nert")
+key_set("NERT_API_KEY", keyring = "nert")
+key_get("NERT_API_KEY", keyring = "nert")
+```
+
+Then, once it's stored in your operating system's credential store, you can use it with {nert} like so:
+
+```{r, using-keyring, eval=FALSE}
+library(nert)
+library(keyring)
+r <- read_smips(
+  day = "2024-01-01",
+  api_key = key_get("NERT_API_KEY", keyring = "nert")
+)
+```
+Note that here we specified a value for the API key.
+
+## Working With SMIPS Data 
+
+Now that you have your API key set up, you can start working with the SMIPS data.
+Using the example from above, you can get the SMIPS data for Jan 1 2024 like so:
+
+```{r, working-with-smips, eval=TRUE}
+library(nert)
+r <- get_smips(day = "2024-01-01")
+```
+
+And {nert} reexports `r terra:plot()` for convenience, so you can plot the data like so:
+
+```{r, plot}
+plot(r)
+```
+
+If you wish to fetch only data for a few points, you can specify them like this using the data object, `r`, from above:
+
+```{r, points}
+library(terra)
+
+smips_points <- extract()
+```
+
+
+
+
