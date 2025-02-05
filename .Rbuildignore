@@ -9,10 +9,9 @@
 ^pkgdown$
 ^codemeta\.json$
 ^.devcontainer*
-
-
 # flint files
 ^flint$
 ^CODE_OF_CONDUCT\.md$
 ^doc$
 ^Meta$
+^man/dot-make_smips_url\.Rd$
