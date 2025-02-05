@@ -27,7 +27,7 @@
 #'  language you may wish to set these up in your .bashrc, .zshrc, or
 #'  config.fish for cross-language use.
 #'
-#' @return A string value with your \acronym{API} key value.
+#' @returns A string value with your \acronym{API} key value.
 #'
 #' @examples
 #' \dontrun{
@@ -53,7 +53,7 @@ get_key <- function() {
 #'
 #' @keywords internal
 #' @noRd
-#' @return Called for its side-effects, opens a browser window at the TERN
+#' @returns Called for its side-effects, opens a browser window at the TERN
 #'   accounts page.
 .set_tern_key <- function() {
   if (interactive()) {
