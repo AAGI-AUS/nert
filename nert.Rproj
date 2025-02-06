@@ -1,6 +1,7 @@
 Version: 1.0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ProjectId: 0f8984d0-983e-426c-bbb5-50eaa1aa576d
 =======
 ProjectId: 95d05809-66c6-4c9b-a244-729ff1626bcc
@@ -8,6 +9,9 @@ ProjectId: 95d05809-66c6-4c9b-a244-729ff1626bcc
 =======
 ProjectId: f626d1bc-2c1e-4425-bdb0-1d31a446010f
 >>>>>>> 2accef4 (add getting-started)
+=======
+ProjectId: 0f8984d0-983e-426c-bbb5-50eaa1aa576d
+>>>>>>> 5cea12c (delete unused image)
 
 RestoreWorkspace: No
 SaveWorkspace: No
