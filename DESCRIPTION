@@ -64,8 +64,12 @@ Language: en-AU Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace
 >>>>>>> 2accef4 (add getting-started)
 =======
 Language: en-AU
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet", "devtag::dev_roclet"))
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
+    "roxyglobals::global_roclet", "devtag::dev_roclet"))
 RoxygenNote: 7.3.2
+<<<<<<< HEAD
 Config/Needs/build: moodymudskipper/devtag
 VignetteBuilder: knitr
 >>>>>>> 79fe891 (add keychain and devtag infra)
+=======
+>>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)

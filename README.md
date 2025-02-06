@@ -7,10 +7,17 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
 <<<<<<< HEAD
+<<<<<<< HEAD
 [![Codecov test coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
 =======
 [![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://codecov.io/gh/AAGI-AUS/nert)
 >>>>>>> f8be0c1 (add static results, update badge)
+=======
+[![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://codecov.io/gh/AAGI-AUS/nert)
+=======
+[![Codecov test coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
+>>>>>>> 15b6432 (reknit vignettes and README using autoplot for figures)
+>>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
 <!-- badges: end -->
 
 The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
@@ -43,16 +50,28 @@ autoplot(r)
 ```
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <div class="figure">
 <img src="man/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%" />
 <p class="caption">plot of chunk example_cog</p>
 </div>
 =======
+=======
+>>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
 <figure>
 <img src="./man/figures/README-example_cog-1.png" alt="example plot" />
 <figcaption aria-hidden="true">example plot</figcaption>
 </figure>
+<<<<<<< HEAD
 >>>>>>> f8be0c1 (add static results, update badge)
+=======
+=======
+<div class="figure">
+<img src="man/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%" />
+<p class="caption">plot of chunk example_cog</p>
+</div>
+>>>>>>> 15b6432 (reknit vignettes and README using autoplot for figures)
+>>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
 
 ## Extract Values Given Lat/Lon Values
 
@@ -125,5 +144,31 @@ Render this file.
 
 ``` bash
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
+<<<<<<< HEAD
 >>>>>>> 91b1468 (add development section)
+=======
+```
+
+## Citing {nert}
+
+To cite nert:
+
+
+``` r
+citation("nert")
+#> Warning in citation("nert"): could not determine year for 'nert' from package DESCRIPTION file
+#> To cite package 'nert' in publications use:
+#> 
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (????). _nert: An API Client for TERN Data_. R package version 0.0.0.9000,
+#>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {nert: An API Client for TERN Data},
+#>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
+#>     note = {R package version 0.0.0.9000, https://github.com/AAGI-AUS/nert},
+#>     url = {https://aagi-aus.github.io/nert/},
+#>   }
+>>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
 ```

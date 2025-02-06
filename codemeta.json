@@ -62,6 +62,7 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+<<<<<<< HEAD
       "identifier": "keyring",
       "name": "keyring",
       "provider": {
@@ -71,6 +72,10 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=keyring"
+=======
+      "identifier": "keychain",
+      "name": "keychain"
+>>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
     },
     {
       "@type": "SoftwareApplication",
@@ -239,12 +244,32 @@
     },
     "10": {
       "@type": "SoftwareApplication",
+      "identifier": "tidyterra",
+      "name": "tidyterra",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tidyterra"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
+<<<<<<< HEAD
   "fileSize": "929.254KB",
+=======
+<<<<<<< HEAD
+  "fileSize": "177.606KB",
+=======
+  "fileSize": "929.137KB",
+>>>>>>> 15b6432 (reknit vignettes and README using autoplot for figures)
+>>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
 }
