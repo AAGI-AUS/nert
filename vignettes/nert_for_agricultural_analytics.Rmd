@@ -85,7 +85,7 @@ generating an API key, and storing it in your R environment:
     
 1. Save your `.Renviron` file, and restart your R session so that the change is 
     applied. You can then test that the **nert** package is reading your API 
-    key properly by entering `nert::get_key()` at the R command console. If the
+    key properly by entering `nert::get_key()()` at the R command console. If the
     API key was successfully read by **nert**, then you should see your API key
     appear verbatim as output.
  
