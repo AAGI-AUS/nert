@@ -3,4 +3,6 @@
 export(autoplot)
 export(get_key)
 export(read_smips)
+import(ggplot2)
+import(nlme)
 importFrom(tidyterra,autoplot)
