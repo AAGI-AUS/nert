@@ -91,21 +91,7 @@ The below code downloads the SMIPS "totalbucket" soil moisture data raster for J
 
 ``` r
 library(nert)
-#> 
-#> Attaching package: 'nert'
-#> The following object is masked from 'package:graphics':
-#> 
-#>     plot
-#> The following object is masked from 'package:base':
-#> 
-#>     plot
 library(terra)
-#> terra 1.8.15
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
 
 r <- read_smips(day = "2024-01-01")
 
