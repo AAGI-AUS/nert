@@ -25,7 +25,7 @@ Imports:
     tidyterra,
     utils
 Suggests: 
-    keychain,
+    keyring,
     knitr,
     rmarkdown,
     roxyglobals,

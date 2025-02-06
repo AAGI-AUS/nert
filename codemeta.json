@@ -62,8 +62,15 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "keychain",
-      "name": "keychain"
+      "identifier": "keyring",
+      "name": "keyring",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=keyring"
     },
     {
       "@type": "SoftwareApplication",
@@ -207,7 +214,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "929.137KB",
+  "fileSize": "929.145KB",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
 }
