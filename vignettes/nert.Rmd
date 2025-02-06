@@ -217,7 +217,7 @@ However, it is straightforward to sign up to the TERN Data Portal and acquire an
 
 The following steps detail the process for signing in to your TERN account, generating an API key, and storing it in your R environment.
 
-1. Either directly navigate to the TERN Data Discovery Portal (<https://portal.tern.org.au/>) in a web browser OR use `nert::get_key()()` to launch a web browser at the TERN website and click the "Sign In" button that appears in the top-right of the browser window.
+1. Either directly navigate to the TERN Data Discovery Portal (<https://portal.tern.org.au/>) in a web browser OR use `nert::get_key()` to launch a web browser at the TERN website and click the "Sign In" button that appears in the top-right of the browser window.
 
 
 ``` r
@@ -225,29 +225,29 @@ library(nert)
 get_key()
 ```
   ![](01-get-started.jpg){width=80%}
-    
+
 2. Click the Australian Access Federation button to sign in to the TERN Data Portal via your University ID (or alternatively, sign in via CILogon or your Google identity).
- 
+
     ![](02-get-started.jpg){width=80%}
-    
+
 3. Once signed in, click on the menu in the top-right with your name and click the "TERN Account" entry to open your account profile.
- 
+
     ![](03-get-started.jpg){width=80%}
-    
+
 4. On your account profile screen, navigate to the menu on the left-hand side, and click the "Create API key" entry.
- 
+
     ![](04-get-started.jpg){width=80%}
-    
+
 5. On this screen you can create your API key for accessing the TERN Data Portal.
 Give your key whatever name you like (e.g., below I have called the key "my_API_key" for demonstration purposes), and then click the "Request API Key" button.
- 
+
     ![](05-get-started.jpg){width=80%}
-    
+
 6. Your API key is now generated and appears as the string of text inside the text box on the page, together with the key's creation and expiration dates.
 Copy the API key to your clipboard, be sure not to close this browser window until after you have successfully stored the key locally somewhere as you won't see it again.
 
     ![](06-get-started.jpg){width=80%}
-  
+
 ## Saving Your API Key Locally
 
 ### Using Your .Renviron File
@@ -261,23 +261,23 @@ Following, I will demonstrate how to save your API key in your `.Renviron` file 
 1. Open your `.Renviron` file.
 An easy way to open the right file is to use the {usethis} package in your R session, _e.g._, `usethis::edit_r_environ()`.
 Add a new line to the file to store your API key in the variable `TERN_API_KEY`, ensuring to use that name as that is what {nert} will automatically look for:
-    
+
     ```
     TERN_API_KEY='<paste your key here>'
     ```
- 
+
     ![](07-get-started.jpg){width=80%}
-    
+
 1. Save your `.Renviron` file, and restart your R session so that the change is applied.
 You can then test that the {nert} package is reading your API key properly by entering `nert::get_key()` at the R command console.
 If the API key was successfully read by {nert}, then you should see your API key appear verbatim as output.
- 
+
     ![](08-get-started.jpg){width=80%}
 
 1. Finally, you can quickly test that the data download from the TERN portal is working as intended by downloading a test data raster.
-The below code downloads the SMIPS "totalbucket" soil moisture data raster for January 1st, 2024, and uses the {terra} package's `terra::extract()` function to get a point value for the soil moisture measurement at the Adelaide CBD (at 
+The below code downloads the SMIPS "totalbucket" soil moisture data raster for January 1st, 2024, and uses the {terra} package's `terra::extract()` function to get a point value for the soil moisture measurement at the Adelaide CBD (at
     approximately -34.9285 decimal degrees latitude, 138.6007 longitude):
-    
+
 
 ``` r
 library(nert)
@@ -364,6 +364,9 @@ key_set("NERT_API_KEY", keyring = "nert")
 key_get("NERT_API_KEY", keyring = "nert")
 ```
 
+Where `NERT_API_KEY` is the name of the key you want to store in the keyring.
+You will enter the actual key value you copied from the TERN website when {keyring} prompts you to do so.
+
 Then, once it's stored in your operating system's credential store, you can use it with {nert} like so:
 
 <<<<<<< HEAD
@@ -434,7 +437,7 @@ That's it, you're all set!
 >>>>>>> 25b0033 (add "nert" vignette for getting started, rename image files)
 Note that here we specified a value for the API key.
 
-## Working With SMIPS Data 
+## Working With SMIPS Data
 
 <<<<<<< HEAD
 Now that you have your API key set up, you can start working with the SMIPS data.
@@ -480,7 +483,10 @@ And {nert} reexports `terra:plot()` for convenience, so you can plot the data li
 plot(r)
 ```
 
-![plot of chunk test-plot](figure/test-plot-1.png)
+<div class="figure" style="text-align: center">
+<img src="test-plot-1.png" alt="plot of chunk test-plot"  />
+<p class="caption">plot of chunk test-plot</p>
+</div>
 
 Repeating an example from above where we tested if the API key works, if you wish to fetch only data for a single point or points, you can specify them like this using the data object, `r`, from above, which is much quicker than fetching the entire dataset:
 
