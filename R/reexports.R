@@ -1,3 +1,3 @@
-#' @importFrom terra plot
+#' @importFrom tidyterra autoplot
 #' @export
-terra::plot
+tidyterra::autoplot
