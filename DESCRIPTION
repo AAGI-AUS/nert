@@ -20,7 +20,7 @@ Depends: R (>= 3.5.0)
 Imports: 
     cli,
     data.table,
-    ggplot2,
+    ggplot2 (>= 3.5.0),
     lubridate,
     nlme,
     rlang,

@@ -1,5 +1,5 @@
 #' @importFrom tidyterra autoplot
-#' @import ggplot2
+#' @importFrom ggplot2 autoplot
 #' @import nlme
 #' @export
 tidyterra::autoplot
