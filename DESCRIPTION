@@ -20,7 +20,11 @@ Depends: R (>= 3.5.0)
 Imports: 
     cli,
     data.table,
+<<<<<<< HEAD
     ggplot2 (>= 3.5.0),
+=======
+    ggplot2,
+>>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
     lubridate,
     nlme,
     rlang,

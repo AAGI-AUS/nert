@@ -237,6 +237,21 @@
       "sameAs": "https://CRAN.R-project.org/package=terra"
     },
     "9": {
+<<<<<<< HEAD
+      "@type": "SoftwareApplication",
+      "identifier": "tidyterra",
+      "name": "tidyterra",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tidyterra"
+    },
+    "10": {
+=======
+>>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
       "@type": "SoftwareApplication",
       "identifier": "tidyterra",
       "name": "tidyterra",
@@ -250,18 +265,6 @@
     },
     "10": {
       "@type": "SoftwareApplication",
-      "identifier": "tidyterra",
-      "name": "tidyterra",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=tidyterra"
-    },
-    "7": {
-      "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
@@ -269,10 +272,13 @@
   },
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "fileSize": "929.254KB",
 =======
 =======
 >>>>>>> eed98b7 (fix Suggests, should be {keyring})
+=======
+>>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
 <<<<<<< HEAD
   "fileSize": "177.606KB",
 =======
@@ -284,7 +290,13 @@
 =======
   "fileSize": "929.145KB",
 >>>>>>> e5226f0 (fix Suggests, should be {keyring})
+<<<<<<< HEAD
 >>>>>>> eed98b7 (fix Suggests, should be {keyring})
+=======
+=======
+  "fileSize": "929.254KB",
+>>>>>>> 9d5130b (try reexporting autoplot from {tidyterra})
+>>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
 }
