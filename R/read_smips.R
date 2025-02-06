@@ -4,6 +4,8 @@
 #'  Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in your \R
 #'  session.
 #'
+#' @param day A date to query, _e.g._, `day = "2017-12-31"` or `day =
+#'  as.Date("2017-12-01")`, both `Character` and `Date` classes are accepted.
 #' @param collection A character vector of the \dQuote{SMIPS} data collection to
 #' be queried:
 #'  * SMindex
@@ -14,8 +16,6 @@
 #'  * totalbucket
 #'  Defaults to \dQuote{totalbucket}. Multiple `collections` are supported,
 #'  _e.g._, `collection = c("SMindex", "totalbucket")`.
-#' @param day A date to query, _e.g._, `day = "2017-12-31"` or `day =
-#'  as.Date("2017-12-01")`, both `Character` and `Date` classes are accepted.
 #' @param api_key A `character` string containing your \acronym{API} key,
 #'   a random string provided to you by \acronym{TERN}, for the request.
 #'   Defaults to automatically detecting your key from your local .Renviron,
@@ -34,7 +34,7 @@
 #'
 #' @examplesIf interactive()
 #'
-#' r <- read_smips(day = "2024-01-01")
+#' r <- read_smips("2024-01-01")
 #'
 #' # terra::plot() is re-exported for convenience
 #' plot(r)
@@ -44,8 +44,8 @@
 #' @autoglobal
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #' @export
-read_smips <- function(collection = "totalbucket",
-                       day,
+read_smips <- function(day,
+                       collection = "totalbucket",
                        api_key = get_key(),
                        max_tries = 3L,
                        initial_delay = 1L) {

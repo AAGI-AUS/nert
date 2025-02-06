@@ -5,14 +5,16 @@
 \title{Read SMIPS COGs from TERN}
 \usage{
 read_smips(
-  collection = "totalbucket",
   day,
+  collection = "totalbucket",
   api_key = get_key(),
   max_tries = 3L,
   initial_delay = 1L
 )
 }
 \arguments{
+\item{day}{A date to query, \emph{e.g.}, \code{day = "2017-12-31"} or \code{day = as.Date("2017-12-01")}, both \code{Character} and \code{Date} classes are accepted.}
+
 \item{collection}{A character vector of the \dQuote{SMIPS} data collection to
 be queried:
 \itemize{
@@ -25,8 +27,6 @@ be queried:
 Defaults to \dQuote{totalbucket}. Multiple \code{collections} are supported,
 \emph{e.g.}, \code{collection = c("SMindex", "totalbucket")}.
 }}
-
-\item{day}{A date to query, \emph{e.g.}, \code{day = "2017-12-31"} or \code{day = as.Date("2017-12-01")}, both \code{Character} and \code{Date} classes are accepted.}
 
 \item{api_key}{A \code{character} string containing your \acronym{API} key,
 a random string provided to you by \acronym{TERN}, for the request.
