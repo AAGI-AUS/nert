@@ -30,12 +30,16 @@ Imports:
 Suggests: 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     keyring,
 =======
 >>>>>>> e678c24 (Start putting the vignette together in between analyses this week)
 =======
     keychain,
 >>>>>>> 2accef4 (add getting-started)
+=======
+    keyring,
+>>>>>>> eed98b7 (fix Suggests, should be {keyring})
     knitr,
     rmarkdown,
     roxyglobals,

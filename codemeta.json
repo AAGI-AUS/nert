@@ -63,6 +63,9 @@
     {
       "@type": "SoftwareApplication",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eed98b7 (fix Suggests, should be {keyring})
       "identifier": "keyring",
       "name": "keyring",
       "provider": {
@@ -72,10 +75,13 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=keyring"
+<<<<<<< HEAD
 =======
       "identifier": "keychain",
       "name": "keychain"
 >>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
+=======
+>>>>>>> eed98b7 (fix Suggests, should be {keyring})
     },
     {
       "@type": "SoftwareApplication",
@@ -262,14 +268,23 @@
     "SystemRequirements": null
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
   "fileSize": "929.254KB",
 =======
+=======
+>>>>>>> eed98b7 (fix Suggests, should be {keyring})
 <<<<<<< HEAD
   "fileSize": "177.606KB",
 =======
   "fileSize": "929.137KB",
 >>>>>>> 15b6432 (reknit vignettes and README using autoplot for figures)
+<<<<<<< HEAD
 >>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
+=======
+=======
+  "fileSize": "929.145KB",
+>>>>>>> e5226f0 (fix Suggests, should be {keyring})
+>>>>>>> eed98b7 (fix Suggests, should be {keyring})
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
 }
