@@ -12,12 +12,14 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE,
-                      comment = "#>",
-                      fig.width = 7,
-                      fig.height = 7,
-                      fig.align = "center",
-                      fig.path = "vignettes/")
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 7,
+  fig.align = "center",
+  fig.path = "vignettes/"
+)
 ```
 
 The TERN Soil Moisture Integration and Prediction System (SMIPS) generates useful measurements of soil moisture at 1km resolution across all of Australia.
@@ -154,7 +156,7 @@ r <- read_smips(day = "2024-01-01")
 
 And {nert} reexports `terra:plot()` for convenience, so you can plot the data like so:
 
-```{r, test-plot}
+```{r, test-plot, fig.cap = "A plot of SMIPS data for all of Australia on 2024-01-01."}
 plot(r)
 ```
 

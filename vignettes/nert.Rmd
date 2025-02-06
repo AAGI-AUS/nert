@@ -91,7 +91,21 @@ The below code downloads the SMIPS "totalbucket" soil moisture data raster for J
 
 ``` r
 library(nert)
+#> 
+#> Attaching package: 'nert'
+#> The following object is masked from 'package:graphics':
+#> 
+#>     plot
+#> The following object is masked from 'package:base':
+#> 
+#>     plot
 library(terra)
+#> terra 1.8.15
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 
 r <- read_smips(day = "2024-01-01")
 
@@ -161,8 +175,8 @@ plot(r)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="test-plot-1.png" alt="plot of chunk test-plot"  />
-<p class="caption">plot of chunk test-plot</p>
+<img src="test-plot-1.png" alt="A plot of SMIPS data for all of Australia on 2024-01-01."  />
+<p class="caption">A plot of SMIPS data for all of Australia on 2024-01-01.</p>
 </div>
 
 Repeating an example from above where we tested if the API key works, if you wish to fetch only data for a single point or points, you can specify them like this using the data object, `r`, from above, which is much quicker than fetching the entire dataset:
