@@ -85,7 +85,7 @@ generating an API key, and storing it in your R environment:
     
 1. Save your `.Renviron` file, and restart your R session so that the change is 
     applied. You can then test that the **nert** package is reading your API 
-    key properly by entering `nert::get_key()()` at the R command console. If the
+    key properly by entering `nert::get_key()` at the R command console. If the
     API key was successfully read by **nert**, then you should see your API key
     appear verbatim as output.
  
@@ -99,17 +99,17 @@ generating an API key, and storing it in your R environment:
     approximately -34.9285 decimal degrees latitude, 138.6007 longitude):
     
     ```{r testnertcache, include = FALSE}
-    library(nert)
-    adelaide <- readRDS("cache_adelaide.rds")
+library(nert)
+adelaide <- readRDS("cache_adelaide.rds")
     ```
     
     ```{r testnert, eval = FALSE}
-    library(nert)
-    r <- read_smips(day = "2024-01-01")
-    terra::extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+library(nert)
+r <- read_smips(day = "2024-01-01")
+terra::extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
     ```
     ```{r testnertresults, echo = FALSE}
-    adelaide
+adelaide
     ```
 
 At this stage your **nert** package is now working, and you can use it to
@@ -172,7 +172,7 @@ c(date_range[1], date_range[length(date_range)])
 We also need the latitude and longitude for the sites, which we can readily 
 retrieve from the `grain` dataset columns `Latitude` and `Longitude`:
 ```{r siteslist}
-sites <- unique(grain[ , c("Site", "Latitude", "Longitude")])
+sites <- unique(grain[, c("Site", "Latitude", "Longitude")])
 sites
 ```
 
@@ -251,7 +251,7 @@ experiment in a random effect term.
 library(nlme)
 simple_model <- lme(
   fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2,
-  random = ~ 1 | Site/Rep,
+  random = ~ 1 | Site / Rep,
   data = grain
 )
 ```
@@ -290,12 +290,11 @@ mixed-effect model:
 
 ```{r augmentedmodel}
 augmented_model <- lme(
-  fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2 
+  fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2
     + SoilMoisture_avg + SoilMoisture_avg:Nitrogen_kgNha,
-  random = ~ 1 | Site/Rep,
+  random = ~ 1 | Site / Rep,
   data = grain
 )
-
 ```
 
 The confidence intervals for the effect sizes of the Nitrogen application
