@@ -3,7 +3,7 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
-\alias{plot}
+\alias{autoplot}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -11,6 +11,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{terra}{\code{\link[terra]{plot}}}
+  \item{tidyterra}{\code{\link[tidyterra:reexports]{autoplot}}}
 }}
 

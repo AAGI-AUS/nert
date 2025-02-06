@@ -1,22 +1,20 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 
 # nert
 
 <!-- badges: start -->
-
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
+[![Codecov test coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
 <!-- badges: end -->
 
-The goal of {nert} is to provide access to Australian TERN (Terrestrial
-Ecosystem Research Network) data in your R session.
+The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
 
 ## Installation
 
-You can install the development version of {nert} from
-[GitHub](https://github.com/AAGI-AUS/nert) with:
+You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
+
 
 ``` r
 if (!require("pak")) {
@@ -28,35 +26,30 @@ pak::pak("AAGI-AUS/nert")
 
 ## Example: reading a COG as a spatial object
 
-This is a basic example which shows you how you can fetch one day’s data
-from the SMIPS data (currently the only supported data set in TERN) and
-visualise it:
+This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
+
 
 ``` r
 library(nert)
-#> 
-#> Attaching package: 'nert'
-#> The following object is masked from 'package:graphics':
-#> 
-#>     plot
-#> The following object is masked from 'package:base':
-#> 
-#>     plot
 r <- read_smips(day = "2024-01-01")
 
-plot(r)
+# `autoplot` is re-exported from {tidyterra}
+autoplot(r)
+#> <SpatRaster> resampled to 501270 cells.
 ```
 
-<img src="man/figures/README-example_cog-1.png" width="100%" />
+<div class="figure">
+<img src="man/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%" />
+<p class="caption">plot of chunk example_cog</p>
+</div>
 
 ## Extract Values Given Lat/Lon Values
 
-Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW
-given latitude and longitude values for each.
+Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
+
 
 ``` r
 library(terra)
-#> terra 1.7.78
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -82,20 +75,20 @@ cog_df
 
 To cite nert:
 
+
 ``` r
 citation("nert")
+#> Warning in citation("nert"): could not determine year for 'nert' from package DESCRIPTION file
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2024).
-#>   _nert: An API Client for TERN Data_. R package version 0.0.0.9000,
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (????). _nert: An API Client for TERN Data_. R package version 0.0.0.9000,
 #>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
 #>     title = {nert: An API Client for TERN Data},
-#>     author = {Adam Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
-#>     year = {2024},
+#>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
 #>     note = {R package version 0.0.0.9000, https://github.com/AAGI-AUS/nert},
 #>     url = {https://aagi-aus.github.io/nert/},
 #>   }

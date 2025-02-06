@@ -154,10 +154,10 @@ library(nert)
 r <- read_smips(day = "2024-01-01")
 ```
 
-And {nert} reexports `terra:plot()` for convenience, so you can plot the data like so:
+And {nert} reexports `tidyterra::autoplot()` for convenience, so you can plot the data like so:
 
 ```{r, test-plot, fig.cap = "A plot of SMIPS data for all of Australia on 2024-01-01."}
-plot(r)
+autoplot(r)
 ```
 
 Repeating an example from above where we tested if the API key works, if you wish to fetch only data for a single point or points, you can specify them like this using the data object, `r`, from above, which is much quicker than fetching the entire dataset:

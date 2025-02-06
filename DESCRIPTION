@@ -22,6 +22,7 @@ Imports:
     lubridate,
     rlang,
     terra,
+    tidyterra,
     utils
 Suggests: 
     keychain,
@@ -30,12 +31,14 @@ Suggests:
     roxyglobals,
     testthat (>= 3.0.0),
     usethis
+VignetteBuilder: 
+    knitr
+Config/Needs/build: moodymudskipper/devtag
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-AU
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet", "devtag::dev_roclet"))
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
+    "roxyglobals::global_roclet", "devtag::dev_roclet"))
 RoxygenNote: 7.3.2
-Config/Needs/build: moodymudskipper/devtag
-VignetteBuilder: knitr
