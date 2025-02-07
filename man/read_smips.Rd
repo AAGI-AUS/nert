@@ -18,12 +18,11 @@ read_smips(
 \item{collection}{A character vector of the \dQuote{SMIPS} data collection to
 be queried:
 \itemize{
-\item SMindex
-\item bucket1
-\item bucket2
-\item deepD
-\item runoff
-\item totalbucket
+\item SMindex: the \acronym{SMIPS} Soil Moisture Index (\emph{i.e.}, a number
+between 0 and 1 that indicates how full the \acro{SMIPS} bucket moisture
+store is relative to its 90 cm capacity),
+\item totalbucket: an estimate of the \emph{volumetric soil moisture (in mm)
+from the \acro{SMIPS} bucket moisture store},
 Defaults to \dQuote{totalbucket}. Multiple \code{collections} are supported,
 \emph{e.g.}, \code{collection = c("SMindex", "totalbucket")}.
 }}
