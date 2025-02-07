@@ -55,7 +55,7 @@ session.
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-r <- read_smips(day = "2024-01-01")
+r <- read_smips("2024-01-01")
 
 # terra::plot() is re-exported for convenience
 plot(r)
