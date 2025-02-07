@@ -92,13 +92,18 @@ The below code downloads the SMIPS "totalbucket" soil moisture data raster for J
 ``` r
 library(nert)
 library(terra)
+#> terra 1.8.15
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 
 r <- read_smips(day = "2024-01-01")
-#> Warning: internal error -3 in R_decompress1
-#> Error: lazy-load database '/Users/283204f/Library/R/arm64/4.4/library/nert/R/nert.rdb' is corrupt
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#> Error: unable to find an inherited method for function 'extract' for signature 'x = "nert", y = "data.frame"'
+#>   ID smips_totalbucket_mm_20240101        x         y
+#> 1  1                      46.07692 138.6037 -34.93254
 ```
 
 At this stage your {nert} package is now working, and you can use it to easily download SMIPS datasets from the TERN Data Portal.
@@ -155,9 +160,6 @@ Using the example from above, you can get the SMIPS data for all of Australia on
 ``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
-#> Warning: restarting interrupted promise evaluation
-#> Warning: internal error -3 in R_decompress1
-#> Error: lazy-load database '/Users/283204f/Library/R/arm64/4.4/library/nert/R/nert.rdb' is corrupt
 ```
 
 And {nert} reexports `tidyterra::autoplot()` for convenience, so you can plot the data like so:
@@ -165,8 +167,13 @@ And {nert} reexports `tidyterra::autoplot()` for convenience, so you can plot th
 
 ``` r
 autoplot(r)
-#> Error: unable to find an inherited method for function 'has.RGB' for signature 'x = "nert"'
+#> <SpatRaster> resampled to 501270 cells.
 ```
+
+<div class="figure" style="text-align: center">
+<img src="test-plot-1.png" alt="A plot of SMIPS data for all of Australia on 2024-01-01."  />
+<p class="caption">A plot of SMIPS data for all of Australia on 2024-01-01.</p>
+</div>
 
 Repeating an example from above where we tested if the API key works, if you wish to fetch only data for a single point or points, you can specify them like this using the data object, `r`, from above, which is much quicker than fetching the entire dataset:
 
@@ -175,7 +182,8 @@ Repeating an example from above where we tested if the API key works, if you wis
 library(terra)
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#> Error: unable to find an inherited method for function 'extract' for signature 'x = "nert", y = "data.frame"'
+#>   ID smips_totalbucket_mm_20240101        x         y
+#> 1  1                      46.07692 138.6037 -34.93254
 ```
 
 That's it, you're all set!
