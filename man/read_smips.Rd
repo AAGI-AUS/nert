@@ -56,8 +56,8 @@ session.
 
 r <- read_smips("2024-01-01")
 
-# terra::plot() is re-exported for convenience
-plot(r)
+# `tidyterra::autoplot` is re-exported for convenience
+autoplot(r)
 \dontshow{\}) # examplesIf}
 }
 \references{
