@@ -124,7 +124,10 @@ library(keyring)
 
 keyring_create("nert")
 
+# add the key to your OS's credential store
 key_set("NERT_API_KEY", keyring = "nert")
+
+# verify that the key was stored properly
 key_get("NERT_API_KEY", keyring = "nert")
 ```
 
