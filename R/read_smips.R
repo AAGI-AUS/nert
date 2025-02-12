@@ -88,9 +88,9 @@ read_smips <- function(day,
           cli::cli_alert("Download failed on attempt { attempt }.
                          Retrying in { delay } seconds...")
           Sys.sleep(delay)
-          attempt <- attempt + 1
+          attempt <<- attempt + 1
         } else {
-          cli::cli_abort("Download failed after { .max_tries } attempts.")
+          cli::cli_abort("Download failed after { max_tries } attempts.")
           stop(e)
         }
       }
