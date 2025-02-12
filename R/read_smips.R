@@ -60,25 +60,18 @@ read_smips <- function(day,
   day <- .check_date(day)
   url_year <- lubridate::year(day)
 
-  collection_url <- .make_smips_url(.collection = collection, .day = day)
+  file <- .make_smips_url(.collection = collection, .day = day)
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
+    api_key,
+    collection,
+    url_year,
+    file)
 
   while (attempt <= max_tries && !success) {
     tryCatch(
       {
-        # TODO: move the url concatenation out
-        r <- (terra::rast(
-          paste0(
-            "/vsicurl/https://",
-            paste0("apikey:", api_key),
-            "@data.tern.org.au/model-derived/smips/v1_0/",
-            collection,
-            "/",
-            url_year,
-            "/",
-            collection_url
-          )
-        ))
-
+        r <- terra::rast(full_url)
         success <- TRUE
         return(r)
       },

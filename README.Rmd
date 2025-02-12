@@ -71,14 +71,12 @@ cog_df
 #> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
 ```
 
-<<<<<<< HEAD
 ## Citing {nert}
 
 To cite nert:
 
 ```{r cite}
 citation("nert")
-=======
 ## Development
 
 ### Dev Container
@@ -99,5 +97,4 @@ Render this file.
 
 ```{bash, eval=FALSE}
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
->>>>>>> 91b1468 (add development section)
 ```

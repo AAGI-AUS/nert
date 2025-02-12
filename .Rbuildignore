@@ -11,13 +11,10 @@
 ^.devcontainer*
 ^flint$
 ^CODE_OF_CONDUCT\.md$
-<<<<<<< HEAD
 ^doc$
 ^Meta$
-^man/dot-make_smips_url\.Rd$
-=======
->>>>>>> 970da39 (Update .Rbuildignore file)
 ^doc$
+^vignettes\\out\.log$
 ^\!precompile\.R$
 ^Meta$
 ^man/dot-make_smips_url\.Rd$

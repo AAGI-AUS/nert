@@ -3,14 +3,6 @@
 export(autoplot)
 export(get_key)
 export(read_smips)
-<<<<<<< HEAD
-<<<<<<< HEAD
 import(nlme)
 importFrom(ggplot2,autoplot)
-=======
->>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
-=======
-import(ggplot2)
-import(nlme)
->>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
 importFrom(tidyterra,autoplot)

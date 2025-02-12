@@ -21,11 +21,7 @@ Depends:
 Imports: 
     cli,
     data.table,
-<<<<<<< HEAD
     ggplot2 (>= 3.5.0),
-=======
-    ggplot2,
->>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
     lubridate,
     nlme,
     rlang,
@@ -33,18 +29,7 @@ Imports:
     tidyterra,
     utils
 Suggests: 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     keyring,
-=======
->>>>>>> e678c24 (Start putting the vignette together in between analyses this week)
-=======
-    keychain,
->>>>>>> 2accef4 (add getting-started)
-=======
-    keyring,
->>>>>>> eed98b7 (fix Suggests, should be {keyring})
     knitr,
     rmarkdown,
     roxyglobals,
@@ -56,32 +41,9 @@ Config/Needs/build: moodymudskipper/devtag
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
+Config/testthat/parallel: true
 Encoding: UTF-8
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 13229e5 (Tidy up DESCRIPTION)
 Language: en-AU
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxyglobals::global_roclet", "devtag::dev_roclet"))
 RoxygenNote: 7.3.2
-<<<<<<< HEAD
-=======
-Config/Needs/build: moodymudskipper/devtag
-VignetteBuilder: knitr
->>>>>>> e678c24 (Start putting the vignette together in between analyses this week)
-=======
-Language: en-AU Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet", "devtag::dev_roclet")) RoxygenNote: 7.3.2 Config/Needs/build: moodymudskipper/devtag VignetteBuilder: knitr
-<<<<<<< HEAD
->>>>>>> 2accef4 (add getting-started)
-=======
-Language: en-AU
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
-    "roxyglobals::global_roclet", "devtag::dev_roclet"))
-RoxygenNote: 7.3.2
-<<<<<<< HEAD
-Config/Needs/build: moodymudskipper/devtag
-VignetteBuilder: knitr
->>>>>>> 79fe891 (add keychain and devtag infra)
-=======
->>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
