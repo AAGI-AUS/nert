@@ -6,8 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg)](https://app.codecov.io/gh/AAGI-AUS/nert)
+[![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://codecov.io/gh/AAGI-AUS/nert)
 <!-- badges: end -->
 
 The goal of {nert} is to provide access to Australian TERN (Terrestrial
@@ -34,20 +33,15 @@ visualise it:
 
 ``` r
 library(nert)
-#> 
-#> Attaching package: 'nert'
-#> The following object is masked from 'package:graphics':
-#> 
-#>     plot
-#> The following object is masked from 'package:base':
-#> 
-#>     plot
 r <- read_smips(day = "2024-01-01")
 
 plot(r)
 ```
 
-<img src="man/figures/README-example_cog-1.png" width="100%" />
+<figure>
+<img src="./man/figures/README-example_cog-1.png" alt="example plot" />
+<figcaption aria-hidden="true">example plot</figcaption>
+</figure>
 
 ## Extract Values Given Lat/Lon Values
 
@@ -76,6 +70,28 @@ cog_df
 #> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
 #> 2 Merredin  2                    0.22716530 118.2787 -31.48353
 #> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
+```
+
+## Development
+
+### Dev Container
+
+Set up the container.
+
+``` bash
+devcontainer up --workspace-folder .
+```
+
+Run tests and check stuff.
+
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::check()"
+```
+
+Render this file.
+
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 ```
 
 ## Citing {nert}
