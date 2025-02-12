@@ -10,7 +10,16 @@ vignette: >
   %\VignetteDepends{ggplot2}
 ---
 
-
+```{r knitrsetup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 7,
+  fig.align = "center",
+  fig.path = "vignettes/"
+)
+```
 
 The **nert** package provides straightforward and seamless access to the TERN
 Soil Moisture Integration and Prediction System (SMIPS) datasets, which
@@ -27,22 +36,10 @@ A simulated dataset containing yield data for a fictitious grain production
 experiment has been included with the **nert** package. The dataset is
 called `grain`, and you can load the package and this dataset with:
 
-
-``` r
+```{r loaddata}
 library(nert)
 data(grain)
 str(grain)
-#> 'data.frame':	2880 obs. of  10 variables:
-#>  $ Site             : Factor w/ 10 levels "Adelaide","Barossa Valley",..: 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ Latitude         : num  -34.9 -34.9 -34.9 -34.9 -34.9 ...
-#>  $ Longitude        : num  139 139 139 139 139 ...
-#>  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" "2022-05-20" "2022-05-20" ...
-#>  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" "2022-06-04" "2022-06-04" ...
-#>  $ Rep              : Factor w/ 3 levels "1","2","3": 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ Variety          : Factor w/ 8 levels "Variety_A","Variety_B",..: 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ Nitrogen_kgNha   : Factor w/ 4 levels "0","30","60",..: 1 1 1 2 2 2 3 3 3 4 ...
-#>  $ SeedRate_plantsm2: Factor w/ 3 levels "75","150","300": 1 2 3 1 2 3 1 2 3 1 ...
-#>  $ Yield_Tha        : num  3 3.69 3.89 2.76 3.27 ...
 ```
 
 The `grain` dataset supposes that a fabricated grain production experiment has
@@ -75,33 +72,19 @@ application date up to 30 days after the last application date, and we want the
 soil moisture index at each site (by latitude/longitude coordinates). We can
 generate this date range in a straightforward way using the `NitrogenDate`
 column of the `grain` dataset as follows:
-
-``` r
+```{r daterange}
 start_date <- min(grain$NitrogenDate)
 end_date <- max(grain$NitrogenDate) + 30
 date_range <- seq(start_date, end_date, by = "1 day")
 
 c(date_range[1], date_range[length(date_range)])
-#> [1] "2022-05-07" "2022-07-15"
 ```
 
 We also need the latitude and longitude for the sites, which we can readily
 retrieve from the `grain` dataset columns `Latitude` and `Longitude`:
-
-``` r
+```{r siteslist}
 sites <- unique(grain[, c("Site", "Latitude", "Longitude")])
 sites
-#>                    Site  Latitude Longitude
-#> 1              Adelaide -34.94773  138.6244
-#> 289      Barossa Valley -34.54843  138.9580
-#> 577        Clare Valley -33.83754  138.6012
-#> 865      Eyre Peninsula -34.37378  135.7967
-#> 1153 Fleurieu Peninsula -35.52307  138.4608
-#> 1441    Kangaroo Island -35.71041  137.0736
-#> 1729    Limestone Coast -37.88957  140.6388
-#> 2017         Sturt Vale -33.34666  140.0723
-#> 2305        Murraylands -35.12425  139.3014
-#> 2593    Yorke Peninsula -35.05124  137.2090
 ```
 
 Now TERN supplies the SMIPS daily data rasters as cloud-optimised GeoTIFFs
@@ -120,10 +103,12 @@ this process. (Note that `terra::extract` is particular about the order
 of the latitude/longitude coordinates: longitude should be specified first,
 followed by latitude.)
 
-
-``` r
+```{r downloadsmips}
 smips_data <- data.frame()
 for (i in 1:length(date_range)) {
+  ################## DEBUG line (remove in precompiled output) #################
+  cat(paste0(i, "/70\n"), file = "out.log", append = TRUE)
+
   r <- read_smips(collection = "SMindex", day = date_range[i])
   smips_points <- terra::extract(
     x = r,
@@ -143,29 +128,14 @@ for (i in 1:length(date_range)) {
   )
 }
 head(smips_data)
-#>         Date  Latitude Longitude smips_smi_perc
-#> 1 2022-05-07 -34.95253  138.6237     0.25906488
-#> 2 2022-05-07 -34.55264  138.9537     0.17677850
-#> 3 2022-05-07 -33.83285  138.6037     0.07674548
-#> 4 2022-05-07 -34.37270  135.7944     0.53408158
-#> 5 2022-05-07 -35.52237  138.4638     0.37496096
-#> 6 2022-05-07 -35.71231  137.0741     0.30223876
 ```
 
 We can add the `Site` column to the `smips_data` to make it easier to use it
 in conjunction with the `grain` dataset during the analysis:
 
-
-``` r
+```{r addbacksite}
 smips_data$Site <- sites$Site
 head(smips_data)
-#>         Date  Latitude Longitude smips_smi_perc               Site
-#> 1 2022-05-07 -34.95253  138.6237     0.25906488           Adelaide
-#> 2 2022-05-07 -34.55264  138.9537     0.17677850     Barossa Valley
-#> 3 2022-05-07 -33.83285  138.6037     0.07674548       Clare Valley
-#> 4 2022-05-07 -34.37270  135.7944     0.53408158     Eyre Peninsula
-#> 5 2022-05-07 -35.52237  138.4638     0.37496096 Fleurieu Peninsula
-#> 6 2022-05-07 -35.71231  137.0741     0.30223876    Kangaroo Island
 ```
 
 We are now ready to proceed with the analytics.
@@ -183,8 +153,7 @@ application rate `Nitrogen_kgNha` and seeding rate `SeedRate_plantsm2` as fixed
 terms, and incorporating the `Site` and replicate (`Rep`) structure of the
 experiment in a random effect term.
 
-
-``` r
+```{r simplemodel}
 library(nlme)
 simple_model <- lme(
   fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2,
@@ -195,15 +164,10 @@ simple_model <- lme(
 
 We can check the confidence intervals for the effect sizes of the
 Nitrogen treatments for this simple model:
-
-``` r
+```{r simplemodeleffects}
 simple_model.ints <- intervals(simple_model, which = "fixed")$fixed
 simple_model.Neffects <- simple_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
 simple_model.Neffects
-#>                        lower      est.     upper
-#> Nitrogen_kgNha30 -0.17355028 0.0392950 0.2521403
-#> Nitrogen_kgNha60  0.08045472 0.2933000 0.5061453
-#> Nitrogen_kgNha90  0.09779306 0.3106383 0.5234836
 ```
 
 ## Augment the yield model with soil moisture data
@@ -217,8 +181,7 @@ soil moisture index from the date of the Nitrogen application until 30 days
 after the application, which we will store in a new column called
 `SoilMoisture_avg`.
 
-
-``` r
+```{r smipsaverage}
 for (site in sites$Site) {
   start_date <- unique(grain[which(grain$Site == site), "NitrogenDate"])[1]
   dates <- seq(start_date, start_date + 30, by = "1 day")
@@ -231,8 +194,7 @@ for (site in sites$Site) {
 We can then add this average soil moisture as a fixed effect to the linear
 mixed-effect model:
 
-
-``` r
+```{r augmentedmodel}
 augmented_model <- lme(
   fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2
     + SoilMoisture_avg + SoilMoisture_avg:Nitrogen_kgNha,
@@ -244,15 +206,10 @@ augmented_model <- lme(
 The confidence intervals for the effect sizes of the Nitrogen application
 treatments for this augmented model are then as follows:
 
-
-``` r
+```{r augmentedmodeleffects}
 augmented_model.ints <- intervals(augmented_model, which = "fixed")$fixed
 augmented_model.Neffects <- augmented_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
 augmented_model.Neffects
-#>                        lower      est.     upper
-#> Nitrogen_kgNha30 -0.03984861 0.2000454 0.4399395
-#> Nitrogen_kgNha60  0.31409573 0.5539898 0.7938838
-#> Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058
 ```
 
 We can use **ggplot2** plotting to graph the confidence intervals for the
@@ -260,8 +217,10 @@ simple model versus the augmented model, and illuminate the difference
 attained when we include the soil moisture as a confounding term in our
 modelling:
 
-
-``` r
+```{r ploteffects}
+#| fig.height=3, dpi=300, out.width="100%",
+#| fig.cap="Nitrogen effect estimates compared between the simple model and 
+#|   the SMIPS-augmented model."
 library(ggplot2)
 
 ci <- rbind(
@@ -276,13 +235,6 @@ ggplot(ci, aes(x = est., y = term, colour = model)) +
   geom_errorbarh(aes(xmin = lower, xmax = upper), position = pd, height = 0.2) +
   labs(y = "predictor", x = "estimate")
 ```
-
-<div class="figure" style="text-align: center">
-<img src="ploteffects-1.png" alt="Nitrogen effect estimates compared between the simple model and
-  the SMIPS-augmented model." width="100%" />
-<p class="caption">Nitrogen effect estimates compared between the simple model and
-  the SMIPS-augmented model.</p>
-</div>
 
 From the comparison of the effect sizes for the Nitrogen treatment, we can
 see that the simple model underestimates the treatment effect. The
