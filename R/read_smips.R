@@ -9,10 +9,10 @@
 #' @param collection A character vector of the \dQuote{SMIPS} data collection to
 #' be queried:
 #'  * SMindex: the \acronym{SMIPS} Soil Moisture Index (\emph{i.e.}, a number
-#'  between 0 and 1 that indicates how full the \acro{SMIPS} bucket moisture
+#'  between 0 and 1 that indicates how full the \acronym{SMIPS} bucket moisture
 #'  store is relative to its 90 cm capacity),
 #'  * totalbucket: an estimate of the \emph{volumetric soil moisture (in mm)
-#'  from the \acro{SMIPS} bucket moisture store},
+#'  from the \acronym{SMIPS} bucket moisture store},
 #'  Defaults to \dQuote{totalbucket}. Multiple `collections` are supported,
 #'  _e.g._, `collection = c("SMindex", "totalbucket")`.
 #' @param api_key A `character` string containing your \acronym{API} key,
