@@ -27,7 +27,7 @@
 #'  language you may wish to set these up in your .bashrc, .zshrc, or
 #'  config.fish for cross-language use.
 #'
-#' @return A string value with your \acronym{API} key value.
+#' @returns A string value with your \acronym{API} key value.
 #'
 #' @examples
 #' \dontrun{
@@ -41,7 +41,7 @@ get_key <- function() {
   if (!nzchar(TERN_API_KEY)) {
     .set_tern_key()
   } else {
-    return(gsub("/", "%2f", TERN_API_KEY, fixed = TRUE))
+    return(TERN_API_KEY)
   }
 }
 
@@ -53,19 +53,18 @@ get_key <- function() {
 #'
 #' @keywords internal
 #' @noRd
-#' @return Called for its side-effects, opens a browser window at the TERN
+#' @returns Called for its side-effects, opens a browser window at the TERN
 #'   accounts page.
 .set_tern_key <- function() {
   if (interactive()) {
     utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
   }
 
-  stop(
-    "You need to create and/or set your TERN API key.\n",
-    "After getting your key set it as 'TERN_API_KEY' in .Renviron.\n",
-    "TERN_API_KEY='youractualkeynotthisstring'\n",
-    "For that, use `usethis::edit_r_environ()`"
+  cli::cli_abort(
+    "You need to create and/or set your TERN API key.
+    Go to {.url https://account.tern.org.au/authenticated_user/apikeys} to request one.
+    After getting your key, set it as 'TERN_API_KEY' in {.file ~/.Renviron}.,
+    {.emph e.g.}, {.code TERN_API_KEY='youractualkeynotthisstring'}.
+    For that, use {.fn edit_r_environ} from the {.pkg {{usethis}}} package"
   )
-
-  invisible("https://account.tern.org.au/authenticated_user/apikeys")
 }

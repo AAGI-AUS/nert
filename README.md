@@ -50,6 +50,7 @@ given latitude and longitude values for each.
 
 ``` r
 library(terra)
+#> terra 1.7.78
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -91,4 +92,27 @@ Render this file.
 
 ``` bash
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
+```
+
+## Citing {nert}
+
+To cite nert:
+
+``` r
+citation("nert")
+#> To cite package 'nert' in publications use:
+#> 
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2024).
+#>   _nert: An API Client for TERN Data_. R package version 0.0.0.9000,
+#>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {nert: An API Client for TERN Data},
+#>     author = {Adam Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
+#>     year = {2024},
+#>     note = {R package version 0.0.0.9000, https://github.com/AAGI-AUS/nert},
+#>     url = {https://aagi-aus.github.io/nert/},
+#>   }
 ```

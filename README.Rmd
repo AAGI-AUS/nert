@@ -95,3 +95,11 @@ Render this file.
 ```{bash, eval=FALSE}
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 ```
+
+## Citing {nert}
+
+To cite nert:
+
+```{r cite}
+citation("nert")
+```

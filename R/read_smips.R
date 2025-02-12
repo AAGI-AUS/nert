@@ -1,4 +1,3 @@
-
 #' Read SMIPS COGs from TERN
 #'
 #' Read Soil Moisture Integration and Prediction System (\acronym{SMIPS}) Cloud
@@ -40,7 +39,7 @@
 #' # terra::plot() is re-exported for convenience
 #' plot(r)
 #'
-#' @return A [terra::rast] object
+#' @returns A [terra::rast] object
 #'
 #' @autoglobal
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
@@ -50,6 +49,8 @@ read_smips <- function(collection = "totalbucket",
                        api_key = get_key(),
                        max_tries = 3L,
                        initial_delay = 1L) {
+  # Fix any invalid key here, rather than in get_key() in case a user passes a key
+  api_key <- gsub("/", "%2f", api_key, fixed = TRUE)
 
   attempt <- 1
   success <- FALSE
@@ -62,43 +63,46 @@ read_smips <- function(collection = "totalbucket",
 
   collection_url <- .make_smips_url(.collection = collection, .day = day)
 
-  while (attempt <= max_tries && !success)
-    tryCatch({
-      # TODO: move the url concatenation out
-      r <- (terra::rast(
-        paste0(
-          "/vsicurl/https://",
-          paste0("apikey:", api_key),
-          "@data.tern.org.au/model-derived/smips/v1_0/",
-          collection,
-          "/",
-          url_year,
-          "/",
-          collection_url
-        )
-      ))
+  while (attempt <= max_tries && !success) {
+    tryCatch(
+      {
+        # TODO: move the url concatenation out
+        r <- (terra::rast(
+          paste0(
+            "/vsicurl/https://",
+            paste0("apikey:", api_key),
+            "@data.tern.org.au/model-derived/smips/v1_0/",
+            collection,
+            "/",
+            url_year,
+            "/",
+            collection_url
+          )
+        ))
 
-      success <- TRUE
-      return(r)
-
-    }, error = function(e) {
-      if (attempt < max_tries) {
-        delay <- initial_delay * 2 ^ (attempt - 1)
-        cli::cli_alert("Download failed on attempt { attempt }.
+        success <- TRUE
+        return(r)
+      },
+      error = function(e) {
+        if (attempt < max_tries) {
+          delay <- initial_delay * 2^(attempt - 1)
+          cli::cli_alert("Download failed on attempt { attempt }.
                          Retrying in { delay } seconds...")
-        Sys.sleep(delay)
-        attempt <- attempt + 1
-      } else {
-        cli::cli_abort("Download failed after { .max_tries } attempts.")
-        stop(e)
+          Sys.sleep(delay)
+          attempt <- attempt + 1
+        } else {
+          cli::cli_abort("Download failed after { .max_tries } attempts.")
+          stop(e)
+        }
       }
-    })
+    )
+  }
 }
 
 #' Check User Input Dates for Validity
 #'
 #' @param x User entered date value
-#' @return Validated date string as a `POSIXct` object.
+#' @returns Validated date string as a `POSIXct` object.
 #' @note This was taken from \CRANpkg{nasapower}.
 #' @example .check_date(x)
 #' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
@@ -112,15 +116,13 @@ read_smips <- function(collection = "totalbucket",
 
   if (lubridate::is.POSIXct(x) || lubridate::is.Date(x)) {
     tz <- lubridate::tz(x)
-  }
-  else {
+  } else {
     tz <- Sys.timezone()
   }
 
   tryCatch(
     x <- lubridate::parse_date_time(x, c(
-      # TODO: B and b are the same, maybe remove one later
-      "Ymd", "dmY", "BdY", "Bdy", "bdY", "bdy"
+      "Ymd", "dmY", "BdY", "Bdy"
     ), tz = tz),
     warning = function(c) {
       cli::cli_abort("{ x } is not in a valid date format.
@@ -163,7 +165,7 @@ read_smips <- function(collection = "totalbucket",
 #' @noRd
 #' @keywords Internal
 .check_collection_agreement <- function(.collection, .day) {
-  .this_year <- lubridate::year(lubridate::today())
+  # .this_year <- lubridate::year(lubridate::today())
   .last_week <- lubridate::today() - 7
   .url_year <- lubridate::year(.day)
 
@@ -184,17 +186,19 @@ read_smips <- function(collection = "totalbucket",
 #' @param .day The user-supplied date being asked for.
 #'
 #' @autoglobal
-#' @noRd
-#' @keywords Internal
+#' @dev
+
 .make_smips_url <- function(.collection, .day) {
   url_date <- gsub("-", "", .day)
 
-  approved_collections <- c("totalbucket",
-                            "SMindex",
-                            "bucket1",
-                            "bucket2",
-                            "deepD",
-                            "runoff")
+  approved_collections <- c(
+    "totalbucket",
+    "SMindex",
+    "bucket1",
+    "bucket2",
+    "deepD",
+    "runoff"
+  )
   collection <- rlang::arg_match(.collection, approved_collections)
 
   .check_collection_agreement(.collection = .collection, .day = .day)

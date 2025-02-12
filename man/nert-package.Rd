@@ -8,18 +8,24 @@
 \description{
 Provides access to Australia's TERN (Terrestrial Ecosystem Research Network) data through the API, \url{https://tern.org.au}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://aagi-aus.github.io/nert/}
+  \item \url{https://github.com/AAGI-AUS/nert}
+  \item Report bugs at \url{https://github.com/AAGI-AUS/nert/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Adam H. Sparks \email{adamhsparks@gmail.com} (\href{https://orcid.org/0000-0002-0061-8359}{ORCID})
 
 Authors:
 \itemize{
-  \item Russell Edson \email{russell.edson@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
   \item Wasin Pipattungsakul \email{wasin.pipattungsakul@adelaide.edu.au}
-}
-
-Other contributors:
-\itemize{
-  \item Max Moldovan \email{max.moldovan@adelaide.edu.au} [contributor]
+  \item Russell Edson \email{russell.edson@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
+  \item Sam Rogers \email{sam.rogers@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
+  \item Max Moldovan \email{max.moldovan@adelaide.edu.au}
 }
 
 }
