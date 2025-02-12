@@ -68,18 +68,12 @@
 <p>This is a basic example which shows you how you can fetch one day’s data from the SMIPS data (currently the only supported data set in TERN) and visualise it:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'nert'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:graphics':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     plot</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     plot</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_smips.html">read_smips</a></span><span class="op">(</span>day <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-example_cog-1.png" width="100%"></p>
+<figure><img src="./reference/figures/README-example_cog-1.png" alt="example plot"><figcaption aria-hidden="true">
+example plot
+</figcaption></figure>
 </div>
 <div class="section level2">
 <h2 id="extract-values-given-latlon-values">Extract Values Given Lat/Lon Values<a class="anchor" aria-label="anchor" href="#extract-values-given-latlon-values"></a>
@@ -109,10 +103,24 @@
 <span><span class="co">#&gt; 3 Tamworth  3                   93.44989014 150.8408 -31.07365</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
+</h2>
+<div class="section level3">
+<h3 id="dev-container">Dev Container<a class="anchor" aria-label="anchor" href="#dev-container"></a>
+</h3>
+<p>Set up the container.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> .</span></code></pre></div>
+<p>Run tests and check stuff.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::check()"</span></span></code></pre></div>
+<p>Render this file.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::build_readme()"</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
 <h2 id="citing-nert">Citing {nert}<a class="anchor" aria-label="anchor" href="#citing-nert"></a>
 </h2>
 <p>To cite nert:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'nert' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -177,7 +185,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/AAGI-AUS/nert" class="external-link"><img src="https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://codecov.io/gh/AAGI-AUS/nert" class="external-link"><img src="https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ" alt="codecov"></a></li>
 </ul>
 </div>
 
