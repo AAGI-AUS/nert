@@ -6,6 +6,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a6eff16 (Updated nert analytics vignette and fixed some typos in the nert.Rmd one too)
   %\VignetteDepends{terra}
   %\VignetteDepends{nlme}
   %\VignetteDepends{ggplot2}
@@ -14,6 +17,9 @@ vignette: >
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a6eff16 (Updated nert analytics vignette and fixed some typos in the nert.Rmd one too)
 The **nert** package provides straightforward and seamless access to the TERN
 Soil Moisture Integration and Prediction System (SMIPS) datasets, which
 include soil moisture measures that can be included in your agricultural
@@ -22,6 +28,7 @@ process with the example of a synthesised multi-site grain
 production experiment. The **nert** package is loaded and used to download
 soil moisture time series data at various locations across South Australia,
 and these are included as confounding variables to augment the analytics.
+<<<<<<< HEAD
 =======
 This document introduces you to the **nert** package, including setup and
 how to use the package to download SMIPS data for given locational coordinates
@@ -123,6 +130,8 @@ vignette shows how you can use this downloaded soil moisture data to augment
 analytics, using a fictitious grain production experiment as an illuminating
 example.
 >>>>>>> 55480d7 (Should fix Max's comments (hopefully) and fixes plot issue in vignette)
+=======
+>>>>>>> a6eff16 (Updated nert analytics vignette and fixed some typos in the nert.Rmd one too)
 
 ## A synthetic dataset for a grain production experiment
 
@@ -191,11 +200,16 @@ c(date_range[1], date_range[length(date_range)])
 We also need the latitude and longitude for the sites, which we can readily
 retrieve from the `grain` dataset columns `Latitude` and `Longitude`:
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 ``` r
 =======
 ```{r siteslist}
 >>>>>>> 55480d7 (Should fix Max's comments (hopefully) and fixes plot issue in vignette)
+=======
+
+``` r
+>>>>>>> a6eff16 (Updated nert analytics vignette and fixed some typos in the nert.Rmd one too)
 sites <- unique(grain[, c("Site", "Latitude", "Longitude")])
 sites
 #>                    Site  Latitude Longitude
