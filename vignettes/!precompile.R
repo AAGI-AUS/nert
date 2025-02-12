@@ -1,28 +1,35 @@
 # vignettes that depend on Internet access need to be precompiled and take a
 # while to run
 library(knitr)
+library(here)
+
 knit(
   input = "vignettes/nert.Rmd.orig",
-  output = "vignettes/nert.Rmd"
-)
+  output = "vignettes/nert.Rmd")
+
+purl("vignettes/nert.Rmd.orig",
+  output = "vignettes/nert.R")
 
 knit(
   input = "vignettes/nert_for_agricultural_analytics.Rmd.orig",
-  input = "vingettes/nert_for_agricultural_analytics.Rmd"
+  output = "vignettes/nert_for_agricultural_analytics.Rmd")
+
+purl("vignettes/nert_for_agricultural_analytics.Rmd.orig",
+  output = "vignettes/nert_for_agricultural_analytics.R"
 )
 
 # remove file path such that vignettes will build with figures
-replace <- readLines("vignettes/nert.Rmd")
-replace <- gsub("<img src=\"vignettes/", "<img src=\"", replace)
-fileConn <- file("vignettes/nert.Rmd")
-writeLines(replace, fileConn)
-close(fileConn)
+nert_replace <- readLines("vignettes/nert.Rmd")
+nert_replace <- gsub("<img src=\"vignettes/", "<img src=\"", nert_replace)
+nert_file_conn <- file("vignettes/nert.Rmd")
+writeLines(nert_replace, nert_file_conn)
+close(nert_file_conn)
 
-replace <- readLines("vignettes/nert_for_agricultural_analytics.Rmd")
-replace <- gsub("<img src=\"vignettes/", "<img src=\"", replace)
-fileConn <- file("vignettes/nert_for_agricultural_analytics.Rmd")
-writeLines(replace, fileConn)
-close(fileConn)
+ag_replace <- readLines("vignettes/nert_for_agricultural_analytics.Rmd")
+ag_replace <- gsub("<img src=\"vignettes/", "<img src=\"", ag_replace)
+ag_file_conn <- file("vignettes/nert_for_agricultural_analytics.Rmd")
+writeLines(ag_replace, ag_file_conn)
+close(ag_file_conn)
 
 # build vignettes
 library("devtools")
@@ -33,6 +40,6 @@ resources <-
   list.files("vignettes/", pattern = ".png$", full.names = TRUE)
 file.copy(
   from = resources,
-  to = "doc",
+  to = here("doc"),
   overwrite = TRUE
 )
