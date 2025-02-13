@@ -128,9 +128,6 @@ followed by latitude.)
 ``` r
 smips_data <- data.frame()
 for (i in 1:length(date_range)) {
-  ################## DEBUG line (remove in precompiled output) #################
-  cat(paste0(i, "/70\n"), file = "out.log", append = TRUE)
-
   r <- read_smips(collection = "SMindex", day = date_range[i])
   smips_points <- terra::extract(
     x = r,
@@ -270,6 +267,8 @@ modelling:
 
 ``` r
 library(ggplot2)
+#> Need help getting started? Try the R Graphics Cookbook:
+#> https://r-graphics.org
 
 ci <- rbind(
   data.frame(simple_model.Neffects, model = "Simple Model"),

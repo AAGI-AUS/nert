@@ -105,7 +105,6 @@ library(terra)
 #>     spin
 
 r <- read_smips(day = "2024-01-01")
-#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #>   ID smips_totalbucket_mm_20240101        x         y
@@ -163,7 +162,6 @@ Using the example from above, you can get the SMIPS data for all of Australia on
 ``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
-#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 ```
 
 Note that {nert} re-exports `tidyterra::autoplot` for ease of visulalising the TERN data.
