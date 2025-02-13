@@ -5,28 +5,27 @@
 \title{Read SMIPS COGs from TERN}
 \usage{
 read_smips(
-  collection = "totalbucket",
   day,
+  collection = "totalbucket",
   api_key = get_key(),
   max_tries = 3L,
   initial_delay = 1L
 )
 }
 \arguments{
+\item{day}{A date to query, \emph{e.g.}, \code{day = "2017-12-31"} or \code{day = as.Date("2017-12-01")}, both \code{Character} and \code{Date} classes are accepted.}
+
 \item{collection}{A character vector of the \dQuote{SMIPS} data collection to
 be queried:
 \itemize{
-\item SMindex
-\item bucket1
-\item bucket2
-\item deepD
-\item runoff
-\item totalbucket
+\item SMindex: the \acronym{SMIPS} Soil Moisture Index (\emph{i.e.}, a number
+between 0 and 1 that indicates how full the \acronym{SMIPS} bucket moisture
+store is relative to its 90 cm capacity),
+\item totalbucket: an estimate of the \emph{volumetric soil moisture (in mm)
+from the \acronym{SMIPS} bucket moisture store},
 Defaults to \dQuote{totalbucket}. Multiple \code{collections} are supported,
 \emph{e.g.}, \code{collection = c("SMindex", "totalbucket")}.
 }}
-
-\item{day}{A date to query, \emph{e.g.}, \code{day = "2017-12-31"} or \code{day = as.Date("2017-12-01")}, both \code{Character} and \code{Date} classes are accepted.}
 
 \item{api_key}{A \code{character} string containing your \acronym{API} key,
 a random string provided to you by \acronym{TERN}, for the request.
@@ -55,10 +54,10 @@ session.
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-r <- read_smips(day = "2024-01-01")
+r <- read_smips("2024-01-01")
 
-# terra::plot() is re-exported for convenience
-plot(r)
+# `tidyterra::autoplot` is re-exported for convenience
+autoplot(r)
 \dontshow{\}) # examplesIf}
 }
 \references{

@@ -6,3 +6,6 @@
 .quarto
 docs
 .Renviron
+inst/doc
+/doc/
+/Meta/
