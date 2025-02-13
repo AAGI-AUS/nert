@@ -3,16 +3,21 @@
 library(knitr)
 library(here)
 
+devtools::install() # ensure we're building with the latest version of the package
+
 knit(
   input = "vignettes/nert.Rmd.orig",
-  output = "vignettes/nert.Rmd")
+  output = "vignettes/nert.Rmd"
+)
 
 purl("vignettes/nert.Rmd.orig",
-  output = "vignettes/nert.R")
+  output = "vignettes/nert.R"
+)
 
 knit(
   input = "vignettes/nert_for_agricultural_analytics.Rmd.orig",
-  output = "vignettes/nert_for_agricultural_analytics.Rmd")
+  output = "vignettes/nert_for_agricultural_analytics.Rmd"
+)
 
 purl("vignettes/nert_for_agricultural_analytics.Rmd.orig",
   output = "vignettes/nert_for_agricultural_analytics.R"
