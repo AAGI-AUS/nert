@@ -1,10 +1,10 @@
 ---
-title: "Use nert to augment agricultural analytics with SMIPS data"
+title: "Using nert to augment agricultural analytics with SMIPS data"
 author: Russell Edson and Max Moldovan
 output:
   rmarkdown::html_document
 vignette: >
-  %\VignetteIndexEntry{Use nert to augment agricultural analytics with SMIPS data}
+  %\VignetteIndexEntry{Using nert to augment agricultural analytics with SMIPS data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{terra}
@@ -18,12 +18,16 @@ vignette: >
 
 The **nert** package provides straightforward and seamless access to the TERN
 Soil Moisture Integration and Prediction System (SMIPS) datasets, which
-include soil moisture measures that can be included in your agricultural
-data analytics to improve modelling efficacy. This document showcases this
-process with the example of a synthesised multi-site grain
-production experiment. The **nert** package is loaded and used to download
-soil moisture time series data at various locations across South Australia,
-and these are included as confounding variables to augment the analytics.
+include soil moisture estimates that can be used in your data analytics
+pipelines. This document showcases this process with the example of a
+synthesised multi-site grain production experiment. The **nert** package is
+loaded and used to download soil moisture time series data at various
+locations across South Australia. Recognising soil moisture as a classical
+confounder---affecting crop yield (via root-zone water availability) and
+nitrogen treatment (via increased volatilisation in moist soils)---we will
+augment our modelling of the grain production to use soil moisture
+estimates over the treatment period for estimating the nitrogen treatment
+effect.
 
 ## A synthetic dataset for a grain production experiment
 
@@ -40,8 +44,8 @@ str(grain)
 #>  $ Site             : Factor w/ 10 levels "Adelaide","Barossa Valley",..: 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Latitude         : num  -34.9 -34.9 -34.9 -34.9 -34.9 ...
 #>  $ Longitude        : num  139 139 139 139 139 ...
-#>  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" ...
-#>  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" ...
+#>  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" "2022-05-20" ...
+#>  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" "2022-06-04" ...
 #>  $ Rep              : Factor w/ 3 levels "1","2","3": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Variety          : Factor w/ 8 levels "Variety_A","Variety_B",..: 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Nitrogen_kgNha   : Factor w/ 4 levels "0","30","60",..: 1 1 1 2 2 2 3 3 3 4 ...
@@ -49,15 +53,15 @@ str(grain)
 #>  $ Yield_Tha        : num  3 3.69 3.89 2.76 3.27 ...
 ```
 
-The `grain` dataset supposes that a fabricated grain production experiment has
-been run at a selection of ten sites across South Australia, looking at the
-effects of four different treatment levels of Nitrogen application and three
+The `grain` dataset supposes that a hypothetical grain production experiment has
+been run at a selection of ten sites across South Australia, investigating the
+effects of four different treatment levels of nitrogen application and three
 different seeding rates on the grain yield for some crop with eight varieties.
 
 Note that we have locational coordinates (in `Latitude` and
 `Longitude`) for each of the sites, as well as dates for the crop sowing and
-Nitrogen applications (in `SowDate` and `NitrogenDate` respectively.) This
-spatiotemporal information is useful, as it allows us to match up the
+nitrogen applications (in `SowDate` and `NitrogenDate` respectively.) This
+spatio-temporal information is useful, as it allows us to match up the
 experimental sites with the data points that we need to download from SMIPS.
 
 ## Download SMIPS data for the sites across times
@@ -74,7 +78,7 @@ the `grain` experiment data. The two key SMIPS datasets of interest are:
   its 90cm capacity).
 
 For simplicity, suppose we are interested in the SMIPS soil moisture index
-(`SMindex`) data, for all days falling between the earliest Nitrogen
+(`SMindex`) data, for all days falling between the earliest nitrogen
 application date up to 30 days after the last application date, and we want the
 soil moisture index at each site (by latitude/longitude coordinates). We can
 generate this date range in a straightforward way using the `NitrogenDate`
@@ -179,10 +183,11 @@ We are now ready to proceed with the analytics.
 First, we model the grain yield with a simple model without taking into account
 any soil moisture confounding---that is, without reference to the SMIPS data
 that we have just downloaded. We will later incorporate the SMIPS data to see
-how including the soil moisture as a covariate improves the modelling.
+how including the soil moisture as a covariate improves the nitrogen
+treatment effect size estimates.
 
 Here we will use the **nlme** package to fit a linear mixed-effect model. The
-grain yield `Yield_tha` will be modelled taking the `Variety`, Nitrogen
+grain yield `Yield_tha` will be modelled taking the `Variety`, nitrogen
 application rate `Nitrogen_kgNha` and seeding rate `SeedRate_plantsm2` as fixed
 terms, and incorporating the `Site` and replicate (`Rep`) structure of the
 experiment in a random effect term.
@@ -198,7 +203,7 @@ simple_model <- lme(
 ```
 
 We can check the confidence intervals for the effect sizes of the
-Nitrogen treatments for this simple model:
+nitrogen treatments for this simple model:
 
 ``` r
 simple_model.ints <- intervals(simple_model, which = "fixed")$fixed
@@ -210,14 +215,14 @@ simple_model.Neffects
 #> Nitrogen_kgNha90  0.09779306 0.3106383 0.5234836
 ```
 
-## Augment the yield model with soil moisture data
+## Augmenting the yield model with soil moisture data
 
 Next, we augment our modelling by including the SMIPS soil moisture data
 as a covariate (perhaps anticipating that the soil moisture improves the
-yield, but might reduce the effect of Nitrogen applied to the soil due
+yield, but might reduce the effect of nitrogen applied to the soil due
 to volatilisation). To keep things simple, for each site (and its
-associated Nitrogen application date) we take an average of the SMIPS-reported
-soil moisture index from the date of the Nitrogen application until 30 days
+associated nitrogen application date) we take an average of the SMIPS-reported
+soil moisture index from the date of the nitrogen application until 30 days
 after the application, which we will store in a new column called
 `SoilMoisture_avg`.
 
@@ -245,7 +250,7 @@ augmented_model <- lme(
 )
 ```
 
-The confidence intervals for the effect sizes of the Nitrogen application
+The confidence intervals for the effect sizes of the nitrogen application
 treatments for this augmented model are then as follows:
 
 
@@ -267,8 +272,6 @@ modelling:
 
 ``` r
 library(ggplot2)
-#> Need help getting started? Try the R Graphics Cookbook:
-#> https://r-graphics.org
 
 ci <- rbind(
   data.frame(simple_model.Neffects, model = "Simple Model"),
@@ -276,8 +279,9 @@ ci <- rbind(
 )
 ci$term <- paste0("Nitrogen_kgNha", c(30, 60, 90))
 
-pd <- position_dodge(0.4)
+pd <- position_dodge(-0.4)
 ggplot(ci, aes(x = est., y = term, colour = model)) +
+  scale_y_discrete(limits = rev) +
   geom_point(position = pd) +
   geom_errorbarh(aes(xmin = lower, xmax = upper), position = pd, height = 0.2) +
   labs(y = "predictor", x = "estimate")
@@ -290,7 +294,8 @@ ggplot(ci, aes(x = est., y = term, colour = model)) +
   the SMIPS-augmented model.</p>
 </div>
 
-From the comparison of the effect sizes for the Nitrogen treatment, we can
-see that the simple model underestimates the treatment effect. The
-augmented model, in contrast, accounts for the soil moisture and the potential
-Nitrogen vaporisation that may occur in high soil moisture conditions.
+From the comparison of the effect sizes for the nitrogen treatment, we can
+see that ignoring the effect of soil moisture in the simple model
+underestimates the direct nitrogen treatment effect. The augmented model,
+in contrast, accounts for the soil moisture and the potential
+nitrogen vaporisation that may occur in higher soil moisture conditions.
