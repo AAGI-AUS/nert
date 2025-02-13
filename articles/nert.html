@@ -156,8 +156,8 @@ store your API key in the variable <code>TERN_API_KEY</code>, ensuring
 to use that name as that is what {nert} will automatically look
 for:</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>    <span class="va">TERN_API_KEY</span><span class="op">=</span><span class="st">'&lt;paste your key here&gt;'</span></span></code></pre></div>
-<pre><code>![](07-get-started.jpg){width=80%}</code></pre>
+<p><code>TERN_API_KEY='&lt;paste your key here&gt;'</code></p>
+<p><img src="07-get-started.jpg" style="width:80.0%"></p>
 <ol start="2" style="list-style-type: decimal">
 <li>
 <p>Save your <code>.Renviron</code> file, and restart your R session
@@ -176,7 +176,7 @@ raster for January 1st, 2024, and uses the {terra} package’s
 moisture measurement at the Adelaide CBD (at approximately -34.9285
 decimal degrees latitude, 138.6007 longitude):</p></li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; terra 1.8.21</span></span>
@@ -200,10 +200,10 @@ to easily download SMIPS datasets from the TERN Data Portal.</p>
 <p>If you prefer a more secure method, you can use the <a href="https://keyring.r-lib.org/index.html" class="external-link">{keyring}</a> package to
 store your API key in your system’s credential store. If you don’t have
 the {keyring} package installed, you can install it with:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"keyring"</span><span class="op">)</span></span></code></pre></div>
 <p>Once it’s installed, you can store your API key with:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keyring.r-lib.org/" class="external-link">keyring</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://keyring.r-lib.org/reference/has_keyring_support.html" class="external-link">keyring_create</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
@@ -216,7 +216,7 @@ the {keyring} package installed, you can install it with:</p>
 <p>Where <code>NERT_API_KEY</code> is the name of the key you want to
 store in the keyring. You will enter the actual key value you copied
 from the TERN website when {keyring} prompts you to do so.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keyring.r-lib.org/" class="external-link">keyring</a></span><span class="op">)</span></span>
 <span></span>
@@ -227,12 +227,12 @@ from the TERN website when {keyring} prompts you to do so.</p>
 <p>Note that here we specified a value for the API key.</p>
 <p>Using the example from above, you can get the SMIPS data for all of
 Australia on Jan 1, 2024 like so:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>day <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that {nert} re-exports <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">tidyterra::autoplot</a></code> for ease
 of visulalising the TERN data.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
@@ -244,7 +244,7 @@ A plot of SMIPS data for all of Australia on 2024-01-01.
 if you wish to fetch only data for a single point or points, you can
 specify them like this using the data object, <code>r</code>, from
 above, which is much quicker than fetching the entire dataset:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
