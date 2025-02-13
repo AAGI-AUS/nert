@@ -77,11 +77,9 @@ Following, I will demonstrate how to save your API key in your `.Renviron` file 
 An easy way to open the right file is to use the {usethis} package in your R session, _e.g._, `usethis::edit_r_environ()`.
 Add a new line to the file to store your API key in the variable `TERN_API_KEY`, ensuring to use that name as that is what {nert} will automatically look for:
 
-```bash
-    TERN_API_KEY='<paste your key here>'
-```
+`TERN_API_KEY='<paste your key here>'`
 
-    ![](07-get-started.jpg){width=80%}
+![](07-get-started.jpg){width=80%}
 
 2. Save your `.Renviron` file, and restart your R session so that the change is applied.
 You can then test that the {nert} package is reading your API key properly by entering `nert::get_key()` at the R command console.
