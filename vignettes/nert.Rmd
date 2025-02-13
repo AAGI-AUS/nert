@@ -105,24 +105,11 @@ library(terra)
 #>     spin
 
 r <- read_smips(day = "2024-01-01")
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/totalbucket/2024/smips_totalbucket_mm_20240101.tif:
-#> No such file or directory (GDAL error 4)
-#> → Download failed on attempt 1.
-#> Retrying in 1 seconds...
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/totalbucket/2024/smips_totalbucket_mm_20240101.tif:
-#> No such file or directory (GDAL error 4)
-#> → Download failed on attempt 2.
-#> Retrying in 2 seconds...
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/totalbucket/2024/smips_totalbucket_mm_20240101.tif:
-#> No such file or directory (GDAL error 4)
-#> Error in `value[[3L]]()`:
-#> ! Download failed after 3 attempts.
+#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'extract': object 'r' not found
+#>   ID smips_totalbucket_mm_20240101        x         y
+#> 1  1                      46.07692 138.6037 -34.93254
 ```
 
 At this stage your {nert} package is now working, and you can use it to easily download SMIPS datasets from the TERN Data Portal.
@@ -176,21 +163,7 @@ Using the example from above, you can get the SMIPS data for all of Australia on
 ``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/totalbucket/2024/smips_totalbucket_mm_20240101.tif:
-#> No such file or directory (GDAL error 4)
-#> → Download failed on attempt 1.
-#> Retrying in 1 seconds...
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/totalbucket/2024/smips_totalbucket_mm_20240101.tif:
-#> No such file or directory (GDAL error 4)
-#> → Download failed on attempt 2.
-#> Retrying in 2 seconds...
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/totalbucket/2024/smips_totalbucket_mm_20240101.tif:
-#> No such file or directory (GDAL error 4)
-#> Error in `value[[3L]]()`:
-#> ! Download failed after 3 attempts.
+#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 ```
 
 Note that {nert} re-exports `tidyterra::autoplot` for ease of visulalising the TERN data.
@@ -198,8 +171,13 @@ Note that {nert} re-exports `tidyterra::autoplot` for ease of visulalising the T
 
 ``` r
 autoplot(r)
-#> Error: object 'r' not found
+#> <SpatRaster> resampled to 501270 cells.
 ```
+
+<div class="figure" style="text-align: center">
+<img src="test-plot-1.png" alt="A plot of SMIPS data for all of Australia on 2024-01-01."  />
+<p class="caption">A plot of SMIPS data for all of Australia on 2024-01-01.</p>
+</div>
 
 Repeating an example from above where we tested if the API key works, if you wish to fetch only data for a single point or points, you can specify them like this using the data object, `r`, from above, which is much quicker than fetching the entire dataset:
 
@@ -208,7 +186,8 @@ Repeating an example from above where we tested if the API key works, if you wis
 library(terra)
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'extract': object 'r' not found
+#>   ID smips_totalbucket_mm_20240101        x         y
+#> 1  1                      46.07692 138.6037 -34.93254
 ```
 
 That's it, you're all set!

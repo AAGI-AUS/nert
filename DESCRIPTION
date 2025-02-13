@@ -36,7 +36,8 @@ Suggests:
     testthat (>= 3.0.0),
     usethis
 VignetteBuilder: 
-    knitr
+    knitr,
+    AAGI-AUS/nert@feature/vignette
 Config/Needs/build: moodymudskipper/devtag
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE

@@ -149,23 +149,14 @@ for (i in 1:length(date_range)) {
     )
   )
 }
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/SMindex/2022/smips_smi_perc_20220507.tif:
-#> No such file or directory (GDAL error 4)
-#> → Download failed on attempt 1.
-#> Retrying in 1 seconds...
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/SMindex/2022/smips_smi_perc_20220507.tif:
-#> No such file or directory (GDAL error 4)
-#> → Download failed on attempt 2.
-#> Retrying in 2 seconds...
-#> Warning:
-#> /vsicurl/https://apikey:TWtxa3V0WjZGcWl3M0FjQi4pYVZTdDt9eltXfCt5aCQ+MQ1GMmkkeAxGbVpTSE9dUUxyWGhMO0t+JXYwI2NiVTcmM1YgMVZ3DWhkSzdAXjgj@data.tern.org.au/model-derived/smips/v1_0/SMindex/2022/smips_smi_perc_20220507.tif:
-#> No such file or directory (GDAL error 4)
-#> Error in `value[[3L]]()`:
-#> ! Download failed after 3 attempts.
 head(smips_data)
-#> data frame with 0 columns and 0 rows
+#>         Date  Latitude Longitude smips_smi_perc
+#> 1 2022-05-07 -34.95253  138.6237     0.25906488
+#> 2 2022-05-07 -34.55264  138.9537     0.17677850
+#> 3 2022-05-07 -33.83285  138.6037     0.07674548
+#> 4 2022-05-07 -34.37270  135.7944     0.53408158
+#> 5 2022-05-07 -35.52237  138.4638     0.37496096
+#> 6 2022-05-07 -35.71231  137.0741     0.30223876
 ```
 
 We can add the `Site` column to the `smips_data` to make it easier to use it
@@ -174,9 +165,14 @@ in conjunction with the `grain` dataset during the analysis:
 
 ``` r
 smips_data$Site <- sites$Site
-#> Error in `$<-.data.frame`(`*tmp*`, Site, value = structure(c(1L, 2L, 3L, : replacement has 10 rows, data has 0
 head(smips_data)
-#> data frame with 0 columns and 0 rows
+#>         Date  Latitude Longitude smips_smi_perc               Site
+#> 1 2022-05-07 -34.95253  138.6237     0.25906488           Adelaide
+#> 2 2022-05-07 -34.55264  138.9537     0.17677850     Barossa Valley
+#> 3 2022-05-07 -33.83285  138.6037     0.07674548       Clare Valley
+#> 4 2022-05-07 -34.37270  135.7944     0.53408158     Eyre Peninsula
+#> 5 2022-05-07 -35.52237  138.4638     0.37496096 Fleurieu Peninsula
+#> 6 2022-05-07 -35.71231  137.0741     0.30223876    Kangaroo Island
 ```
 
 We are now ready to proceed with the analytics.
@@ -237,26 +233,6 @@ for (site in sites$Site) {
   smips_avg <- mean(smips[["smips_smi_perc"]])
   grain[which(grain$Site == site), "SoilMoisture_avg"] <- smips_avg
 }
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
-#> Warning in mean.default(smips[["smips_smi_perc"]]): argument is not
-#> numeric or logical: returning NA
 ```
 
 We can then add this average soil moisture as a fixed effect to the linear
@@ -270,7 +246,6 @@ augmented_model <- lme(
   random = ~ 1 | Site / Rep,
   data = grain
 )
-#> Error in na.fail.default(structure(list(Yield_Tha = c(2.9988, 3.68895, : missing values in object
 ```
 
 The confidence intervals for the effect sizes of the Nitrogen application
@@ -279,11 +254,12 @@ treatments for this augmented model are then as follows:
 
 ``` r
 augmented_model.ints <- intervals(augmented_model, which = "fixed")$fixed
-#> Error: object 'augmented_model' not found
 augmented_model.Neffects <- augmented_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
-#> Error: object 'augmented_model.ints' not found
 augmented_model.Neffects
-#> Error: object 'augmented_model.Neffects' not found
+#>                        lower      est.     upper
+#> Nitrogen_kgNha30 -0.03984861 0.2000454 0.4399395
+#> Nitrogen_kgNha60  0.31409573 0.5539898 0.7938838
+#> Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058
 ```
 
 We can use **ggplot2** plotting to graph the confidence intervals for the
@@ -299,17 +275,21 @@ ci <- rbind(
   data.frame(simple_model.Neffects, model = "Simple Model"),
   data.frame(augmented_model.Neffects, model = "SMIPS-Augmented Model")
 )
-#> Error: object 'augmented_model.Neffects' not found
 ci$term <- paste0("Nitrogen_kgNha", c(30, 60, 90))
-#> Error: object 'ci' not found
 
 pd <- position_dodge(0.4)
 ggplot(ci, aes(x = est., y = term, colour = model)) +
   geom_point(position = pd) +
   geom_errorbarh(aes(xmin = lower, xmax = upper), position = pd, height = 0.2) +
   labs(y = "predictor", x = "estimate")
-#> Error: object 'ci' not found
 ```
+
+<div class="figure" style="text-align: center">
+<img src="ploteffects-1.png" alt="Nitrogen effect estimates compared between the simple model and
+  the SMIPS-augmented model." width="100%" />
+<p class="caption">Nitrogen effect estimates compared between the simple model and
+  the SMIPS-augmented model.</p>
+</div>
 
 From the comparison of the effect sizes for the Nitrogen treatment, we can
 see that the simple model underestimates the treatment effect. The
