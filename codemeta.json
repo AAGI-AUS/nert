@@ -14,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
+  "runtimePlatform": "R version 4.4.1 (2024-06-14)",
   "author": [
     {
       "@type": "Person",
@@ -62,10 +62,6 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> eed98b7 (fix Suggests, should be {keyring})
       "identifier": "keyring",
       "name": "keyring",
       "provider": {
@@ -75,13 +71,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=keyring"
-<<<<<<< HEAD
-=======
-      "identifier": "keychain",
-      "name": "keychain"
->>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
-=======
->>>>>>> eed98b7 (fix Suggests, should be {keyring})
     },
     {
       "@type": "SoftwareApplication",
@@ -180,6 +169,7 @@
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
+      "version": ">= 3.5.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -237,21 +227,6 @@
       "sameAs": "https://CRAN.R-project.org/package=terra"
     },
     "9": {
-<<<<<<< HEAD
-      "@type": "SoftwareApplication",
-      "identifier": "tidyterra",
-      "name": "tidyterra",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=tidyterra"
-    },
-    "10": {
-=======
->>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
       "@type": "SoftwareApplication",
       "identifier": "tidyterra",
       "name": "tidyterra",
@@ -270,33 +245,7 @@
     },
     "SystemRequirements": null
   },
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "fileSize": "929.254KB",
-=======
-=======
->>>>>>> eed98b7 (fix Suggests, should be {keyring})
-=======
->>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
-<<<<<<< HEAD
-  "fileSize": "177.606KB",
-=======
-  "fileSize": "929.137KB",
->>>>>>> 15b6432 (reknit vignettes and README using autoplot for figures)
-<<<<<<< HEAD
->>>>>>> cc30895 (reknit vignettes and README using autoplot for figures)
-=======
-=======
-  "fileSize": "929.145KB",
->>>>>>> e5226f0 (fix Suggests, should be {keyring})
-<<<<<<< HEAD
->>>>>>> eed98b7 (fix Suggests, should be {keyring})
-=======
-=======
-  "fileSize": "929.254KB",
->>>>>>> 9d5130b (try reexporting autoplot from {tidyterra})
->>>>>>> 7c92db5 (try reexporting autoplot from {tidyterra})
+  "fileSize": "979.673KB",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
-  "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
+  "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/AAGI-AUS/nert"]
 }

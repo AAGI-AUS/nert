@@ -1,13 +1,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
+
 
 # nert
 
@@ -22,7 +15,8 @@ The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosyste
 
 You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
 
-```{r install, eval=FALSE}
+
+``` r
 if (!require("pak")) {
   install.packages("pak")
 }
@@ -34,7 +28,8 @@ pak::pak("AAGI-AUS/nert")
 
 This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
 
-```{r example_cog, eval=FALSE}
+
+``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
 
@@ -48,7 +43,8 @@ autoplot(r)
 
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
 
-```{r, eval=FALSE}
+
+``` r
 library(terra)
 df <- structure(
   list(
@@ -73,19 +69,22 @@ cog_df
 
 Set up the container.
 
-```{bash, eval=FALSE}
+
+``` bash
 devcontainer up --workspace-folder .
 ```
 
 Run tests and check stuff.
 
-```{bash, eval=FALSE}
+
+``` bash
 devcontainer exec --workspace-folder . R -e "devtools::check()"
 ```
 
 Render this file.
 
-```{bash, eval=FALSE}
+
+``` bash
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 ```
 
@@ -93,6 +92,22 @@ devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 
 To cite nert:
 
-```{r cite}
-citation("nert")
 
+``` r
+citation("nert")
+#> To cite package 'nert' in publications use:
+#> 
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
+#>   _nert: An API Client for TERN Data_. R package version 0.0.0.9000,
+#>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {nert: An API Client for TERN Data},
+#>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
+#>     year = {2025},
+#>     note = {R package version 0.0.0.9000, https://github.com/AAGI-AUS/nert},
+#>     url = {https://aagi-aus.github.io/nert/},
+#>   }
+```

@@ -66,7 +66,8 @@ read_smips <- function(day,
     api_key,
     collection,
     url_year,
-    file)
+    file
+  )
 
   while (attempt <= max_tries && !success) {
     tryCatch(
@@ -96,11 +97,11 @@ read_smips <- function(day,
 #' @param x User entered date value
 #' @returns Validated date string as a `POSIXct` object.
 #' @note This was taken from \CRANpkg{nasapower}.
-#' @example .check_date(x)
+#' @examples
+#' .check_date("2024-01-01")
 #' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
-#' @keywords Internal
 #' @autoglobal
-#' @noRd
+#' @dev
 .check_date <- function(x) {
   if (length(x) > 1) {
     cli::cli_abort("Only one day is allowed per request.")
@@ -128,9 +129,8 @@ read_smips <- function(day,
 #' Check that the user hasn't blindly copied the "your_api_key" string from the
 #' examples
 #'
-#' @keywords Internal
 #' @autoglobal
-#' @noRd
+#' @dev
 .check_not_example_api_key <- function(.api_key) {
   if (!is.null(.api_key) && .api_key == "your_api_key") {
     stop(
@@ -154,8 +154,7 @@ read_smips <- function(day,
 #'
 #' @autoglobal
 #'
-#' @noRd
-#' @keywords Internal
+#' @dev
 .check_collection_agreement <- function(.collection, .day) {
   # .this_year <- lubridate::year(lubridate::today())
   .last_week <- lubridate::today() - 7
