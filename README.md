@@ -35,9 +35,13 @@ r <- read_smips(day = "2024-01-01")
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)
+#> <SpatRaster> resampled to 501270 cells.
 ```
 
-![example plot](./man/figures/README-example_cog-1.png)
+<div class="figure">
+<img src="man/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%" />
+<p class="caption">plot of chunk example_cog</p>
+</div>
 
 ## Extract Values Given Lat/Lon Values
 
@@ -61,6 +65,10 @@ cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
 cog_df <- cbind(df$location, cog_df)
 names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
 cog_df
+#>   location ID smips_totalbucket_mm_20240101        x         y
+#> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
+#> 2 Merredin  2                    0.22716530 118.2787 -31.48353
+#> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
 ```
 
 ## Development

@@ -34,7 +34,7 @@ pak::pak("AAGI-AUS/nert")
 
 This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
 
-```{r example_cog, eval=FALSE}
+```{r example_cog, eval=TRUE}
 library(nert)
 r <- read_smips(day = "2024-01-01")
 
@@ -42,13 +42,11 @@ r <- read_smips(day = "2024-01-01")
 autoplot(r)
 ```
 
-![example plot](./man/figures/README-example_cog-1.png)
-
 ## Extract Values Given Lat/Lon Values
 
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(terra)
 df <- structure(
   list(
