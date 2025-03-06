@@ -7,7 +7,7 @@ rule:
     - pattern: $FUN($VALUES, TRUE)
 constraints:
   FUN:
-    regex: ^(expect_identical|expect_identical)$
+    regex: ^(expect_identical|expect_equal)$
 fix: expect_true(~~VALUES~~)
 message: expect_true(x) is better than ~~FUN~~(x, TRUE).
 
@@ -22,7 +22,7 @@ rule:
     - pattern: $FUN($VALUES, FALSE)
 constraints:
   FUN:
-    regex: ^(expect_identical|expect_identical)$
+    regex: ^(expect_identical|expect_equal)$
 fix: expect_false(~~VALUES~~)
 message: expect_false(x) is better than ~~FUN~~(x, FALSE).
 

@@ -43,11 +43,13 @@
 #' @autoglobal
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #' @export
-read_smips <- function(day,
-                       collection = "totalbucket",
-                       api_key = get_key(),
-                       max_tries = 3L,
-                       initial_delay = 1L) {
+read_smips <- function(
+  day,
+  collection = "totalbucket",
+  api_key = get_key(),
+  max_tries = 3L,
+  initial_delay = 1L
+) {
   # Fix any invalid key here, rather than in get_key() in case a user passes a key
   api_key <- gsub("/", "%2f", api_key, fixed = TRUE)
 
@@ -79,8 +81,10 @@ read_smips <- function(day,
       error = function(e) {
         if (attempt < max_tries) {
           delay <- initial_delay * 2^(attempt - 1)
-          cli::cli_alert("Download failed on attempt { attempt }.
-                         Retrying in { delay } seconds...")
+          cli::cli_alert(
+            "Download failed on attempt { attempt }.
+                         Retrying in { delay } seconds..."
+          )
           Sys.sleep(delay)
           attempt <<- attempt + 1
         } else {
@@ -114,12 +118,21 @@ read_smips <- function(day,
   }
 
   tryCatch(
-    x <- lubridate::parse_date_time(x, c(
-      "Ymd", "dmY", "BdY", "Bdy"
-    ), tz = tz),
+    x <- lubridate::parse_date_time(
+      x,
+      c(
+        "Ymd",
+        "dmY",
+        "BdY",
+        "Bdy"
+      ),
+      tz = tz
+    ),
     warning = function(c) {
-      cli::cli_abort("{ x } is not in a valid date format.
-                     Please enter a valid date format.")
+      cli::cli_abort(
+        "{ x } is not in a valid date format.
+                     Please enter a valid date format."
+      )
     }
   )
   return(x)
@@ -160,12 +173,16 @@ read_smips <- function(day,
   .last_week <- lubridate::today() - 7
   .url_year <- lubridate::year(.day)
 
-  if (.collection == "totalbucket" &&
-    .url_year < 2005 ||
-    # NOTE: this is throwing "'tzone' attributes are inconsistent"
-    .day > .last_week) {
-    cli::cli_abort("The data are not available before 2005 and roughly
-                   much past { .last_week }")
+  if (
+    .collection == "totalbucket" &&
+      .url_year < 2005 ||
+      # NOTE: this is throwing "'tzone' attributes are inconsistent"
+      .day > .last_week
+  ) {
+    cli::cli_abort(
+      "The data are not available before 2005 and roughly
+                   much past { .last_week }"
+    )
   }
 }
 

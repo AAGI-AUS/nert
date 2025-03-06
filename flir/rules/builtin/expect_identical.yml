@@ -12,7 +12,7 @@ id: expect_identical-2
 language: r
 severity: warning
 rule:
-  pattern: expect_identical($VAL1, $VAL2)
+  pattern: expect_equal($VAL1, $VAL2)
 fix: expect_identical(~~VAL1~~, ~~VAL2~~)
 constraints:
   VAL1:
@@ -23,6 +23,8 @@ constraints:
             kind: float
             regex: \.
       - not:
+          regex: ^typeof
+      - not:
           pattern: NULL
   VAL2:
     all:
@@ -32,7 +34,9 @@ constraints:
             kind: float
             regex: \.
       - not:
+          regex: ^typeof
+      - not:
           pattern: NULL
 message: |
-  Use expect_identical(x, y) by default; resort to expect_identical() only when
+  Use expect_identical(x, y) by default; resort to expect_equal() only when
   needed, e.g. when setting ignore_attr= or tolerance=.

@@ -24,17 +24,17 @@ severity: warning
 rule:
   any:
     - pattern:
-        context: expect_identical(typeof($OBJ), $VALUES)
+        context: expect_equal(typeof($OBJ), $VALUES)
         strictness: ast
     - pattern:
-        context: expect_identical($VALUES, typeof($OBJ))
+        context: expect_equal($VALUES, typeof($OBJ))
         strictness: ast
 constraints:
   VALUES:
     not:
       regex: typeof
 fix: expect_type(~~OBJ~~, ~~VALUES~~)
-message: expect_type(x, t) is better than expect_identical(typeof(x), t).
+message: expect_type(x, t) is better than expect_equal(typeof(x), t).
 
 ---
 

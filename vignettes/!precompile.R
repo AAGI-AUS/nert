@@ -10,16 +10,15 @@ knit(
   output = "vignettes/nert.Rmd"
 )
 
-purl("vignettes/nert.Rmd.orig",
-  output = "vignettes/nert.R"
-)
+purl("vignettes/nert.Rmd.orig", output = "vignettes/nert.R")
 
 knit(
   input = "vignettes/nert_for_agricultural_analytics.Rmd.orig",
   output = "vignettes/nert_for_agricultural_analytics.Rmd"
 )
 
-purl("vignettes/nert_for_agricultural_analytics.Rmd.orig",
+purl(
+  "vignettes/nert_for_agricultural_analytics.Rmd.orig",
   output = "vignettes/nert_for_agricultural_analytics.R"
 )
 

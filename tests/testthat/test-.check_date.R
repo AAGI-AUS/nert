@@ -60,7 +60,10 @@ test_that("Date validation works with valid dates", {
 
 test_that("Date validation throws error with invalid dates", {
   # multiple dates
-  expect_error(.check_date(c("2020-01-01", "2020-01-02")), "Only one day is allowed per request.")
+  expect_error(
+    .check_date(c("2020-01-01", "2020-01-02")),
+    "Only one day is allowed per request."
+  )
 
   # invalid formats
   expect_error(

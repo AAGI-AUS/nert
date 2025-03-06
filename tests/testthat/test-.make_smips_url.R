@@ -39,7 +39,10 @@ test_that("An invalid collection throws an error", {
     "deepD",
     "runoff"
   )
-  valid_collections_str <- paste(valid_collections[seq_along(valid_collections) - 1], collapse = '", "')
+  valid_collections_str <- paste(
+    valid_collections[seq_along(valid_collections) - 1],
+    collapse = '", "'
+  )
   valid_collections_str <- paste0(
     '"',
     valid_collections_str,
