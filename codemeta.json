@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/AAGI-AUS/nert",
   "issueTracker": "https://github.com/AAGI-AUS/nert/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.9000",
+  "version": "0.0.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.1 (2024-06-14)",
+  "runtimePlatform": "R version 4.4.3 (2025-02-28)",
   "author": [
     {
       "@type": "Person",
@@ -245,7 +245,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "979.673KB",
+  "fileSize": "950.328KB",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/AAGI-AUS/nert"]
 }
