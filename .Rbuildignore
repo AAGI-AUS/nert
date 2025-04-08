@@ -17,11 +17,11 @@
 ^vignettes\\out\.log$
 ^\!precompile\.R$
 ^Meta$
-^man/dot-check_date\.Rd$
-^man/dot-check_not_example_api_key\.Rd$
-^man/dot-check_collection_agreement\.Rd$
-^man/dot-make_smips_url\.Rd$
 ^air\.toml$
 
 # flir files
 ^flir$
+^man/dot-check_date\.Rd$
+^man/dot-check_not_example_api_key\.Rd$
+^man/dot-check_collection_agreement\.Rd$
+^man/dot-make_smips_url\.Rd$
