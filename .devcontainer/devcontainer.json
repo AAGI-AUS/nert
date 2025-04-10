@@ -8,7 +8,11 @@
         "terra",
         "data.table",
         "here",
-        "lubridate"
+        "lubridate",
+        "pak",
+        "ggplot2",
+        "tidyterra",
+        "keyring"
       ]
     }
   },
