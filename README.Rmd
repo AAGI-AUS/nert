@@ -1,3 +1,7 @@
+---
+output: github_document
+---
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -85,7 +89,7 @@ devcontainer exec --workspace-folder . R -e "devtools::check()"
 Render this file.
 
 ```{bash, eval=FALSE}
-devcontainer exec --workspace-folder . R -e "devtools::build_readme(output_format = 'github_document')"
+devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 ```
 
 ## Citing {nert}
