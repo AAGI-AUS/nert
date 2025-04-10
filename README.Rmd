@@ -23,11 +23,16 @@ The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosyste
 You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
 
 ```{r install, eval=FALSE}
+o <- options() # store original options
+
+options(pkg.build_vignettes = TRUE)
+
 if (!require("pak")) {
   install.packages("pak")
 }
 
 pak::pak("AAGI-AUS/nert")
+options(o) # reset options
 ```
 
 ## Example: reading a COG as a spatial object

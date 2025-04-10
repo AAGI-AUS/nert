@@ -17,11 +17,16 @@ You can install the development version of {nert} from [GitHub](https://github.c
 
 
 ``` r
+o <- options() # store original options
+
+options(pkg.build_vignettes = TRUE)
+
 if (!require("pak")) {
   install.packages("pak")
 }
 
 pak::pak("AAGI-AUS/nert")
+options(o) # reset options
 ```
 
 ## Example: reading a COG as a spatial object
@@ -50,6 +55,12 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given lati
 
 ``` r
 library(terra)
+#> terra 1.8.42
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -106,7 +117,7 @@ citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
 #>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
-#>   _nert: An API Client for TERN Data_. R package version 0.0.0.9000,
+#>   _nert: An API Client for TERN Data_. R package version 0.0.1,
 #>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -115,7 +126,7 @@ citation("nert")
 #>     title = {nert: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
 #>     year = {2025},
-#>     note = {R package version 0.0.0.9000, https://github.com/AAGI-AUS/nert},
+#>     note = {R package version 0.0.1, https://github.com/AAGI-AUS/nert},
 #>     url = {https://aagi-aus.github.io/nert/},
 #>   }
 ```
