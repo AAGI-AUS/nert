@@ -5,7 +5,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  fig.cap = ""
 )
 ```
 
@@ -84,7 +85,7 @@ devcontainer exec --workspace-folder . R -e "devtools::check()"
 Render this file.
 
 ```{bash, eval=FALSE}
-devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
+devcontainer exec --workspace-folder . R -e "devtools::build_readme(output_format = 'md_document')"
 ```
 
 ## Citing {nert}
