@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # nert
@@ -16,11 +17,13 @@ Ecosystem Research Network) data in your R session.
 You can install the development version of {nert} from
 [GitHub](https://github.com/AAGI-AUS/nert) with:
 
-    if (!require("pak")) {
-      install.packages("pak")
-    }
+``` r
+if (!require("pak")) {
+  install.packages("pak")
+}
 
-    pak::pak("AAGI-AUS/nert")
+pak::pak("AAGI-AUS/nert")
+```
 
 ## Example: reading a COG as a spatial object
 
@@ -28,13 +31,15 @@ This is a basic example which shows you how you can fetch one day’s data
 from the SMIPS data (currently the only supported data set in TERN) and
 visualise it:
 
-    library(nert)
-    r <- read_smips(day = "2024-01-01")
-    #> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
+``` r
+library(nert)
+r <- read_smips(day = "2024-01-01")
+#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
-    # `autoplot` is re-exported from {tidyterra}
-    autoplot(r)
-    #> <SpatRaster> resampled to 501270 cells.
+# `autoplot` is re-exported from {tidyterra}
+autoplot(r)
+#> <SpatRaster> resampled to 501270 cells.
+```
 
 <img src="man/figures/README-example_cog-1.png" width="100%" />
 
@@ -43,27 +48,29 @@ visualise it:
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW
 given latitude and longitude values for each.
 
-    library(terra)
-    #> terra 1.8.42
-    df <- structure(
-      list(
-        location = c("Corrigin", "Merredin", "Tamworth"),
-        x = c(117.87, 118.28, 150.84),
-        y = c(-32.33, -31.48, -31.07)
-      ),
-      row.names = c(NA, -3L),
-      class = "data.frame"
-    )
+``` r
+library(terra)
+#> terra 1.8.42
+df <- structure(
+  list(
+    location = c("Corrigin", "Merredin", "Tamworth"),
+    x = c(117.87, 118.28, 150.84),
+    y = c(-32.33, -31.48, -31.07)
+  ),
+  row.names = c(NA, -3L),
+  class = "data.frame"
+)
 
-    cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
+cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
 
-    cog_df <- cbind(df$location, cog_df)
-    names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
-    cog_df
-    #>   location ID smips_totalbucket_mm_20240101        x         y
-    #> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
-    #> 2 Merredin  2                    0.22716530 118.2787 -31.48353
-    #> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
+cog_df <- cbind(df$location, cog_df)
+names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
+cog_df
+#>   location ID smips_totalbucket_mm_20240101        x         y
+#> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
+#> 2 Merredin  2                    0.22716530 118.2787 -31.48353
+#> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
+```
 
 ## Development
 
@@ -71,34 +78,42 @@ given latitude and longitude values for each.
 
 Set up the container.
 
-    devcontainer up --workspace-folder .
+``` bash
+devcontainer up --workspace-folder .
+```
 
 Run tests and check stuff.
 
-    devcontainer exec --workspace-folder . R -e "devtools::check()"
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::check()"
+```
 
 Render this file.
 
-    devcontainer exec --workspace-folder . R -e "devtools::build_readme(output_format = 'md_document')"
+``` bash
+devcontainer exec --workspace-folder . R -e "devtools::build_readme(output_format = 'github_document')"
+```
 
 ## Citing {nert}
 
 To cite nert:
 
-    citation("nert")
-    #> Warning in citation("nert"): could not determine year for 'nert' from package
-    #> DESCRIPTION file
-    #> To cite package 'nert' in publications use:
-    #> 
-    #>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (????).
-    #>   _nert: An API Client for TERN Data_. R package version 0.0.1,
-    #>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
-    #> 
-    #> A BibTeX entry for LaTeX users is
-    #> 
-    #>   @Manual{,
-    #>     title = {nert: An API Client for TERN Data},
-    #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
-    #>     note = {R package version 0.0.1, https://github.com/AAGI-AUS/nert},
-    #>     url = {https://aagi-aus.github.io/nert/},
-    #>   }
+``` r
+citation("nert")
+#> Warning in citation("nert"): could not determine year for 'nert' from package
+#> DESCRIPTION file
+#> To cite package 'nert' in publications use:
+#> 
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (????).
+#>   _nert: An API Client for TERN Data_. R package version 0.0.1,
+#>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {nert: An API Client for TERN Data},
+#>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
+#>     note = {R package version 0.0.1, https://github.com/AAGI-AUS/nert},
+#>     url = {https://aagi-aus.github.io/nert/},
+#>   }
+```

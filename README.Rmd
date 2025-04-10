@@ -85,7 +85,7 @@ devcontainer exec --workspace-folder . R -e "devtools::check()"
 Render this file.
 
 ```{bash, eval=FALSE}
-devcontainer exec --workspace-folder . R -e "devtools::build_readme(output_format = 'md_document')"
+devcontainer exec --workspace-folder . R -e "devtools::build_readme(output_format = 'github_document')"
 ```
 
 ## Citing {nert}
