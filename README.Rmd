@@ -98,4 +98,4 @@ To cite nert:
 
 ```{r cite}
 citation("nert")
-
+```

@@ -55,12 +55,6 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given lati
 
 ``` r
 library(terra)
-#> terra 1.8.42
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
