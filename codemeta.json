@@ -41,7 +41,7 @@
       "givenName": "Sam",
       "familyName": "Rogers",
       "email": "sam.rogers@adelaide.edu.au",
-      "@id": "https://orcid.org/0000-0002-4607-5396"
+      "@id": "https://orcid.org/0000-0002-8147-1239"
     },
     {
       "@type": "Person",
@@ -53,10 +53,10 @@
   "maintainer": [
     {
       "@type": "Person",
-      "givenName": "Adam H.",
-      "familyName": "Sparks",
-      "email": "adamhsparks@gmail.com",
-      "@id": "https://orcid.org/0000-0002-0061-8359"
+      "givenName": "Sam",
+      "familyName": "Rogers",
+      "email": "sam.rogers@adelaide.edu.au",
+      "@id": "https://orcid.org/0000-0002-8147-1239"
     }
   ],
   "softwareSuggestions": [
@@ -245,7 +245,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "950.328KB",
+  "fileSize": "979.151KB",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/AAGI-AUS/nert"]
 }
