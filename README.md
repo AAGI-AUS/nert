@@ -1,20 +1,21 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-
 
 # nert
 
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://codecov.io/gh/AAGI-AUS/nert)
 <!-- badges: end -->
 
-The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
+The goal of {nert} is to provide access to Australian TERN (Terrestrial
+Ecosystem Research Network) data in your R session.
 
 ## Installation
 
-You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
-
+You can install the development version of {nert} from
+[GitHub](https://github.com/AAGI-AUS/nert) with:
 
 ``` r
 o <- options() # store original options
@@ -31,30 +32,30 @@ options(o) # reset options
 
 ## Example: reading a COG as a spatial object
 
-This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
-
+This is a basic example which shows you how you can fetch one day’s data
+from the SMIPS data (currently the only supported data set in TERN) and
+visualise it:
 
 ``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
+#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 
-<div class="figure">
-<img src="man/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%" />
-<p class="caption">plot of chunk example_cog</p>
-</div>
+<img src="man/figures/README-example_cog-1.png" width="100%" />
 
 ## Extract Values Given Lat/Lon Values
 
-Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
-
+Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW
+given latitude and longitude values for each.
 
 ``` r
 library(terra)
+#> terra 1.8.42
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -82,20 +83,17 @@ cog_df
 
 Set up the container.
 
-
 ``` bash
 devcontainer up --workspace-folder .
 ```
 
 Run tests and check stuff.
 
-
 ``` bash
 devcontainer exec --workspace-folder . R -e "devtools::check()"
 ```
 
 Render this file.
-
 
 ``` bash
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
@@ -105,9 +103,10 @@ devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 
 To cite nert:
 
-
 ``` r
 citation("nert")
+#> Warning in citation("nert"): could not determine year for 'nert' from package
+#> DESCRIPTION file
 #> To cite package 'nert' in publications use:
 #> 
 #>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
