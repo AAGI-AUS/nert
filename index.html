@@ -81,15 +81,12 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_smips.html">read_smips</a></span><span class="op">(</span>day <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent</span></span>
 <span></span>
 <span><span class="co"># `autoplot` is re-exported from {tidyterra}</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span></code></pre></div>
-<div class="figure">
-<img src="reference/figures/README-example_cog-1.png" alt="plot of chunk example_cog" width="100%"><p class="caption">
-plot of chunk example_cog
-</p>
-</div>
+<p><img src="reference/figures/README-example_cog-1.png" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="extract-values-given-latlon-values">Extract Values Given Lat/Lon Values<a class="anchor" aria-label="anchor" href="#extract-values-given-latlon-values"></a>
@@ -97,6 +94,7 @@ plot of chunk example_cog
 <p>Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.8.42</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Corrigin"</span>, <span class="st">"Merredin"</span>, <span class="st">"Tamworth"</span><span class="op">)</span>,</span>
@@ -137,6 +135,8 @@ plot of chunk example_cog
 <p>To cite nert:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in citation("nert"): could not determine year for 'nert' from package</span></span>
+<span><span class="co">#&gt; DESCRIPTION file</span></span>
 <span><span class="co">#&gt; To cite package 'nert' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).</span></span>
