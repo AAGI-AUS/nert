@@ -2,13 +2,13 @@ Package: nert
 Title: An API Client for TERN Data
 Version: 0.0.1
 Authors@R: c(
-    person("Adam H.", "Sparks", , "adamhsparks@gmail.com", role = c("cre", "aut"),
+    person("Adam H.", "Sparks", , "adamhsparks@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0002-0061-8359")),
     person("Wasin", "Pipattungsakul", , "wasin.pipattungsakul@adelaide.edu.au", role = "aut"),
     person("Russell", "Edson", , "russell.edson@adelaide.edu.au", role = "aut",
            comment = c(ORCID = "0000-0002-4607-5396")),
-    person("Sam", "Rogers", , "sam.rogers@adelaide.edu.au", role = "aut",
-           comment = c(ORCID = "0000-0002-4607-5396")),
+    person("Sam", "Rogers", , "sam.rogers@adelaide.edu.au", role = c("cre", "aut"),
+           comment = c(ORCID = "0000-0002-8147-1239")),
     person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = "aut")
   )
 Description: Provides access to Australia's TERN (Terrestrial Ecosystem

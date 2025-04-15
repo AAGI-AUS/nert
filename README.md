@@ -18,11 +18,16 @@ You can install the development version of {nert} from
 [GitHub](https://github.com/AAGI-AUS/nert) with:
 
 ``` r
+o <- options() # store original options
+
+options(pkg.build_vignettes = TRUE)
+
 if (!require("pak")) {
   install.packages("pak")
 }
 
 pak::pak("AAGI-AUS/nert")
+options(o) # reset options
 ```
 
 ## Example: reading a COG as a spatial object
@@ -104,7 +109,7 @@ citation("nert")
 #> DESCRIPTION file
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (????).
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
 #>   _nert: An API Client for TERN Data_. R package version 0.0.1,
 #>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
 #> 
@@ -113,6 +118,7 @@ citation("nert")
 #>   @Manual{,
 #>     title = {nert: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
+#>     year = {2025},
 #>     note = {R package version 0.0.1, https://github.com/AAGI-AUS/nert},
 #>     url = {https://aagi-aus.github.io/nert/},
 #>   }
