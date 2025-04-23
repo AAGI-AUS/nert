@@ -53,8 +53,11 @@ jobs:
 
       - name: Build binary package
         if: matrix.config.os == 'windows-latest' || matrix.config.os == 'macos-latest'
-        run: pkgbuild::build(binary = TRUE)
+        run: |
+          built_path <- pkgbuild::build(binary = TRUE)
+          cat(sprintf("::set-output name=built_path::%s", built_path))
         shell: Rscript {0}
+        id: build
 
       - name: Get package version
         run: |
@@ -65,7 +68,6 @@ jobs:
         if: matrix.config.os == 'windows-latest' || matrix.config.os == 'macos-latest'
         with:
           name: nert-${{ matrix.config.os }}-r${{ matrix.config.r }}-v${{ env.PACKAGE_VERSION }}-binary
-          path: |
-            **/*.tgz
-            **/*.zip
+          path: ${{ steps.build.outputs.built_path }}
           if-no-files-found: ignore
+          retention-days: 14
