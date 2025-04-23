@@ -39,7 +39,6 @@ visualise it:
 ``` r
 library(nert)
 r <- read_smips(day = "2024-01-01")
-#> Warning in check_tzones(e1, e2): 'tzone' attributes are inconsistent
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)
@@ -109,7 +108,7 @@ citation("nert")
 #> DESCRIPTION file
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (????).
 #>   _nert: An API Client for TERN Data_. R package version 0.0.1,
 #>   https://github.com/AAGI-AUS/nert, <https://aagi-aus.github.io/nert/>.
 #> 
@@ -118,7 +117,6 @@ citation("nert")
 #>   @Manual{,
 #>     title = {nert: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
-#>     year = {2025},
 #>     note = {R package version 0.0.1, https://github.com/AAGI-AUS/nert},
 #>     url = {https://aagi-aus.github.io/nert/},
 #>   }
