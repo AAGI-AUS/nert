@@ -51,16 +51,21 @@ jobs:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
 
+      - name: Build binary package
+        if: matrix.config.os == 'windows-latest' || matrix.config.os == 'macos-latest'
+        run: pkgbuild::build(binary = TRUE)
+        shell: Rscript {0}
+
       - name: Get package version
         run: |
           echo "PACKAGE_VERSION=$(grep '^Version:' DESCRIPTION | sed 's/Version: //')" >> $GITHUB_ENV
         shell: bash
 
       - uses: actions/upload-artifact@v4
+        if: matrix.config.os == 'windows-latest' || matrix.config.os == 'macos-latest'
         with:
-          name: nert-${{ matrix.config.os }}-r${{ matrix.config.r }}-v${{ env.PACKAGE_VERSION }}
+          name: nert-${{ matrix.config.os }}-r${{ matrix.config.r }}-v${{ env.PACKAGE_VERSION }}-binary
           path: |
-            **/*.tar.gz
             **/*.tgz
             **/*.zip
           if-no-files-found: ignore
