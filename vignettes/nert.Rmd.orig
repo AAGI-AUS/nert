@@ -151,6 +151,7 @@ r <- read_smips(
 
 Note that here we specified a value for the API key.
 
+### Reading TERN Data
 
 Using the example from above, you can get the SMIPS data for all of Australia on Jan 1, 2024 like so:
 
@@ -171,6 +172,24 @@ Repeating an example from above where we tested if the API key works, if you wis
 library(terra)
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+```
+
+Reading the Australian Soils Classification data works in the same way.
+To get the classification data you do not need to specify any arguments for `read_asc()`.
+
+```{r asc}
+asc <- read_asc()
+
+autoplot(asc)
+```
+
+
+If you would like to work with the Confusion Index, which supplies an estimate of the level of certainty in the model predictions where 1 is high confusion and 0 is low confusion, you can specify the `confusion_index = TRUE` argument like so.
+
+```{r asc_ci}
+asc_ci <- read_asc(confusion_index = TRUE)
+
+autoplot(asc)
 ```
 
 That's it, you're all set!
