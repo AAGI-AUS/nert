@@ -112,23 +112,6 @@ read_smips <- function(
 }
 
 
-#' Check that the user hasn't blindly copied the "your_api_key" string from the
-#' examples
-#'
-#' @autoglobal
-#' @dev
-.check_not_example_api_key <- function(.api_key) {
-  if (!is.null(.api_key) && .api_key == "your_api_key") {
-    stop(
-      "You have copied the example code and not provided a proper API key.
-         An API key may be requested from TERN to access this resource. Please
-         see the help file for {.fn get_key} for more information.",
-      call. = FALSE
-    )
-  }
-  return(invisible(NULL))
-}
-
 #' Validate Days Requested Align With Collection
 #'
 #' Not all dates are offered by all collections. This checks the user inputs to
