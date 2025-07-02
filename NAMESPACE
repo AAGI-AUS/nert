@@ -2,6 +2,7 @@
 
 export(autoplot)
 export(get_key)
+export(read_asc)
 export(read_smips)
 import(nlme)
 importFrom(ggplot2,autoplot)
