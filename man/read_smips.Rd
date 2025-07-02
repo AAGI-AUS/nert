@@ -44,7 +44,7 @@ retrying the download.  This increases as the tries increment.  Defaults to
 1.}
 }
 \value{
-A \link[terra:rast]{terra::rast} object
+A \code{\link[terra:rast]{terra::rast()}} object.
 }
 \description{
 Read Soil Moisture Integration and Prediction System (\acronym{SMIPS}) Cloud
@@ -52,7 +52,7 @@ Optimised Geotiff (\acronym{COG}) files from \acronym{TERN} in your \R
 session.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 
 r <- read_smips("2024-01-01")
 
@@ -63,5 +63,9 @@ autoplot(r)
 \references{
 \url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0} and
 \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
+}
+\seealso{
+Other COGs: 
+\code{\link{read_asc}()}
 }
 \concept{COGs}
