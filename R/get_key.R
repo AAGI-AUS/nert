@@ -38,10 +38,10 @@
 get_key <- function() {
   TERN_API_KEY <- Sys.getenv("TERN_API_KEY")
 
-  if (!nzchar(TERN_API_KEY)) {
-    .set_tern_key()
-  } else {
+  if (nzchar(TERN_API_KEY)) {
     return(TERN_API_KEY)
+  } else {
+    .set_tern_key()
   }
 }
 
@@ -56,7 +56,7 @@ get_key <- function() {
 #' @returns Called for its side-effects, opens a browser window at the TERN
 #'   accounts page.
 .set_tern_key <- function() {
-  if (interactive()) {
+  if (rlang::is_interactive()) {
     utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
   }
 
