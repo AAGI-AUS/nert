@@ -37,13 +37,13 @@
       },
       error = function(e) {
         if (attempt < max_tries) {
-          delay <- initial_delay * 2^(attempt - 1)
+          delay <- initial_delay * 2L^(attempt - 1L)
           cli::cli_alert(
             "Download failed on attempt { attempt }.
                          Retrying in { delay } seconds..."
           )
           Sys.sleep(delay)
-          attempt <<- attempt + 1
+          attempt <<- attempt + 1L
         } else {
           cli::cli_abort("Download failed after { max_tries } attempts.")
           stop(e)
