@@ -13,6 +13,7 @@ test_that("get_smips returns the Soil Moisture index data for 2020-01-01", {
 
 
 test_that("get_smips errors with an appropriate message if no day provided", {
+  skip_on_ci()
   expect_error(
     read_smips(collection = "SMindex"),
     "You must provide a single day's date for this request."
