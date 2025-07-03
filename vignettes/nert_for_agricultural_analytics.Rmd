@@ -150,6 +150,12 @@ for (i in 1:length(date_range)) {
     )
   )
 }
+#> Warning: TIFFFillTile:Read error at row 4294967295, col 4294967295, tile 50;
+#> got 48296 bytes, expected 521917 (GDAL error 1)
+#> Warning: TIFFReadEncodedTile() failed. (GDAL error 1)
+#> Warning: smips_smi_perc_20220619.tif, band 1: IReadBlock failed at X offset 5,
+#> Y offset 5: TIFFReadEncodedTile() failed. (GDAL error 1)
+#> Error: [extract] cannot read values
 head(smips_data)
 #>         Date  Latitude Longitude smips_smi_perc
 #> 1 2022-05-07 -34.95253  138.6237     0.25906488
@@ -259,9 +265,9 @@ augmented_model.ints <- intervals(augmented_model, which = "fixed")$fixed
 augmented_model.Neffects <- augmented_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
 augmented_model.Neffects
 #>                        lower      est.     upper
-#> Nitrogen_kgNha30 -0.03984861 0.2000454 0.4399395
-#> Nitrogen_kgNha60  0.31409573 0.5539898 0.7938838
-#> Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058
+#> Nitrogen_kgNha30 -0.03567547 0.2058920 0.4474595
+#> Nitrogen_kgNha60  0.32054684 0.5621143 0.8036818
+#> Nitrogen_kgNha90  0.35122891 0.5927964 0.8343638
 ```
 
 We can use **ggplot2** plotting to graph the confidence intervals for the

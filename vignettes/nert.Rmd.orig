@@ -177,7 +177,7 @@ extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 Reading the Australian Soils Classification data works in the same way.
 To get the classification data you do not need to specify any arguments for `read_asc()`.
 
-```{r asc}
+```{r asc, fig.cap = "A plot of Australian Soils Classification data."}
 asc <- read_asc()
 
 autoplot(asc)
@@ -186,10 +186,10 @@ autoplot(asc)
 
 If you would like to work with the Confusion Index, which supplies an estimate of the level of certainty in the model predictions where 1 is high confusion and 0 is low confusion, you can specify the `confusion_index = TRUE` argument like so.
 
-```{r asc_ci}
+```{r asc_ci, fig.cap = "A plot of the Confusion Index for the Australian Soils Classification data"}
 asc_ci <- read_asc(confusion_index = TRUE)
 
-autoplot(asc)
+autoplot(asc_ci)
 ```
 
 That's it, you're all set!
