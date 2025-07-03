@@ -38,7 +38,7 @@
 #' # `tidyterra::autoplot` is re-exported for convenience
 #' autoplot(r)
 #'
-#' @returns A [terra::rast] object
+#' @returns A [terra::rast()] object.
 #'
 #' @autoglobal
 #' @references <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0> and
@@ -51,50 +51,22 @@ read_smips <- function(
   max_tries = 3L,
   initial_delay = 1L
 ) {
-  # Fix any invalid key here, rather than in get_key() in case a user passes a key
-  api_key <- gsub("/", "%2f", api_key, fixed = TRUE)
-
-  attempt <- 1
-  success <- FALSE
-
+  api_key <- .check_api_key(api_key)
   if (missing(day)) {
     cli::cli_abort("You must provide a single day's date for this request.")
   }
   day <- .check_date(day)
   url_year <- lubridate::year(day)
 
-  file <- .make_smips_url(.collection = collection, .day = day)
+  dl_file <- .make_smips_url(.collection = collection, .day = day)
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
     api_key,
     collection,
     url_year,
-    file
+    dl_file
   )
-
-  while (attempt <= max_tries && !success) {
-    tryCatch(
-      {
-        r <- terra::rast(full_url)
-        success <- TRUE
-        return(r)
-      },
-      error = function(e) {
-        if (attempt < max_tries) {
-          delay <- initial_delay * 2^(attempt - 1)
-          cli::cli_alert(
-            "Download failed on attempt { attempt }.
-                         Retrying in { delay } seconds..."
-          )
-          Sys.sleep(delay)
-          attempt <<- attempt + 1
-        } else {
-          cli::cli_abort("Download failed after { max_tries } attempts.")
-          stop(e)
-        }
-      }
-    )
-  }
+  return(.read_cog(full_url, max_tries, initial_delay))
 }
 
 #' Check User Input Dates for Validity
@@ -108,7 +80,7 @@ read_smips <- function(
 #' @autoglobal
 #' @dev
 .check_date <- function(x) {
-  if (length(x) > 1) {
+  if (length(x) > 1L) {
     cli::cli_abort("Only one day is allowed per request.")
   }
 
@@ -140,23 +112,6 @@ read_smips <- function(
 }
 
 
-#' Check that the user hasn't blindly copied the "your_api_key" string from the
-#' examples
-#'
-#' @autoglobal
-#' @dev
-.check_not_example_api_key <- function(.api_key) {
-  if (!is.null(.api_key) && .api_key == "your_api_key") {
-    stop(
-      "You have copied the example code and not provided a proper API key.
-         An API key may be requested from TERN to access this resource. Please
-         see the help file for {.fn get_key} for more information.",
-      call. = FALSE
-    )
-  }
-  return(invisible(NULL))
-}
-
 #' Validate Days Requested Align With Collection
 #'
 #' Not all dates are offered by all collections. This checks the user inputs to
@@ -176,7 +131,7 @@ read_smips <- function(
 
   if (
     .collection == "totalbucket" &&
-      .url_year < 2005 ||
+      .url_year < 2005L ||
       # NOTE: this is throwing "'tzone' attributes are inconsistent"
       .day > .last_week
   ) {
@@ -198,7 +153,7 @@ read_smips <- function(
 #' @dev
 
 .make_smips_url <- function(.collection, .day) {
-  url_date <- gsub("-", "", .day)
+  url_date <- gsub("-", "", .day, fixed = TRUE)
 
   approved_collections <- c(
     "totalbucket",

@@ -46,4 +46,4 @@ Encoding: UTF-8
 Language: en-AU
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxyglobals::global_roclet", "devtag::dev_roclet"))
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.2.9000

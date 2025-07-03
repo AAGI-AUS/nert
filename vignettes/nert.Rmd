@@ -77,9 +77,11 @@ Following, I will demonstrate how to save your API key in your `.Renviron` file 
 An easy way to open the right file is to use the {usethis} package in your R session, _e.g._, `usethis::edit_r_environ()`.
 Add a new line to the file to store your API key in the variable `TERN_API_KEY`, ensuring to use that name as that is what {nert} will automatically look for:
 
-`TERN_API_KEY='<paste your key here>'`
+```bash
+    TERN_API_KEY='<paste your key here>'
+```
 
-![](07-get-started.jpg){width=80%}
+    ![](07-get-started.jpg){width=80%}
 
 2. Save your `.Renviron` file, and restart your R session so that the change is applied.
 You can then test that the {nert} package is reading your API key properly by entering `nert::get_key()` at the R command console.
@@ -95,7 +97,7 @@ The below code downloads the SMIPS "totalbucket" soil moisture data raster for J
 ``` r
 library(nert)
 library(terra)
-#> terra 1.8.21
+#> terra 1.8.54
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
@@ -153,6 +155,7 @@ r <- read_smips(
 
 Note that here we specified a value for the API key.
 
+### Reading TERN Data
 
 Using the example from above, you can get the SMIPS data for all of Australia on Jan 1, 2024 like so:
 
@@ -171,7 +174,7 @@ autoplot(r)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="test-plot-1.png" alt="A plot of SMIPS data for all of Australia on 2024-01-01."  />
+<img src="vignettes/test-plot-1.png" alt="A plot of SMIPS data for all of Australia on 2024-01-01."  />
 <p class="caption">A plot of SMIPS data for all of Australia on 2024-01-01.</p>
 </div>
 
@@ -185,6 +188,38 @@ extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #>   ID smips_totalbucket_mm_20240101        x         y
 #> 1  1                      46.07692 138.6037 -34.93254
 ```
+
+Reading the Australian Soils Classification data works in the same way.
+To get the classification data you do not need to specify any arguments for `read_asc()`.
+
+
+``` r
+asc <- read_asc()
+
+autoplot(asc)
+#> <SpatRaster> resampled to 500388 cells.
+```
+
+<div class="figure" style="text-align: center">
+<img src="vignettes/asc-1.png" alt="plot of chunk asc"  />
+<p class="caption">plot of chunk asc</p>
+</div>
+
+
+If you would like to work with the Confusion Index, which supplies an estimate of the level of certainty in the model predictions where 1 is high confusion and 0 is low confusion, you can specify the `confusion_index = TRUE` argument like so.
+
+
+``` r
+asc_ci <- read_asc(confusion_index = TRUE)
+
+autoplot(asc)
+#> <SpatRaster> resampled to 500388 cells.
+```
+
+<div class="figure" style="text-align: center">
+<img src="vignettes/asc_ci-1.png" alt="plot of chunk asc_ci"  />
+<p class="caption">plot of chunk asc_ci</p>
+</div>
 
 That's it, you're all set!
 
