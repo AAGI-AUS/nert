@@ -97,6 +97,12 @@ The below code downloads the SMIPS "totalbucket" soil moisture data raster for J
 ``` r
 library(nert)
 library(terra)
+#> terra 1.8.54
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 
 r <- read_smips(day = "2024-01-01")
 
@@ -205,15 +211,6 @@ If you would like to work with the Confusion Index, which supplies an estimate o
 
 ``` r
 asc_ci <- read_asc(confusion_index = TRUE)
-
-autoplot(asc_ci)
-#> Warning: TIFFFillTile:Read error at row 36352, col 37888, tile 1915; got 269108
-#> bytes, expected 394427 (GDAL error 1)
-#> Warning: TIFFReadEncodedTile() failed. (GDAL error 1)
-#> Warning: ASC_CI_C_P_AU_TRN_N.cog.tif, band 1: IReadBlock failed at X offset 72,
-#> Y offset 19: TIFFReadEncodedTile() failed. (GDAL error 1)
-#> <SpatRaster> resampled to 500388 cells.
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': [extract] cannot read values
 ```
 
 That's it, you're all set!

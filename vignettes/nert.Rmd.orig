@@ -186,10 +186,8 @@ autoplot(asc)
 
 If you would like to work with the Confusion Index, which supplies an estimate of the level of certainty in the model predictions where 1 is high confusion and 0 is low confusion, you can specify the `confusion_index = TRUE` argument like so.
 
-```{r asc_ci, fig.cap = "A plot of the Confusion Index for the Australian Soils Classification data"}
+```{r asc_ci}
 asc_ci <- read_asc(confusion_index = TRUE)
-
-autoplot(asc_ci)
 ```
 
 That's it, you're all set!
