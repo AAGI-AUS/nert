@@ -174,7 +174,7 @@ autoplot(r)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignettes/test-plot-1.png" alt="A plot of SMIPS data for all of Australia on 2024-01-01."  />
+<img src="test-plot-1.png" alt="A plot of SMIPS data for all of Australia on 2024-01-01."  />
 <p class="caption">A plot of SMIPS data for all of Australia on 2024-01-01.</p>
 </div>
 
@@ -201,7 +201,7 @@ autoplot(asc)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignettes/asc-1.png" alt="plot of chunk asc"  />
+<img src="asc-1.png" alt="plot of chunk asc"  />
 <p class="caption">plot of chunk asc</p>
 </div>
 
@@ -217,7 +217,7 @@ autoplot(asc)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignettes/asc_ci-1.png" alt="plot of chunk asc_ci"  />
+<img src="asc_ci-1.png" alt="plot of chunk asc_ci"  />
 <p class="caption">plot of chunk asc_ci</p>
 </div>
 

@@ -288,7 +288,7 @@ ggplot(ci, aes(x = est., y = term, colour = model)) +
 ```
 
 <div class="figure" style="text-align: center">
-<img src="vignettes/ploteffects-1.png" alt="Nitrogen effect estimates compared between the simple model and
+<img src="ploteffects-1.png" alt="Nitrogen effect estimates compared between the simple model and
   the SMIPS-augmented model." width="100%" />
 <p class="caption">Nitrogen effect estimates compared between the simple model and
   the SMIPS-augmented model.</p>
