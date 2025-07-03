@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   nert_for_agricultural_analytics: nert_for_agricultural_analytics.html
   nert: nert.html
-last_built: 2025-07-03T01:31Z
+last_built: 2025-07-03T02:20Z
 urls:
   reference: https://aagi-aus.github.io/nert/reference
   article: https://aagi-aus.github.io/nert/articles
