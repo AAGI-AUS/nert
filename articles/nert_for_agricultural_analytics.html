@@ -199,12 +199,6 @@ be specified first, followed by latitude.)</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; Warning: TIFFFillTile:Read error at row 4294967295, col 4294967295, tile 50;</span></span>
-<span><span class="co">#&gt; got 48296 bytes, expected 521917 (GDAL error 1)</span></span>
-<span><span class="co">#&gt; Warning: TIFFReadEncodedTile() failed. (GDAL error 1)</span></span>
-<span><span class="co">#&gt; Warning: smips_smi_perc_20220619.tif, band 1: IReadBlock failed at X offset 5,</span></span>
-<span><span class="co">#&gt; Y offset 5: TIFFReadEncodedTile() failed. (GDAL error 1)</span></span>
-<span><span class="co">#&gt; Error: [extract] cannot read values</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">smips_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         Date  Latitude Longitude smips_smi_perc</span></span>
 <span><span class="co">#&gt; 1 2022-05-07 -34.95253  138.6237     0.25906488</span></span>
@@ -296,9 +290,9 @@ application treatments for this augmented model are then as follows:</p>
 <span><span class="va">augmented_model.Neffects</span> <span class="op">&lt;-</span> <span class="va">augmented_model.ints</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Nitrogen_kgNha"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">augmented_model.Neffects</span></span>
 <span><span class="co">#&gt;                        lower      est.     upper</span></span>
-<span><span class="co">#&gt; Nitrogen_kgNha30 -0.03567547 0.2058920 0.4474595</span></span>
-<span><span class="co">#&gt; Nitrogen_kgNha60  0.32054684 0.5621143 0.8036818</span></span>
-<span><span class="co">#&gt; Nitrogen_kgNha90  0.35122891 0.5927964 0.8343638</span></span></code></pre></div>
+<span><span class="co">#&gt; Nitrogen_kgNha30 -0.03984861 0.2000454 0.4399395</span></span>
+<span><span class="co">#&gt; Nitrogen_kgNha60  0.31409573 0.5539898 0.7938838</span></span>
+<span><span class="co">#&gt; Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058</span></span></code></pre></div>
 <p>We can use <strong>ggplot2</strong> plotting to graph the confidence
 intervals for the simple model versus the augmented model, and
 illuminate the difference attained when we include the soil moisture as
