@@ -33,8 +33,8 @@
 #' @returns A  [terra::rast()] object.
 #' @source
 #' \describe{
-#'  \item{ASC Data}{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif}
-#'  \item{Confusion Index}{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif}
+#'  \item{ASC Data}{<https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif>}
+#'  \item{Confusion Index}{<https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif>}
 #'  }
 #' @autoglobal
 #' @references <https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c>
