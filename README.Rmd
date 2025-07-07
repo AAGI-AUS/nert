@@ -42,7 +42,7 @@ options(o) # reset options
 
 ## Example: reading a COG as a spatial object
 
-This is a basic example which shows you how you can fetch one day's data from the SMIPS data (currently the only supported data set in TERN) and visualise it:
+This is a basic example which shows you how you can fetch one day's data from the SMIPS data and visualise it:
 
 ```{r example_cog, eval=TRUE}
 library(nert)
