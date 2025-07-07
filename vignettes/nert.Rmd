@@ -17,11 +17,12 @@ vignette: >
 
 
 
-The TERN Soil Moisture Integration and Prediction System (SMIPS) generates useful measurements of soil moisture at 1km resolution across all of Australia.
-TERN provides this soil moisture information as packaged daily datasets [via their TERN Data Portal](https://data.tern.org.au/model-derived/smips/), in cloud-optimised GeoTIFF (COG) format.
-The {nert} package provides ease of access to these SMIPS datasets for use and inclusion in R data analytics workflows.
+The Australian Terrestrial Ecological Research Network (TERN) offers several data sets as Cloud Optimised Geotiff (COG) files.
+The Soil Moisture Integration and Prediction System (SMIPS) generates useful measurements of soil moisture at 1km resolution across all of Australia and the Australian Soil Classification map (ASC) provides modelled soil class data at a resolution of 90m.
+TERN provides these data as packaged daily datasets [via their TERN Data Portal](https://portal.tern.org.au/results).
+The {nert} package provides ease of access to these datasets for use and inclusion in R data analytics workflows.
 This can be obtained by registering at <https://portal.tern.org.au>, or by more simply using `nert::get_key()` in your R session.
-This document introduces you to the {nert} package, including setup and how to use the package to download SMIPS data.
+This document introduces you to the {nert} package, including setup and how to use the package to download data from TERN.
 
 ## Acquiring Your TERN API Key
 
