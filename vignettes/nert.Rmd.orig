@@ -161,7 +161,7 @@ library(nert)
 r <- read_smips(day = "2024-01-01")
 ```
 
-Note that {nert} re-exports `tidyterra::autoplot` for ease of visulalising the TERN data.
+Note that {nert} re-exports `tidyterra::autoplot` for ease of visualalising the TERN data.
 
 ```{r, test-plot, fig.cap = "A plot of SMIPS data for all of Australia on 2024-01-01."}
 autoplot(r)
