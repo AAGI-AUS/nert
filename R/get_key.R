@@ -12,7 +12,7 @@
 #'   "Sign In" in the upper right corner. Sign in with your proper credentials.
 #'   Then, from the left-hand menu, click on "Create API Key".  Once this is
 #'   done, copy the key and put it in your .Renviron using
-#'   [usethis::edit_r_environ] as `TERN_API_KEY="your_api_key"`. Restart your
+#'   [usethis::edit_r_environ()] as `TERN_API_KEY="your_api_key"`. Restart your
 #'   \R session and the query should work.
 #'
 #' @note
