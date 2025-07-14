@@ -37,8 +37,6 @@ install.packages("nert")
 
 ### The hard(er) way
 
-## Installation
-
 Note that for Linux users, you will need to install system libraries to support geospatial packages in R, _e.g._, {sf} and {terra} as well as some packages for downloading data via [curl](https://curl.se/download.html), please see [Note for Linux Installers](#Note-for-Linux-Installers).
 If you run into errors, _e.g._, `Bad GitHub Credentials`, please read this: [Managing Git(Hub) Credentials](https://usethis.r-lib.org/articles/git-credentials.html) and set up your GitHub credentials in R and try again.
 
@@ -81,12 +79,6 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given lati
 
 ``` r
 library(terra)
-#> terra 1.8.54
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
