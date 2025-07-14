@@ -23,6 +23,28 @@ knitr::opts_chunk$set(
 
 The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
 
+## Installation instructions
+
+{nert} is available through the [R-Universe](https://r-universe.dev/search) with pre-built binaries (this is the easy way).
+
+To get started:
+
+### Enable this universe
+
+```r
+options(repos = c(
+    maelle = 'https://aagi-aus.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'))
+```
+
+### Install
+
+```r
+install.packages("nert")
+```
+
+### The hard(er) way
+
 ## Installation
 
 Note that for Linux users, you will need to install system libraries to support geospatial packages in R, _e.g._, {sf} and {terra} as well as some packages for downloading data via [curl](https://curl.se/download.html), please see [Note for Linux Installers](#Note-for-Linux-Installers).

@@ -15,6 +15,28 @@ output: github_document
 
 The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.
 
+## Installation instructions
+
+{nert} is available through the [R-Universe](https://r-universe.dev/search) with pre-built binaries (this is the easy way).
+
+To get started:
+
+### Enable this universe
+
+```r
+options(repos = c(
+    maelle = 'https://aagi-aus.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'))
+```
+
+### Install
+
+```r
+install.packages("nert")
+```
+
+### The hard(er) way
+
 ## Installation
 
 Note that for Linux users, you will need to install system libraries to support geospatial packages in R, _e.g._, {sf} and {terra} as well as some packages for downloading data via [curl](https://curl.se/download.html), please see [Note for Linux Installers](#Note-for-Linux-Installers).
@@ -47,14 +69,10 @@ r <- read_smips(day = "2024-01-01")
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)
-#> Warning: TIFFFillTile:Read error at row 1024, col 512, tile 30; got 638097
-#> bytes, expected 930989 (GDAL error 1)
-#> Warning: TIFFReadEncodedTile() failed. (GDAL error 1)
-#> Warning: smips_totalbucket_mm_20240101.tif, band 1: IReadBlock failed at X
-#> offset 3, Y offset 3: TIFFReadEncodedTile() failed. (GDAL error 1)
 #> <SpatRaster> resampled to 501270 cells.
-#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': [extract] cannot read values
 ```
+
+<img src="man/figures/README-example_cog-1.png" width="100%" />
 
 ## Extract Values Given Lat/Lon Values
 
@@ -63,6 +81,12 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given lati
 
 ``` r
 library(terra)
+#> terra 1.8.54
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -139,8 +163,8 @@ citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
 #>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
-#>   _nert: An API Client for TERN Data_. R package version 0.0.1, commit
-#>   822bd7e2d354050fe03ee128558e621344c3c980,
+#>   _nert: An API Client for TERN Data_. R package version 0.0.1.9000,
+#>   commit 39ab8b7f2f03152ea3702f3089f095b9adebb9ee,
 #>   <https://github.com/AAGI-AUS/nert>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -149,7 +173,7 @@ citation("nert")
 #>     title = {nert: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
 #>     year = {2025},
-#>     note = {R package version 0.0.1, commit 822bd7e2d354050fe03ee128558e621344c3c980},
+#>     note = {R package version 0.0.1.9000, commit 39ab8b7f2f03152ea3702f3089f095b9adebb9ee},
 #>     url = {https://github.com/AAGI-AUS/nert},
 #>   }
 ```
