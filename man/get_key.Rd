@@ -27,7 +27,7 @@ To request an \acronym{API} key, go to
 "Sign In" in the upper right corner. Sign in with your proper credentials.
 Then, from the left-hand menu, click on "Create API Key".  Once this is
 done, copy the key and put it in your .Renviron using
-\link[usethis:edit]{usethis::edit_r_environ} as \code{TERN_API_KEY="your_api_key"}. Restart your
+\code{\link[usethis:edit]{usethis::edit_r_environ()}} as \code{TERN_API_KEY="your_api_key"}. Restart your
 \R session and the query should work.
 
 The suggestion is to use your .Renviron to set up the API key. However, if
