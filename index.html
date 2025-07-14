@@ -61,6 +61,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<p>Note that for Linux users, you will need to install system libraries to support geospatial packages in R, <em>e.g.</em>, {sf} and {terra} as well as some packages for downloading data via <a href="https://curl.se/download.html" class="external-link">curl</a>, please see <a href="#Note-for-Linux-Installers">Note for Linux Installers</a>. If you run into errors, <em>e.g.</em>, <code>Bad GitHub Credentials</code>, please read this: <a href="https://usethis.r-lib.org/articles/git-credentials.html" class="external-link">Managing Git(Hub) Credentials</a> and set up your GitHub credentials in R and try again.</p>
 <p>You can install the development version of {nert} from <a href="https://github.com/AAGI-AUS/nert" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># store original options</span></span>
@@ -84,8 +85,13 @@
 <span></span>
 <span><span class="co"># `autoplot` is re-exported from {tidyterra}</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span></code></pre></div>
-<p><img src="reference/figures/README-example_cog-1.png" width="100%"></p>
+<span><span class="co">#&gt; Warning: TIFFFillTile:Read error at row 1024, col 512, tile 30; got 638097</span></span>
+<span><span class="co">#&gt; bytes, expected 930989 (GDAL error 1)</span></span>
+<span><span class="co">#&gt; Warning: TIFFReadEncodedTile() failed. (GDAL error 1)</span></span>
+<span><span class="co">#&gt; Warning: smips_totalbucket_mm_20240101.tif, band 1: IReadBlock failed at X</span></span>
+<span><span class="co">#&gt; offset 3, Y offset 3: TIFFReadEncodedTile() failed. (GDAL error 1)</span></span>
+<span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span>
+<span><span class="co">#&gt; Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': [extract] cannot read values</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="extract-values-given-latlon-values">Extract Values Given Lat/Lon Values<a class="anchor" aria-label="anchor" href="#extract-values-given-latlon-values"></a>
@@ -93,12 +99,6 @@
 <p>Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.8.54</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     spin</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Corrigin"</span>, <span class="st">"Merredin"</span>, <span class="st">"Tamworth"</span><span class="op">)</span>,</span>
@@ -120,30 +120,44 @@
 <span><span class="co">#&gt; 3 Tamworth  3                   93.44989014 150.8408 -31.07365</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="keeping-nert-updated">Keeping {nert} Updated<a class="anchor" aria-label="anchor" href="#keeping-nert-updated"></a>
+</h2>
+<p>{nert} is undergoing active development and is not yet on CRAN, so updating your installation with <code><a href="https://rdrr.io/r/utils/update.packages.html" class="external-link">update.packages()</a></code> won’t work. You can keep {nert} up-to-date locally like so:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"AAGI-AUS/nert"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="note-for-linux-installers">Note for Linux Installers<a class="anchor" aria-label="anchor" href="#note-for-linux-installers"></a>
+</h2>
+<p>If you are using Linux, you will likely need to install several system-level libraries, {pak} will do it’s best to install most of them but some may not be installable this way. For <a href="https://ardc.edu.au/services/ardc-nectar-research-cloud/" class="external-link">Nectar</a> with a fresh Ubuntu image, you can use the following command to install system libraries to install {pak} and then install {fifo}. In your Linux terminal (not your R console, the “terminal” tab in RStudio should do here in most cases) type:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install libcurl4-openssl-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libudunits2-dev libxml2-dev</span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
 </h2>
 <div class="section level3">
 <h3 id="dev-container">Dev Container<a class="anchor" aria-label="anchor" href="#dev-container"></a>
 </h3>
 <p>Set up the container.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> .</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> .</span></code></pre></div>
 <p>Run tests and check stuff.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::check()"</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::check()"</span></span></code></pre></div>
 <p>Render this file.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::build_readme()"</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::build_readme()"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="citing-nert">Citing {nert}<a class="anchor" aria-label="anchor" href="#citing-nert"></a>
 </h2>
 <p>To cite nert:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'nert' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).</span></span>
-<span><span class="co">#&gt;   _nert: An API Client for TERN Data_. R package version 0.0.1,</span></span>
-<span><span class="co">#&gt;   &lt;https://aagi-aus.github.io/nert/&gt;.</span></span>
+<span><span class="co">#&gt;   _nert: An API Client for TERN Data_. R package version 0.0.1, commit</span></span>
+<span><span class="co">#&gt;   822bd7e2d354050fe03ee128558e621344c3c980,</span></span>
+<span><span class="co">#&gt;   &lt;https://github.com/AAGI-AUS/nert&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -151,8 +165,8 @@
 <span><span class="co">#&gt;     title = {nert: An API Client for TERN Data},</span></span>
 <span><span class="co">#&gt;     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},</span></span>
 <span><span class="co">#&gt;     year = {2025},</span></span>
-<span><span class="co">#&gt;     note = {R package version 0.0.1},</span></span>
-<span><span class="co">#&gt;     url = {https://aagi-aus.github.io/nert/},</span></span>
+<span><span class="co">#&gt;     note = {R package version 0.0.1, commit 822bd7e2d354050fe03ee128558e621344c3c980},</span></span>
+<span><span class="co">#&gt;     url = {https://github.com/AAGI-AUS/nert},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 </div>
 </div>
