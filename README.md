@@ -17,6 +17,9 @@ The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosyste
 
 ## Installation
 
+Note that for Linux users, you will need to install system libraries to support geospatial packages in R, _e.g._, {sf} and {terra} as well as some packages for downloading data via [curl](https://curl.se/download.html), please see [Note for Linux Installers](#Note-for-Linux-Installers).
+If you run into errors, _e.g._, `Bad GitHub Credentials`, please read this: [Managing Git(Hub) Credentials](https://usethis.r-lib.org/articles/git-credentials.html) and set up your GitHub credentials in R and try again.
+
 You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
 
 
@@ -44,10 +47,14 @@ r <- read_smips(day = "2024-01-01")
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)
+#> Warning: TIFFFillTile:Read error at row 1024, col 512, tile 30; got 638097
+#> bytes, expected 930989 (GDAL error 1)
+#> Warning: TIFFReadEncodedTile() failed. (GDAL error 1)
+#> Warning: smips_totalbucket_mm_20240101.tif, band 1: IReadBlock failed at X
+#> offset 3, Y offset 3: TIFFReadEncodedTile() failed. (GDAL error 1)
 #> <SpatRaster> resampled to 501270 cells.
+#> Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.data.frame': [extract] cannot read values
 ```
-
-<img src="man/figures/README-example_cog-1.png" width="100%" />
 
 ## Extract Values Given Lat/Lon Values
 
@@ -56,12 +63,6 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given lati
 
 ``` r
 library(terra)
-#> terra 1.8.54
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -81,6 +82,26 @@ cog_df
 #> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
 #> 2 Merredin  2                    0.22716530 118.2787 -31.48353
 #> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
+```
+
+## Keeping {nert} Updated 
+
+{nert} is undergoing active development and is not yet on CRAN, so updating your installation with `update.packages()` won't work.
+You can keep {nert} up-to-date locally like so:
+
+
+``` r
+pak::pak("AAGI-AUS/nert")
+```
+
+## Note for Linux Installers
+
+If you are using Linux, you will likely need to install several system-level libraries, {pak} will do it's best to install most of them but some may not be installable this way.
+For [Nectar](https://ardc.edu.au/services/ardc-nectar-research-cloud/) with a fresh Ubuntu image, you can use the following command to install system libraries to install {pak} and then install {fifo}.
+In your Linux terminal (not your R console, the "terminal" tab in RStudio should do here in most cases) type:
+
+```bash
+sudo apt update && sudo apt install libcurl4-openssl-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libudunits2-dev libxml2-dev
 ```
 
 ## Development
@@ -118,8 +139,9 @@ citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
 #>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
-#>   _nert: An API Client for TERN Data_. R package version 0.0.1,
-#>   <https://aagi-aus.github.io/nert/>.
+#>   _nert: An API Client for TERN Data_. R package version 0.0.1, commit
+#>   822bd7e2d354050fe03ee128558e621344c3c980,
+#>   <https://github.com/AAGI-AUS/nert>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -127,7 +149,7 @@ citation("nert")
 #>     title = {nert: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
 #>     year = {2025},
-#>     note = {R package version 0.0.1},
-#>     url = {https://aagi-aus.github.io/nert/},
+#>     note = {R package version 0.0.1, commit 822bd7e2d354050fe03ee128558e621344c3c980},
+#>     url = {https://github.com/AAGI-AUS/nert},
 #>   }
 ```

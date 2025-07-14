@@ -25,6 +25,9 @@ The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosyste
 
 ## Installation
 
+Note that for Linux users, you will need to install system libraries to support geospatial packages in R, _e.g._, {sf} and {terra} as well as some packages for downloading data via [curl](https://curl.se/download.html), please see [Note for Linux Installers](#Note-for-Linux-Installers).
+If you run into errors, _e.g._, `Bad GitHub Credentials`, please read this: [Managing Git(Hub) Credentials](https://usethis.r-lib.org/articles/git-credentials.html) and set up your GitHub credentials in R and try again.
+
 You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
 
 ```{r install, eval=FALSE}
@@ -73,6 +76,25 @@ cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
 cog_df <- cbind(df$location, cog_df)
 names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
 cog_df
+```
+
+## Keeping {nert} Updated 
+
+{nert} is undergoing active development and is not yet on CRAN, so updating your installation with `update.packages()` won't work.
+You can keep {nert} up-to-date locally like so:
+
+```{r eval=FALSE}
+pak::pak("AAGI-AUS/nert")
+```
+
+## Note for Linux Installers
+
+If you are using Linux, you will likely need to install several system-level libraries, {pak} will do it's best to install most of them but some may not be installable this way.
+For [Nectar](https://ardc.edu.au/services/ardc-nectar-research-cloud/) with a fresh Ubuntu image, you can use the following command to install system libraries to install {pak} and then install {fifo}.
+In your Linux terminal (not your R console, the "terminal" tab in RStudio should do here in most cases) type:
+
+```bash
+sudo apt update && sudo apt install libcurl4-openssl-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libudunits2-dev libxml2-dev
 ```
 
 ## Development
