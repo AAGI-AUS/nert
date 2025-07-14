@@ -2,8 +2,9 @@
 # while to run
 library(knitr)
 library(here)
+library(devtools)
 
-devtools::install() # ensure we're building with the latest version of the package
+install() # ensure we're building with the latest version of the package
 
 knit(
   input = "vignettes/nert.Rmd.orig",
@@ -35,8 +36,6 @@ ag_file_conn <- file("vignettes/nert_for_agricultural_analytics.Rmd")
 writeLines(ag_replace, ag_file_conn)
 close(ag_file_conn)
 
-# build vignettes
-library("devtools")
 build_vignettes()
 
 # move resource files to /docs
