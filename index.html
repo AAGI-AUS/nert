@@ -81,11 +81,6 @@
 <div class="section level3">
 <h3 id="the-harder-way">The hard(er) way<a class="anchor" aria-label="anchor" href="#the-harder-way"></a>
 </h3>
-</div>
-</div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
 <p>Note that for Linux users, you will need to install system libraries to support geospatial packages in R, <em>e.g.</em>, {sf} and {terra} as well as some packages for downloading data via <a href="https://curl.se/download.html" class="external-link">curl</a>, please see <a href="#Note-for-Linux-Installers">Note for Linux Installers</a>. If you run into errors, <em>e.g.</em>, <code>Bad GitHub Credentials</code>, please read this: <a href="https://usethis.r-lib.org/articles/git-credentials.html" class="external-link">Managing Git(Hub) Credentials</a> and set up your GitHub credentials in R and try again.</p>
 <p>You can install the development version of {nert} from <a href="https://github.com/AAGI-AUS/nert" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -99,6 +94,7 @@
 <span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"AAGI-AUS/nert"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span> <span class="co"># reset options</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="example-reading-a-cog-as-a-spatial-object">Example: reading a COG as a spatial object<a class="anchor" aria-label="anchor" href="#example-reading-a-cog-as-a-spatial-object"></a>
@@ -119,12 +115,6 @@
 <p>Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.8.54</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     spin</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Corrigin"</span>, <span class="st">"Merredin"</span>, <span class="st">"Tamworth"</span><span class="op">)</span>,</span>
