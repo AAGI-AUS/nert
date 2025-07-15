@@ -51,3 +51,7 @@ Language: en-AU
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxyglobals::global_roclet", "devtag::dev_roclet"))
 RoxygenNote: 7.3.2.9000
+X-schema.org-applicationCategory: Tools
+X-schema.org-isPartOf: https://github.com/AAGI-AUS/
+X-schema.org-keywords: TERN, soil-data, Australia,
+    earth-science, data-access

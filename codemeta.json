@@ -261,7 +261,10 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1177.776KB",
+  "applicationCategory": "Tools",
+  "isPartOf": "https://github.com/AAGI-AUS/",
+  "keywords": ["TERN", "soil-data", "Australia", "earth-science", "data-access"],
+  "fileSize": "1177.95KB",
   "releaseNotes": "https://github.com/AAGI-AUS/nert/blob/master/NEWS.md",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/AAGI-AUS/nert"]
