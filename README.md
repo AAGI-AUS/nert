@@ -79,6 +79,12 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given lati
 
 ``` r
 library(terra)
+#> terra 1.8.54
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -102,13 +108,15 @@ cog_df
 
 ## Keeping {nert} Updated 
 
-{nert} is undergoing active development and is not yet on CRAN, so updating your installation with `update.packages()` won't work.
-You can keep {nert} up-to-date locally like so:
+{nert} is undergoing active development and is not yet on CRAN.
+If you installed {nert} using the R-Universe (the preferred method), you can keep {nert} up-to-date locally like so:
 
 
 ``` r
-pak::pak("AAGI-AUS/nert")
+update.packages()
 ```
+
+and answering `yes` or `y` when asked if you would like to upgrade {nert}.
 
 ## Note for Linux Installers
 
