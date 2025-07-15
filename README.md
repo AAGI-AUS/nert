@@ -25,8 +25,8 @@ To get started:
 
 ```r
 options(repos = c(
-    maelle = 'https://aagi-aus.r-universe.dev',
-    CRAN = 'https://cloud.r-project.org'))
+    aagi_aus = "https://aagi-aus.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"))
 ```
 
 ### Install
@@ -79,12 +79,6 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given lati
 
 ``` r
 library(terra)
-#> terra 1.8.54
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
