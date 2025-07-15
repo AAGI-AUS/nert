@@ -50,6 +50,22 @@
       "email": "max.moldovan@adelaide.edu.au"
     }
   ],
+  "copyrightHolder": [
+    {
+      "@type": "Organization",
+      "name": "Curtin University"
+    },
+    {
+      "@type": "Organization",
+      "name": "Grains Research and Development Corporation"
+    }
+  ],
+  "funder": [
+    {
+      "@type": "Organization",
+      "name": "Grains Research and Development Corporation"
+    }
+  ],
   "maintainer": [
     {
       "@type": "Person",
@@ -245,7 +261,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1177.024KB",
+  "fileSize": "1177.776KB",
   "releaseNotes": "https://github.com/AAGI-AUS/nert/blob/master/NEWS.md",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/AAGI-AUS/nert"]

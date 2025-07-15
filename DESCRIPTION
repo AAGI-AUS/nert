@@ -9,7 +9,11 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-4607-5396")),
     person("Sam", "Rogers", , "sam.rogers@adelaide.edu.au", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-8147-1239")),
-    person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = "aut")
+    person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = "aut"),
+    person("Curtin University", role = "cph",
+           comment = c("Provided support through Adam Sparks's time.",  ROR = "02n415q13")),
+    person("Grains Research and Development Corporation", role = c("fnd", "cph"),
+           comment = c("GRDC Project CUR2210-005OPX (AAGI-CU)", ROR = "02xwr1996"))
   )
 Description: Provides access to Australia's TERN (Terrestrial Ecosystem
     Research Network) data through the API, <https://tern.org.au>.
