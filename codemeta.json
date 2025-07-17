@@ -262,9 +262,9 @@
     "SystemRequirements": null
   },
   "applicationCategory": "Tools",
-  "isPartOf": "https://github.com/AAGI-AUS/",
+  "isPartOf": "https://grdc.com.au/research/partnerships-and-initiatives/strategic-partnerships/aagi",
   "keywords": ["TERN", "soil-data", "Australia", "earth-science", "data-access"],
-  "fileSize": "1177.95KB",
+  "fileSize": "1178.007KB",
   "releaseNotes": "https://github.com/AAGI-AUS/nert/blob/master/NEWS.md",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
   "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/AAGI-AUS/nert"]
