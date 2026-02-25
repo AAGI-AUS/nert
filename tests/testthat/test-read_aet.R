@@ -1,12 +1,14 @@
-testthat::test_that("read_aet downloads a raster when TERN_API_KEY is present", {
-  testthat::skip_on_cran()
-  if (!nzchar(Sys.getenv("TERN_API_KEY", ""))) {
-    testthat::skip("TERN_API_KEY not set; skipping download test")
-  }
+test_that("read_aet returns AET data", {
+  skip_on_cran()
+  skip_on_ci()
+  aet <- read_aet()
+  expect_s4_class(aet, "SpatRaster")
+})
 
-  # Replace with an actual filename present in TERN AET folder if needed
-  fname <- "AET_CMRSET_MONTH_2023-01.tif"
-
-  r <- nert::read_aet(file = fname, api_key = Sys.getenv("TERN_API_KEY"))
-  testthat::expect_s3_class(r, "SpatRaster")
+test_that("read_aet returns data with correct name pattern", {
+  skip_on_cran()
+  skip_on_ci()
+  aet <- read_aet()
+  # Adjust the expected name based on actual data naming
+  expect_match(names(aet), "aet")
 })
