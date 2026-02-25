@@ -72,6 +72,22 @@ autoplot(r)
 
 <img src="man/figures/README-example_cog-1.png" width="100%" />
 
+## Available TERN COG Datasets
+
+The {nert} package provides access to multiple TERN Cloud Optimised Geotiff (COG) datasets:
+
+### Actual Evapotranspiration (AET)
+
+Monthly AET estimates at 90m resolution from the CMRSET Landsat algorithm, available from 1987 onwards:
+
+```{r}
+library(nert)
+library(tidyterra)
+
+r_aet <- read_aet(year = 2024, month = 1)
+autoplot(r_aet)
+```
+
 ## Extract Values Given Lat/Lon Values
 
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
