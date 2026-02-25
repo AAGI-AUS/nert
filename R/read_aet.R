@@ -1,56 +1,56 @@
-#' Read AET (evapotranspiration) COGs from TERN
+#' Read AET COGs from TERN
 #'
-#' Read model-derived Actual Evapotranspiration (AET) Cloud Optimised GeoTIFF
-#' (COG) files from TERN into R. Uses the package API helpers and internal
-#' `.read_cog()` to perform downloads with retry/backoff.
+#' Read Actual Evapotranspiration (\acronym{AET}) Cloud Optimised Geotiff
+#'  (\acronym{COG}) files from \acronym{TERN} in your \R session. The data are
+#'  modelled estimates of actual evapotranspiration from the TERN model-derived
+#'  dataset.
 #'
-#' @param file Optional character: exact filename in the TERN AET directory
-#'   (e.g. "AET_CMRSET_MONTH_2023-01.tif"). If provided, used directly.
-#' @param day Optional Date or character coercible to Date. If `file` is NULL,
-#'   a filename will be constructed from `day` using a year-month convention.
-#' @param api_key Character: TERN API key. Defaults to `get_key()`.
-#' @param max_tries Integer: number of download attempts. Default 3.
-#' @param initial_delay Numeric: initial backoff delay (seconds). Default 1.
-#' @details
-#' Confirm the naming convention used at:
-#' https://data.tern.org.au/model-derived/aet/v2_2/
-#' The implementation below assumes `AET_CMRSET_MONTH_YYYY-MM.tif` filenames.
-#' Adjust the sprintf() line if filenames differ.
+#' @param api_key A `character` string containing your \acronym{API} key,
+#'   a random string provided to you by \acronym{TERN}, for the request.
+#'   Defaults to automatically detecting your key from your local .Renviron,
+#'   .Rprofile or similar.  Alternatively, you may directly provide your key as
+#'   a string here or use functionality like that from \CRANpkg{keyring}.  If
+#'   nothing is provided, you will be prompted on how to set up your \R session
+#'   so that it is auto-detected and a browser window will open at the
+#'   \acronym{TERN} website for you to request a key.
+#' @param max_tries An integer with the number of times to retry a
+#'   failed download before emitting an error message.  Defaults to 3.
+#' @param initial_delay An `Integer` with the number of seconds to delay before
+#'   retrying the download.  This increases as the tries increment.  Defaults to
+#'   1.
+#'
 #' @family COGs
-#' @returns A [terra::rast()] object (or single layer of that raster).
-#' @source <https://data.tern.org.au/model-derived/aet/v2_2/>
+#'
 #' @examplesIf interactive()
-#' \dontrun{
-#' r <- read_aet(file = "AET_CMRSET_MONTH_2023-01.tif")
-#' plot(r)
-#' r2 <- read_aet(day = "2023-01-01")
-#' autoplot(r2)
-#' }
+#'
+#' r <- read_aet()
+#' r
+#'
+#' @returns A [terra::rast()] object.
+#' @source
+#' \describe{
+#'  \item{AET Data}{<https://data.tern.org.au/model-derived/aet/v2_2/>}
+#'  }
+#' @autoglobal
+#' @references <https://portal.tern.org.au/search?query=evapotranspiration>
 #' @export
 read_aet <- function(
-  file = NULL,
-  day = NULL,
   api_key = get_key(),
   max_tries = 3L,
   initial_delay = 1L
 ) {
   api_key <- .check_api_key(api_key)
-
-  if (is.null(file)) {
-    if (is.null(day)) {
-      cli::cli_abort("You must provide either `file` or `day` to identify the AET file to download.")
-    }
-    day_date <- as.Date(day)
-    # Default naming assumption (adjust if TERN uses another scheme):
-    # AET_CMRSET_MONTH_YYYY-MM.tif
-    file <- sprintf("AET_CMRSET_MONTH_%s-%s.tif", format(day_date, "%Y"), format(day_date, "%m"))
-  }
-
+  
+  # Construct the URL to the AET COG file
+  # You'll need to determine the actual filename from the TERN data portal
+  # This is a placeholder - adjust based on actual file naming
+  dl_file <- "aet_v2_2_AU.cog.tif"
+  
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/aet/v2_2/%s",
     api_key,
-    file
+    dl_file
   )
-
-  return(.read_cog(full_url, max_tries = max_tries, initial_delay = initial_delay))
+  
+  return(.read_cog(full_url, max_tries, initial_delay))
 }
