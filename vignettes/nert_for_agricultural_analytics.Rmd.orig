@@ -248,3 +248,75 @@ see that ignoring the effect of soil moisture in the simple model
 underestimates the direct nitrogen treatment effect. The augmented model,
 in contrast, accounts for the soil moisture and the potential
 nitrogen vaporisation that may occur in higher soil moisture conditions.
+
+## Using AET Data in Agricultural Models
+
+Actual evapotranspiration is a key variable in agricultural productivity models. It represents the water demand of the atmosphere and vegetation, which directly affects crop water stress and yield.
+
+### Incorporating Monthly AET Data
+
+You can incorporate TERN AET data into your agricultural analysis:
+
+```{r aet_agricultural}
+library(nert)
+library(terra)
+
+# Read AET for the growing season (January to March in Southern Hemisphere)
+aet_jan <- read_aet(year = 2022, month = 1)
+aet_feb <- read_aet(year = 2022, month = 2)
+aet_mar <- read_aet(year = 2022, month = 3)
+
+# Stack the monthly data
+aet_stack <- c(aet_jan, aet_feb, aet_mar)
+
+# Calculate cumulative AET for the season
+aet_cumulative <- sum(aet_stack)
+
+names(aet_cumulative) <- "cumulative_aet_mm"
+
+# Extract at grain experiment sites
+locations_matrix <- as.matrix(grain[, c("Longitude", "Latitude")])
+aet_cum_extracted <- extract(aet_cumulative, locations_matrix)
+
+grain$cumulative_AET <- aet_cum_extracted[, 2]
+```
+
+### Modeling Yield with AET Covariate
+
+Use cumulative AET as a covariate to account for water availability during the growing season:
+
+```{r aet_yield_model}
+# Model incorporating AET along with treatment factors
+model_with_aet <- nlme::lme(
+  Yield_Tha ~ Nitrogen_kgNha + SeedRate_plantsm2 + cumulative_AET,
+  random = ~ 1 | Site,
+  data = grain,
+  na.action = na.omit
+)
+
+summary(model_with_aet)
+```
+
+This approach allows you to:
+1. **Control for environmental variation** - AET captures water availability differences between sites
+2. **Separate treatment effects** - Clearer estimation of nitrogen and seeding rate effects
+3. **Improve predictions** - Models are more generalizable across different seasons
+
+### Visualizing AET-Yield Relationships
+
+```{r aet_yield_plot, fig.cap = "Relationship between cumulative AET and grain yield."}
+library(ggplot2)
+
+ggplot(grain, aes(x = cumulative_AET, y = Yield_Tha, color = Nitrogen_kgNha)) +
+  geom_point(size = 3, alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_viridis_c() +
+  labs(
+    x = "Cumulative AET (mm)",
+    y = "Yield (T/ha)",
+    color = "Nitrogen (kg N/ha)",
+    title = "Effect of Water Availability and Nitrogen on Grain Yield"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```

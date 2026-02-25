@@ -63,6 +63,21 @@ pak::pak("AAGI-AUS/nert")
 options(o) # reset options
 ```
 
+## Available TERN COG Datasets
+
+The {nert} package provides access to multiple TERN Cloud Optimised Geotiff (COG) datasets:
+
+### Actual Evapotranspiration (AET)
+
+Monthly AET estimates at 90m resolution from the CMRSET Landsat algorithm, available from 1987 onwards:
+
+```r
+library(nert)
+library(tidyterra)
+
+r_aet <- read_aet(year = 2024, month = 1)
+autoplot(r_aet)
+
 ## Example: reading a COG as a spatial object
 
 This is a basic example which shows you how you can fetch one day's data from the SMIPS data and visualise it:

@@ -193,3 +193,67 @@ asc_ci <- read_asc(confusion_index = TRUE)
 
 That's it, you're all set!
 
+## Actual Evapotranspiration (AET) Data
+
+The AET dataset provides monthly estimates of actual evapotranspiration at 90m resolution across Australia, derived from the CMRSET Landsat algorithm. This is valuable for understanding water availability and demand across the continent.
+
+### Reading AET Data
+
+You can download AET data for any month since 1987:
+
+```{r example_aet, fig.cap = "A plot of AET data for Australia in January 2024."}
+library(nert)
+r_aet <- read_aet(year = 2024, month = 1)
+
+# Visualize the AET data
+library(tidyterra)
+autoplot(r_aet)
+```
+
+### Accessing Different Months
+
+To get data for a different month, simply change the `month` parameter (1-12):
+
+```{r aet_different_month}
+# Get July 2024 data
+r_aet_july <- read_aet(year = 2024, month = 7)
+
+# Get data from a different year
+r_aet_2020 <- read_aet(year = 2020, month = 1)
+```
+
+### Quality Assurance Data
+
+You can also access the pixel quality assurance layer, which indicates data quality for each pixel:
+
+```{r aet_qa}
+r_aet_qa <- read_aet(year = 2024, month = 1, qa = TRUE)
+
+# This shows the quality flags for each pixel
+autoplot(r_aet_qa)
+```
+
+### Extracting Values at Locations
+
+Extract AET values at specific lat/lon coordinates:
+
+```{r extract_aet, eval=TRUE}
+library(terra)
+
+# Define locations
+locations <- data.frame(
+  site = c("Adelaide", "Melbourne", "Sydney"),
+  lon = c(139.0, 144.96, 151.21),
+  lat = c(-34.93, -37.81, -33.87)
+)
+
+# Extract AET values
+r_aet <- read_aet(year = 2024, month = 1)
+aet_values <- extract(r_aet, locations[, c("lon", "lat")])
+
+# Combine with location names
+results <- cbind(locations, AET_mm = aet_values[, 2])
+print(results)
+```
+
+This shows the actual evapotranspiration (in mm) for each location.
