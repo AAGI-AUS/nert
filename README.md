@@ -88,7 +88,7 @@ r_aet <- read_aet(year = 2024, month = 1)
 autoplot(r_aet)
 ```
 
-<img src="man/figures/README-example_cog-2.pdf" width="100%" />
+<img src="man/figures/README-example_cog-2.png" width="100%" />
 
 
 ## Extract Values Given Lat/Lon Values
