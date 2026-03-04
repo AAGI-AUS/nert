@@ -21,6 +21,22 @@ The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosyste
 
 To get started:
 
+### Steps to Clone and Work with the Branch
+1. Clone the Repository with the Specific Branch
+
+In terminal (bash):
+```r
+git clone --branch Add-a-new-TERN-AET-COG-reader-trial https://github.com/AAGI-AUS/nert.git
+cd nert
+```
+
+2. Verify You're on the Correct Branch
+
+```r
+git branch
+```
+Should see: * Add-a-new-TERN-AET-COG-reader-trial
+
 ### Enable this universe
 
 ```r
@@ -75,6 +91,16 @@ autoplot(r)
 ## Available TERN COG Datasets
 
 The {nert} package provides access to multiple TERN Cloud Optimised Geotiff (COG) datasets:
+
+As this is part of the Add-a-new-TERN-COG-reader-trial branch, enter the following in R in order to enable functions found outside main.
+
+```{r}
+# Load devtools
+library(devtools)
+
+# Install/rebuild the package from the current branch
+devtools::load_all()
+```
 
 ### Actual Evapotranspiration (AET)
 
