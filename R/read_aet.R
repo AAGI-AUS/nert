@@ -6,10 +6,16 @@
 #'  Australia from the TERN model-derived CMRSET Landsat dataset (version 2.2).
 #'  Monthly data are available from 1987 onwards.
 #'
+#' @param day A date to query, _e.g._, `day = "2024-01-01"` or `day =
+#'  as.Date("2024-01-01")`, both `Character` and `Date` classes are accepted.
+#'  Alternatively, you can provide year and month separately using the
+#'  `year` and `month` parameters (see details).
 #' @param year An integer specifying the year of AET data to download,
 #'   _e.g._, `year = 2024`. Data are available from 1987 onwards.
+#'   Only used if `day` is not provided.
 #' @param month An integer specifying the month (1-12) of AET data to download,
 #'   _e.g._, `month = 1` for January. Defaults to 1 (January).
+#'   Only used if `day` is not provided.
 #' @param qa A `Boolean` value indicating whether to read the pixel quality
 #'   assurance data (`TRUE`) or the AET estimates (`FALSE`). Defaults to
 #'   `FALSE` to read the AET values.
@@ -40,20 +46,33 @@
 #' onwards. Each month contains multiple COG tiles that are stitched together
 #' using a Virtual Raster Table (VRT) file.
 #'
+#' You can provide the date to query in two ways:
+#' \enumerate{
+#'   \item Using `day` parameter with a date string (e.g., `"2024-01-01"`)
+#'         or Date/POSIXct object - this is the recommended approach.
+#'   \item Using separate `year` and `month` parameters (e.g., `year = 2024,
+#'         month = 1`).
+#' }
+#' If both `day` and `year`/`month` are provided, `day` takes precedence.
+#'
 #' @family COGs
 #'
 #' @examplesIf interactive()
 #'
+#' # Using day parameter with date string
+#' r <- read_aet(day = "2024-01-01")
+#' r
+#'
+#' # Using year and month parameters
 #' r <- read_aet(year = 2024, month = 1)
 #' r
 #'
 #' # Visualize the AET data
-#' # Note: tidyterra must be loaded for autoplot to work with SpatRaster objects
 #' library(tidyterra)
 #' autoplot(r)
 #'
 #' # Read quality assurance data instead
-#' r_qa <- read_aet(year = 2024, month = 1, qa = TRUE)
+#' r_qa <- read_aet(day = "2024-01-01", qa = TRUE)
 #'
 #' @returns A [terra::rast()] object containing the AET data or QA data.
 #'
@@ -67,6 +86,7 @@
 #' @references <https://portal.tern.org.au/search?query=evapotranspiration>
 #' @export
 read_aet <- function(
+    day,
     year,
     month = 1L,
     qa = FALSE,
@@ -76,15 +96,46 @@ read_aet <- function(
 ) {
   api_key <- .check_api_key(api_key)
   
-  if (missing(year)) {
-    cli::cli_abort("You must provide a year for this request.")
-  }
-  
-  # Validate year is reasonable
-  if (!is.numeric(year) || year < 1987 || year > 2025) {
-    cli::cli_abort(
-      "Year must be a number between 1987 and 2025."
+  # If day is provided, extract year and month from it
+  if (!missing(day)) {
+    # Validate and parse the date
+    if (length(day) > 1L) {
+      cli::cli_abort("Only one day is allowed per request.")
+    }
+    
+    if (lubridate::is.POSIXct(day) || lubridate::is.Date(day)) {
+      tz <- lubridate::tz(day)
+    } else {
+      tz <- Sys.timezone()
+    }
+    
+    tryCatch(
+      {
+        day <- lubridate::parse_date_time(
+          day,
+          c("Ymd", "dmY", "BdY", "Bdy"),
+          tz = tz
+        )
+      },
+      warning = function(c) {
+        cli::cli_abort(
+          "{day} is not in a valid date format.
+          Please enter a valid date format (e.g., '2024-01-01')."
+        )
+      }
     )
+    
+    year <- lubridate::year(day)
+    month <- lubridate::month(day)
+  } else if (!missing(year)) {
+    # Validate year is reasonable
+    if (!is.numeric(year) || year < 1987 || year > 2025) {
+      cli::cli_abort(
+        "Year must be a number between 1987 and 2025."
+      )
+    }
+  } else {
+    cli::cli_abort("You must provide either a day or a year for this request.")
   }
   
   # Validate month
