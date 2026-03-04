@@ -86,6 +86,8 @@ library(tidyterra)
 
 r_aet <- read_aet(day = "2024-01-01")
 autoplot(r_aet)
+
+#> <SpatRaster> resampled to 500800 cells.
 ```
 
 <img src="man/figures/README-example_cog-2.png" width="100%" />
