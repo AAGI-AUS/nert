@@ -84,7 +84,7 @@ Monthly AET estimates at 90m resolution from the CMRSET Landsat algorithm, avail
 library(nert)
 library(tidyterra)
 
-r_aet <- read_aet(year = 2024, month = 1)
+r_aet <- read_aet(day = "2024-01-01")
 autoplot(r_aet)
 ```
 
