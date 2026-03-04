@@ -88,6 +88,9 @@ r_aet <- read_aet(year = 2024, month = 1)
 autoplot(r_aet)
 ```
 
+<img src="man/figures/README-example_cog-2.pdf" width="100%" />
+
+
 ## Extract Values Given Lat/Lon Values
 
 Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.
