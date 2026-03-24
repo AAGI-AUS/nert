@@ -1,39 +1,36 @@
-# Read ASC COGs from TERN
+# Read AET COGs from TERN
 
-Read Australian Soil Classification (ASC) Cloud Optimised Geotiff (COG)
-files from TERN in your R session. The data are Australian Soil
-Classification Soil Order classes with quantified estimates of mapping
-reliability at a 90 m resolution. You can access the reliability map
-using the `confusion_index` argument.
+Read Actual Evapotranspiration (AET) using the CMRSET algorithm Cloud
+Optimised Geotiff (COG) files from TERN in your R session.
 
 ## Usage
 
 ``` r
-read_asc(
-  confusion_index = FALSE,
+read_aet(
+  month,
+  collection = "ETa",
   api_key = get_key(),
   max_tries = 3L,
   initial_delay = 1L
 )
 ```
 
-## Source
-
-- ASC Data:
-
-  <https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif>
-
-- Confusion Index:
-
-  <https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif>
-
 ## Arguments
 
-- confusion_index:
+- month:
 
-  A `Boolean` value indicating whether to read the Confusion Index
-  (`TRUE`) or the estimated ASC value (`FALSE`). Defaults to `FALSE`
-  reading the ASC values.
+  A month to query, *e.g.,* `month = "2023-01-01"` or
+  `month = as.Date("2023-01-01")`. Both `Character` and `Date` classes
+  are accepted. The value is snapped to the first of the month
+  internally.
+
+- collection:
+
+  A `character` string of the AET data collection to be queried:
+
+  - `"ETa"`: the primary AET band (mm/month),
+
+  - `"pixel_qa"`: the quality assurance flag band. Defaults to `"ETa"`.
 
 - api_key:
 
@@ -49,8 +46,8 @@ read_asc(
 
 - max_tries:
 
-  An integer `Integer` with the number of times to retry a failed
-  download before emitting an error message. Defaults to 3.
+  An `Integer` with the number of times to retry a failed download
+  before emitting an error message. Defaults to 3.
 
 - initial_delay:
 
@@ -61,17 +58,20 @@ read_asc(
 
 A
 [`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
-object.
+object of the national mosaic for the requested month.
 
 ## References
 
-<https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c>
+TERN portal:
+<https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+
+DOI: <https://dx.doi.org/10.25901/gg27-ck96>
 
 ## See also
 
 Other COGs:
 [`extract_aet()`](https://aagi-aus.github.io/nert/reference/extract_aet.md),
-[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
+[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
 [`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
 
 ## Examples
@@ -79,7 +79,9 @@ Other COGs:
 ``` r
 if (FALSE) { # interactive()
 
-r <- read_asc()
-r
+r <- read_aet(month = "2023-01-01")
+
+# `tidyterra::autoplot` is re-exported for convenience
+autoplot(r)
 }
 ```

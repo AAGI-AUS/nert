@@ -73,6 +73,8 @@ and
 ## See also
 
 Other COGs:
+[`extract_aet()`](https://aagi-aus.github.io/nert/reference/extract_aet.md),
+[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
 [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
 
 ## Examples
