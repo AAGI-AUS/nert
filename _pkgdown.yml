@@ -18,4 +18,8 @@ reference:
     contents:
       - get_key
       - autoplot
+  - title: "Data"
+    desc: "Example datasets bundled with the package."
+    contents:
+      - grain
 
