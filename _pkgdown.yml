@@ -2,3 +2,24 @@ url: https://aagi-aus.github.io/nert/
 template:
   bootstrap: 5
 
+reference:
+  - title: "COG Readers"
+    desc: "Functions to read Cloud Optimised GeoTIFF data from TERN."
+    contents:
+      - read_aet
+      - read_asc
+      - read_smips
+  - title: "Point Extraction"
+    desc: "Functions to extract raster values at point locations."
+    contents:
+      - extract_aet
+  - title: "Utilities"
+    desc: "Helper functions for working with TERN data."
+    contents:
+      - get_key
+      - autoplot
+  - title: "Data"
+    desc: "Example datasets bundled with the package."
+    contents:
+      - grain
+
