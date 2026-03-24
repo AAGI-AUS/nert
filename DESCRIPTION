@@ -22,13 +22,14 @@ URL: https://aagi-aus.github.io/nert/, https://github.com/AAGI-AUS/nert
 BugReports: https://github.com/AAGI-AUS/nert/issues
 Depends: 
     R (>= 3.5.0)
-Imports: 
+Imports:
     cli,
     data.table,
     ggplot2 (>= 3.5.0),
     lubridate,
     nlme,
     rlang,
+    sf,
     terra,
     tidyterra,
     utils

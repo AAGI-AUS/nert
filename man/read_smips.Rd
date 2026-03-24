@@ -66,6 +66,8 @@ autoplot(r)
 }
 \seealso{
 Other COGs: 
+\code{\link{extract_aet}()},
+\code{\link{read_aet}()},
 \code{\link{read_asc}()}
 }
 \concept{COGs}

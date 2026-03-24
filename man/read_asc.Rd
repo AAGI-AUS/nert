@@ -60,6 +60,8 @@ r
 }
 \seealso{
 Other COGs: 
+\code{\link{extract_aet}()},
+\code{\link{read_aet}()},
 \code{\link{read_smips}()}
 }
 \concept{COGs}
