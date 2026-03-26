@@ -7,8 +7,6 @@
 ^codemeta\.json$
 ^vignettes/.*-precompile\.R$
 ^vignettes/\!precompile\.R$
-^man/dot-check_aet_date\.Rd$
-^man/dot-make_aet_url\.Rd$
 ^man/dot-create_sf\.Rd$
 ^man/dot-check_not_example_api_key\.Rd$
 ^man/dot-read_cog\.Rd$
@@ -17,3 +15,10 @@
 ^man/dot-check_date\.Rd$
 ^man/dot-check_collection_agreement\.Rd$
 ^man/dot-make_smips_url\.Rd$
+^man/dot-tern_dispatch_id\.Rd$
+^man/dot-tern_not_implemented\.Rd$
+^man/dot-read_tern_smips\.Rd$
+^man/dot-read_tern_asc\.Rd$
+^man/dot-read_tern_aet\.Rd$
+^man/dot-check_aet_date\.Rd$
+^man/dot-make_aet_url\.Rd$
