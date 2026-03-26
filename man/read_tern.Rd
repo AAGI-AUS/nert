@@ -7,7 +7,7 @@
 read_tern(
   dataset_id,
   ...,
-  api_key = get_key(),
+  api_key = NULL,
   max_tries = 3L,
   initial_delay = 1L
 )
