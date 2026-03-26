@@ -6,13 +6,8 @@ reference:
   - title: "COG Readers"
     desc: "Functions to read Cloud Optimised GeoTIFF data from TERN."
     contents:
-      - read_aet
+      - read_tern
       - read_asc
-      - read_smips
-  - title: "Point Extraction"
-    desc: "Functions to extract raster values at point locations."
-    contents:
-      - extract_aet
   - title: "Utilities"
     desc: "Helper functions for working with TERN data."
     contents:
