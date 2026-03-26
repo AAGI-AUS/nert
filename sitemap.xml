@@ -19,14 +19,17 @@
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-make_aet_url.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-make_smips_url.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_cog.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/extract_aet.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_aet.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_asc.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_smips.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-tern_dispatch_id.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-tern_not_implemented.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/get_key.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/grain.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/index.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/nert-package.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/read_aet.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/read_asc.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/read_smips.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/read_tern.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/reexports.html</loc></url>
 </urlset>
 

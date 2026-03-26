@@ -1,6 +1,6 @@
-# Create an AET URL
+# Build a GDAL vsicurl URL for an AET Collection
 
-Builds the full GDAL vsicurl URL for a given AET collection and month.
+Build a GDAL vsicurl URL for an AET Collection
 
 ## Usage
 
@@ -12,8 +12,7 @@ Builds the full GDAL vsicurl URL for a given AET collection and month.
 
 - .collection:
 
-  The user-supplied AET collection being asked for (`"ETa"` or
-  `"pixel_qa"`).
+  The user-supplied AET collection (`"ETa"` or `"pixel_qa"`).
 
 - .month:
 
@@ -22,3 +21,7 @@ Builds the full GDAL vsicurl URL for a given AET collection and month.
 - .api_key:
 
   The URL-encoded API key.
+
+## Value
+
+A `character` GDAL vsicurl URL string.

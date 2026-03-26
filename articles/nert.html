@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -190,7 +190,7 @@ decimal degrees latitude, 138.6007 longitude):</p></li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     spin</span></span>
 <span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>day <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">read_smips</span><span class="op">(</span>day <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   ID smips_totalbucket_mm_20240101        x         y</span></span>
@@ -224,7 +224,7 @@ from the TERN website when {keyring} prompts you to do so.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keyring.r-lib.org/" class="external-link">keyring</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">read_smips</span><span class="op">(</span></span>
 <span>  day <span class="op">=</span> <span class="st">"2024-01-01"</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></span><span class="op">(</span><span class="st">"NERT_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -237,7 +237,7 @@ from the TERN website when {keyring} prompts you to do so.</p>
 Australia on Jan 1, 2024 like so:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>day <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">read_smips</span><span class="op">(</span>day <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that {nert} re-exports <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">tidyterra::autoplot</a></code> for ease
 of visualalising the TERN data.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">

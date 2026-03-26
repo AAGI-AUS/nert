@@ -176,19 +176,10 @@ citation("nert")
 
 Functions to read Cloud Optimised GeoTIFF data from TERN.
 
-- [`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md)
-  : Read AET COGs from TERN
+- [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
+  : Read TERN COG Datasets
 - [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
   : Read ASC COGs from TERN
-- [`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
-  : Read SMIPS COGs from TERN
-
-## Point Extraction
-
-Functions to extract raster values at point locations.
-
-- [`extract_aet()`](https://aagi-aus.github.io/nert/reference/extract_aet.md)
-  : Extract AET Values at Point Locations
 
 ## Utilities
 

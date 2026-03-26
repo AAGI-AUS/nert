@@ -109,7 +109,7 @@ entire raster. The **nert** package works in tandem with the **terra**
 package to achieve this efficiency:
 
 - First, we download the *information* for a daily SMIPS raster using
-  [`nert::read_smips`](https://aagi-aus.github.io/nert/reference/read_smips.md),
+  `nert::read_smips`,
 - Then we *extract only the point values we need*, using
   [`terra::extract`](https://rspatial.github.io/terra/reference/extract.html).
 
