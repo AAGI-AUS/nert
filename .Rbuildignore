@@ -1,6 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
+^\.devcontainer$
+^_pkgdown\.yml$
+^CODE_OF_CONDUCT\.md$
+^LICENSE\.md$
+^README\.Rmd$
 ^flir$
 ^air\.toml$
 ^codecov\.yml$
@@ -22,3 +27,4 @@
 ^man/dot-read_tern_aet\.Rd$
 ^man/dot-check_aet_date\.Rd$
 ^man/dot-make_aet_url\.Rd$
+^man/dot-tern_validate_args\.Rd$
