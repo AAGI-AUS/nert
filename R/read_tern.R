@@ -125,23 +125,30 @@
 read_tern <- function(
   dataset_id,
   ...,
-  api_key       = get_key(),
+  api_key       = NULL,
   max_tries     = 3L,
   initial_delay = 1L
 ) {
   if (missing(dataset_id)) {
     cli::cli_abort("You must provide a {.arg dataset_id}.")
   }
-  api_key <- .check_api_key(api_key)
-  did     <- .tern_dispatch_id(dataset_id)
-  dots    <- list(...)
+
+  # Validate dataset ID and collect dots *before* checking the API key so that
+  # input-validation errors surface even when the key is not configured (e.g.
+  # in CI without TERN_API_KEY).
+  did  <- .tern_dispatch_id(dataset_id)
+  dots <- list(...)
+
+  # Validate dataset-specific arguments before requiring the API key
+  .tern_validate_args(did, dots, dataset_id)
+
+  api_key <- .check_api_key(api_key %||% get_key())
 
   switch(
     did,
     "d1995ee8" = .read_tern_smips(dots, api_key, max_tries, initial_delay),
     "15728dba" = .read_tern_asc(dots, api_key, max_tries, initial_delay),
-    "9fefa68b" = .read_tern_aet(dots, api_key, max_tries, initial_delay),
-    .tern_not_implemented(dataset_id)
+    "9fefa68b" = .read_tern_aet(dots, api_key, max_tries, initial_delay)
   )
 }
 
@@ -188,6 +195,49 @@ read_tern <- function(
     "i" = "Datasets with L2+ integration levels (OPeNDAP, GEE, REST API,
            site-specific) are outside the current {.pkg nert} scope."
   ))
+}
+
+
+#' Validate dataset-specific arguments before the API key is checked
+#'
+#' Runs the same guards as the individual handlers but without requiring an
+#' API key, so that input-validation errors surface in CI and tests even when
+#' `TERN_API_KEY` is not set.
+#'
+#' @param did Normalised 8-char dataset ID from [.tern_dispatch_id()].
+#' @param dots Named list of `...` arguments from the caller.
+#' @param dataset_id The raw `dataset_id` for error messages.
+#' @returns `NULL` (invisibly); called for its side effects (errors).
+#' @autoglobal
+#' @dev
+.tern_validate_args <- function(did, dots, dataset_id) {
+  switch(
+    did,
+    "d1995ee8" = {
+      date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["day"]]
+      if (is.null(date)) {
+        cli::cli_abort(
+          "SMIPS requires a {.arg date} argument (daily resolution),
+           e.g.  {.code date = \"2024-01-15\"}."
+        )
+      }
+    },
+    "15728dba" = {
+      # ASC — no required arguments beyond collection (has default)
+    },
+    "9fefa68b" = {
+      date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["month"]]
+      if (is.null(date)) {
+        cli::cli_abort(
+          "AET requires a {.arg date} argument (monthly resolution),
+           e.g.  {.code date = \"2023-06-01\"}."
+        )
+      }
+      .check_aet_date(date)
+    },
+    .tern_not_implemented(dataset_id)
+  )
+  invisible(NULL)
 }
 
 
