@@ -100,27 +100,25 @@ current scope of \pkg{nert}.
 
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# SMIPS — total bucket soil moisture for a specific day
-r <- read_tern("TERN/d1995ee8", date = "2024-01-15")
+# Using aliases (recommended) ──────────────────────────────────
+r <- read_tern("SMIPS", date = "2024-01-15")
 autoplot(r)
 
-# SMIPS — soil moisture index, multiple collections via loop
-r_smi <- read_tern("TERN/d1995ee8", date = "2024-01-15",
+r_asc <- read_tern("ASC")
+r_aet <- read_tern("AET", date = "2023-06-01")
+
+# SMIPS — soil moisture index collection
+r_smi <- read_tern("SMIPS", date = "2024-01-15",
                    collection = "SMindex")
 
-# ASC — estimated soil order class (static, no date needed)
-r_asc <- read_tern("TERN/15728dba")
-autoplot(r_asc)
-
 # ASC — confusion index
-r_ci <- read_tern("TERN/15728dba", collection = "CI")
+r_ci <- read_tern("ASC", collection = "CI")
 
-# AET — monthly evapotranspiration
-r_aet <- read_tern("TERN/9fefa68b", date = "2023-06-01")
-autoplot(r_aet)
+# Full TERN keys still work ────────────────────────────────────
+r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 
 # Full UUID keys are also accepted
-r2 <- read_tern(
+r3 <- read_tern(
   "TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0",
   date = "2024-01-15"
 )
@@ -140,6 +138,8 @@ AET DOI: \url{https://dx.doi.org/10.25901/gg27-ck96}
 }
 \seealso{
 Other COGs: 
-\code{\link{read_asc}()}
+\code{\link{read_aet}()},
+\code{\link{read_asc}()},
+\code{\link{read_smips}()}
 }
 \concept{COGs}

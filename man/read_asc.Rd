@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_asc.R
 \name{read_asc}
 \alias{read_asc}
-\title{Read ASC COGs from TERN}
+\title{Read ASC Soil Classification from TERN}
 \source{
 \describe{
 \item{ASC Data}{\url{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif}}
@@ -18,41 +18,50 @@ read_asc(
 )
 }
 \arguments{
-\item{confusion_index}{A \code{Boolean} value indicating whether to read the
-Confusion Index (\code{TRUE}) or the estimated \acronym{ASC} value (\code{FALSE}).
-Defaults to \code{FALSE} reading the \acronym{ASC} values.}
+\item{confusion_index}{A \code{logical} value indicating whether to read
+the Confusion Index (\code{TRUE}) or the estimated \acronym{ASC} value
+(\code{FALSE}).  Defaults to \code{FALSE}.}
 
-\item{api_key}{A \code{character} string containing your \acronym{API} key,
-a random string provided to you by \acronym{TERN}, for the request.
-Defaults to automatically detecting your key from your local .Renviron,
-.Rprofile or similar.  Alternatively, you may directly provide your key as
-a string here or use functionality like that from \CRANpkg{keyring}.  If
-nothing is provided, you will be prompted on how to set up your \R session
-so that it is auto-detected and a browser window will open at the
-\acronym{TERN} website for you to request a key.}
+\item{api_key}{A \code{character} string containing your \acronym{TERN}
+\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
 
-\item{max_tries}{An integer \code{Integer} with the number of times to retry a
-failed download before emitting an error message.  Defaults to 3.}
+\item{max_tries}{An \code{integer} giving the maximum number of download
+retries.  Defaults to \code{3}.}
 
-\item{initial_delay}{An \code{Integer} with the number of seconds to delay before
-retrying the download.  This increases as the tries increment.  Defaults to
-1.}
+\item{initial_delay}{An \code{integer} giving the initial retry delay in
+seconds (doubles with each attempt).  Defaults to \code{1}.}
 }
 \value{
-A  \code{\link[terra:rast]{terra::rast()}} object.
+A \code{\link[terra:rast]{terra::rast()}} object of the national ASC mosaic.
 }
 \description{
-Read Australian Soil Classification (\acronym{ASC}) Cloud Optimised Geotiff
+Read Australian Soil Classification (\acronym{ASC}) Cloud Optimised GeoTIFF
 (\acronym{COG}) files from \acronym{TERN} in your \R session.  The data are
 Australian Soil Classification Soil Order classes with quantified estimates
-of mapping reliability at a 90 m resolution.  You can access the reliability
-map using the \code{confusion_index} argument.
+of mapping reliability at a 90 m resolution.
+}
+\details{
+Two collection layers are available:
+\describe{
+\item{\code{"EV"}}{Estimated soil order class (default).}
+\item{\code{"CI"}}{Confusion index — a measure of mapping reliability.}
+}
+
+This is a static product (no date argument required).
+
+This is a convenience wrapper; you can also call
+\code{read_tern("ASC")} — see \code{\link[=read_tern]{read_tern()}} for the unified interface
+and additional datasets.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-
+# Read estimated ASC soil order class
 r <- read_asc()
-r
+autoplot(r)
+
+# Read confusion index (mapping reliability)
+r_ci <- read_asc(confusion_index = TRUE)
+autoplot(r_ci)
 \dontshow{\}) # examplesIf}
 }
 \references{
@@ -60,6 +69,8 @@ r
 }
 \seealso{
 Other COGs: 
+\code{\link{read_aet}()},
+\code{\link{read_smips}()},
 \code{\link{read_tern}()}
 }
 \concept{COGs}

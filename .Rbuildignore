@@ -20,6 +20,7 @@
 ^man/dot-check_date\.Rd$
 ^man/dot-check_collection_agreement\.Rd$
 ^man/dot-make_smips_url\.Rd$
+^man/dot-tern_aliases\.Rd$
 ^man/dot-tern_dispatch_id\.Rd$
 ^man/dot-tern_not_implemented\.Rd$
 ^man/dot-tern_validate_args\.Rd$
