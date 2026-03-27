@@ -13,9 +13,10 @@
 A normalised \code{character} string for use in \code{switch()}.
 }
 \description{
-Strips any \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or \code{NCI/}
-prefix, then extracts the first 8 lower-case characters of the UUID.
-Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are returned as-is
-after prefix removal.
+Resolves human-readable aliases (\code{"SMIPS"}, \code{"ASC"},
+\code{"AET"}), strips any \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or
+\code{NCI/} prefix, then extracts the first 8 lower-case characters of
+the UUID.  Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are
+returned as-is after prefix removal.
 }
 \keyword{internal}

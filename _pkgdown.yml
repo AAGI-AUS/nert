@@ -10,6 +10,10 @@ reference:
       - read_smips
       - read_asc
       - read_aet
+      - read_slga
+      - read_soil_diversity
+      - read_canopy_height
+      - read_phenology
   - title: "Utilities"
     desc: "Helper functions for working with TERN data."
     contents:

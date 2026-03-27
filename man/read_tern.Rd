@@ -4,25 +4,15 @@
 \alias{read_tern}
 \title{Read TERN COG Datasets}
 \usage{
-read_tern(
-  dataset_id,
-  ...,
-  api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
-)
+read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
 }
 \arguments{
 \item{dataset_id}{A \code{character} string identifying the dataset.
-Accepts the full \acronym{TERN} portal key (e.g.\
-\code{"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"}) or the
-8-character key prefix (e.g.\ \code{"TERN/d1995ee8"}).  Currently
-supported keys:
-\tabular{ll}{
-\code{"TERN/d1995ee8"} \tab SMIPS daily soil moisture \cr
-\code{"TERN/15728dba"} \tab Australian Soil Classification (ASC) \cr
-\code{"TERN/9fefa68b"} \tab AET/CMRSET evapotranspiration \cr
-}}
+Accepts a short alias, the full \acronym{TERN} portal key (e.g.\
+\code{"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"}), or the
+8-character key prefix (e.g.\ \code{"TERN/d1995ee8"}).  See the
+\strong{Dataset aliases} section for the complete table of supported
+aliases.}
 
 \item{...}{Dataset-specific arguments — \code{date}, \code{collection},
 etc.  See the relevant section above for each dataset.}
@@ -50,6 +40,32 @@ additional arguments through \code{...}.  The returned object is a
 \code{\link[terra:rast]{terra::rast()}} that can be plotted, cropped, or extracted with standard
 \pkg{terra} or \pkg{tidyterra} workflows.
 }
+\section{Dataset aliases}{
+
+In addition to full \acronym{TERN} portal keys and 8-character prefixes,
+\code{read_tern()} accepts short human-readable aliases (case-insensitive):
+\tabular{lll}{
+\strong{Alias}        \tab \strong{Dataset ID}        \tab \strong{Description} \cr
+\code{"SMIPS"}         \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
+\code{"ASC"}           \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
+\code{"AET"}           \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration (CMRSET) \cr
+\code{"AWC"}           \tab \code{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
+\code{"CLY"}           \tab SLGA                 \tab Clay content (90 m) \cr
+\code{"SND"}           \tab SLGA                 \tab Sand content (90 m) \cr
+\code{"SLT"}           \tab SLGA                 \tab Silt content (90 m) \cr
+\code{"BDW"}           \tab SLGA                 \tab Bulk density whole earth (90 m) \cr
+\code{"PHC"}           \tab SLGA                 \tab pH CaCl2 (90 m) \cr
+\code{"PHW"}           \tab SLGA                 \tab pH water (90 m) \cr
+\code{"NTO"}           \tab SLGA                 \tab Total Nitrogen (90 m) \cr
+\code{"SOILDIV"}       \tab \code{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
+\code{"CANOPY"}        \tab \code{TERN/36c98155} \tab Canopy Height (30 m) \cr
+\code{"PHENOLOGY"}     \tab \code{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
+}
+Convenience wrappers \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}, \code{\link[=read_aet]{read_aet()}},
+\code{\link[=read_slga]{read_slga()}}, \code{\link[=read_soil_diversity]{read_soil_diversity()}}, \code{\link[=read_canopy_height]{read_canopy_height()}}, and
+\code{\link[=read_phenology]{read_phenology()}} are also provided for direct access to each dataset.
+}
+
 \section{SMIPS — daily soil moisture (\code{"TERN/d1995ee8"})}{
 
 \describe{
@@ -86,20 +102,71 @@ mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
 Data availability: 2000-02-01 onwards.
 }
 
-\section{Datasets not yet implemented}{
+\section{SLGA soil attributes (\code{"AWC"}, \code{"CLY"}, etc.)}{
 
-The following priority datasets are tracked in the \acronym{TERN}
-catalogue and are planned for a future release.  They require
-verification of COG file-naming patterns against the live \acronym{TERN}
-data server before they can be safely included:
+Eight \acronym{SLGA} (Soil and Landscape Grid of Australia) soil
+attributes are available as static 90 m products, each with six standard
+depth layers and two statistics:
+\describe{
+\item{\code{depth}}{One of \code{"000_005"} (default), \code{"005_015"},
+\code{"015_030"}, \code{"030_060"}, \code{"060_100"}, or
+\code{"100_200"} (cm).}
+\item{\code{collection}}{One of \code{"EV"} (estimated value, default)
+or \code{"CI"} (confidence interval).}
+}
+Supported attributes (use as the \code{dataset_id} alias):
+\describe{
+\item{\code{"AWC"}}{Available Water Capacity (mm)}
+\item{\code{"CLY"}}{Clay content (percent)}
+\item{\code{"SND"}}{Sand content (percent)}
+\item{\code{"SLT"}}{Silt content (percent)}
+\item{\code{"BDW"}}{Bulk Density whole earth (g/cm3)}
+\item{\code{"PHC"}}{pH (CaCl2)}
+\item{\code{"PHW"}}{pH (water)}
+\item{\code{"NTO"}}{Total Nitrogen (percent)}
+}
+Convenience wrapper: \code{\link[=read_slga]{read_slga()}}.
+}
+
+\section{Soil Beta Diversity (\code{"SOILDIV"}, \code{TERN/4a428d52})}{
+
+\describe{
+\item{\code{collection}}{One of \code{"Bacteria"} (default) or
+\code{"Fungi"}.}
+\item{\code{axis}}{NMDS axis number: \code{1} (default), \code{2}, or
+\code{3}.}
+}
+Static 90 m product.  Convenience wrapper: \code{\link[=read_soil_diversity]{read_soil_diversity()}}.
+}
+
+\section{Canopy Height (\code{"CANOPY"}, \code{TERN/36c98155})}{
+
+Single static 30 m composite from the OzTreeMap project.  No additional
+arguments required.  Convenience wrapper: \code{\link[=read_canopy_height]{read_canopy_height()}}.
+}
+
+\section{Land Surface Phenology (\code{"PHENOLOGY"}, \code{TERN/2bb0c81a})}{
+
+\describe{
+\item{\code{year}}{Required.  An integer year (2003--2018).}
+\item{\code{season}}{Season number: \code{1} (default) or \code{2}.}
+\item{\code{collection}}{Phenology metric — one of \code{"SGS"}
+(Start of Growing Season, default), \code{"PGS"} (Peak),
+\code{"EGS"} (End), \code{"LGS"} (Length), \code{"SOS"} (Start of
+Season), \code{"POS"} (Peak of Season), \code{"EOS"} (End of Season),
+\code{"LOS"} (Length of Season), \code{"ROG"} (Rate of Greening),
+\code{"ROS"} (Rate of Senescence).}
+}
+500 m MODIS resolution.  Convenience wrapper: \code{\link[=read_phenology]{read_phenology()}}.
+}
+
+\section{Datasets not accessible}{
+
+The following datasets are tracked in the \acronym{TERN} catalogue but
+cannot be accessed via COG HTTP range requests:
 \itemize{
-\item \code{TERN/482301c2} — SLGA Available Volumetric Water Capacity
-\item \code{TERN/4a428d52} — SLGA Soil Bacteria and Fungi Beta Diversity
 \item \code{TERN/0997cb3c} — Seasonal Fractional Cover (Landsat)
 \item \code{TERN/fe9d86e1} — Seasonal Ground Cover (Landsat)
-\item \code{TERN/36c98155} — Canopy Height Models 30 m
-\item \code{TERN/2bb0c81a} — Australian Land Surface Phenology
-\item \code{TERN/PAV_slga} — SLGA Available Phosphorus
 }
 Datasets with integration level L2 or higher (e.g.\ AusEFlux via
 \acronym{THREDDS}/OPeNDAP, GEE-based products, site-level API streams)
@@ -109,46 +176,53 @@ current scope of \pkg{nert}.
 
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# SMIPS — total bucket soil moisture for a specific day
-r <- read_tern("TERN/d1995ee8", date = "2024-01-15")
+# Using aliases (recommended) ──────────────────────────────────
+r <- read_tern("SMIPS", date = "2024-01-15")
 autoplot(r)
 
-# SMIPS — soil moisture index, multiple collections via loop
-r_smi <- read_tern("TERN/d1995ee8", date = "2024-01-15",
-                   collection = "SMindex")
+r_asc <- read_tern("ASC")
+r_aet <- read_tern("AET", date = "2023-06-01")
 
-# ASC — estimated soil order class (static, no date needed)
-r_asc <- read_tern("TERN/15728dba")
-autoplot(r_asc)
+# SLGA soil attributes — depth and collection
+r_clay <- read_tern("CLY", depth = "000_005")
+r_awc  <- read_tern("AWC", depth = "015_030", collection = "CI")
 
-# ASC — confusion index
-r_ci <- read_tern("TERN/15728dba", collection = "CI")
+# Soil Beta Diversity
+r_bact <- read_tern("SOILDIV", collection = "Bacteria", axis = 1)
 
-# AET — monthly evapotranspiration
-r_aet <- read_tern("TERN/9fefa68b", date = "2023-06-01")
-autoplot(r_aet)
+# Canopy Height (single static product)
+r_ch <- read_tern("CANOPY")
 
-# Full UUID keys are also accepted
-r2 <- read_tern(
-  "TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0",
-  date = "2024-01-15"
-)
+# Land Surface Phenology
+r_phen <- read_tern("PHENOLOGY", year = 2018, collection = "SGS")
+
+# Full TERN keys still work ────────────────────────────────────
+r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 \dontshow{\}) # examplesIf}
 }
 \references{
-SMIPS portal:
-\url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
+SMIPS: \url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
 
-ASC portal:
-\url{https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c}
+ASC: \url{https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c}
 
-AET portal:
-\url{https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
+AET: \url{https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
 
-AET DOI: \url{https://dx.doi.org/10.25901/gg27-ck96}
+AWC: \url{https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7}
+
+Soil Beta Diversity: \url{https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0}
+
+Canopy Height: \url{https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba}
+
+Land Surface Phenology: \url{https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
 }
 \seealso{
 Other COGs: 
-\code{\link{read_asc}()}
+\code{\link{read_aet}()},
+\code{\link{read_asc}()},
+\code{\link{read_canopy_height}()},
+\code{\link{read_phenology}()},
+\code{\link{read_slga}()},
+\code{\link{read_smips}()},
+\code{\link{read_soil_diversity}()}
 }
 \concept{COGs}
