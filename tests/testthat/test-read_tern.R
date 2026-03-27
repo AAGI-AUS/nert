@@ -57,7 +57,7 @@ test_that("read_tern SMIPS errors when date is missing", {
 test_that("read_tern SMIPS accepts full UUID and errors on missing date", {
   expect_error(
     read_tern("TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"),
-    "SMIPS requires"   # correct dataset found; only date is missing
+    "SMIPS requires" # correct dataset found; only date is missing
   )
 })
 
@@ -103,7 +103,7 @@ test_that("read_tern SMIPS builds correct URL filename via internal helper", {
 
 test_that("read_tern AET builds correct URL via .make_aet_url", {
   month <- .check_aet_date("2023-06-01")
-  url   <- .make_aet_url("ETa", month, "testkey")
+  url <- .make_aet_url("ETa", month, "testkey")
   expect_match(url, "2023/2023_06_01/CMRSET_LANDSAT_V2_2_2023_06_01_ETa.vrt")
 })
 

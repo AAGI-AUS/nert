@@ -2,38 +2,36 @@
 #'
 #' A unified interface for reading Cloud Optimised GeoTIFF (\acronym{COG})
 #' data from \acronym{TERN} and related repositories.  Dispatches to a
-#' dataset-specific handler based on \code{dataset_id} and passes any
-#' additional arguments through \code{...}.  The returned object is a
-#' [terra::rast()] that can be plotted, cropped, or extracted with standard
-#' \pkg{terra} or \pkg{tidyterra} workflows.
+#' dataset-specific handler based on `dataset_id` and passes any additional
+#' arguments through `...`.  The returned object is a [terra::rast()] that can
+#' be plotted, cropped, or extracted with standard \pkg{terra} or
+#' \pkg{tidyterra} workflows.
 #'
-#' @section SMIPS — daily soil moisture (\code{"TERN/d1995ee8"}):
+#' @section SMIPS — daily soil moisture (`"TERN/d1995ee8"`):
 #' \describe{
-#'   \item{\code{date}}{Required.  A single day to query, _e.g._
-#'     \code{"2024-01-15"} or \code{as.Date("2024-01-15")}.  Both
-#'     \code{Character} and \code{Date} classes are accepted.}
-#'   \item{\code{collection}}{One of \code{"totalbucket"} (default),
-#'     \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"},
-#'     \code{"deepD"}, or \code{"runoff"}.}
+#'   \item{`date`}{Required.  A single day to query, _e.g._ `"2024-01-15"` or
+#'     `as.Date("2024-01-15")`.  Both `Character` and `Date` classes are
+#'     accepted.}
+#'   \item{`collection`}{One of `"totalbucket"` (default), `"SMindex"`,
+#'     `"bucket1"`, `"bucket2"`, `"deepD"`, or `"runoff"`.}
 #' }
 #' Data availability: 2015-11-20 to approximately 7 days before today.
 #'
-#' @section ASC — Australian Soil Classification (\code{"TERN/15728dba"}):
+#' @section ASC — Australian Soil Classification (`"TERN/15728dba"`):
 #' \describe{
-#'   \item{\code{collection}}{One of \code{"EV"} (estimated soil order
-#'     class, default) or \code{"CI"} (confusion index — a measure of
-#'     mapping reliability).  No \code{date} argument required; this is a
-#'     static product.}
+#'   \item{`collection`}{One of `"EV"` (estimated soil order class,
+#'     default) or `"CI"` (confusion index — a measure of mapping reliability).
+#'     No `date` argument required; this is a static product.}
 #' }
 #'
-#' @section AET — Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"}):
+#' @section AET — Actual Evapotranspiration/CMRSET (`"TERN/9fefa68b"`):
 #' \describe{
-#'   \item{\code{date}}{Required.  A month to query, _e.g._
-#'     \code{"2023-06-01"} or \code{as.Date("2023-06-01")}.  Both
-#'     \code{Character} and \code{Date} classes are accepted.  The value is
+#'   \item{`date`}{Required.  A month to query, _e.g._
+#'     `"2023-06-01"90` or `as.Date("2023-06-01")`.  Both
+#'     `Character` and `Date` classes are accepted.  The value is
 #'     snapped to the first of the month internally.}
-#'   \item{\code{collection}}{One of \code{"ETa"} (primary AET band in
-#'     mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
+#'   \item{`collection`}{One of `"ETa"` (primary AET band in
+#'     mm/month, default) or `"pixel_qa"` (quality assurance flags).}
 #' }
 #' Data availability: 2000-02-01 onwards.
 #'
@@ -43,39 +41,38 @@
 #' verification of COG file-naming patterns against the live \acronym{TERN}
 #' data server before they can be safely included:
 #' \itemize{
-#'   \item \code{TERN/482301c2} — SLGA Available Volumetric Water Capacity
-#'   \item \code{TERN/4a428d52} — SLGA Soil Bacteria and Fungi Beta Diversity
-#'   \item \code{TERN/0997cb3c} — Seasonal Fractional Cover (Landsat)
-#'   \item \code{TERN/fe9d86e1} — Seasonal Ground Cover (Landsat)
-#'   \item \code{TERN/36c98155} — Canopy Height Models 30 m
-#'   \item \code{TERN/2bb0c81a} — Australian Land Surface Phenology
-#'   \item \code{TERN/PAV_slga} — SLGA Available Phosphorus
+#'   \item `TERN/482301c2` — SLGA Available Volumetric Water Capacity
+#'   \item `TERN/4a428d52` — SLGA Soil Bacteria and Fungi Beta Diversity
+#'   \item `TERN/0997cb3c` — Seasonal Fractional Cover (Landsat)
+#'   \item `TERN/fe9d86e1` — Seasonal Ground Cover (Landsat)
+#'   \item `TERN/36c98155` — Canopy Height Models 30 m
+#'   \item `TERN/2bb0c81a` — Australian Land Surface Phenology
+#'   \item `TERN/PAV_slga` — SLGA Available Phosphorus
 #' }
-#' Datasets with integration level L2 or higher (e.g.\ AusEFlux via
+#' Datasets with integration level L2 or higher (*e.g.* AusEFlux via
 #' \acronym{THREDDS}/OPeNDAP, GEE-based products, site-level API streams)
 #' cannot be read via simple COG HTTP range requests and are outside the
 #' current scope of \pkg{nert}.
 #'
-#' @param dataset_id A \code{character} string identifying the dataset.
-#'   Accepts the full \acronym{TERN} portal key (e.g.\
-#'   \code{"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"}) or the
-#'   8-character key prefix (e.g.\ \code{"TERN/d1995ee8"}).  Currently
+#' @param dataset_id A `character` string identifying the dataset.
+#'   Accepts the full \acronym{TERN} portal key (*e.g.*
+#'   `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`) or the
+#'   8-character key prefix (*e.g.* `"TERN/d1995ee8"`).  Currently
 #'   supported keys:
 #'   \tabular{ll}{
-#'     \code{"TERN/d1995ee8"} \tab SMIPS daily soil moisture \cr
-#'     \code{"TERN/15728dba"} \tab Australian Soil Classification (ASC) \cr
-#'     \code{"TERN/9fefa68b"} \tab AET/CMRSET evapotranspiration \cr
+#'     `"TERN/d1995ee8"` \tab SMIPS daily soil moisture \cr
+#'     `"TERN/15728dba"` \tab Australian Soil Classification (ASC) \cr
+#'     `"TERN/9fefa68b"` \tab AET/CMRSET evapotranspiration \cr
 #'   }
-#' @param ... Dataset-specific arguments — \code{date}, \code{collection},
+#' @param ... Dataset-specific arguments — `date`, `collection`,
 #'   etc.  See the relevant section above for each dataset.
-#' @param api_key A \code{character} string containing your \acronym{TERN}
+#' @param api_key A `character` string containing your \acronym{TERN}
 #'   \acronym{API} key.  Defaults to automatic detection from your
-#'   \code{.Renviron} or \code{.Rprofile}.  See \code{\link{get_key}} for
-#'   setup instructions.
-#' @param max_tries An \code{integer} giving the maximum number of download
-#'   retries before an error is raised.  Defaults to \code{3}.
-#' @param initial_delay An \code{integer} giving the initial retry delay in
-#'   seconds (doubles with each attempt).  Defaults to \code{1}.
+#'   `.Renviron` or `.Rprofile`.  See `get_key` for setup instructions.
+#' @param max_tries An `integer` giving the maximum number of download
+#'   retries before an error is raised.  Defaults to `3`.
+#' @param initial_delay An `integer` giving the initial retry delay in
+#'   seconds (doubles with each attempt).  Defaults to `1`.
 #'
 #' @family COGs
 #'
@@ -125,8 +122,8 @@
 read_tern <- function(
   dataset_id,
   ...,
-  api_key       = NULL,
-  max_tries     = 3L,
+  api_key = NULL,
+  max_tries = 3L,
   initial_delay = 1L
 ) {
   if (missing(dataset_id)) {
@@ -136,7 +133,7 @@ read_tern <- function(
   # Validate dataset ID and collect dots *before* checking the API key so that
   # input-validation errors surface even when the key is not configured (e.g.
   # in CI without TERN_API_KEY).
-  did  <- .tern_dispatch_id(dataset_id)
+  did <- .tern_dispatch_id(dataset_id)
   dots <- list(...)
 
   # Validate dataset-specific arguments before requiring the API key
@@ -159,7 +156,7 @@ read_tern <- function(
 #'
 #' Strips any \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or \code{NCI/}
 #' prefix, then extracts the first 8 lower-case characters of the UUID.
-#' Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are returned as-is
+#' Non-UUID identifiers (_e.g._ \code{"AusEFlux_v2"}) are returned as-is
 #' after prefix removal.
 #'
 #' @param id The raw \code{dataset_id} string supplied by the user.
@@ -170,8 +167,13 @@ read_tern <- function(
   id <- trimws(as.character(id[[1L]]))
   id <- sub("^(?:TERN|CSIRO|AEKOS|NCI)/", "", id, perl = TRUE)
   # UUID-like string: keep only the first 8 hex chars
-  id <- sub("^([0-9a-f]{8})[0-9a-f\\-]*$", "\\1", id,
-            ignore.case = TRUE, perl = TRUE)
+  id <- sub(
+    "^([0-9a-f]{8})[0-9a-f\\-]*$",
+    "\\1",
+    id,
+    ignore.case = TRUE,
+    perl = TRUE
+  )
   tolower(id)
 }
 
@@ -259,13 +261,20 @@ read_tern <- function(
        e.g.  {.code date = \"2024-01-15\"}."
     )
   }
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "totalbucket"
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "totalbucket"
+  }
 
-  day      <- .check_date(date)
-  dl_file  <- .make_smips_url(.collection = collection, .day = day)
+  day <- .check_date(date)
+  dl_file <- .make_smips_url(.collection = collection, .day = day)
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
-    api_key, collection, lubridate::year(day), dl_file
+    api_key,
+    collection,
+    lubridate::year(day),
+    dl_file
   )
   .read_cog(full_url, max_tries, initial_delay)
 }
@@ -279,9 +288,13 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .read_tern_asc <- function(dots, api_key, max_tries, initial_delay) {
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "EV"
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "EV"
+  }
 
-  approved   <- c("EV", "CI")
+  approved <- c("EV", "CI")
   collection <- rlang::arg_match(collection, approved)
 
   dl_file <- data.table::fifelse(
@@ -291,7 +304,8 @@ read_tern <- function(
   )
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
-    api_key, dl_file
+    api_key,
+    dl_file
   )
   .read_cog(full_url, max_tries, initial_delay)
 }
@@ -313,13 +327,17 @@ read_tern <- function(
        e.g.  {.code date = \"2023-06-01\"}."
     )
   }
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "ETa"
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "ETa"
+  }
 
-  month    <- .check_aet_date(date)
+  month <- .check_aet_date(date)
   full_url <- .make_aet_url(
     .collection = collection,
-    .month      = month,
-    .api_key    = api_key
+    .month = month,
+    .api_key = api_key
   )
   .read_cog(full_url, max_tries, initial_delay)
 }
@@ -339,8 +357,8 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .check_aet_date <- function(x) {
-  x  <- .check_date(x)
-  x  <- lubridate::floor_date(x, "month")
+  x <- .check_date(x)
+  x <- lubridate::floor_date(x, "month")
   yr <- lubridate::year(x)
   mo <- lubridate::month(x)
   if (yr < 2000L || (yr == 2000L && mo < 2L)) {
@@ -367,11 +385,15 @@ read_tern <- function(
   approved_collections <- c("ETa", "pixel_qa")
   collection <- rlang::arg_match(.collection, approved_collections)
 
-  year     <- lubridate::year(.month)
+  year <- lubridate::year(.month)
   date_str <- format(.month, "%Y_%m_%d")
 
   sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/landscapes/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
-    .api_key, year, date_str, date_str, collection
+    .api_key,
+    year,
+    date_str,
+    date_str,
+    collection
   )
 }

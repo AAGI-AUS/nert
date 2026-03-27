@@ -4,19 +4,13 @@
 \alias{read_tern}
 \title{Read TERN COG Datasets}
 \usage{
-read_tern(
-  dataset_id,
-  ...,
-  api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
-)
+read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
 }
 \arguments{
 \item{dataset_id}{A \code{character} string identifying the dataset.
-Accepts the full \acronym{TERN} portal key (e.g.\
+Accepts the full \acronym{TERN} portal key (\emph{e.g.}
 \code{"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"}) or the
-8-character key prefix (e.g.\ \code{"TERN/d1995ee8"}).  Currently
+8-character key prefix (\emph{e.g.} \code{"TERN/d1995ee8"}).  Currently
 supported keys:
 \tabular{ll}{
 \code{"TERN/d1995ee8"} \tab SMIPS daily soil moisture \cr
@@ -29,8 +23,7 @@ etc.  See the relevant section above for each dataset.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
 \acronym{API} key.  Defaults to automatic detection from your
-\code{.Renviron} or \code{.Rprofile}.  See \code{\link{get_key}} for
-setup instructions.}
+\code{.Renviron} or \code{.Rprofile}.  See \code{get_key} for setup instructions.}
 
 \item{max_tries}{An \code{integer} giving the maximum number of download
 retries before an error is raised.  Defaults to \code{3}.}
@@ -45,20 +38,19 @@ requested dataset (and, where applicable, date/collection).
 \description{
 A unified interface for reading Cloud Optimised GeoTIFF (\acronym{COG})
 data from \acronym{TERN} and related repositories.  Dispatches to a
-dataset-specific handler based on \code{dataset_id} and passes any
-additional arguments through \code{...}.  The returned object is a
-\code{\link[terra:rast]{terra::rast()}} that can be plotted, cropped, or extracted with standard
-\pkg{terra} or \pkg{tidyterra} workflows.
+dataset-specific handler based on \code{dataset_id} and passes any additional
+arguments through \code{...}.  The returned object is a \code{\link[terra:rast]{terra::rast()}} that can
+be plotted, cropped, or extracted with standard \pkg{terra} or
+\pkg{tidyterra} workflows.
 }
 \section{SMIPS — daily soil moisture (\code{"TERN/d1995ee8"})}{
 
 \describe{
-\item{\code{date}}{Required.  A single day to query, \emph{e.g.}
-\code{"2024-01-15"} or \code{as.Date("2024-01-15")}.  Both
-\code{Character} and \code{Date} classes are accepted.}
-\item{\code{collection}}{One of \code{"totalbucket"} (default),
-\code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"},
-\code{"deepD"}, or \code{"runoff"}.}
+\item{\code{date}}{Required.  A single day to query, \emph{e.g.} \code{"2024-01-15"} or
+\code{as.Date("2024-01-15")}.  Both \code{Character} and \code{Date} classes are
+accepted.}
+\item{\code{collection}}{One of \code{"totalbucket"} (default), \code{"SMindex"},
+\code{"bucket1"}, \code{"bucket2"}, \code{"deepD"}, or \code{"runoff"}.}
 }
 Data availability: 2015-11-20 to approximately 7 days before today.
 }
@@ -66,10 +58,9 @@ Data availability: 2015-11-20 to approximately 7 days before today.
 \section{ASC — Australian Soil Classification (\code{"TERN/15728dba"})}{
 
 \describe{
-\item{\code{collection}}{One of \code{"EV"} (estimated soil order
-class, default) or \code{"CI"} (confusion index — a measure of
-mapping reliability).  No \code{date} argument required; this is a
-static product.}
+\item{\code{collection}}{One of \code{"EV"} (estimated soil order class,
+default) or \code{"CI"} (confusion index — a measure of mapping reliability).
+No \code{date} argument required; this is a static product.}
 }
 }
 
@@ -77,7 +68,7 @@ static product.}
 
 \describe{
 \item{\code{date}}{Required.  A month to query, \emph{e.g.}
-\code{"2023-06-01"} or \code{as.Date("2023-06-01")}.  Both
+\verb{"2023-06-01"90} or \code{as.Date("2023-06-01")}.  Both
 \code{Character} and \code{Date} classes are accepted.  The value is
 snapped to the first of the month internally.}
 \item{\code{collection}}{One of \code{"ETa"} (primary AET band in
@@ -93,15 +84,15 @@ catalogue and are planned for a future release.  They require
 verification of COG file-naming patterns against the live \acronym{TERN}
 data server before they can be safely included:
 \itemize{
-\item \code{TERN/482301c2} — SLGA Available Volumetric Water Capacity
-\item \code{TERN/4a428d52} — SLGA Soil Bacteria and Fungi Beta Diversity
-\item \code{TERN/0997cb3c} — Seasonal Fractional Cover (Landsat)
+\item \verb{TERN/482301c2} — SLGA Available Volumetric Water Capacity
+\item \verb{TERN/4a428d52} — SLGA Soil Bacteria and Fungi Beta Diversity
+\item \verb{TERN/0997cb3c} — Seasonal Fractional Cover (Landsat)
 \item \code{TERN/fe9d86e1} — Seasonal Ground Cover (Landsat)
-\item \code{TERN/36c98155} — Canopy Height Models 30 m
-\item \code{TERN/2bb0c81a} — Australian Land Surface Phenology
+\item \verb{TERN/36c98155} — Canopy Height Models 30 m
+\item \verb{TERN/2bb0c81a} — Australian Land Surface Phenology
 \item \code{TERN/PAV_slga} — SLGA Available Phosphorus
 }
-Datasets with integration level L2 or higher (e.g.\ AusEFlux via
+Datasets with integration level L2 or higher (\emph{e.g.} AusEFlux via
 \acronym{THREDDS}/OPeNDAP, GEE-based products, site-level API streams)
 cannot be read via simple COG HTTP range requests and are outside the
 current scope of \pkg{nert}.
