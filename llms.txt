@@ -14,9 +14,12 @@ To get started:
 ### Enable this universe
 
 ``` r
-options(repos = c(
-    aagi_aus = "https://aagi-aus.r-universe.dev",
-    CRAN = "https://cloud.r-project.org"))
+options(
+  repos = c(
+    AAGI = "https://aagi-aus.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"
+  )
+)
 ```
 
 ### Install
@@ -75,6 +78,12 @@ given latitude and longitude values for each.
 
 ``` r
 library(terra)
+#> terra 1.9.11
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 df <- structure(
   list(
     location = c("Corrigin", "Merredin", "Tamworth"),
@@ -154,18 +163,17 @@ To cite nert:
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2025).
-#>   _nert: An API Client for TERN Data_. R package version 0.0.1.9000,
-#>   commit 39ab8b7f2f03152ea3702f3089f095b9adebb9ee,
-#>   <https://github.com/AAGI-AUS/nert>.
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). _nert: An
+#>   API Client for TERN Data_. R package version 0.0.1.9000, commit
+#>   05d08aa660d47856bd897faa2d2d4c2dbdbbaa53, <https://github.com/AAGI-AUS/nert>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
 #>     title = {nert: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
-#>     year = {2025},
-#>     note = {R package version 0.0.1.9000, commit 39ab8b7f2f03152ea3702f3089f095b9adebb9ee},
+#>     year = {2026},
+#>     note = {R package version 0.0.1.9000, commit 05d08aa660d47856bd897faa2d2d4c2dbdbbaa53},
 #>     url = {https://github.com/AAGI-AUS/nert},
 #>   }
 ```
