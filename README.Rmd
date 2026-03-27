@@ -32,9 +32,12 @@ To get started:
 ### Enable this universe
 
 ```r
-options(repos = c(
-    aagi_aus = "https://aagi-aus.r-universe.dev",
-    CRAN = "https://cloud.r-project.org"))
+options(
+  repos = c(
+    AAGI = "https://aagi-aus.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"
+  )
+)
 ```
 
 ### Install
