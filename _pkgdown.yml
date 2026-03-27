@@ -7,7 +7,9 @@ reference:
     desc: "Functions to read Cloud Optimised GeoTIFF data from TERN."
     contents:
       - read_tern
+      - read_smips
       - read_asc
+      - read_aet
   - title: "Utilities"
     desc: "Helper functions for working with TERN data."
     contents:

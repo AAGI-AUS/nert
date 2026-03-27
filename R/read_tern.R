@@ -7,6 +7,18 @@
 #' [terra::rast()] that can be plotted, cropped, or extracted with standard
 #' \pkg{terra} or \pkg{tidyterra} workflows.
 #'
+#' @section Dataset aliases:
+#' In addition to full \acronym{TERN} portal keys and 8-character prefixes,
+#' \code{read_tern()} accepts short human-readable aliases (case-insensitive):
+#' \tabular{lll}{
+#'   \strong{Alias} \tab \strong{Dataset ID}        \tab \strong{Description} \cr
+#'   \code{"SMIPS"}  \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
+#'   \code{"ASC"}    \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
+#'   \code{"AET"}    \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration (CMRSET) \cr
+#' }
+#' Convenience wrappers [read_smips()], [read_asc()], and [read_aet()] are
+#' also provided for direct access to each dataset.
+#'
 #' @section SMIPS — daily soil moisture (\code{"TERN/d1995ee8"}):
 #' \describe{
 #'   \item{\code{date}}{Required.  A single day to query, _e.g._
@@ -57,14 +69,16 @@
 #' current scope of \pkg{nert}.
 #'
 #' @param dataset_id A \code{character} string identifying the dataset.
-#'   Accepts the full \acronym{TERN} portal key (e.g.\
-#'   \code{"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"}) or the
+#'   Accepts a short alias (\code{"SMIPS"}, \code{"ASC"}, \code{"AET"}),
+#'   the full \acronym{TERN} portal key (e.g.\
+#'   \code{"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"}), or the
 #'   8-character key prefix (e.g.\ \code{"TERN/d1995ee8"}).  Currently
-#'   supported keys:
-#'   \tabular{ll}{
-#'     \code{"TERN/d1995ee8"} \tab SMIPS daily soil moisture \cr
-#'     \code{"TERN/15728dba"} \tab Australian Soil Classification (ASC) \cr
-#'     \code{"TERN/9fefa68b"} \tab AET/CMRSET evapotranspiration \cr
+#'   supported datasets:
+#'   \tabular{lll}{
+#'     \strong{Alias} \tab \strong{Key}              \tab \strong{Dataset} \cr
+#'     \code{"SMIPS"}  \tab \code{"TERN/d1995ee8"} \tab Daily soil moisture \cr
+#'     \code{"ASC"}    \tab \code{"TERN/15728dba"} \tab Soil classification \cr
+#'     \code{"AET"}    \tab \code{"TERN/9fefa68b"} \tab Evapotranspiration \cr
 #'   }
 #' @param ... Dataset-specific arguments — \code{date}, \code{collection},
 #'   etc.  See the relevant section above for each dataset.
@@ -80,27 +94,25 @@
 #' @family COGs
 #'
 #' @examplesIf interactive()
-#' # SMIPS — total bucket soil moisture for a specific day
-#' r <- read_tern("TERN/d1995ee8", date = "2024-01-15")
+#' # Using aliases (recommended) ──────────────────────────────────
+#' r <- read_tern("SMIPS", date = "2024-01-15")
 #' autoplot(r)
 #'
-#' # SMIPS — soil moisture index, multiple collections via loop
-#' r_smi <- read_tern("TERN/d1995ee8", date = "2024-01-15",
+#' r_asc <- read_tern("ASC")
+#' r_aet <- read_tern("AET", date = "2023-06-01")
+#'
+#' # SMIPS — soil moisture index collection
+#' r_smi <- read_tern("SMIPS", date = "2024-01-15",
 #'                    collection = "SMindex")
 #'
-#' # ASC — estimated soil order class (static, no date needed)
-#' r_asc <- read_tern("TERN/15728dba")
-#' autoplot(r_asc)
-#'
 #' # ASC — confusion index
-#' r_ci <- read_tern("TERN/15728dba", collection = "CI")
+#' r_ci <- read_tern("ASC", collection = "CI")
 #'
-#' # AET — monthly evapotranspiration
-#' r_aet <- read_tern("TERN/9fefa68b", date = "2023-06-01")
-#' autoplot(r_aet)
+#' # Full TERN keys still work ────────────────────────────────────
+#' r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 #'
 #' # Full UUID keys are also accepted
-#' r2 <- read_tern(
+#' r3 <- read_tern(
 #'   "TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0",
 #'   date = "2024-01-15"
 #' )
@@ -155,12 +167,28 @@ read_tern <- function(
 
 # ── Dispatch helpers ──────────────────────────────────────────────────────────
 
+#' Dataset alias registry
+#'
+#' Named list mapping short human-readable aliases (upper-case) to the
+#' normalised 8-character dataset ID used for internal dispatch.
+#'
+#' @format A named \code{list} of \code{character} strings.
+#' @autoglobal
+#' @dev
+.tern_aliases <- list(
+  SMIPS = "d1995ee8",
+  ASC   = "15728dba",
+  AET   = "9fefa68b"
+)
+
+
 #' Normalise a TERN dataset key for switch() dispatch
 #'
-#' Strips any \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or \code{NCI/}
-#' prefix, then extracts the first 8 lower-case characters of the UUID.
-#' Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are returned as-is
-#' after prefix removal.
+#' Resolves human-readable aliases (\code{"SMIPS"}, \code{"ASC"},
+#' \code{"AET"}), strips any \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or
+#' \code{NCI/} prefix, then extracts the first 8 lower-case characters of
+#' the UUID.  Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are
+#' returned as-is after prefix removal.
 #'
 #' @param id The raw \code{dataset_id} string supplied by the user.
 #' @returns A normalised \code{character} string for use in \code{switch()}.
@@ -168,8 +196,11 @@ read_tern <- function(
 #' @dev
 .tern_dispatch_id <- function(id) {
   id <- trimws(as.character(id[[1L]]))
+  # Check alias registry first (case-insensitive)
+  alias_match <- .tern_aliases[[toupper(id)]]
+  if (!is.null(alias_match)) return(alias_match)
+  # Standard path: strip org prefix, extract 8-char UUID prefix
   id <- sub("^(?:TERN|CSIRO|AEKOS|NCI)/", "", id, perl = TRUE)
-  # UUID-like string: keep only the first 8 hex chars
   id <- sub("^([0-9a-f]{8})[0-9a-f\\-]*$", "\\1", id,
             ignore.case = TRUE, perl = TRUE)
   tolower(id)
@@ -185,8 +216,9 @@ read_tern <- function(
   cli::cli_abort(c(
     "Dataset {.val {dataset_id}} is not currently implemented in
      {.fn read_tern}.",
-    "i" = "Supported datasets: {.code TERN/d1995ee8} (SMIPS),
-           {.code TERN/15728dba} (ASC), {.code TERN/9fefa68b} (AET).",
+    "i" = "Supported datasets: {.code \"SMIPS\"} ({.code TERN/d1995ee8}),
+           {.code \"ASC\"} ({.code TERN/15728dba}),
+           {.code \"AET\"} ({.code TERN/9fefa68b}).",
     "i" = "Priority COG datasets planned for a future release:
            SLGA soil attributes (AWC, bacteria/fungi, phosphorus),
            Seasonal Fractional Cover, Seasonal Ground Cover,

@@ -1,3 +1,83 @@
+#' Read SMIPS Daily Soil Moisture from TERN
+#'
+#' Read daily Soil Moisture Information from Pedotransfer functions and
+#' Satellite data (\acronym{SMIPS}) Cloud Optimised GeoTIFF (\acronym{COG})
+#' files from \acronym{TERN}.  SMIPS provides Australia-wide volumetric soil
+#' moisture estimates at approximately 1 km (0.01 degree) resolution, derived
+#' from a combination of satellite observations and pedotransfer modelling.
+#'
+#' Six collection layers are available:
+#' \describe{
+#'   \item{\code{"totalbucket"}}{Total column soil moisture (0--90 cm) in mm
+#'     (default).}
+#'   \item{\code{"SMindex"}}{Soil moisture index expressed as a percentage.}
+#'   \item{\code{"bucket1"}}{Upper layer moisture (0--10 cm) in mm.}
+#'   \item{\code{"bucket2"}}{Lower layer moisture (10--90 cm) in mm.}
+#'   \item{\code{"deepD"}}{Deep drainage flux in mm.}
+#'   \item{\code{"runoff"}}{Surface runoff in mm.}
+#' }
+#'
+#' Data are available from 2015-11-20 (\code{totalbucket} from 2005) to
+#' approximately 7 days before today.
+#'
+#' This is a convenience wrapper around
+#' \code{read_tern("SMIPS", ...)}; see [read_tern()] for full
+#' details and additional datasets.
+#'
+#' @param date A single date to query, e.g.\ \code{"2024-01-15"} or
+#'   \code{as.Date("2024-01-15")}.  Both \code{character} and \code{Date}
+#'   classes are accepted.
+#' @param collection One of \code{"totalbucket"} (default),
+#'   \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"}, \code{"deepD"},
+#'   or \code{"runoff"}.
+#' @param api_key A \code{character} string containing your \acronym{TERN}
+#'   \acronym{API} key.  Defaults to automatic detection via [get_key()].
+#' @param max_tries An \code{integer} giving the maximum number of download
+#'   retries.  Defaults to \code{3}.
+#' @param initial_delay An \code{integer} giving the initial retry delay in
+#'   seconds (doubles with each attempt).  Defaults to \code{1}.
+#'
+#' @family COGs
+#'
+#' @examplesIf interactive()
+#' # Read total bucket soil moisture for a specific day
+#' r <- read_smips(date = "2024-01-15")
+#' autoplot(r)
+#'
+#' # Read soil moisture index
+#' r_smi <- read_smips(date = "2024-01-15", collection = "SMindex")
+#'
+#' # Upper layer moisture only
+#' r_b1 <- read_smips(date = "2024-06-01", collection = "bucket1")
+#'
+#' @returns A [terra::rast()] object of the national SMIPS mosaic for the
+#'   requested day and collection.
+#'
+#' @references
+#'   \url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
+#'
+#' @autoglobal
+#' @export
+read_smips <- function(
+  date,
+  collection    = "totalbucket",
+  api_key       = get_key(),
+  max_tries     = 3L,
+  initial_delay = 1L
+) {
+  read_tern(
+    "SMIPS",
+    date          = date,
+    collection    = collection,
+    api_key       = api_key,
+    max_tries     = max_tries,
+    initial_delay = initial_delay
+  )
+}
+
+
+# ── Internal SMIPS helpers ───────────────────────────────────────────────────
+
 #' Check User Input Dates for Validity
 #'
 #' @param x User entered date value

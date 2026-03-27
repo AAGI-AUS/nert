@@ -2,7 +2,9 @@
 
 export(autoplot)
 export(get_key)
+export(read_aet)
 export(read_asc)
+export(read_smips)
 export(read_tern)
 import(nlme)
 importFrom(ggplot2,autoplot)
