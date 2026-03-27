@@ -11,13 +11,7 @@ tidyterra workflows.
 ## Usage
 
 ``` r
-read_tern(
-  dataset_id,
-  ...,
-  api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
-)
+read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
 ```
 
 ## Arguments
@@ -25,8 +19,8 @@ read_tern(
 - dataset_id:
 
   A `character` string identifying the dataset. Accepts the full TERN
-  portal key (e.g.\\ `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`) or
-  the 8-character key prefix (e.g.\\ `"TERN/d1995ee8"`). Currently
+  portal key (*e.g.* `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`) or
+  the 8-character key prefix (*e.g.* `"TERN/d1995ee8"`). Currently
   supported keys:
 
   |                   |                                      |
@@ -44,8 +38,7 @@ read_tern(
 
   A `character` string containing your TERN API key. Defaults to
   automatic detection from your `.Renviron` or `.Rprofile`. See
-  [`get_key`](https://aagi-aus.github.io/nert/reference/get_key.md) for
-  setup instructions.
+  `get_key` for setup instructions.
 
 - max_tries:
 
@@ -91,7 +84,7 @@ Data availability: 2015-11-20 to approximately 7 days before today.
 
 - `date`:
 
-  Required. A month to query, *e.g.* `"2023-06-01"` or
+  Required. A month to query, *e.g.* `"2023-06-01"90` or
   `as.Date("2023-06-01")`. Both `Character` and `Date` classes are
   accepted. The value is snapped to the first of the month internally.
 
@@ -123,7 +116,7 @@ be safely included:
 
 - `TERN/PAV_slga` — SLGA Available Phosphorus
 
-Datasets with integration level L2 or higher (e.g.\\ AusEFlux via
+Datasets with integration level L2 or higher (*e.g.* AusEFlux via
 THREDDS/OPeNDAP, GEE-based products, site-level API streams) cannot be
 read via simple COG HTTP range requests and are outside the current
 scope of nert.
