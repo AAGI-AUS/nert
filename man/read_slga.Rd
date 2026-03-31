@@ -16,10 +16,10 @@ read_slga(
 \arguments{
 \item{collection}{Soil attribute code.  One of: \code{"AWC"} (Available
 Volumetric Water Capacity), \code{"CLY"} (Clay), \code{"SND"} (Sand),
-\code{"SLT"} (Silt), \code{"BDW"} (Bulk Density), \code{"PHC"} (pH CaCl₂),
+\code{"SLT"} (Silt), \code{"BDW"} (Bulk Density), \code{"PHC"} (pH CaCl2),
 \code{"PHW"} (pH water), or \code{"NTO"} (Total Nitrogen).  Required.}
 
-\item{depth}{Depth interval (default \code{"000_005"} = 0–5 cm).  Options:
+\item{depth}{Depth interval (default \code{"000_005"} = 0-5 cm).  Options:
 \code{"000_005"}, \code{"005_015"}, \code{"015_030"}, \code{"030_060"},
 \code{"060_100"}, \code{"100_200"}.  Use \code{"all"} to return all
 6 depths stacked as a multi-layer SpatRaster.}
@@ -46,20 +46,20 @@ When \code{depth = "all"}: a 6-layer raster with names
 Wrapper around \code{\link[=read_tern]{read_tern()}} for Soil and Landscape Grid of Australia
 (\acronym{SLGA}) soil attribute products at 90 m resolution.  Access any of
 8 soil properties (Available Water Capacity, Clay, Sand, Silt, Bulk Density,
-pH CaCl₂, pH water, Total Nitrogen) at 6 standard depth intervals
-(0–5, 5–15, 15–30, 30–60, 60–100, 100–200 cm), with optional confidence
+pH CaCl2, pH water, Total Nitrogen) at 6 standard depth intervals
+(0-5, 5-15, 15-30, 30-60, 60-100, 100-200 cm), with optional confidence
 intervals.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Available Water Capacity at 0–5 cm (default depth)
+# Available Water Capacity at 0-5 cm (default depth)
 r_awc <- read_slga("AWC")
 autoplot(r_awc)
 
-# Clay at specific depth (15–30 cm)
+# Clay at specific depth (15-30 cm)
 r_clay_30 <- read_slga("CLY", depth = "015_030")
 
-# Clay at deep layer (100–200 cm)
+# Clay at deep layer (100-200 cm)
 r_clay_deep <- read_slga("CLY", depth = "100_200")
 
 # Available Water Capacity, all 6 depths stacked
@@ -82,7 +82,7 @@ SLGA portal:
 \url{https://www.tern.org.au/landscapes/slga/}
 
 Viscarra Rossel, R. A., et al. (2015). Soil and Landscape Grid of
-Australia. \emph{Soil Research}, 53(8), 835–844.
+Australia. \emph{Soil Research}, 53(8), 835-844.
 }
 \seealso{
 \code{\link[=read_tern]{read_tern()}}, \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}

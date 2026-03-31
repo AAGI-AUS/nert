@@ -20,7 +20,7 @@ read_phenology(
 \item{\code{"EGS"}}{End of Growing Season}
 }}
 
-\item{year}{Year (2003–2018, default 2018).}
+\item{year}{Year (2003-2018, default 2018).}
 
 \item{season}{Season number (default 1).  For most Australian regions,
 season 1 is the primary growing season.  Additional seasons may be
@@ -43,7 +43,7 @@ for the specified metric (e.g., 100 = ~April 10 in a non-leap year).
 \description{
 Wrapper around \code{\link[=read_tern]{read_tern()}} for Land Surface Phenology derived from
 \acronym{MODIS} \acronym{NDVI} (TERN/2bb0c81a).  Provides annual Start
-and End of Growing Season for years 2003–2018 at 500 m resolution
+and End of Growing Season for years 2003-2018 at 500 m resolution
 (static, non-updated product).
 }
 \examples{
@@ -70,7 +70,7 @@ TERN portal:
 \url{https://portal.tern.org.au/metadata/TERN/2bb0c81a}
 
 Hill et al. (2017). Land surface phenology and seasonality using
-Functional Data Analysis. \emph{Remote Sensing of Environment}, 203, 49–60.
+Functional Data Analysis. \emph{Remote Sensing of Environment}, 203, 49-60.
 }
 \seealso{
 \code{\link[=read_tern]{read_tern()}}, \code{\link[=read_canopy_height]{read_canopy_height()}}

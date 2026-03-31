@@ -85,9 +85,9 @@ with one row per date per location and one column per dataset.
 Static datasets are repeated across all dates.
 }
 \details{
-\strong{Single location:} Returns N rows (one per date) × K columns (datasets).
+\strong{Single location:} Returns N rows (one per date) x K columns (datasets).
 
-\strong{Multiple locations:} Returns (N × M) rows (dates × locations) × (K+2)
+\strong{Multiple locations:} Returns (N x M) rows (dates x locations) x (K+2)
 columns (date + lon + lat + datasets).
 
 \strong{Time-series datasets} (SMIPS, AET): Values extracted for each date.

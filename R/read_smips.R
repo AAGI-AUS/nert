@@ -13,15 +13,15 @@
 #'       Represents the total water stored in all soil layers of the active profile.
 #'       Use for: Overall soil water availability, drought monitoring.
 #'       Output column: \code{SMIPS_totalbucket}}
-#'     \item{\code{"SMindex"}}{**Soil Moisture Index, 0–100%** (standardized metric).
-#'       Rescaled to 0–100% for comparison across regions and seasons.
+#'     \item{\code{"SMindex"}}{**Soil Moisture Index, 0-100%** (standardized metric).
+#'       Rescaled to 0-100% for comparison across regions and seasons.
 #'       Use for: Regional comparisons, anomaly detection, percentage-based thresholds.
 #'       Output column: \code{SMIPS_SMindex}}
-#'     \item{\code{"bucket1"}}{**Top soil layer moisture** (mm, typically 0–10 cm).
+#'     \item{\code{"bucket1"}}{**Top soil layer moisture** (mm, typically 0-10 cm).
 #'       Represents water in surface soil where seeds germinate and shallow roots operate.
 #'       Use for: Shallow-rooting plants, seed germination, surface runoff prediction.
 #'       Output column: \code{SMIPS_bucket1}}
-#'     \item{\code{"bucket2"}}{**Second soil layer moisture** (mm, typically 10–40 cm).
+#'     \item{\code{"bucket2"}}{**Second soil layer moisture** (mm, typically 10-40 cm).
 #'       Represents water in intermediate soil depth where many plant roots develop.
 #'       Use for: Typical crop rooting depth, plant-available water.
 #'       Output column: \code{SMIPS_bucket2}}

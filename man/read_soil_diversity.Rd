@@ -15,7 +15,7 @@ read_soil_diversity(
 \arguments{
 \item{kingdom}{Organism kingdom.  One of \code{"Bacteria"} (default) or
 \code{"Fungi"}.  Use \code{"all"} to return all 6 axes stacked
-(Bacteria 1–3, then Fungi 1–3).}
+(Bacteria 1-3, then Fungi 1-3).}
 
 \item{axis}{Ordination axis (default 1).  Options: 1, 2, or 3.
 Use \code{"all"} to return all 3 axes for the specified kingdom stacked.}
@@ -38,7 +38,7 @@ When \code{kingdom = "all"}: 6-layer raster with layers named
 }
 \description{
 Wrapper around \code{\link[=read_tern]{read_tern()}} for Soil Beta Diversity (TERN/4a428d52).
-Provides NMDS ordination axes (1–3) derived from soil surveys for
+Provides NMDS ordination axes (1-3) derived from soil surveys for
 Bacteria and Fungi at 90 m resolution (static product).
 }
 \examples{

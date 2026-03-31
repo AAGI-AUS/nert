@@ -12,6 +12,6 @@
 \item{api_key, max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-Reads MODIS-derived Start or End of Growing Season for 2003–2018.
+Reads MODIS-derived Start or End of Growing Season for 2003-2018.
 }
 \keyword{internal}

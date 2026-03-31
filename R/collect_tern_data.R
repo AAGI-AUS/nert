@@ -50,9 +50,9 @@
 #' - One column per dataset, named by alias (e.g. \code{SMIPS}, \code{AWC})
 #'
 #' @details
-#' **Single location:** Returns N rows (one per date) × K columns (datasets).
+#' **Single location:** Returns N rows (one per date) x K columns (datasets).
 #'
-#' **Multiple locations:** Returns (N × M) rows (dates × locations) × (K+2)
+#' **Multiple locations:** Returns (N x M) rows (dates x locations) x (K+2)
 #' columns (date + lon + lat + datasets).
 #'
 #' **Time-series datasets** (SMIPS, AET): Values extracted for each date.
@@ -101,7 +101,7 @@
 #'   datasets = "CLY"
 #' )
 #'
-#' @importFrom data.table as.data.table setnames rbindlist
+#' @importFrom data.table as.data.table setnames rbindlist is.data.table `:=`
 #' @export
 collect_tern_data <- function(
   lon = NULL,
@@ -116,7 +116,7 @@ collect_tern_data <- function(
   verbose = TRUE,
   na.rm = FALSE
 ) {
-  # ── Parse coordinates ────────────────────────────────────────────────────────
+  # -- Parse coordinates --------------------------------------------------------
   coords <- .parse_coordinates(lon, lat, xy)
   coords_df <- coords$coords_df
   multi_location <- coords$multi_location
@@ -125,7 +125,7 @@ collect_tern_data <- function(
     cli::cli_inform("Processing {nrow(coords_df)} location(s)")
   }
 
-  # ── Parse date range ─────────────────────────────────────────────────────────
+  # -- Parse date range ---------------------------------------------------------
   if (length(date_range) == 2 && !inherits(date_range, "Date")) {
     dates <- seq(
       as.Date(date_range[1]),
@@ -140,7 +140,7 @@ collect_tern_data <- function(
     cli::cli_abort("No valid dates in {.arg date_range}.")
   }
 
-  # ── Parse datasets ───────────────────────────────────────────────────────────
+  # -- Parse datasets -----------------------------------------------------------
   if (is.null(datasets) || identical(datasets, "all")) {
     datasets <- c(
       "SMIPS", "ASC", "AET", "AWC", "CLY", "SND", "SLT",
@@ -168,12 +168,12 @@ collect_tern_data <- function(
     datasets <- intersect(datasets, all_aliases)
   }
 
-  # ── Display dataset information table (if verbose) ──────────────────────────
+  # -- Display dataset information table (if verbose) --------------------------
   if (verbose) {
     .print_datasets_table(datasets, depth, smips_collection, stat)
   }
 
-  # ── Extract for each location ────────────────────────────────────────────────
+  # -- Extract for each location ------------------------------------------------
   if (verbose) {
     cli::cli_inform(
       "Collecting {length(datasets)} dataset(s) over {length(dates)} date(s)"
@@ -202,7 +202,7 @@ collect_tern_data <- function(
     all_results[[i]] <- dt_i
   }
 
-  # ── Combine results ──────────────────────────────────────────────────────────
+  # -- Combine results ----------------------------------------------------------
   if (multi_location) {
     dt <- data.table::rbindlist(all_results)
     # Preserve all columns except reorder date/lon/lat first
@@ -224,15 +224,15 @@ collect_tern_data <- function(
   }
 
   if (verbose) {
-    cli::cli_inform("✓ Collected {nrow(dt)} rows × {ncol(dt)} columns")
+    cli::cli_inform("Collected {nrow(dt)} rows x {ncol(dt)} columns")
   }
 
   return(dt)
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Helper: Parse coordinate input
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 .parse_coordinates <- function(lon, lat, xy) {
   if (!is.null(xy)) {
     # xy notation: data.frame/matrix with x/y or lon/lat columns
@@ -286,9 +286,9 @@ collect_tern_data <- function(
   list(coords_df = coords_df, multi_location = multi_location)
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Helper: Validate single coordinate
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 .validate_single_coord <- function(lon, lat) {
   if (!is.numeric(lon) || !is.numeric(lat)) {
     cli::cli_abort("Coordinates must be numeric.")
@@ -301,9 +301,9 @@ collect_tern_data <- function(
   }
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Helper: Collect data for single location
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 .collect_single_location <- function(
   lon, lat, dates, datasets, depth, stat, smips_collection, api_key, verbose
 ) {
@@ -529,9 +529,9 @@ collect_tern_data <- function(
   return(dt)
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Helper: Print datasets information table
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 .print_datasets_table <- function(datasets, depth, smips_collection, stat) {
   # Dataset metadata
   dataset_info <- list(

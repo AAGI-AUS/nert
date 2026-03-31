@@ -2,12 +2,12 @@
 #'
 #' @description
 #' Wrapper around [read_tern()] for Soil Beta Diversity (TERN/4a428d52).
-#' Provides NMDS ordination axes (1–3) derived from soil surveys for
+#' Provides NMDS ordination axes (1-3) derived from soil surveys for
 #' Bacteria and Fungi at 90 m resolution (static product).
 #'
 #' @param kingdom Organism kingdom.  One of \code{"Bacteria"} (default) or
 #'   \code{"Fungi"}.  Use \code{"all"} to return all 6 axes stacked
-#'   (Bacteria 1–3, then Fungi 1–3).
+#'   (Bacteria 1-3, then Fungi 1-3).
 #' @param axis Ordination axis (default 1).  Options: 1, 2, or 3.
 #'   Use \code{"all"} to return all 3 axes for the specified kingdom stacked.
 #' @param api_key A \code{character} string containing your \acronym{TERN}

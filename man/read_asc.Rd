@@ -20,7 +20,7 @@ read_asc(
 \arguments{
 \item{confusion_index}{A \code{logical} value. If \code{FALSE} (default), returns
 estimated \acronym{ASC} soil order classes (character). If \code{TRUE}, returns
-the Confusion Index (numeric, 0–100) indicating mapping reliability.}
+the Confusion Index (numeric, 0-100) indicating mapping reliability.}
 
 \item{api_key}{A \code{character} string containing your \acronym{API} key,
 a random string provided to you by \acronym{TERN}, for the request.

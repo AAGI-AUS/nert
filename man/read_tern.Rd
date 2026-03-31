@@ -14,23 +14,23 @@ Accepts the full \acronym{TERN} portal key (e.g.\
 alias (e.g.\ \code{"SMIPS"}, \code{"AWC"}).  Currently supported datasets:
 \tabular{ll}{
 \strong{Alias} \tab \strong{Dataset} \cr
-\code{"SMIPS"} \tab Daily soil moisture (1 km, 2015–present) \cr
+\code{"SMIPS"} \tab Daily soil moisture (1 km, 2015-present) \cr
 \code{"ASC"} \tab Australian Soil Classification (90 m, static) \cr
-\code{"AET"} \tab Evapotranspiration/CMRSET (30 m, 2000–present) \cr
+\code{"AET"} \tab Evapotranspiration/CMRSET (30 m, 2000-present) \cr
 \code{"AWC"} \tab SLGA Available Water Capacity (90 m, 6 depths) \cr
 \code{"CLY"} \tab SLGA Clay content (90 m, 6 depths) \cr
 \code{"SND"} \tab SLGA Sand content (90 m, 6 depths) \cr
 \code{"SLT"} \tab SLGA Silt content (90 m, 6 depths) \cr
 \code{"BDW"} \tab SLGA Bulk Density (90 m, 6 depths) \cr
-\code{"PHC"} \tab SLGA pH (CaCl₂) (90 m, 6 depths) \cr
+\code{"PHC"} \tab SLGA pH (CaCl2) (90 m, 6 depths) \cr
 \code{"PHW"} \tab SLGA pH (water) (90 m, 6 depths) \cr
 \code{"NTO"} \tab SLGA Total Nitrogen (90 m, 6 depths) \cr
 \code{"SOILDIV"} \tab Soil Beta Diversity (90 m, static) \cr
 \code{"CANOPY"} \tab Canopy Height (30 m, static) \cr
-\code{"PHENOLOGY"} \tab Land Surface Phenology (500 m, 2003–2018) \cr
+\code{"PHENOLOGY"} \tab Land Surface Phenology (500 m, 2003-2018) \cr
 }}
 
-\item{...}{Dataset-specific arguments — \code{date}, \code{collection},
+\item{...}{Dataset-specific arguments -- \code{date}, \code{collection},
 etc.  See the relevant section above for each dataset.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
@@ -56,7 +56,7 @@ additional arguments through \code{...}.  The returned object is a
 \code{\link[terra:rast]{terra::rast()}} that can be plotted, cropped, or extracted with standard
 \pkg{terra} or \pkg{tidyterra} workflows.
 }
-\section{SMIPS — daily soil moisture (\code{"TERN/d1995ee8"})}{
+\section{SMIPS -- daily soil moisture (\code{"TERN/d1995ee8"})}{
 
 \describe{
 \item{\code{date}}{Required.  A single day to query, \emph{e.g.}
@@ -69,17 +69,17 @@ additional arguments through \code{...}.  The returned object is a
 Data availability: 2015-11-20 to approximately 7 days before today.
 }
 
-\section{ASC — Australian Soil Classification (\code{"TERN/15728dba"})}{
+\section{ASC -- Australian Soil Classification (\code{"TERN/15728dba"})}{
 
 \describe{
 \item{\code{collection}}{One of \code{"EV"} (estimated soil order
-class, default) or \code{"CI"} (confusion index — a measure of
+class, default) or \code{"CI"} (confusion index -- a measure of
 mapping reliability).  No \code{date} argument required; this is a
 static product.}
 }
 }
 
-\section{AET — Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"})}{
+\section{AET -- Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"})}{
 
 \describe{
 \item{\code{date}}{Required.  A month to query, \emph{e.g.}
@@ -92,17 +92,17 @@ mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
 Data availability: 2000-02-01 onwards.
 }
 
-\section{SLGA soil attributes — AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO}{
+\section{SLGA soil attributes -- AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO}{
 
 A family of 8 static soil properties from the Soil and Landscape Grid of
 Australia (\acronym{SLGA}), each available at 6 standard depth intervals
-(0–5, 5–15, 15–30, 30–60, 60–100, 100–200 cm).  90 m resolution.
+(0-5, 5-15, 15-30, 30-60, 60-100, 100-200 cm).  90 m resolution.
 \describe{
 \item{\code{collection}}{One of \code{"AWC"} (Available Water Capacity),
 \code{"CLY"} (Clay), \code{"SND"} (Sand), \code{"SLT"} (Silt),
-\code{"BDW"} (Bulk Density), \code{"PHC"} (pH CaCl₂), \code{"PHW"} (pH
+\code{"BDW"} (Bulk Density), \code{"PHC"} (pH CaCl2), \code{"PHW"} (pH
 water), or \code{"NTO"} (Total Nitrogen).  Required.}
-\item{\code{depth}}{Depth interval: \code{"000_005"} (0–5 cm, default),
+\item{\code{depth}}{Depth interval: \code{"000_005"} (0-5 cm, default),
 \code{"005_015"}, \code{"015_030"}, \code{"030_060"}, \code{"060_100"},
 or \code{"100_200"}.  Use \code{"all"} to return all 6 depths stacked.}
 \item{\code{stat}}{One of \code{"EV"} (estimate, default) or \code{"CI"}
@@ -111,9 +111,9 @@ or \code{"100_200"}.  Use \code{"all"} to return all 6 depths stacked.}
 Best accessed via \code{\link{read_slga}()}.
 }
 
-\section{SOILDIV — Soil Beta Diversity}{
+\section{SOILDIV -- Soil Beta Diversity}{
 
-Bacteria and Fungi NMDS ordination axes (1–3) from soil surveys.  90 m
+Bacteria and Fungi NMDS ordination axes (1-3) from soil surveys.  90 m
 resolution, static.
 \describe{
 \item{\code{kingdom}}{One of \code{"Bacteria"} (default) or
@@ -124,7 +124,7 @@ resolution, static.
 Best accessed via \code{\link{read_soil_diversity}()}.
 }
 
-\section{CANOPY — Canopy Height 30 m (OzTreeMap)}{
+\section{CANOPY -- Canopy Height 30 m (OzTreeMap)}{
 
 Composite canopy height model from remote sensing validation.  30 m
 resolution; \acronym{CRS} is \code{EPSG:3577} (projected).
@@ -133,10 +133,10 @@ prior CRS transformation.  No arguments needed beyond \code{api_key}.
 Best accessed via \code{\link{read_canopy_height}()}.
 }
 
-\section{PHENOLOGY — Land Surface Phenology (MODIS)}{
+\section{PHENOLOGY -- Land Surface Phenology (MODIS)}{
 
 Start or End of Growing Season derived from MODIS \acronym{NDVI}.  500 m
-resolution; years 2003–2018.
+resolution; years 2003-2018.
 \describe{
 \item{\code{metric}}{One of \code{"SGS"} (Start of Growing Season, default)
 or \code{"EGS"} (End of Growing Season).}
@@ -150,9 +150,9 @@ Best accessed via \code{\link{read_phenology}()}.
 
 The following datasets are inaccessible or require further development:
 \itemize{
-\item \code{TERN/0997cb3c} — Seasonal Fractional Cover (legacy redirect;
+\item \code{TERN/0997cb3c} -- Seasonal Fractional Cover (legacy redirect;
 COGs not accessible via HTTP range request)
-\item \code{TERN/fe9d86e1} — Seasonal Ground Cover (same issue)
+\item \code{TERN/fe9d86e1} -- Seasonal Ground Cover (same issue)
 }
 Datasets with integration level L2 or higher (e.g.\ AusEFlux via
 \acronym{THREDDS}/OPeNDAP, GEE-based products, site-level API streams)
@@ -170,28 +170,28 @@ autoplot(r_asc)
 # Or using full TERN keys (old form still works)
 r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 
-# SMIPS — multiple collections
+# SMIPS -- multiple collections
 r_smi <- read_tern("SMIPS", date = "2024-01-15", collection = "SMindex")
 
-# ASC — confusion index
+# ASC -- confusion index
 r_ci <- read_tern("ASC", collection = "CI")
 
-# AET — monthly evapotranspiration
+# AET -- monthly evapotranspiration
 r_aet <- read_tern("AET", date = "2023-06-01")
 
-# SLGA — available water capacity, depth 5–15 cm
+# SLGA -- available water capacity, depth 5-15 cm
 r_awc <- read_tern("AWC", depth = "005_015")
 
-# SLGA — all depths stacked
+# SLGA -- all depths stacked
 r_awc_all <- read_tern("AWC", depth = "all")
 
-# Soil diversity — Fungi NMDS axis 2
+# Soil diversity -- Fungi NMDS axis 2
 r_fungi <- read_tern("SOILDIV", kingdom = "Fungi", axis = 2)
 
 # Canopy height
 r_canopy <- read_tern("CANOPY")
 
-# Phenology — End of Growing Season, 2018
+# Phenology -- End of Growing Season, 2018
 r_egs <- read_tern("PHENOLOGY", metric = "EGS", year = 2018)
 \dontshow{\}) # examplesIf}
 }

@@ -16,7 +16,7 @@
 #'
 #' @param confusion_index A `logical` value. If `FALSE` (default), returns
 #'   estimated \acronym{ASC} soil order classes (character). If `TRUE`, returns
-#'   the Confusion Index (numeric, 0–100) indicating mapping reliability.
+#'   the Confusion Index (numeric, 0-100) indicating mapping reliability.
 #' @param api_key A `character` string containing your \acronym{API} key,
 #'   a random string provided to you by \acronym{TERN}, for the request.
 #'   Defaults to automatically detecting your key from your local .Renviron,

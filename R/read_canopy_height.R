@@ -30,7 +30,7 @@
 #' r <- read_canopy_height()
 #' plot(r)
 #'
-#' # Extract at a location (Murray Bridge, SA) — note: must reproject first
+#' # Extract at a location (Murray Bridge, SA) -- note: must reproject first
 #' pt <- terra::vect(
 #'   matrix(c(138.6, -34.9), ncol = 2),
 #'   type = "points",

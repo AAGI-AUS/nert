@@ -3,7 +3,7 @@
 #' @description
 #' Wrapper around [read_tern()] for Land Surface Phenology derived from
 #' \acronym{MODIS} \acronym{NDVI} (TERN/2bb0c81a).  Provides annual Start
-#' and End of Growing Season for years 2003–2018 at 500 m resolution
+#' and End of Growing Season for years 2003-2018 at 500 m resolution
 #' (static, non-updated product).
 #'
 #' @param metric Phenology metric.  One of:
@@ -11,7 +11,7 @@
 #'     \item{\code{"SGS"}}{Start of Growing Season (default)}
 #'     \item{\code{"EGS"}}{End of Growing Season}
 #'   }
-#' @param year Year (2003–2018, default 2018).
+#' @param year Year (2003-2018, default 2018).
 #' @param season Season number (default 1).  For most Australian regions,
 #'   season 1 is the primary growing season.  Additional seasons may be
 #'   available for select regions.
@@ -52,7 +52,7 @@
 #'   <https://portal.tern.org.au/metadata/TERN/2bb0c81a>
 #'
 #'   Hill et al. (2017). Land surface phenology and seasonality using
-#'   Functional Data Analysis. _Remote Sensing of Environment_, 203, 49–60.
+#'   Functional Data Analysis. _Remote Sensing of Environment_, 203, 49-60.
 #'
 #' @autoglobal
 #' @export
