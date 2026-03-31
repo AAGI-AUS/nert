@@ -1,12 +1,2 @@
-.Rproj.user
-.Rhistory
-.Rdata
-.httr-oauth
-.DS_Store
-.quarto
-docs
-.Renviron
-inst/doc
 /doc/
 /Meta/
-/.quarto/
