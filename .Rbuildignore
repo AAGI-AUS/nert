@@ -7,11 +7,15 @@
 ^.*\.Rproj$
 ^\.Rprofile$
 ^\.Renviron$
+^doc$
+^Meta$
 ^man/dot-create_sf\.Rd$
+^man/dot-set_tern_key\.Rd$
 ^man/dot-check_not_example_api_key\.Rd$
 ^man/dot-read_cog\.Rd$
 ^man/dot-check_api_key\.Rd$
 ^man/dot-check_not_example_api_key\.Rd$
+^man/NULL\.Rd$
 ^man/dot-check_date\.Rd$
 ^man/dot-check_collection_agreement\.Rd$
 ^man/dot-make_smips_url\.Rd$
@@ -30,5 +34,3 @@
 ^man/dot-read_tern_soildiv\.Rd$
 ^man/dot-read_tern_canopy\.Rd$
 ^man/dot-read_tern_phenology\.Rd$
-^doc$
-^Meta$
