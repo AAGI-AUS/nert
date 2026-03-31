@@ -16,7 +16,6 @@
 #'   column.
 #' @autoglobal
 #' @dev
-#' @dev
 .create_sf <- function(xy) {
   if (inherits(xy, "sf")) {
     if (!"location" %in% names(xy)) {
