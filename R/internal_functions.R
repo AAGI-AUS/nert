@@ -24,7 +24,6 @@
 #' @returns A [terra::rast()] object of the requested data.
 #' @autoglobal
 #' @dev
-#' @dev
 .read_cog <- function(full_url, max_tries, initial_delay) {
   attempt <- 1L
   success <- FALSE
