@@ -143,8 +143,20 @@ collect_tern_data <- function(
   # -- Parse datasets -----------------------------------------------------------
   if (is.null(datasets) || identical(datasets, "all")) {
     datasets <- c(
-      "SMIPS", "ASC", "AET", "AWC", "CLY", "SND", "SLT",
-      "BDW", "PHC", "PHW", "NTO", "SOILDIV", "CANOPY", "PHENOLOGY"
+      "SMIPS",
+      "ASC",
+      "AET",
+      "AWC",
+      "CLY",
+      "SND",
+      "SLT",
+      "BDW",
+      "PHC",
+      "PHW",
+      "NTO",
+      "SOILDIV",
+      "CANOPY",
+      "PHENOLOGY"
     )
   }
   datasets <- toupper(trimws(datasets))
@@ -156,8 +168,20 @@ collect_tern_data <- function(
 
   # Check for unsupported datasets
   all_aliases <- c(
-    "SMIPS", "ASC", "AET", "AWC", "CLY", "SND", "SLT",
-    "BDW", "PHC", "PHW", "NTO", "SOILDIV", "CANOPY", "PHENOLOGY"
+    "SMIPS",
+    "ASC",
+    "AET",
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "SOILDIV",
+    "CANOPY",
+    "PHENOLOGY"
   )
   unsupported <- setdiff(datasets, all_aliases)
   if (length(unsupported) > 0) {
@@ -191,7 +215,15 @@ collect_tern_data <- function(
     }
 
     dt_i <- .collect_single_location(
-      lon_i, lat_i, dates, datasets, depth, stat, smips_collection, api_key, verbose
+      lon_i,
+      lat_i,
+      dates,
+      datasets,
+      depth,
+      stat,
+      smips_collection,
+      api_key,
+      verbose
     )
 
     if (multi_location) {
@@ -305,13 +337,31 @@ collect_tern_data <- function(
 # Helper: Collect data for single location
 # -----------------------------------------------------------------------------
 .collect_single_location <- function(
-  lon, lat, dates, datasets, depth, stat, smips_collection, api_key, verbose
+  lon,
+  lat,
+  dates,
+  datasets,
+  depth,
+  stat,
+  smips_collection,
+  api_key,
+  verbose
 ) {
   # Define dataset types
   time_series_datasets <- c("SMIPS", "AET")
   static_datasets <- c(
-    "ASC", "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW",
-    "NTO", "SOILDIV", "CANOPY", "PHENOLOGY"
+    "ASC",
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "SOILDIV",
+    "CANOPY",
+    "PHENOLOGY"
   )
 
   ts_datasets <- intersect(datasets, time_series_datasets)
@@ -325,16 +375,25 @@ collect_tern_data <- function(
   )
 
   results_list <- list()
-  dataset_cols <- list()  # Track actual columns created per dataset
+  dataset_cols <- list() # Track actual columns created per dataset
 
   # Time-series: loop over dates
   for (ds in ts_datasets) {
-    if (verbose) cli::cli_inform("    {ds}...")
+    if (verbose) {
+      cli::cli_inform("    {ds}...")
+    }
 
     # Handle SMIPS "all" collections specially
     if (ds == "SMIPS" && smips_collection == "all") {
       # Extract all 6 SMIPS collections
-      smips_variants <- c("totalbucket", "SMindex", "bucket1", "bucket2", "deepD", "runoff")
+      smips_variants <- c(
+        "totalbucket",
+        "SMindex",
+        "bucket1",
+        "bucket2",
+        "deepD",
+        "runoff"
+      )
       smips_cols <- character(0)
 
       for (variant in smips_variants) {
@@ -350,10 +409,19 @@ collect_tern_data <- function(
           tryCatch(
             {
               r <- suppressWarnings(
-                read_tern(ds, date = dates[i], collection = variant, api_key = api_key)
+                read_tern(
+                  ds,
+                  date = dates[i],
+                  collection = variant,
+                  api_key = api_key
+                )
               )
               extracted <- suppressWarnings(terra::extract(r, pt))
-              if (!is.null(extracted) && is.data.frame(extracted) && ncol(extracted) >= 2) {
+              if (
+                !is.null(extracted) &&
+                  is.data.frame(extracted) &&
+                  ncol(extracted) >= 2
+              ) {
                 col_name <- paste0("SMIPS_", variant)
                 results_list[[col_name]][i] <- as.numeric(extracted[[2]][1])
               }
@@ -375,10 +443,19 @@ collect_tern_data <- function(
         {
           if (ds == "SMIPS") {
             first_r <- suppressWarnings(
-              read_tern(ds, date = dates[1], collection = smips_collection, api_key = api_key)
+              read_tern(
+                ds,
+                date = dates[1],
+                collection = smips_collection,
+                api_key = api_key
+              )
             )
           } else {
-            first_r <- suppressWarnings(read_tern(ds, date = dates[1], api_key = api_key))
+            first_r <- suppressWarnings(read_tern(
+              ds,
+              date = dates[1],
+              api_key = api_key
+            ))
           }
           layer_names <- names(first_r)
           n_layers <- terra::nlyr(first_r)
@@ -405,7 +482,11 @@ collect_tern_data <- function(
       } else {
         # Single-layer time-series
         # Add SMIPS_ prefix for single SMIPS collections
-        col_name <- if (ds == "SMIPS") paste0("SMIPS_", smips_collection) else ds
+        col_name <- if (ds == "SMIPS") {
+          paste0("SMIPS_", smips_collection)
+        } else {
+          ds
+        }
         results_list[[col_name]] <- rep(NA_real_, length(dates))
         dataset_cols[[ds]] <- col_name
       }
@@ -416,13 +497,26 @@ collect_tern_data <- function(
           {
             if (ds == "SMIPS") {
               r <- suppressWarnings(
-                read_tern(ds, date = dates[i], collection = smips_collection, api_key = api_key)
+                read_tern(
+                  ds,
+                  date = dates[i],
+                  collection = smips_collection,
+                  api_key = api_key
+                )
               )
             } else {
-              r <- suppressWarnings(read_tern(ds, date = dates[i], api_key = api_key))
+              r <- suppressWarnings(read_tern(
+                ds,
+                date = dates[i],
+                api_key = api_key
+              ))
             }
             extracted <- suppressWarnings(terra::extract(r, pt))
-            if (!is.null(extracted) && is.data.frame(extracted) && ncol(extracted) >= 2) {
+            if (
+              !is.null(extracted) &&
+                is.data.frame(extracted) &&
+                ncol(extracted) >= 2
+            ) {
               data_cols <- extracted[, -1, drop = FALSE]
 
               # Handle multiple layers
@@ -437,7 +531,11 @@ collect_tern_data <- function(
                 }
               } else {
                 # Single layer - add SMIPS_ prefix for single SMIPS collections
-                col_name <- if (ds == "SMIPS") paste0("SMIPS_", smips_collection) else ds
+                col_name <- if (ds == "SMIPS") {
+                  paste0("SMIPS_", smips_collection)
+                } else {
+                  ds
+                }
                 results_list[[col_name]][i] <- as.numeric(data_cols[[1]][1])
               }
             }
@@ -452,7 +550,9 @@ collect_tern_data <- function(
 
   # Static: extract once, replicate across all dates
   for (ds in st_datasets) {
-    if (verbose) cli::cli_inform("    {ds} (static)...")
+    if (verbose) {
+      cli::cli_inform("    {ds} (static)...")
+    }
 
     tryCatch(
       {
@@ -465,7 +565,11 @@ collect_tern_data <- function(
         }
 
         extracted <- suppressWarnings(terra::extract(r, pt))
-        if (!is.null(extracted) && is.data.frame(extracted) && ncol(extracted) >= 2) {
+        if (
+          !is.null(extracted) &&
+            is.data.frame(extracted) &&
+            ncol(extracted) >= 2
+        ) {
           # Get data columns (all except ID column, which is always first)
           data_cols <- extracted[, -1, drop = FALSE]
 
@@ -473,7 +577,11 @@ collect_tern_data <- function(
           layer_names <- names(r)
 
           # Handle multiple layers
-          if (ncol(data_cols) > 1 && !is.null(layer_names) && length(layer_names) > 1) {
+          if (
+            ncol(data_cols) > 1 &&
+              !is.null(layer_names) &&
+              length(layer_names) > 1
+          ) {
             # Multi-layer dataset: create separate columns for each layer
             layer_cols <- character(0)
             for (j in seq_along(layer_names)) {

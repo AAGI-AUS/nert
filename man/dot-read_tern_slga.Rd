@@ -17,5 +17,3 @@
 Reads any of 8 SLGA attributes (AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO)
 at one or more depth intervals (or all 6).
 }
-\keyword{internal}
-\keyword{internal}

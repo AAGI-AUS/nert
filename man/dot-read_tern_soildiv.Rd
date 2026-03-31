@@ -14,5 +14,3 @@
 \description{
 Reads NMDS ordination axes for Bacteria or Fungi.
 }
-\keyword{internal}
-\keyword{internal}

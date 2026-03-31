@@ -70,18 +70,18 @@
 #' @export
 read_slga <- function(
   collection,
-  depth      = "000_005",
-  stat       = "EV",
-  api_key    = NULL,
-  max_tries  = 3L,
+  depth = "000_005",
+  stat = "EV",
+  api_key = NULL,
+  max_tries = 3L,
   initial_delay = 1L
 ) {
   read_tern(
     collection,
-    depth         = depth,
-    stat          = stat,
-    api_key       = api_key,
-    max_tries     = max_tries,
+    depth = depth,
+    stat = stat,
+    api_key = api_key,
+    max_tries = max_tries,
     initial_delay = initial_delay
   )
 }

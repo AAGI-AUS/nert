@@ -17,4 +17,3 @@ necessary.
 Fix improper API keys
 }
 \keyword{internal}
-\keyword{internal}

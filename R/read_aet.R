@@ -52,16 +52,16 @@
 read_aet <- function(
   date,
   collection = "ETa",
-  api_key    = NULL,
-  max_tries  = 3L,
+  api_key = NULL,
+  max_tries = 3L,
   initial_delay = 1L
 ) {
   read_tern(
     "AET",
-    date       = date,
+    date = date,
     collection = collection,
-    api_key    = api_key,
-    max_tries  = max_tries,
+    api_key = api_key,
+    max_tries = max_tries,
     initial_delay = initial_delay
   )
 }

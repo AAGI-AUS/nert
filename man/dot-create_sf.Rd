@@ -27,4 +27,3 @@ Accepts three coordinate input formats and returns an \link[sf:sf]{sf::sf} POINT
 functions.
 }
 \keyword{internal}
-\keyword{internal}

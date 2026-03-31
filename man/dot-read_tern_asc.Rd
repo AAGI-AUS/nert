@@ -16,5 +16,3 @@
 \description{
 Internal handler for ASC (\code{TERN/15728dba})
 }
-\keyword{internal}
-\keyword{internal}

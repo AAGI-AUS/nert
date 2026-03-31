@@ -99,7 +99,7 @@ read_smips <- function(
 #' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
 #' @autoglobal
 #' @dev
-#' @keywords internal
+#' @dev
 .check_date <- function(x) {
   if (length(x) > 1L) {
     cli::cli_abort("Only one day is allowed per request.")
@@ -145,7 +145,7 @@ read_smips <- function(
 #' @autoglobal
 #'
 #' @dev
-#' @keywords internal
+#' @dev
 .check_collection_agreement <- function(.collection, .day) {
   # .this_year <- lubridate::year(lubridate::today())
   .last_week <- lubridate::today() - 7
@@ -173,7 +173,7 @@ read_smips <- function(
 #'
 #' @autoglobal
 #' @dev
-#' @keywords internal
+#' @dev
 .make_smips_url <- function(.collection, .day) {
   url_date <- gsub("-", "", .day, fixed = TRUE)
 

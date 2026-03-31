@@ -12,5 +12,3 @@
 \description{
 Emit an informative error for unsupported dataset IDs
 }
-\keyword{internal}
-\keyword{internal}

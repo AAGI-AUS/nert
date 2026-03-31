@@ -18,4 +18,3 @@ examples
 }
 \keyword{internal}
 \keyword{internal}
-\keyword{internal}

@@ -58,19 +58,19 @@
 #' @export
 read_phenology <- function(
   metric = "SGS",
-  year   = 2018,
+  year = 2018,
   season = 1,
-  api_key    = NULL,
-  max_tries  = 3L,
+  api_key = NULL,
+  max_tries = 3L,
   initial_delay = 1L
 ) {
   read_tern(
     "PHENOLOGY",
-    metric        = metric,
-    year          = year,
-    season        = season,
-    api_key       = api_key,
-    max_tries     = max_tries,
+    metric = metric,
+    year = year,
+    season = season,
+    api_key = api_key,
+    max_tries = max_tries,
     initial_delay = initial_delay
   )
 }

@@ -50,14 +50,14 @@
 #' @autoglobal
 #' @export
 read_canopy_height <- function(
-  api_key    = NULL,
-  max_tries  = 3L,
+  api_key = NULL,
+  max_tries = 3L,
   initial_delay = 1L
 ) {
   read_tern(
     "CANOPY",
-    api_key       = api_key,
-    max_tries     = max_tries,
+    api_key = api_key,
+    max_tries = max_tries,
     initial_delay = initial_delay
   )
 }

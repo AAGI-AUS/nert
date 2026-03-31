@@ -18,5 +18,3 @@ Validates and snaps a user-supplied date value to the first of the month,
 then checks it against the \acronym{AET} data availability window
 (from 2000-02-01 onwards).
 }
-\keyword{internal}
-\keyword{internal}

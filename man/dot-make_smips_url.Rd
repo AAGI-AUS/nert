@@ -14,5 +14,3 @@
 \description{
 Creates the SMIPS specific portion of a URL to read or fetch a COG.
 }
-\keyword{internal}
-\keyword{internal}

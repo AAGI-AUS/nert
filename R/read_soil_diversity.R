@@ -57,17 +57,17 @@
 #' @export
 read_soil_diversity <- function(
   kingdom = "Bacteria",
-  axis    = 1,
+  axis = 1,
   api_key = NULL,
-  max_tries  = 3L,
+  max_tries = 3L,
   initial_delay = 1L
 ) {
   read_tern(
     "SOILDIV",
-    kingdom       = kingdom,
-    axis          = axis,
-    api_key       = api_key,
-    max_tries     = max_tries,
+    kingdom = kingdom,
+    axis = axis,
+    api_key = api_key,
+    max_tries = max_tries,
     initial_delay = initial_delay
   )
 }
