@@ -229,6 +229,7 @@ read_tern <- function(
 #' Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .TERN_ALIASES <- c(
   SMIPS     = "d1995ee8",
   ASC       = "15728dba",
@@ -249,6 +250,7 @@ read_tern <- function(
 #' SLGA metadata: version, suffix, date for each soil attribute
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .SLGA_META <- list(
   AWC = list(subdir = "AWC",  ver = "v2", date = "20210614", suffix = "AU_TRN_N"),
   CLY = list(subdir = "CLY",  ver = "v2", date = "20210902", suffix = "AU_TRN_N"),
@@ -263,6 +265,7 @@ read_tern <- function(
 #' Phenology metric metadata: index and directory name
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .PHENOLOGY_METRICS <- list(
   SGS = list(idx = 1, dir = "Start_of_the_growing_season", abbr = "SGS"),
   EGS = list(idx = 3, dir = "End_of_the_growing_season",   abbr = "EGS")
@@ -283,6 +286,7 @@ read_tern <- function(
 #' @returns A normalised \code{character} string for use in \code{switch()}.
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .tern_dispatch_id <- function(id) {
   id <- trimws(as.character(id[[1L]]))
 
@@ -307,6 +311,7 @@ read_tern <- function(
 #' @param dataset_id The raw dataset ID supplied by the user.
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .tern_not_implemented <- function(dataset_id) {
   cli::cli_abort(c(
     "Dataset {.val {dataset_id}} is not currently implemented in
@@ -336,6 +341,7 @@ read_tern <- function(
 #' @returns `NULL` (invisibly); called for its side effects (errors).
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .tern_validate_args <- function(did, dots, dataset_id) {
   switch(
     did,
@@ -415,6 +421,7 @@ read_tern <- function(
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_tern_smips <- function(dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'day' parameter name
   date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["day"]]
@@ -443,6 +450,7 @@ read_tern <- function(
 #' @inheritParams .read_tern_smips
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_tern_asc <- function(dots, api_key, max_tries, initial_delay) {
   collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "EV"
 
@@ -469,6 +477,7 @@ read_tern <- function(
 #' @inheritParams .read_tern_smips
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_tern_aet <- function(dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'month' parameter name
   date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["month"]]
@@ -503,6 +512,7 @@ read_tern <- function(
 #'   month.
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .check_aet_date <- function(x) {
   x  <- .check_date(x)
   x  <- lubridate::floor_date(x, "month")
@@ -528,6 +538,7 @@ read_tern <- function(
 #' @returns A \code{character} GDAL vsicurl URL string.
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .make_aet_url <- function(.collection, .month, .api_key) {
   approved_collections <- c("ETa", "pixel_qa")
   collection <- rlang::arg_match(.collection, approved_collections)
@@ -554,6 +565,7 @@ read_tern <- function(
 #' @param api_key,max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_tern_slga <- function(collection, dots, api_key, max_tries, initial_delay) {
   depth <- if (!is.null(dots[["depth"]])) dots[["depth"]] else "000_005"
   stat  <- if (!is.null(dots[["stat"]]))  dots[["stat"]]  else "EV"
@@ -603,6 +615,7 @@ read_tern <- function(
 #' @param api_key,max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_tern_soildiv <- function(dots, api_key, max_tries, initial_delay) {
   kingdom <- if (!is.null(dots[["kingdom"]])) dots[["kingdom"]] else "Bacteria"
   axis    <- if (!is.null(dots[["axis"]]))    dots[["axis"]]    else 1
@@ -648,6 +661,7 @@ read_tern <- function(
 #' @param api_key,max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_tern_canopy <- function(dots, api_key, max_tries, initial_delay) {
   path <- "model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif"
   full_url <- sprintf(
@@ -668,6 +682,7 @@ read_tern <- function(
 #' @param api_key,max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_tern_phenology <- function(dots, api_key, max_tries, initial_delay) {
   metric <- if (!is.null(dots[["metric"]])) dots[["metric"]] else "SGS"
   year   <- if (!is.null(dots[["year"]]))   dots[["year"]]   else 2018

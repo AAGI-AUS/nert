@@ -17,3 +17,4 @@ be sure that unavailable dates are not requested from collections that do not
 provide them.
 }
 \keyword{internal}
+\keyword{internal}

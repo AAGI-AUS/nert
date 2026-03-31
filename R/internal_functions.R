@@ -3,6 +3,7 @@
 #'
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .check_not_example_api_key <- function(.api_key) {
   if (!is.null(.api_key) && .api_key == "your_api_key") {
     cli::cli_abort(
@@ -24,6 +25,7 @@
 #' @returns A [terra::rast()] object of the requested data.
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .read_cog <- function(full_url, max_tries, initial_delay) {
   attempt <- 1L
   success <- FALSE
@@ -60,6 +62,7 @@
 #' @returns A `string` value with replacement of troublesome characters if
 #'  necessary.
 #' @dev
+#' @keywords internal
 .check_api_key <- function(api_key) {
   gsub("/", "%2f", api_key, fixed = TRUE)
 }
@@ -70,6 +73,7 @@
 #'
 #' @autoglobal
 #' @dev
+#' @keywords internal
 .check_not_example_api_key <- function(.api_key) {
   if (!is.null(.api_key) && .api_key == "your_api_key") {
     stop(

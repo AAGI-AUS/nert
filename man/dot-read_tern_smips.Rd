@@ -17,3 +17,4 @@
 Internal handler for SMIPS (\code{TERN/d1995ee8})
 }
 \keyword{internal}
+\keyword{internal}

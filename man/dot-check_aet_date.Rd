@@ -19,3 +19,4 @@ then checks it against the \acronym{AET} data availability window
 (from 2000-02-01 onwards).
 }
 \keyword{internal}
+\keyword{internal}

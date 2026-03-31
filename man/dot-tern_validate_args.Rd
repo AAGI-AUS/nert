@@ -22,3 +22,4 @@ API key, so that input-validation errors surface in CI and tests even when
 \code{TERN_API_KEY} is not set.
 }
 \keyword{internal}
+\keyword{internal}

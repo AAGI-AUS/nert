@@ -25,3 +25,4 @@ This was taken from \CRANpkg{nasapower}.
 Adam H. Sparks \email{adamhsparks@curtin.edu.au}
 }
 \keyword{internal}
+\keyword{internal}

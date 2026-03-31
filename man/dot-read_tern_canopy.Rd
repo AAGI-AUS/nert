@@ -16,3 +16,4 @@ Reads OzTreeMap canopy height composite at 30 m resolution.
 Note: CRS is EPSG:3577 (projected).
 }
 \keyword{internal}
+\keyword{internal}

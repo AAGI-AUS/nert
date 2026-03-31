@@ -13,5 +13,5 @@ An object of class \code{list} of length 8.
 \description{
 SLGA metadata: version, suffix, date for each soil attribute
 }
-\keyword{datasets}
+\keyword{internal}
 \keyword{internal}

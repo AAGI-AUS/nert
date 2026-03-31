@@ -15,5 +15,5 @@ An object of class \code{character} of length 14.
 Alias mapping for short dataset names
 Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 }
-\keyword{datasets}
+\keyword{internal}
 \keyword{internal}

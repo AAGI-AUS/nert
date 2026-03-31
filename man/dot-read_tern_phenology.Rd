@@ -15,3 +15,4 @@
 Reads MODIS-derived Start or End of Growing Season for 2003-2018.
 }
 \keyword{internal}
+\keyword{internal}
