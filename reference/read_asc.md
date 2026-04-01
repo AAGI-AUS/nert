@@ -1,10 +1,10 @@
-# Read ASC COGs from TERN
+# Read Australian Soil Classification (ASC) Data
 
-Read Australian Soil Classification (ASC) Cloud Optimised Geotiff (COG)
-files from TERN in your R session. The data are Australian Soil
-Classification Soil Order classes with quantified estimates of mapping
-reliability at a 90 m resolution. You can access the reliability map
-using the `confusion_index` argument.
+Wrapper around
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
+for Australian Soil Classification (ASC) soil order classes at 90 m
+resolution. Returns character soil order descriptions (e.g., "2 -
+Sodosol") with optional mapping reliability (confusion index).
 
 ## Usage
 
@@ -31,9 +31,9 @@ read_asc(
 
 - confusion_index:
 
-  A `Boolean` value indicating whether to read the Confusion Index
-  (`TRUE`) or the estimated ASC value (`FALSE`). Defaults to `FALSE`
-  reading the ASC values.
+  A `logical` value. If `FALSE` (default), returns estimated ASC soil
+  order classes (character). If `TRUE`, returns the Confusion Index
+  (numeric, 0-100) indicating mapping reliability.
 
 - api_key:
 
@@ -63,6 +63,17 @@ A
 [`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
 object.
 
+## Details
+
+The ASC dataset provides soil order classifications based on the
+Australian Soil Classification system. Each pixel contains the predicted
+soil order and associated reliability/uncertainty estimates.
+
+**Output data type:** Character (soil order names and codes)
+
+**Reliability:** Confusion Index indicates mapping uncertainty (lower =
+more reliable)
+
 ## References
 
 <https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c>
@@ -77,7 +88,12 @@ Other COGs:
 ``` r
 if (FALSE) { # interactive()
 
-r <- read_asc()
-r
+# Australian Soil Classification (soil orders as character)
+r_asc <- read_asc()
+autoplot(r_asc)
+
+# Confusion Index (mapping reliability, lower = more reliable)
+r_ci <- read_asc(confusion_index = TRUE)
+autoplot(r_ci)
 }
 ```

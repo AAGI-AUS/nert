@@ -19,26 +19,39 @@ read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
 - dataset_id:
 
   A `character` string identifying the dataset. Accepts the full TERN
-  portal key (*e.g.* `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`) or
-  the 8-character key prefix (*e.g.* `"TERN/d1995ee8"`). Currently
-  supported keys:
+  portal key (e.g.\\ `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`), the
+  8-character key prefix (e.g.\\ `"TERN/d1995ee8"`), or a short alias
+  (e.g.\\ `"SMIPS"`, `"AWC"`). Currently supported datasets:
 
-  |                   |                                      |
-  |-------------------|--------------------------------------|
-  | `"TERN/d1995ee8"` | SMIPS daily soil moisture            |
-  | `"TERN/15728dba"` | Australian Soil Classification (ASC) |
-  | `"TERN/9fefa68b"` | AET/CMRSET evapotranspiration        |
+  |               |                                                |
+  |---------------|------------------------------------------------|
+  | **Alias**     | **Dataset**                                    |
+  | `"SMIPS"`     | Daily soil moisture (1 km, 2015-present)       |
+  | `"ASC"`       | Australian Soil Classification (90 m, static)  |
+  | `"AET"`       | Evapotranspiration/CMRSET (30 m, 2000-present) |
+  | `"AWC"`       | SLGA Available Water Capacity (90 m, 6 depths) |
+  | `"CLY"`       | SLGA Clay content (90 m, 6 depths)             |
+  | `"SND"`       | SLGA Sand content (90 m, 6 depths)             |
+  | `"SLT"`       | SLGA Silt content (90 m, 6 depths)             |
+  | `"BDW"`       | SLGA Bulk Density (90 m, 6 depths)             |
+  | `"PHC"`       | SLGA pH (CaCl2) (90 m, 6 depths)               |
+  | `"PHW"`       | SLGA pH (water) (90 m, 6 depths)               |
+  | `"NTO"`       | SLGA Total Nitrogen (90 m, 6 depths)           |
+  | `"SOILDIV"`   | Soil Beta Diversity (90 m, static)             |
+  | `"CANOPY"`    | Canopy Height (30 m, static)                   |
+  | `"PHENOLOGY"` | Land Surface Phenology (500 m, 2003-2018)      |
 
 - ...:
 
-  Dataset-specific arguments — `date`, `collection`, etc. See the
+  Dataset-specific arguments – `date`, `collection`, etc. See the
   relevant section above for each dataset.
 
 - api_key:
 
   A `character` string containing your TERN API key. Defaults to
   automatic detection from your `.Renviron` or `.Rprofile`. See
-  `get_key` for setup instructions.
+  [`get_key`](https://aagi-aus.github.io/nert/reference/get_key.md) for
+  setup instructions.
 
 - max_tries:
 
@@ -57,7 +70,7 @@ A
 object of the national mosaic for the requested dataset (and, where
 applicable, date/collection).
 
-## SMIPS — daily soil moisture (`"TERN/d1995ee8"`)
+## SMIPS – daily soil moisture (`"TERN/d1995ee8"`)
 
 - `date`:
 
@@ -72,19 +85,19 @@ applicable, date/collection).
 
 Data availability: 2015-11-20 to approximately 7 days before today.
 
-## ASC — Australian Soil Classification (`"TERN/15728dba"`)
+## ASC – Australian Soil Classification (`"TERN/15728dba"`)
 
 - `collection`:
 
   One of `"EV"` (estimated soil order class, default) or `"CI"`
-  (confusion index — a measure of mapping reliability). No `date`
+  (confusion index – a measure of mapping reliability). No `date`
   argument required; this is a static product.
 
-## AET — Actual Evapotranspiration/CMRSET (`"TERN/9fefa68b"`)
+## AET – Actual Evapotranspiration/CMRSET (`"TERN/9fefa68b"`)
 
 - `date`:
 
-  Required. A month to query, *e.g.* `"2023-06-01"90` or
+  Required. A month to query, *e.g.* `"2023-06-01"` or
   `as.Date("2023-06-01")`. Both `Character` and `Date` classes are
   accepted. The value is snapped to the first of the month internally.
 
@@ -95,28 +108,86 @@ Data availability: 2015-11-20 to approximately 7 days before today.
 
 Data availability: 2000-02-01 onwards.
 
-## Datasets not yet implemented
+## SLGA soil attributes – AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO
 
-The following priority datasets are tracked in the TERN catalogue and
-are planned for a future release. They require verification of COG
-file-naming patterns against the live TERN data server before they can
-be safely included:
+A family of 8 static soil properties from the Soil and Landscape Grid of
+Australia (SLGA), each available at 6 standard depth intervals (0-5,
+5-15, 15-30, 30-60, 60-100, 100-200 cm). 90 m resolution.
 
-- `TERN/482301c2` — SLGA Available Volumetric Water Capacity
+- `collection`:
 
-- `TERN/4a428d52` — SLGA Soil Bacteria and Fungi Beta Diversity
+  One of `"AWC"` (Available Water Capacity), `"CLY"` (Clay), `"SND"`
+  (Sand), `"SLT"` (Silt), `"BDW"` (Bulk Density), `"PHC"` (pH CaCl2),
+  `"PHW"` (pH water), or `"NTO"` (Total Nitrogen). Required.
 
-- `TERN/0997cb3c` — Seasonal Fractional Cover (Landsat)
+- `depth`:
 
-- `TERN/fe9d86e1` — Seasonal Ground Cover (Landsat)
+  Depth interval: `"000_005"` (0-5 cm, default), `"005_015"`,
+  `"015_030"`, `"030_060"`, `"060_100"`, or `"100_200"`. Use `"all"` to
+  return all 6 depths stacked.
 
-- `TERN/36c98155` — Canopy Height Models 30 m
+- `stat`:
 
-- `TERN/2bb0c81a` — Australian Land Surface Phenology
+  One of `"EV"` (estimate, default) or `"CI"` (confidence interval).
 
-- `TERN/PAV_slga` — SLGA Available Phosphorus
+Best accessed via
+[`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md).
 
-Datasets with integration level L2 or higher (*e.g.* AusEFlux via
+## SOILDIV – Soil Beta Diversity
+
+Bacteria and Fungi NMDS ordination axes (1-3) from soil surveys. 90 m
+resolution, static.
+
+- `kingdom`:
+
+  One of `"Bacteria"` (default) or `"Fungi"`.
+
+- `axis`:
+
+  Axis 1, 2, or 3 (default 1). Use `"all"` for all 6 axes stacked.
+
+Best accessed via
+[`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md).
+
+## CANOPY – Canopy Height 30 m (OzTreeMap)
+
+Composite canopy height model from remote sensing validation. 30 m
+resolution; CRS is `EPSG:3577` (projected). Note: extraction at point
+locations (in geographic coordinates) requires prior CRS transformation.
+No arguments needed beyond `api_key`. Best accessed via
+[`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md).
+
+## PHENOLOGY – Land Surface Phenology (MODIS)
+
+Start or End of Growing Season derived from MODIS NDVI. 500 m
+resolution; years 2003-2018.
+
+- `metric`:
+
+  One of `"SGS"` (Start of Growing Season, default) or `"EGS"` (End of
+  Growing Season).
+
+- `year`:
+
+  Year from 2003 to 2018 (default 2018).
+
+- `season`:
+
+  Season number (default 1).
+
+Best accessed via
+[`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md).
+
+## Datasets not implemented
+
+The following datasets are inaccessible or require further development:
+
+- `TERN/0997cb3c` – Seasonal Fractional Cover (legacy redirect; COGs not
+  accessible via HTTP range request)
+
+- `TERN/fe9d86e1` – Seasonal Ground Cover (same issue)
+
+Datasets with integration level L2 or higher (e.g.\\ AusEFlux via
 THREDDS/OPeNDAP, GEE-based products, site-level API streams) cannot be
 read via simple COG HTTP range requests and are outside the current
 scope of nert.
@@ -143,29 +214,36 @@ Other COGs:
 
 ``` r
 if (FALSE) { # interactive()
-# SMIPS — total bucket soil moisture for a specific day
-r <- read_tern("TERN/d1995ee8", date = "2024-01-15")
-autoplot(r)
-
-# SMIPS — soil moisture index, multiple collections via loop
-r_smi <- read_tern("TERN/d1995ee8", date = "2024-01-15",
-                   collection = "SMindex")
-
-# ASC — estimated soil order class (static, no date needed)
-r_asc <- read_tern("TERN/15728dba")
+# Using aliases (short form)
+r <- read_tern("SMIPS", date = "2024-01-15")
+r_asc <- read_tern("ASC")
 autoplot(r_asc)
 
-# ASC — confusion index
-r_ci <- read_tern("TERN/15728dba", collection = "CI")
+# Or using full TERN keys (old form still works)
+r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 
-# AET — monthly evapotranspiration
-r_aet <- read_tern("TERN/9fefa68b", date = "2023-06-01")
-autoplot(r_aet)
+# SMIPS -- multiple collections
+r_smi <- read_tern("SMIPS", date = "2024-01-15", collection = "SMindex")
 
-# Full UUID keys are also accepted
-r2 <- read_tern(
-  "TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0",
-  date = "2024-01-15"
-)
+# ASC -- confusion index
+r_ci <- read_tern("ASC", collection = "CI")
+
+# AET -- monthly evapotranspiration
+r_aet <- read_tern("AET", date = "2023-06-01")
+
+# SLGA -- available water capacity, depth 5-15 cm
+r_awc <- read_tern("AWC", depth = "005_015")
+
+# SLGA -- all depths stacked
+r_awc_all <- read_tern("AWC", depth = "all")
+
+# Soil diversity -- Fungi NMDS axis 2
+r_fungi <- read_tern("SOILDIV", kingdom = "Fungi", axis = 2)
+
+# Canopy height
+r_canopy <- read_tern("CANOPY")
+
+# Phenology -- End of Growing Season, 2018
+r_egs <- read_tern("PHENOLOGY", metric = "EGS", year = 2018)
 }
 ```

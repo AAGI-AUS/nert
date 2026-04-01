@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/nert_for_agricultural_analytics.html">Using nert to augment agricultural analytics with SMIPS data</a></li>
+<li><a class="dropdown-item" href="../articles/collect_tern_data.html">collect_tern_data() — Vectorized Data Collection</a></li>
+    <li><a class="dropdown-item" href="../articles/nert_for_agricultural_analytics.html">Using nert to augment agricultural analytics with SMIPS data</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -171,7 +172,7 @@ entire raster. The <strong>nert</strong> package works in tandem with
 the <strong>terra</strong> package to achieve this efficiency:</p>
 <ul>
 <li>First, we download the <em>information</em> for a daily SMIPS raster
-using <code>nert::read_smips</code>,</li>
+using <code><a href="../reference/read_smips.html">nert::read_smips</a></code>,</li>
 <li>Then we <em>extract only the point values we need</em>, using
 <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">terra::extract</a></code>.</li>
 </ul>
@@ -182,7 +183,7 @@ be specified first, followed by latitude.)</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">smips_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">date_range</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">read_smips</span><span class="op">(</span>collection <span class="op">=</span> <span class="st">"SMindex"</span>, day <span class="op">=</span> <span class="va">date_range</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="va">date_range</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, collection <span class="op">=</span> <span class="st">"SMindex"</span><span class="op">)</span></span>
 <span>  <span class="va">smips_points</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="va">r</span>,</span>
 <span>    y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="va">sites</span><span class="op">$</span><span class="va">Longitude</span>, lat <span class="op">=</span> <span class="va">sites</span><span class="op">$</span><span class="va">Latitude</span><span class="op">)</span>,</span>
@@ -224,6 +225,33 @@ the <code>grain</code> dataset during the analysis:</p>
 <p>We are now ready to proceed with the analytics.</p>
 </div>
 <div class="section level2">
+<h2 id="simplified-approach-using-collect_tern_data">Simplified approach: Using <code>collect_tern_data()</code><a class="anchor" aria-label="anchor" href="#simplified-approach-using-collect_tern_data"></a>
+</h2>
+<p>Alternatively, you can use <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> for a
+more streamlined workflow that returns a data table ready for
+analysis:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Extract multiple SMIPS collections and soil attributes at all sites</span></span>
+<span><span class="va">smips_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/collect_tern_data.html">collect_tern_data</a></span><span class="op">(</span></span>
+<span>  xy <span class="op">=</span> <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Longitude"</span>, <span class="st">"Latitude"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  date_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">start_date</span>, <span class="va">end_date</span><span class="op">)</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SMIPS"</span>, <span class="st">"AWC"</span>, <span class="st">"CLY"</span><span class="op">)</span>,</span>
+<span>  smips_collection <span class="op">=</span> <span class="st">"all"</span>,  <span class="co"># Gets all 6 variants</span></span>
+<span>  depth <span class="op">=</span> <span class="st">"000_005"</span>,  <span class="co"># Top 5 cm for soil texture</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">smips_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         date       lon    lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1 ...</span></span></code></pre></div>
+<p>This single function call extracts: - All 6 SMIPS variants
+(totalbucket, SMindex, bucket1, bucket2, deepD, runoff) - Available
+Water Capacity (AWC) - Clay content (CLY)</p>
+<p>All as properly named columns ready for your analysis pipeline. This
+is equivalent to calling <code><a href="../reference/read_smips.html">read_smips()</a></code>,
+<code><a href="../reference/read_aet.html">read_aet()</a></code>, etc. individually but returns everything as a
+data table.</p>
+</div>
+<div class="section level2">
 <h2 id="a-simple-model-for-grain-yield">A simple model for grain yield<a class="anchor" aria-label="anchor" href="#a-simple-model-for-grain-yield"></a>
 </h2>
 <p>First, we model the grain yield with a simple model without taking
@@ -238,7 +266,7 @@ modelled taking the <code>Variety</code>, nitrogen application rate
 <code>SeedRate_plantsm2</code> as fixed terms, and incorporating the
 <code>Site</code> and replicate (<code>Rep</code>) structure of the
 experiment in a random effect term.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/" class="external-link">nlme</a></span><span class="op">)</span></span>
 <span><span class="va">simple_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html" class="external-link">lme</a></span><span class="op">(</span></span>
 <span>  fixed <span class="op">=</span> <span class="va">Yield_Tha</span> <span class="op">~</span> <span class="va">Variety</span> <span class="op">*</span> <span class="va">Nitrogen_kgNha</span> <span class="op">*</span> <span class="va">SeedRate_plantsm2</span>,</span>
@@ -247,7 +275,7 @@ experiment in a random effect term.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We can check the confidence intervals for the effect sizes of the
 nitrogen treatments for this simple model:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">simple_model.ints</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html" class="external-link">intervals</a></span><span class="op">(</span><span class="va">simple_model</span>, which <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span><span class="op">$</span><span class="va">fixed</span></span>
 <span><span class="va">simple_model.Neffects</span> <span class="op">&lt;-</span> <span class="va">simple_model.ints</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Nitrogen_kgNha"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">simple_model.Neffects</span></span>
@@ -267,7 +295,7 @@ the soil due to volatilisation). To keep things simple, for each site
 SMIPS-reported soil moisture index from the date of the nitrogen
 application until 30 days after the application, which we will store in
 a new column called <code>SoilMoisture_avg</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">site</span> <span class="kw">in</span> <span class="va">sites</span><span class="op">$</span><span class="va">Site</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">start_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">grain</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">grain</span><span class="op">$</span><span class="va">Site</span> <span class="op">==</span> <span class="va">site</span><span class="op">)</span>, <span class="st">"NitrogenDate"</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span>  <span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">start_date</span>, <span class="va">start_date</span> <span class="op">+</span> <span class="fl">30</span>, by <span class="op">=</span> <span class="st">"1 day"</span><span class="op">)</span></span>
@@ -277,7 +305,7 @@ a new column called <code>SoilMoisture_avg</code>.</p>
 <span><span class="op">}</span></span></code></pre></div>
 <p>We can then add this average soil moisture as a fixed effect to the
 linear mixed-effect model:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">augmented_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html" class="external-link">lme</a></span><span class="op">(</span></span>
 <span>  fixed <span class="op">=</span> <span class="va">Yield_Tha</span> <span class="op">~</span> <span class="va">Variety</span> <span class="op">*</span> <span class="va">Nitrogen_kgNha</span> <span class="op">*</span> <span class="va">SeedRate_plantsm2</span></span>
 <span>    <span class="op">+</span> <span class="va">SoilMoisture_avg</span> <span class="op">+</span> <span class="va">SoilMoisture_avg</span><span class="op">:</span><span class="va">Nitrogen_kgNha</span>,</span>
@@ -286,7 +314,7 @@ linear mixed-effect model:</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The confidence intervals for the effect sizes of the nitrogen
 application treatments for this augmented model are then as follows:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">augmented_model.ints</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/intervals.html" class="external-link">intervals</a></span><span class="op">(</span><span class="va">augmented_model</span>, which <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span><span class="op">$</span><span class="va">fixed</span></span>
 <span><span class="va">augmented_model.Neffects</span> <span class="op">&lt;-</span> <span class="va">augmented_model.ints</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Nitrogen_kgNha"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">augmented_model.Neffects</span></span>
@@ -298,7 +326,7 @@ application treatments for this augmented model are then as follows:</p>
 intervals for the simple model versus the augmented model, and
 illuminate the difference attained when we include the soil moisture as
 a confounding term in our modelling:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>

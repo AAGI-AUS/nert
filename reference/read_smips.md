@@ -1,15 +1,18 @@
-# Read SMIPS COGs from TERN
+# Read TERN SMIPS Soil Moisture Data
 
-Read Soil Moisture Integration and Prediction System (SMIPS) Cloud
-Optimised Geotiff (COG) files from TERN in your R session.
+Wrapper around
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
+for TERN/SMIPS daily soil moisture data. Provides soil moisture
+estimates at 1 km resolution from November 2015 to approximately 7 days
+before today.
 
 ## Usage
 
 ``` r
 read_smips(
-  day,
+  date,
   collection = "totalbucket",
-  api_key = get_key(),
+  api_key = NULL,
   max_tries = 3L,
   initial_delay = 1L
 )
@@ -17,63 +20,87 @@ read_smips(
 
 ## Arguments
 
-- day:
+- date:
 
-  A date to query, *e.g.*, `day = "2017-12-31"` or
-  `day = as.Date("2017-12-01")`, both `Character` and `Date` classes are
-  accepted.
+  A day to download (Date or character, e.g. `"2024-01-15"` or
+  `as.Date("2024-01-15")`). Required.
 
 - collection:
 
-  A character vector of the “SMIPS” data collection to be queried:
+  SMIPS collection variant (default `"totalbucket"`). Options:
 
-  - SMindex: the SMIPS Soil Moisture Index (*i.e.*, a number between 0
-    and 1 that indicates how full the SMIPS bucket moisture store is
-    relative to its 90 cm capacity),
+  `"totalbucket"`
 
-  - totalbucket: an estimate of the *volumetric soil moisture (in mm)
-    from the SMIPS bucket moisture store*, Defaults to “totalbucket”.
-    Multiple `collections` are supported, *e.g.*,
-    `collection = c("SMindex", "totalbucket")`.
+  :   **Total soil moisture in the full active layer** (mm). Represents
+      the total water stored in all soil layers of the active profile.
+      Use for: Overall soil water availability, drought monitoring.
+      Output column: `SMIPS_totalbucket`
+
+  `"SMindex"`
+
+  :   **Soil Moisture Index, 0-100%** (standardized metric). Rescaled to
+      0-100% for comparison across regions and seasons. Use for:
+      Regional comparisons, anomaly detection, percentage-based
+      thresholds. Output column: `SMIPS_SMindex`
+
+  `"bucket1"`
+
+  :   **Top soil layer moisture** (mm, typically 0-10 cm). Represents
+      water in surface soil where seeds germinate and shallow roots
+      operate. Use for: Shallow-rooting plants, seed germination,
+      surface runoff prediction. Output column: `SMIPS_bucket1`
+
+  `"bucket2"`
+
+  :   **Second soil layer moisture** (mm, typically 10-40 cm).
+      Represents water in intermediate soil depth where many plant roots
+      develop. Use for: Typical crop rooting depth, plant-available
+      water. Output column: `SMIPS_bucket2`
+
+  `"deepD"`
+
+  :   **Deep soil layer moisture** (mm, typically \>40 cm). Represents
+      water in deeper soil layers accessed by deep-rooting plants. Use
+      for: Deep-rooting trees/shrubs, groundwater recharge, long-term
+      drought. Output column: `SMIPS_deepD`
+
+  `"runoff"`
+
+  :   **Surface runoff** (mm). Represents water predicted to run off the
+      surface (not infiltrate). Use for: Flood risk, erosion modeling,
+      drainage engineering. Output column: `SMIPS_runoff`
 
 - api_key:
 
-  A `character` string containing your API key, a random string provided
-  to you by TERN, for the request. Defaults to automatically detecting
-  your key from your local .Renviron, .Rprofile or similar.
-  Alternatively, you may directly provide your key as a string here or
-  use functionality like that from
-  [keyring](https://CRAN.R-project.org/package=keyring). If nothing is
-  provided, you will be prompted on how to set up your R session so that
-  it is auto-detected and a browser window will open at the TERN website
-  for you to request a key.
+  A `character` string containing your TERN API key. Defaults to
+  automatic detection from your `.Renviron` or `.Rprofile`. See
+  [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
+  for setup.
 
 - max_tries:
 
-  An integer `Integer` with the number of times to retry a failed
-  download before emitting an error message. Defaults to 3.
+  An `integer` giving the maximum number of download retries before an
+  error is raised. Defaults to `3`.
 
 - initial_delay:
 
-  An `Integer` with the number of seconds to delay before retrying the
-  download. This increases as the tries increment. Defaults to 1.
+  An `integer` giving the initial retry delay in seconds (doubles with
+  each attempt). Defaults to `1`.
 
 ## Value
 
 A
 [`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
-object.
+object of the requested SMIPS collection.
 
 ## References
 
+SMIPS portal:
 <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
-and
-<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 
 ## See also
 
-Other COGs:
-[`extract_aet()`](https://aagi-aus.github.io/nert/reference/extract_aet.md),
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md),
 [`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
 [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
 
@@ -81,10 +108,20 @@ Other COGs:
 
 ``` r
 if (FALSE) { # interactive()
-
-r <- read_smips("2024-01-01")
-
-# `tidyterra::autoplot` is re-exported for convenience
+# Total bucket soil moisture (default)
+r <- read_smips("2024-01-15")
 autoplot(r)
+
+# Soil moisture index (0-100%)
+r_smi <- read_smips("2024-01-15", collection = "SMindex")
+
+# Top soil bucket (shallow rooting plants)
+r_bucket1 <- read_smips("2024-01-15", collection = "bucket1")
+
+# Deep soil layer (deep rooting plants)
+r_deep <- read_smips("2024-01-15", collection = "deepD")
+
+# Surface runoff
+r_runoff <- read_smips("2024-01-15", collection = "runoff")
 }
 ```

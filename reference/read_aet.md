@@ -1,15 +1,17 @@
-# Read AET COGs from TERN
+# Read CMRSET Actual Evapotranspiration Data
 
-Read Actual Evapotranspiration (AET) using the CMRSET algorithm Cloud
-Optimised Geotiff (COG) files from TERN in your R session.
+Wrapper around
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
+for TERN/CMRSET evapotranspiration data. Provides monthly estimates of
+actual ET (mm/month) at 30 m resolution from February 2000 onwards.
 
 ## Usage
 
 ``` r
 read_aet(
-  month,
+  date,
   collection = "ETa",
-  api_key = get_key(),
+  api_key = NULL,
   max_tries = 3L,
   initial_delay = 1L
 )
@@ -17,71 +19,71 @@ read_aet(
 
 ## Arguments
 
-- month:
+- date:
 
-  A month to query, *e.g.,* `month = "2023-01-01"` or
-  `month = as.Date("2023-01-01")`. Both `Character` and `Date` classes
-  are accepted. The value is snapped to the first of the month
-  internally.
+  A month to download (Date or character, e.g. `"2023-06-01"` or
+  `as.Date("2023-06-01")`). The value is snapped to the first of the
+  month internally. Required.
 
 - collection:
 
-  A `character` string of the AET data collection to be queried:
-
-  - `"ETa"`: the primary AET band (mm/month),
-
-  - `"pixel_qa"`: the quality assurance flag band. Defaults to `"ETa"`.
+  One of `"ETa"` (actual evapotranspiration in mm/month, default) or
+  `"pixel_qa"` (quality assurance flags).
 
 - api_key:
 
-  A `character` string containing your API key, a random string provided
-  to you by TERN, for the request. Defaults to automatically detecting
-  your key from your local .Renviron, .Rprofile or similar.
-  Alternatively, you may directly provide your key as a string here or
-  use functionality like that from
-  [keyring](https://CRAN.R-project.org/package=keyring). If nothing is
-  provided, you will be prompted on how to set up your R session so that
-  it is auto-detected and a browser window will open at the TERN website
-  for you to request a key.
+  A `character` string containing your TERN API key. Defaults to
+  automatic detection from your `.Renviron` or `.Rprofile`. See
+  [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
+  for setup.
 
 - max_tries:
 
-  An `Integer` with the number of times to retry a failed download
-  before emitting an error message. Defaults to 3.
+  An `integer` giving the maximum number of download retries before an
+  error is raised. Defaults to `3`.
 
 - initial_delay:
 
-  An `Integer` with the number of seconds to delay before retrying the
-  download. This increases as the tries increment. Defaults to 1.
+  An `integer` giving the initial retry delay in seconds (doubles with
+  each attempt). Defaults to `1`.
 
 ## Value
 
 A
 [`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
-object of the national mosaic for the requested month.
+object of the requested ET collection.
 
 ## References
 
-TERN portal:
+CMRSET portal:
 <https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 
-DOI: <https://dx.doi.org/10.25901/gg27-ck96>
+CMRSET DOI: <https://dx.doi.org/10.25901/gg27-ck96>
 
 ## See also
 
-Other COGs:
-[`extract_aet()`](https://aagi-aus.github.io/nert/reference/extract_aet.md),
-[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
-[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md),
+[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
+[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
 
 ## Examples
 
 ``` r
 if (FALSE) { # interactive()
+# Actual evapotranspiration (ETa) for June 2023 (mm/month)
+r_eta <- read_aet("2023-06-01")
+autoplot(r_eta)
 
-r <- read_aet(month = "2023-01-01")
+# January 2023 ET
+r_jan <- read_aet("2023-01-01")
 
-# `tidyterra::autoplot` is re-exported for convenience
-autoplot(r)
+# Quality assurance flags for June 2023
+r_qa <- read_aet("2023-06-01", collection = "pixel_qa")
+
+# ET from February 2000 (earliest available)
+r_early <- read_aet("2000-02-01")
+
+# Current/recent ET (within last month)
+r_recent <- read_aet(Sys.Date())
 }
 ```

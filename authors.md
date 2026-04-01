@@ -28,13 +28,13 @@ Source:
 [`DESCRIPTION`](https://github.com/AAGI-AUS/nert/blob/main/DESCRIPTION)
 
 Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). *nert:
-An API Client for TERN Data*. R package version 0.0.2.9000,
+An API Client for TERN Data*. R package version 0.0.3.9000,
 <https://aagi-aus.github.io/nert/>.
 
     @Manual{,
       title = {nert: An API Client for TERN Data},
       author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
       year = {2026},
-      note = {R package version 0.0.2.9000},
+      note = {R package version 0.0.3.9000},
       url = {https://aagi-aus.github.io/nert/},
     }

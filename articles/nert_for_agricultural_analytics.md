@@ -109,7 +109,7 @@ entire raster. The **nert** package works in tandem with the **terra**
 package to achieve this efficiency:
 
 - First, we download the *information* for a daily SMIPS raster using
-  `nert::read_smips`,
+  [`nert::read_smips`](https://aagi-aus.github.io/nert/reference/read_smips.md),
 - Then we *extract only the point values we need*, using
   [`terra::extract`](https://rspatial.github.io/terra/reference/extract.html).
 
@@ -122,7 +122,7 @@ longitude should be specified first, followed by latitude.)
 ``` r
 smips_data <- data.frame()
 for (i in 1:length(date_range)) {
-  r <- read_smips(collection = "SMindex", day = date_range[i])
+  r <- read_smips(date = date_range[i], collection = "SMindex")
   smips_points <- terra::extract(
     x = r,
     y = data.frame(lon = sites$Longitude, lat = sites$Latitude),
@@ -166,6 +166,38 @@ head(smips_data)
 ```
 
 We are now ready to proceed with the analytics.
+
+## Simplified approach: Using `collect_tern_data()`
+
+Alternatively, you can use
+[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+for a more streamlined workflow that returns a data table ready for
+analysis:
+
+``` r
+# Extract multiple SMIPS collections and soil attributes at all sites
+smips_data <- collect_tern_data(
+  xy = sites[, c("Longitude", "Latitude")],
+  date_range = c(start_date, end_date),
+  datasets = c("SMIPS", "AWC", "CLY"),
+  smips_collection = "all",  # Gets all 6 variants
+  depth = "000_005",  # Top 5 cm for soil texture
+  verbose = TRUE
+)
+
+head(smips_data)
+#>         date       lon    lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1 ...
+```
+
+This single function call extracts: - All 6 SMIPS variants (totalbucket,
+SMindex, bucket1, bucket2, deepD, runoff) - Available Water Capacity
+(AWC) - Clay content (CLY)
+
+All as properly named columns ready for your analysis pipeline. This is
+equivalent to calling
+[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
+[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
+etc. individually but returns everything as a data table.
 
 ## A simple model for grain yield
 
