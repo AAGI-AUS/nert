@@ -7,7 +7,17 @@ reference:
     desc: "Functions to read Cloud Optimised GeoTIFF data from TERN."
     contents:
       - read_tern
+      - read_smips
       - read_asc
+      - read_aet
+      - read_slga
+      - read_soil_diversity
+      - read_canopy_height
+      - read_phenology
+  - title: "Vectorised Collection"
+    desc: "Batch extraction of TERN raster data at point locations."
+    contents:
+      - collect_tern_data
   - title: "Utilities"
     desc: "Helper functions for working with TERN data."
     contents:

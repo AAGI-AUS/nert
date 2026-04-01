@@ -51,8 +51,8 @@ get_key <- function() {
 #'   instruction on how to store the key. After filling the form you will get
 #'   the key soon, but not immediately.
 #'
-#' @keywords internal
-#' @noRd
+#' @dev
+#'
 #' @returns Called for its side-effects, opens a browser window at the TERN
 #'   accounts page.
 .set_tern_key <- function() {

@@ -1,14 +1,22 @@
-#' Read ASC COGs from TERN
+#' Read Australian Soil Classification (ASC) Data
 #'
-#' Read Australian Soil Classification (\acronym{ASC}) Cloud Optimised Geotiff
-#'  (\acronym{COG}) files from \acronym{TERN} in your \R session.  The data are
-#'  Australian Soil Classification Soil Order classes with quantified estimates
-#'  of mapping reliability at a 90 m resolution.  You can access the reliability
-#'  map using the `confusion_index` argument.
+#' @description
+#' Wrapper around [read_tern()] for Australian Soil Classification (\acronym{ASC})
+#' soil order classes at 90 m resolution. Returns character soil order descriptions
+#' (e.g., "2 - Sodosol") with optional mapping reliability (confusion index).
 #'
-#' @param confusion_index A `Boolean` value indicating whether to read the
-#'   Confusion Index (`TRUE`) or the estimated \acronym{ASC} value (`FALSE`).
-#'   Defaults to `FALSE` reading the \acronym{ASC} values.
+#' @details
+#' The ASC dataset provides soil order classifications based on the Australian
+#' Soil Classification system. Each pixel contains the predicted soil order and
+#' associated reliability/uncertainty estimates.
+#'
+#' **Output data type:** Character (soil order names and codes)
+#'
+#' **Reliability:** Confusion Index indicates mapping uncertainty (lower = more reliable)
+#'
+#' @param confusion_index A `logical` value. If `FALSE` (default), returns
+#'   estimated \acronym{ASC} soil order classes (character). If `TRUE`, returns
+#'   the Confusion Index (numeric, 0-100) indicating mapping reliability.
 #' @param api_key A `character` string containing your \acronym{API} key,
 #'   a random string provided to you by \acronym{TERN}, for the request.
 #'   Defaults to automatically detecting your key from your local .Renviron,
@@ -27,8 +35,13 @@
 #'
 #' @examplesIf interactive()
 #'
-#' r <- read_asc()
-#' r
+#' # Australian Soil Classification (soil orders as character)
+#' r_asc <- read_asc()
+#' autoplot(r_asc)
+#'
+#' # Confusion Index (mapping reliability, lower = more reliable)
+#' r_ci <- read_asc(confusion_index = TRUE)
+#' autoplot(r_ci)
 #'
 #' @returns A  [terra::rast()] object.
 #' @source

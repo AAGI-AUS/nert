@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_asc.R
 \name{read_asc}
 \alias{read_asc}
-\title{Read ASC COGs from TERN}
+\title{Read Australian Soil Classification (ASC) Data}
 \source{
 \describe{
 \item{ASC Data}{\url{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif}}
@@ -18,9 +18,9 @@ read_asc(
 )
 }
 \arguments{
-\item{confusion_index}{A \code{Boolean} value indicating whether to read the
-Confusion Index (\code{TRUE}) or the estimated \acronym{ASC} value (\code{FALSE}).
-Defaults to \code{FALSE} reading the \acronym{ASC} values.}
+\item{confusion_index}{A \code{logical} value. If \code{FALSE} (default), returns
+estimated \acronym{ASC} soil order classes (character). If \code{TRUE}, returns
+the Confusion Index (numeric, 0-100) indicating mapping reliability.}
 
 \item{api_key}{A \code{character} string containing your \acronym{API} key,
 a random string provided to you by \acronym{TERN}, for the request.
@@ -42,17 +42,29 @@ retrying the download.  This increases as the tries increment.  Defaults to
 A  \code{\link[terra:rast]{terra::rast()}} object.
 }
 \description{
-Read Australian Soil Classification (\acronym{ASC}) Cloud Optimised Geotiff
-(\acronym{COG}) files from \acronym{TERN} in your \R session.  The data are
-Australian Soil Classification Soil Order classes with quantified estimates
-of mapping reliability at a 90 m resolution.  You can access the reliability
-map using the \code{confusion_index} argument.
+Wrapper around \code{\link[=read_tern]{read_tern()}} for Australian Soil Classification (\acronym{ASC})
+soil order classes at 90 m resolution. Returns character soil order descriptions
+(e.g., "2 - Sodosol") with optional mapping reliability (confusion index).
+}
+\details{
+The ASC dataset provides soil order classifications based on the Australian
+Soil Classification system. Each pixel contains the predicted soil order and
+associated reliability/uncertainty estimates.
+
+\strong{Output data type:} Character (soil order names and codes)
+
+\strong{Reliability:} Confusion Index indicates mapping uncertainty (lower = more reliable)
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 
-r <- read_asc()
-r
+# Australian Soil Classification (soil orders as character)
+r_asc <- read_asc()
+autoplot(r_asc)
+
+# Confusion Index (mapping reliability, lower = more reliable)
+r_ci <- read_asc(confusion_index = TRUE)
+autoplot(r_ci)
 \dontshow{\}) # examplesIf}
 }
 \references{
