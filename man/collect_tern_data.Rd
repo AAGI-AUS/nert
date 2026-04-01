@@ -5,10 +5,10 @@
 \title{Collect TERN Data Over Time and Space}
 \usage{
 collect_tern_data(
+  date_range,
   lon = NULL,
   lat = NULL,
   xy = NULL,
-  date_range,
   datasets = NULL,
   depth = "all",
   stat = "EV",
@@ -19,6 +19,11 @@ collect_tern_data(
 )
 }
 \arguments{
+\item{date_range}{A \code{Date} vector or character vector of dates
+(e.g. \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
+OR a length-2 vector giving start and end dates
+(e.g. \code{c("2024-01-01", "2024-01-31")}).}
+
 \item{lon}{Longitude(s) (WGS84, EPSG:4326). Either:
 \itemize{
 \item A single numeric value (scalar)
@@ -37,11 +42,6 @@ collect_tern_data(
 with coordinate columns. Column names should be \code{x} and \code{y} or
 \code{lon} and \code{lat}. If provided, \code{lon} and \code{lat} are ignored.
 Use \code{NULL} (default) for lon/lat parameters.}
-
-\item{date_range}{A \code{Date} vector or character vector of dates
-(e.g. \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
-OR a length-2 vector giving start and end dates
-(e.g. \code{c("2024-01-01", "2024-01-31")}).}
 
 \item{datasets}{A \code{character} vector of dataset aliases to collect.
 Default: all 14 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW, PHC,
@@ -116,26 +116,26 @@ will contain \code{NA} for the affected rows.
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Single location
 dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day")
-dt <- collect_tern_data(
+d_t <- collect_tern_data(
+  date_range = dates,
   lon = 138.6,
   lat = -34.9,
-  date_range = dates,
   datasets = c("SMIPS", "CLY")
 )
-head(dt)
+head(d_t)
 
 # Multiple locations (vectors)
-dt_multi <- collect_tern_data(
+d_t_multi <- collect_tern_data(
   lon = c(138.6, 139.5),
   lat = c(-34.9, -35.5),
   date_range = dates,
   datasets = c("SMIPS", "CANOPY")
 )
-head(dt_multi)
+head(d_t_multi)
 
 # Using xy notation (data.frame)
 xy <- data.frame(lon = c(138.6, 139.5), lat = c(-34.9, -35.5))
-dt_xy <- collect_tern_data(
+d_t_xy <- collect_tern_data(
   xy = xy,
   date_range = dates,
   datasets = "CLY"

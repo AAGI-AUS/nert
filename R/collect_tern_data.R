@@ -1,11 +1,14 @@
 #' Collect TERN Data Over Time and Space
 #'
-#' @description
 #' Extract values from one or more TERN datasets at given location(s) over a
 #' date range. Supports single or multiple coordinates. Returns a data.table
 #' with one row per date per location and one column per dataset.
 #' Static datasets are repeated across all dates.
 #'
+#' @param date_range A \code{Date} vector or character vector of dates
+#'   (e.g. \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
+#'   OR a length-2 vector giving start and end dates
+#'   (e.g. \code{c("2024-01-01", "2024-01-31")}).
 #' @param lon Longitude(s) (WGS84, EPSG:4326). Either:
 #'   - A single numeric value (scalar)
 #'   - A numeric vector (multiple coordinates, same length as \code{lat})
@@ -18,10 +21,6 @@
 #'   with coordinate columns. Column names should be \code{x} and \code{y} or
 #'   \code{lon} and \code{lat}. If provided, \code{lon} and \code{lat} are ignored.
 #'   Use \code{NULL} (default) for lon/lat parameters.
-#' @param date_range A \code{Date} vector or character vector of dates
-#'   (e.g. \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
-#'   OR a length-2 vector giving start and end dates
-#'   (e.g. \code{c("2024-01-01", "2024-01-31")}).
 #' @param datasets A \code{character} vector of dataset aliases to collect.
 #'   Default: all 14 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW, PHC,
 #'   PHW, NTO, SOILDIV, CANOPY, PHENOLOGY).
@@ -77,9 +76,9 @@
 #' # Single location
 #' dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day")
 #' d_t <- collect_tern_data(
+#'   date_range = dates,
 #'   lon = 138.6,
 #'   lat = -34.9,
-#'   date_range = dates,
 #'   datasets = c("SMIPS", "CLY")
 #' )
 #' head(d_t)
@@ -101,7 +100,6 @@
 #'   datasets = "CLY"
 #' )
 #'
-#' @importFrom data.table as.data.table setnames rbindlist is.data.table ":="
 #' @export
 collect_tern_data <- function(
   date_range,
