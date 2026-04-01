@@ -16,3 +16,4 @@ Alias mapping for short dataset names
 Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 }
 \keyword{datasets}
+\keyword{internal}

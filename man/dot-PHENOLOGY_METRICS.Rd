@@ -14,3 +14,4 @@ An object of class \code{list} of length 2.
 Phenology metric metadata: index and directory name
 }
 \keyword{datasets}
+\keyword{internal}
