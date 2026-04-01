@@ -5,21 +5,18 @@
 # ── dispatch / ID normalisation ───────────────────────────────────────────────
 
 test_that(".tern_dispatch_id normalises full UUID key", {
-  expect_equal(
-    .tern_dispatch_id("TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"),
-    "d1995ee8"
-  )
+  expect_identical(.tern_dispatch_id("TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"), "d1995ee8")
 })
 
 test_that(".tern_dispatch_id normalises short prefix key", {
-  expect_equal(.tern_dispatch_id("TERN/d1995ee8"), "d1995ee8")
-  expect_equal(.tern_dispatch_id("TERN/15728dba"), "15728dba")
-  expect_equal(.tern_dispatch_id("TERN/9fefa68b"), "9fefa68b")
+  expect_identical(.tern_dispatch_id("TERN/d1995ee8"), "d1995ee8")
+  expect_identical(.tern_dispatch_id("TERN/15728dba"), "15728dba")
+  expect_identical(.tern_dispatch_id("TERN/9fefa68b"), "9fefa68b")
 })
 
 test_that(".tern_dispatch_id strips prefix and lowercases", {
-  expect_equal(.tern_dispatch_id("TERN/D1995EE8"), "d1995ee8")
-  expect_equal(.tern_dispatch_id("CSIRO/abcd1234"), "abcd1234")
+  expect_identical(.tern_dispatch_id("TERN/D1995EE8"), "d1995ee8")
+  expect_identical(.tern_dispatch_id("CSIRO/abcd1234"), "abcd1234")
 })
 
 # ── error: missing dataset_id ─────────────────────────────────────────────────
@@ -89,14 +86,8 @@ test_that("read_tern AET errors for date before 2000-02-01", {
 
 test_that("read_tern SMIPS builds correct URL filename via internal helper", {
   day <- .check_date("2024-01-15")
-  expect_equal(
-    .make_smips_url("totalbucket", day),
-    "smips_totalbucket_mm_20240115.tif"
-  )
-  expect_equal(
-    .make_smips_url("SMindex", day),
-    "smips_smi_perc_20240115.tif"
-  )
+  expect_identical(.make_smips_url("totalbucket", day), "smips_totalbucket_mm_20240115.tif")
+  expect_identical(.make_smips_url("SMindex", day), "smips_smi_perc_20240115.tif")
 })
 
 # ── AET: URL construction ─────────────────────────────────────────────────────
@@ -172,5 +163,5 @@ test_that("read_tern AET mid-month date is snapped to first of month", {
   # Compare the first 1000 rows (or adjust as needed)
   v1 <- terra::values(r1, row = 1, nrows = 1000)
   v2 <- terra::values(r2, row = 1, nrows = 1000)
-  expect_equal(v1, v2)
+  expect_identical(v1, v2)
 })

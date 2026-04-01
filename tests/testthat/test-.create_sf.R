@@ -5,9 +5,9 @@ test_that("Named list is converted to sf with correct location column", {
   )
   result <- .create_sf(locs)
   expect_s3_class(result, "sf")
-  expect_equal(nrow(result), 2L)
-  expect_equal(result$location, c("Corrigin", "Merredin"))
-  expect_equal(sf::st_crs(result)$epsg, 4326L)
+  expect_identical(nrow(result), 2L)
+  expect_identical(result$location, c("Corrigin", "Merredin"))
+  expect_identical(sf::st_crs(result)$epsg, 4326L)
 })
 
 test_that("Data.frame with location, x, y columns is converted to sf", {
@@ -18,9 +18,9 @@ test_that("Data.frame with location, x, y columns is converted to sf", {
   )
   result <- .create_sf(df)
   expect_s3_class(result, "sf")
-  expect_equal(nrow(result), 2L)
-  expect_equal(result$location, c("Site1", "Site2"))
-  expect_equal(sf::st_crs(result)$epsg, 4326L)
+  expect_identical(nrow(result), 2L)
+  expect_identical(result$location, c("Site1", "Site2"))
+  expect_identical(sf::st_crs(result)$epsg, 4326L)
 })
 
 test_that("sf POINT object is passed through unchanged", {
@@ -32,7 +32,7 @@ test_that("sf POINT object is passed through unchanged", {
   sf_obj <- sf::st_as_sf(df, coords = c("x", "y"), crs = 4326L)
   result <- .create_sf(sf_obj)
   expect_s3_class(result, "sf")
-  expect_equal(result$location, c("Site1", "Site2"))
+  expect_identical(result$location, c("Site1", "Site2"))
 })
 
 test_that("sf object without location column uses row names", {
