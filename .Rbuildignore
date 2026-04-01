@@ -7,6 +7,15 @@
 ^.*\.Rproj$
 ^\.Rprofile$
 ^\.Renviron$
+
+^_pkgdown\.yml$
+
+^air\.toml$
+
+^CODE_OF_CONDUCT\.md$
+^LICENSE\.md$
+^README\.Rmd$
+
 ^doc$
 ^Meta$
 ^man/dot-create_sf\.Rd$
@@ -15,7 +24,6 @@
 ^man/dot-read_cog\.Rd$
 ^man/dot-check_api_key\.Rd$
 ^man/dot-check_not_example_api_key\.Rd$
-^man/NULL\.Rd$
 ^man/dot-check_date\.Rd$
 ^man/dot-check_collection_agreement\.Rd$
 ^man/dot-make_smips_url\.Rd$
