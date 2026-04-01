@@ -176,7 +176,7 @@ current scope of \pkg{nert}.
 
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Using aliases (recommended) ──────────────────────────────────
+# Using aliases (recommended) ----------------------------------------
 r <- read_tern("SMIPS", date = "2024-01-15")
 autoplot(r)
 
@@ -196,7 +196,7 @@ r_ch <- read_tern("CANOPY")
 # Land Surface Phenology
 r_phen <- read_tern("PHENOLOGY", year = 2018, collection = "SGS")
 
-# Full TERN keys still work ────────────────────────────────────
+# Full TERN keys still work ----------------------------------------
 r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 \dontshow{\}) # examplesIf}
 }

@@ -143,7 +143,7 @@
 #' @family COGs
 #'
 #' @examplesIf interactive()
-#' # Using aliases (recommended) ──────────────────────────────────
+#' # Using aliases (recommended) ----------------------------------------
 #' r <- read_tern("SMIPS", date = "2024-01-15")
 #' autoplot(r)
 #'
@@ -163,7 +163,7 @@
 #' # Land Surface Phenology
 #' r_phen <- read_tern("PHENOLOGY", year = 2018, collection = "SGS")
 #'
-#' # Full TERN keys still work ────────────────────────────────────
+#' # Full TERN keys still work ----------------------------------------
 #' r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 #'
 #' @returns A [terra::rast()] object of the national mosaic for the
