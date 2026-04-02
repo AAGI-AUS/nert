@@ -4,19 +4,17 @@
 \alias{.read_tern_slga}
 \title{Internal handler for SLGA soil attributes}
 \usage{
-.read_tern_slga(did, dots, api_key, max_tries, initial_delay)
+.read_tern_slga(collection, dots, api_key, max_tries, initial_delay)
 }
 \arguments{
-\item{did}{Normalised dispatch ID (e.g.\ \code{"482301c2"}, \code{"slga_cly"}).}
+\item{collection}{SLGA attribute code (e.g. "AWC", "CLY").}
 
-\item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}
+\item{dots}{Named list including \code{depth} and \code{stat} if provided.}
 
-\item{api_key}{URL-encoded API key.}
-
-\item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
+\item{api_key, max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-A generic handler that covers all eight SLGA soil attributes.  Each
-attribute has a fixed file-naming pattern encoded in \link{.slga_config}.
+Reads any of 8 SLGA attributes (AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO)
+at one or more depth intervals (or all 6).
 }
 \keyword{internal}

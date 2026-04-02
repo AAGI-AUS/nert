@@ -42,7 +42,7 @@ test_that("read_tern error for unsupported dataset mentions supported keys", {
     read_tern("TERN/unknown123"),
     error = function(e) conditionMessage(e)
   )
-  expect_match(err, "SMIPS", fixed = TRUE)
+  expect_match(err, "not currently implemented", fixed = TRUE)
 })
 
 # ── SMIPS: parameter validation ───────────────────────────────────────────────

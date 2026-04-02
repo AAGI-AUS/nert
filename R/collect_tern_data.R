@@ -114,7 +114,7 @@ collect_tern_data <- function(
   verbose = TRUE,
   na.rm = FALSE
 ) {
-  # -- Parse coordinates --------------------------------------------------------
+  # ── Parse coordinates ────────────────────────────────────────────────────────
   coords <- .parse_coordinates(lon, lat, xy)
   coords_df <- coords$coords_df
   multi_location <- coords$multi_location
@@ -138,7 +138,7 @@ collect_tern_data <- function(
     cli::cli_abort("No valid dates in {.arg date_range}.")
   }
 
-  # -- Parse datasets -----------------------------------------------------------
+  # ── Parse datasets ───────────────────────────────────────────────────────────
   if (is.null(datasets) || identical(datasets, "all")) {
     datasets <- c(
       "SMIPS",
@@ -190,12 +190,12 @@ collect_tern_data <- function(
     datasets <- intersect(datasets, all_aliases)
   }
 
-  # -- Display dataset information table (if verbose) --------------------------
+  # ── Display dataset information table (if verbose) ──────────────────────────
   if (verbose) {
     .print_datasets_table(datasets, depth, smips_collection, stat)
   }
 
-  # -- Extract for each location ------------------------------------------------
+  # ── Extract for each location ────────────────────────────────────────────────
   if (verbose) {
     cli::cli_inform(
       "Collecting {length(datasets)} dataset(s) over {length(dates)} date(s)"
@@ -232,7 +232,7 @@ collect_tern_data <- function(
     all_results[[i]] <- d_t_i
   }
 
-  # -- Combine results ----------------------------------------------------------
+  # ── Combine results ──────────────────────────────────────────────────────────
   if (multi_location) {
     d_t <- data.table::rbindlist(all_results)
     # Preserve all columns except reorder date/lon/lat first
@@ -260,9 +260,9 @@ collect_tern_data <- function(
   return(d_t)
 }
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Helper: Parse coordinate input
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 .parse_coordinates <- function(lon, lat, xy) {
   if (!is.null(xy)) {
     # xy notation: data.frame/matrix with x/y or lon/lat columns
@@ -316,9 +316,9 @@ collect_tern_data <- function(
   list(coords_df = coords_df, multi_location = multi_location)
 }
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Helper: Validate single coordinate
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 .validate_single_coord <- function(lon, lat) {
   if (!is.numeric(lon) || !is.numeric(lat)) {
     cli::cli_abort("Coordinates must be numeric.")
@@ -331,9 +331,9 @@ collect_tern_data <- function(
   }
 }
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Helper: Collect data for single location
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 .collect_single_location <- function(
   lon,
   lat,
@@ -556,14 +556,7 @@ collect_tern_data <- function(
       {
         if (ds %in% c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")) {
           r <- suppressWarnings(
-            read_tern(ds, depth = depth, collection = stat, api_key = api_key)
-          )
-        } else if (ds == "PHENOLOGY") {
-          # Phenology requires year (2003-2018), use year from first date
-          phen_year <- as.integer(format(dates[1], "%Y"))
-          phen_year <- max(2003L, min(2018L, phen_year))
-          r <- suppressWarnings(
-            read_tern(ds, year = phen_year, api_key = api_key)
+            read_tern(ds, depth = depth, stat = stat, api_key = api_key)
           )
         } else {
           r <- suppressWarnings(read_tern(ds, api_key = api_key))
@@ -642,9 +635,9 @@ collect_tern_data <- function(
   return(d_t)
 }
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Helper: Print datasets information table
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 .print_datasets_table <- function(datasets, depth, smips_collection, stat) {
   # Dataset metadata
   dataset_info <- list(
