@@ -14,6 +14,10 @@ reference:
       - read_soil_diversity
       - read_canopy_height
       - read_phenology
+  - title: "Batch Extraction"
+    desc: "Extract values from multiple TERN datasets at locations over time."
+    contents:
+      - collect_tern_data
   - title: "Utilities"
     desc: "Helper functions for working with TERN data."
     contents:

@@ -2,106 +2,88 @@
 % Please edit documentation in R/read_slga.R
 \name{read_slga}
 \alias{read_slga}
-\title{Read SLGA Soil Attributes from TERN}
+\title{Read SLGA Soil and Landscape Grid of Australia Attributes}
 \usage{
 read_slga(
-  attribute,
+  collection,
   depth = "000_005",
-  collection = "EV",
-  api_key = get_key(),
+  stat = "EV",
+  api_key = NULL,
   max_tries = 3L,
   initial_delay = 1L
 )
 }
 \arguments{
-\item{attribute}{One of \code{"AWC"}, \code{"CLY"}, \code{"SND"},
-\code{"SLT"}, \code{"BDW"}, \code{"PHC"}, \code{"PHW"}, or
-\code{"NTO"}.}
+\item{collection}{Soil attribute code.  One of: \code{"AWC"} (Available
+Volumetric Water Capacity), \code{"CLY"} (Clay), \code{"SND"} (Sand),
+\code{"SLT"} (Silt), \code{"BDW"} (Bulk Density), \code{"PHC"} (pH CaCl\ifelse{html}{\out{<sub>2</sub>}}{2}),
+\code{"PHW"} (pH water), or \code{"NTO"} (Total Nitrogen).  Required.}
 
-\item{depth}{One of \code{"000_005"} (default), \code{"005_015"},
-\code{"015_030"}, \code{"030_060"}, \code{"060_100"}, or
-\code{"100_200"}.}
+\item{depth}{Depth interval (default \code{"000_005"} = 0–5 cm).  Options:
+\code{"000_005"}, \code{"005_015"}, \code{"015_030"}, \code{"030_060"},
+\code{"060_100"}, \code{"100_200"}.  Use \code{"all"} to return all
+6 depths stacked as a multi-layer SpatRaster.}
 
-\item{collection}{One of \code{"EV"} (estimated value, default) or
+\item{stat}{Statistic.  One of \code{"EV"} (estimate, default) or
 \code{"CI"} (confidence interval).}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
+\acronym{API} key.  Defaults to automatic detection from your
+\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{An \code{integer} giving the maximum number of download
-retries.  Defaults to \code{3}.}
+retries before an error is raised.  Defaults to \code{3}.}
 
 \item{initial_delay}{An \code{integer} giving the initial retry delay in
 seconds (doubles with each attempt).  Defaults to \code{1}.}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the national SLGA mosaic for the
-requested attribute, depth, and statistic.
+A \code{\link[terra:rast]{terra::rast()}} object.  Single depth: one layer.
+When \code{depth = "all"}: a 6-layer raster with names
+(\code{"{collection}_000_005"}, etc.).
 }
 \description{
-Read Soil and Landscape Grid of Australia (\acronym{SLGA}) Cloud Optimised
-GeoTIFF (\acronym{COG}) files from \acronym{TERN}.  Eight soil attributes
-are available as static 90 m national products, each with six standard
-depth layers and two statistics (estimated value or confidence interval).
+Wrapper around \code{\link[=read_tern]{read_tern()}} for Soil and Landscape Grid of Australia
+(\acronym{SLGA}) soil attribute products at 90 m resolution.  Access any of
+8 soil properties (Available Water Capacity, Clay, Sand, Silt, Bulk Density,
+pH CaCl\ifelse{html}{\out{<sub>2</sub>}}{2}, pH water, Total Nitrogen) at 6 standard depth intervals
+(0–5, 5–15, 15–30, 30–60, 60–100, 100–200 cm), with optional confidence
+intervals.
 }
-\section{Supported attributes}{
-
-\describe{
-\item{\code{"AWC"}}{Available Water Capacity (mm)}
-\item{\code{"CLY"}}{Clay content (percent)}
-\item{\code{"SND"}}{Sand content (percent)}
-\item{\code{"SLT"}}{Silt content (percent)}
-\item{\code{"BDW"}}{Bulk Density whole earth (g/cm3)}
-\item{\code{"PHC"}}{pH (CaCl2)}
-\item{\code{"PHW"}}{pH (water)}
-\item{\code{"NTO"}}{Total Nitrogen (percent)}
-}
-}
-
-\section{Depth layers}{
-
-Six standard \acronym{GlobalSoilMap} depth intervals are available
-(values in cm):
-\tabular{l}{
-\code{"000_005"} — 0--5 cm (default) \cr
-\code{"005_015"} — 5--15 cm \cr
-\code{"015_030"} — 15--30 cm \cr
-\code{"030_060"} — 30--60 cm \cr
-\code{"060_100"} — 60--100 cm \cr
-\code{"100_200"} — 100--200 cm \cr
-}
-
-This is a convenience wrapper around
-\code{read_tern(<attribute>, ...)}; see \code{\link[=read_tern]{read_tern()}} for full
-details and additional datasets.
-}
-
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Read clay content at 0-5 cm depth
-r <- read_slga("CLY")
-autoplot(r)
+# Available Water Capacity at 0–5 cm (default depth)
+r_awc <- read_slga("AWC")
+autoplot(r_awc)
 
-# Read available water capacity at 15-30 cm
-r_awc <- read_slga("AWC", depth = "015_030")
+# Clay at specific depth (15–30 cm)
+r_clay_30 <- read_slga("CLY", depth = "015_030")
 
-# Read pH (CaCl2) confidence interval at 30-60 cm
-r_phc <- read_slga("PHC", depth = "030_060", collection = "CI")
+# Clay at deep layer (100–200 cm)
+r_clay_deep <- read_slga("CLY", depth = "100_200")
+
+# Available Water Capacity, all 6 depths stacked
+r_awc_all <- read_slga("AWC", depth = "all")
+names(r_awc_all)
+# [1] "AWC_000_005" "AWC_005_015" "AWC_015_030" "AWC_030_060" "AWC_060_100" "AWC_100_200"
+
+# Sand content with confidence intervals
+r_sand_ci <- read_slga("SND", depth = "005_015", stat = "CI")
+
+# pH (water) estimate
+r_phw <- read_slga("PHW", stat = "EV")
+
+# Bulk Density at all depths
+r_bdw_all <- read_slga("BDW", depth = "all", stat = "EV")
 \dontshow{\}) # examplesIf}
 }
 \references{
-AWC: \url{https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7}
+SLGA portal:
+\url{https://www.tern.org.au/landscapes/slga/}
 
-SLGA: \url{https://www.clw.csiro.au/aclep/soilandlandscapegrid/}
+Viscarra Rossel, R. A., et al. (2015). Soil and Landscape Grid of
+Australia. \emph{Soil Research}, 53(8), 835–844.
 }
 \seealso{
-Other COGs: 
-\code{\link{read_aet}()},
-\code{\link{read_asc}()},
-\code{\link{read_canopy_height}()},
-\code{\link{read_phenology}()},
-\code{\link{read_smips}()},
-\code{\link{read_soil_diversity}()},
-\code{\link{read_tern}()}
+\code{\link[=read_tern]{read_tern()}}, \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}
 }
-\concept{COGs}

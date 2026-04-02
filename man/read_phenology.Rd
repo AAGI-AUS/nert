@@ -87,8 +87,6 @@ Other COGs:
 \code{\link{read_aet}()},
 \code{\link{read_asc}()},
 \code{\link{read_canopy_height}()},
-\code{\link{read_slga}()},
-\code{\link{read_smips}()},
 \code{\link{read_soil_diversity}()},
 \code{\link{read_tern}()}
 }

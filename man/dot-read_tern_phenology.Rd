@@ -2,18 +2,16 @@
 % Please edit documentation in R/read_tern.R
 \name{.read_tern_phenology}
 \alias{.read_tern_phenology}
-\title{Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})}
+\title{Internal handler for Land Surface Phenology (TERN/2bb0c81a)}
 \usage{
 .read_tern_phenology(dots, api_key, max_tries, initial_delay)
 }
 \arguments{
-\item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}
+\item{dots}{Named list including \code{metric}, \code{year}, \code{season} if provided.}
 
-\item{api_key}{URL-encoded API key.}
-
-\item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
+\item{api_key, max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})
+Reads MODIS-derived Start or End of Growing Season for 2003–2018.
 }
 \keyword{internal}
