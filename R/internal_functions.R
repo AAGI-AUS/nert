@@ -45,8 +45,10 @@
           Sys.sleep(delay)
           attempt <<- attempt + 1L
         } else {
-          cli::cli_abort("Download failed after { max_tries } attempts.")
-          stop(e)
+          cli::cli_abort(
+            "Download failed after { max_tries } attempts.",
+            parent = e
+          )
         }
       }
     )

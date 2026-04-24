@@ -6,7 +6,7 @@
 \alias{nert-package}
 \title{nert: An API Client for TERN Data}
 \description{
-Provides access to Australia's TERN (Terrestrial Ecosystem Research Network) data through the API, \url{https://tern.org.au}.
+Provides access to Australia's TERN (Terrestrial Ecosystem Research Network) data through the API, \url{https://www.tern.org.au/}.
 }
 \seealso{
 Useful links:

@@ -16,7 +16,7 @@ Authors@R: c(
            comment = c("GRDC Project CUR2210-005OPX (AAGI-CU)", ROR = "02xwr1996"))
   )
 Description: Provides access to Australia's TERN (Terrestrial Ecosystem
-    Research Network) data through the API, <https://tern.org.au>.
+    Research Network) data through the API, <https://www.tern.org.au/>.
 License: MIT + file LICENSE
 URL: https://aagi-aus.github.io/nert/, https://github.com/AAGI-AUS/nert
 BugReports: https://github.com/AAGI-AUS/nert/issues
