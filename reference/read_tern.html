@@ -69,10 +69,11 @@ additional arguments through <code>...</code>.  The returned object is a
 
 <dl><dt id="arg-dataset-id">dataset_id<a class="anchor" aria-label="anchor" href="#arg-dataset-id"></a></dt>
 <dd><p>A <code>character</code> string identifying the dataset.
-Accepts the full <acronym>TERN</acronym> portal key (e.g.\
-<code>"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"</code>), the
-8-character key prefix (e.g.\ <code>"TERN/d1995ee8"</code>), or a short
-alias (e.g.\ <code>"SMIPS"</code>, <code>"AWC"</code>).  Currently supported datasets:</p><table class="table table"><tr><td><strong>Alias</strong></td><td><strong>Dataset</strong></td></tr><tr><td><code>"SMIPS"</code></td><td>Daily soil moisture (1 km, 2015-present)</td></tr><tr><td><code>"ASC"</code></td><td>Australian Soil Classification (90 m, static)</td></tr><tr><td><code>"AET"</code></td><td>Evapotranspiration/CMRSET (30 m, 2000-present)</td></tr><tr><td><code>"AWC"</code></td><td>SLGA Available Water Capacity (90 m, 6 depths)</td></tr><tr><td><code>"CLY"</code></td><td>SLGA Clay content (90 m, 6 depths)</td></tr><tr><td><code>"SND"</code></td><td>SLGA Sand content (90 m, 6 depths)</td></tr><tr><td><code>"SLT"</code></td><td>SLGA Silt content (90 m, 6 depths)</td></tr><tr><td><code>"BDW"</code></td><td>SLGA Bulk Density (90 m, 6 depths)</td></tr><tr><td><code>"PHC"</code></td><td>SLGA pH (CaCl2) (90 m, 6 depths)</td></tr><tr><td><code>"PHW"</code></td><td>SLGA pH (water) (90 m, 6 depths)</td></tr><tr><td><code>"NTO"</code></td><td>SLGA Total Nitrogen (90 m, 6 depths)</td></tr><tr><td><code>"SOILDIV"</code></td><td>Soil Beta Diversity (90 m, static)</td></tr><tr><td><code>"CANOPY"</code></td><td>Canopy Height (30 m, static)</td></tr><tr><td><code>"PHENOLOGY"</code></td><td>Land Surface Phenology (500 m, 2003-2018)</td></tr></table></dd>
+Accepts a short alias, the full <acronym>TERN</acronym> portal key (e.g.\
+<code>"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"</code>), or the
+8-character key prefix (e.g.\ <code>"TERN/d1995ee8"</code>).  See the
+<strong>Dataset aliases</strong> section for the complete table of supported
+aliases.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -103,7 +104,16 @@ seconds (doubles with each attempt).  Defaults to <code>1</code>.</p></dd>
 requested dataset (and, where applicable, date/collection).</p>
     </div>
     <div class="section level2">
-    <h2 id="smips-daily-soil-moisture-tern-d-ee-">SMIPS – daily soil moisture (<code>"TERN/d1995ee8"</code>)<a class="anchor" aria-label="anchor" href="#smips-daily-soil-moisture-tern-d-ee-"></a></h2>
+    <h2 id="dataset-aliases">Dataset aliases<a class="anchor" aria-label="anchor" href="#dataset-aliases"></a></h2>
+
+
+<p>In addition to full <acronym>TERN</acronym> portal keys and 8-character prefixes,
+<code>read_tern()</code> accepts short human-readable aliases (case-insensitive):</p><table class="table table"><tr><td><strong>Alias</strong></td><td><strong>Dataset ID</strong></td><td><strong>Description</strong></td></tr><tr><td><code>"SMIPS"</code></td><td><code>TERN/d1995ee8</code></td><td>Daily soil moisture (~1 km)</td></tr><tr><td><code>"ASC"</code></td><td><code>TERN/15728dba</code></td><td>Australian Soil Classification (90 m)</td></tr><tr><td><code>"AET"</code></td><td><code>TERN/9fefa68b</code></td><td>Monthly evapotranspiration (CMRSET)</td></tr><tr><td><code>"AWC"</code></td><td><code>TERN/482301c2</code></td><td>Available Water Capacity (90 m)</td></tr><tr><td><code>"CLY"</code></td><td>SLGA</td><td>Clay content (90 m)</td></tr><tr><td><code>"SND"</code></td><td>SLGA</td><td>Sand content (90 m)</td></tr><tr><td><code>"SLT"</code></td><td>SLGA</td><td>Silt content (90 m)</td></tr><tr><td><code>"BDW"</code></td><td>SLGA</td><td>Bulk density whole earth (90 m)</td></tr><tr><td><code>"PHC"</code></td><td>SLGA</td><td>pH CaCl2 (90 m)</td></tr><tr><td><code>"PHW"</code></td><td>SLGA</td><td>pH water (90 m)</td></tr><tr><td><code>"NTO"</code></td><td>SLGA</td><td>Total Nitrogen (90 m)</td></tr><tr><td><code>"SOILDIV"</code></td><td><code>TERN/4a428d52</code></td><td>Soil Beta Diversity (90 m)</td></tr><tr><td><code>"CANOPY"</code></td><td><code>TERN/36c98155</code></td><td>Canopy Height (30 m)</td></tr><tr><td><code>"PHENOLOGY"</code></td><td><code>TERN/2bb0c81a</code></td><td>Land Surface Phenology (500 m)</td></tr></table><p>Convenience wrappers <code><a href="read_smips.html">read_smips()</a></code>, <code><a href="read_asc.html">read_asc()</a></code>, <code><a href="read_aet.html">read_aet()</a></code>,
+<code><a href="read_slga.html">read_slga()</a></code>, <code><a href="read_soil_diversity.html">read_soil_diversity()</a></code>, <code><a href="read_canopy_height.html">read_canopy_height()</a></code>, and
+<code><a href="read_phenology.html">read_phenology()</a></code> are also provided for direct access to each dataset.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="smips-daily-soil-moisture-tern-d-ee-">SMIPS — daily soil moisture (<code>"TERN/d1995ee8"</code>)<a class="anchor" aria-label="anchor" href="#smips-daily-soil-moisture-tern-d-ee-"></a></h2>
 
 
 <dl><dt><code>date</code></dt>
@@ -149,80 +159,98 @@ mm/month, default) or <code>"pixel_qa"</code> (quality assurance flags).</p></dd
 </dl><p>Data availability: 2000-02-01 onwards.</p>
     </div>
     <div class="section level2">
-    <h2 id="slga-soil-attributes-awc-cly-snd-slt-bdw-phc-phw-nto">SLGA soil attributes – AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO<a class="anchor" aria-label="anchor" href="#slga-soil-attributes-awc-cly-snd-slt-bdw-phc-phw-nto"></a></h2>
+    <h2 id="slga-soil-attributes-awc-cly-etc-">SLGA soil attributes (<code>"AWC"</code>, <code>"CLY"</code>, etc.)<a class="anchor" aria-label="anchor" href="#slga-soil-attributes-awc-cly-etc-"></a></h2>
 
 
-<p>A family of 8 static soil properties from the Soil and Landscape Grid of
-Australia (<acronym>SLGA</acronym>), each available at 6 standard depth intervals
-(0-5, 5-15, 15-30, 30-60, 60-100, 100-200 cm).  90 m resolution.</p><dl><dt><code>collection</code></dt>
-<dd><p>One of <code>"AWC"</code> (Available Water Capacity),
-<code>"CLY"</code> (Clay), <code>"SND"</code> (Sand), <code>"SLT"</code> (Silt),
-<code>"BDW"</code> (Bulk Density), <code>"PHC"</code> (pH CaCl2), <code>"PHW"</code> (pH
-water), or <code>"NTO"</code> (Total Nitrogen).  Required.</p></dd>
+<p>Eight <acronym>SLGA</acronym> (Soil and Landscape Grid of Australia) soil
+attributes are available as static 90 m products, each with six standard
+depth layers and two statistics:</p><dl><dt><code>depth</code></dt>
+<dd><p>One of <code>"000_005"</code> (default), <code>"005_015"</code>,
+<code>"015_030"</code>, <code>"030_060"</code>, <code>"060_100"</code>, or
+<code>"100_200"</code> (cm).</p></dd>
 
-<dt><code>depth</code></dt>
-<dd><p>Depth interval: <code>"000_005"</code> (0-5 cm, default),
-<code>"005_015"</code>, <code>"015_030"</code>, <code>"030_060"</code>, <code>"060_100"</code>,
-or <code>"100_200"</code>.  Use <code>"all"</code> to return all 6 depths stacked.</p></dd>
-
-<dt><code>stat</code></dt>
-<dd><p>One of <code>"EV"</code> (estimate, default) or <code>"CI"</code>
-(confidence interval).</p></dd>
+<dt><code>collection</code></dt>
+<dd><p>One of <code>"EV"</code> (estimated value, default)
+or <code>"CI"</code> (confidence interval).</p></dd>
 
 
-</dl><p>Best accessed via <code><a href="read_slga.html">read_slga()</a></code>.</p>
+</dl><p>Supported attributes (use as the <code>dataset_id</code> alias):</p><dl><dt><code>"AWC"</code></dt>
+<dd><p>Available Water Capacity (mm)</p></dd>
+
+<dt><code>"CLY"</code></dt>
+<dd><p>Clay content (percent)</p></dd>
+
+<dt><code>"SND"</code></dt>
+<dd><p>Sand content (percent)</p></dd>
+
+<dt><code>"SLT"</code></dt>
+<dd><p>Silt content (percent)</p></dd>
+
+<dt><code>"BDW"</code></dt>
+<dd><p>Bulk Density whole earth (g/cm3)</p></dd>
+
+<dt><code>"PHC"</code></dt>
+<dd><p>pH (CaCl2)</p></dd>
+
+<dt><code>"PHW"</code></dt>
+<dd><p>pH (water)</p></dd>
+
+<dt><code>"NTO"</code></dt>
+<dd><p>Total Nitrogen (percent)</p></dd>
+
+
+</dl><p>Convenience wrapper: <code><a href="read_slga.html">read_slga()</a></code>.</p>
     </div>
     <div class="section level2">
-    <h2 id="soildiv-soil-beta-diversity">SOILDIV – Soil Beta Diversity<a class="anchor" aria-label="anchor" href="#soildiv-soil-beta-diversity"></a></h2>
+    <h2 id="soil-beta-diversity-soildiv-tern-a-d-">Soil Beta Diversity (<code>"SOILDIV"</code>, <code>TERN/4a428d52</code>)<a class="anchor" aria-label="anchor" href="#soil-beta-diversity-soildiv-tern-a-d-"></a></h2>
 
 
-<p>Bacteria and Fungi NMDS ordination axes (1-3) from soil surveys.  90 m
-resolution, static.</p><dl><dt><code>kingdom</code></dt>
+<dl><dt><code>collection</code></dt>
 <dd><p>One of <code>"Bacteria"</code> (default) or
 <code>"Fungi"</code>.</p></dd>
 
 <dt><code>axis</code></dt>
-<dd><p>Axis 1, 2, or 3 (default 1).  Use <code>"all"</code> for all
-6 axes stacked.</p></dd>
+<dd><p>NMDS axis number: <code>1</code> (default), <code>2</code>, or
+<code>3</code>.</p></dd>
 
 
-</dl><p>Best accessed via <code><a href="read_soil_diversity.html">read_soil_diversity()</a></code>.</p>
+</dl><p>Static 90 m product.  Convenience wrapper: <code><a href="read_soil_diversity.html">read_soil_diversity()</a></code>.</p>
     </div>
     <div class="section level2">
-    <h2 id="canopy-canopy-height-m-oztreemap-">CANOPY – Canopy Height 30 m (OzTreeMap)<a class="anchor" aria-label="anchor" href="#canopy-canopy-height-m-oztreemap-"></a></h2>
+    <h2 id="canopy-height-canopy-tern-c-">Canopy Height (<code>"CANOPY"</code>, <code>TERN/36c98155</code>)<a class="anchor" aria-label="anchor" href="#canopy-height-canopy-tern-c-"></a></h2>
 
 
-<p>Composite canopy height model from remote sensing validation.  30 m
-resolution; <acronym>CRS</acronym> is <code>EPSG:3577</code> (projected).
-Note: extraction at point locations (in geographic coordinates) requires
-prior CRS transformation.  No arguments needed beyond <code>api_key</code>.
-Best accessed via <code><a href="read_canopy_height.html">read_canopy_height()</a></code>.</p>
+<p>Single static 30 m composite from the OzTreeMap project.  No additional
+arguments required.  Convenience wrapper: <code><a href="read_canopy_height.html">read_canopy_height()</a></code>.</p>
     </div>
     <div class="section level2">
-    <h2 id="phenology-land-surface-phenology-modis-">PHENOLOGY – Land Surface Phenology (MODIS)<a class="anchor" aria-label="anchor" href="#phenology-land-surface-phenology-modis-"></a></h2>
+    <h2 id="land-surface-phenology-phenology-tern-bb-c-a-">Land Surface Phenology (<code>"PHENOLOGY"</code>, <code>TERN/2bb0c81a</code>)<a class="anchor" aria-label="anchor" href="#land-surface-phenology-phenology-tern-bb-c-a-"></a></h2>
 
 
-<p>Start or End of Growing Season derived from MODIS <acronym>NDVI</acronym>.  500 m
-resolution; years 2003-2018.</p><dl><dt><code>metric</code></dt>
-<dd><p>One of <code>"SGS"</code> (Start of Growing Season, default)
-or <code>"EGS"</code> (End of Growing Season).</p></dd>
-
-<dt><code>year</code></dt>
-<dd><p>Year from 2003 to 2018 (default 2018).</p></dd>
+<dl><dt><code>year</code></dt>
+<dd><p>Required.  An integer year (2003–2018).</p></dd>
 
 <dt><code>season</code></dt>
-<dd><p>Season number (default 1).</p></dd>
+<dd><p>Season number: <code>1</code> (default) or <code>2</code>.</p></dd>
+
+<dt><code>collection</code></dt>
+<dd><p>Phenology metric — one of <code>"SGS"</code>
+(Start of Growing Season, default), <code>"PGS"</code> (Peak),
+<code>"EGS"</code> (End), <code>"LGS"</code> (Length), <code>"SOS"</code> (Start of
+Season), <code>"POS"</code> (Peak of Season), <code>"EOS"</code> (End of Season),
+<code>"LOS"</code> (Length of Season), <code>"ROG"</code> (Rate of Greening),
+<code>"ROS"</code> (Rate of Senescence).</p></dd>
 
 
-</dl><p>Best accessed via <code><a href="read_phenology.html">read_phenology()</a></code>.</p>
+</dl><p>500 m MODIS resolution.  Convenience wrapper: <code><a href="read_phenology.html">read_phenology()</a></code>.</p>
     </div>
     <div class="section level2">
-    <h2 id="datasets-not-implemented">Datasets not implemented<a class="anchor" aria-label="anchor" href="#datasets-not-implemented"></a></h2>
+    <h2 id="datasets-not-accessible">Datasets not accessible<a class="anchor" aria-label="anchor" href="#datasets-not-accessible"></a></h2>
 
 
-<p>The following datasets are inaccessible or require further development:</p><ul><li><p><code>TERN/0997cb3c</code> – Seasonal Fractional Cover (legacy redirect;
-COGs not accessible via HTTP range request)</p></li>
-<li><p><code>TERN/fe9d86e1</code> – Seasonal Ground Cover (same issue)</p></li>
+<p>The following datasets are tracked in the <acronym>TERN</acronym> catalogue but
+cannot be accessed via COG HTTP range requests:</p><ul><li><p><code>TERN/0997cb3c</code> — Seasonal Fractional Cover (Landsat)</p></li>
+<li><p><code>TERN/fe9d86e1</code> — Seasonal Ground Cover (Landsat)</p></li>
 </ul><p>Datasets with integration level L2 or higher (e.g.\ AusEFlux via
 <acronym>THREDDS</acronym>/OPeNDAP, GEE-based products, site-level API streams)
 cannot be read via simple COG HTTP range requests and are outside the
@@ -230,54 +258,51 @@ current scope of <span class="pkg">nert</span>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>SMIPS portal:
-<a href="https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0" class="external-link">https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0</a></p>
-<p>ASC portal:
-<a href="https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c" class="external-link">https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c</a></p>
-<p>AET portal:
-<a href="https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97" class="external-link">https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97</a></p>
-<p>AET DOI: <a href="https://dx.doi.org/10.25901/gg27-ck96" class="external-link">https://dx.doi.org/10.25901/gg27-ck96</a></p>
+    <p>SMIPS: <a href="https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0" class="external-link">https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0</a></p>
+<p>ASC: <a href="https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c" class="external-link">https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c</a></p>
+<p>AET: <a href="https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97" class="external-link">https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97</a></p>
+<p>AWC: <a href="https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7" class="external-link">https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7</a></p>
+<p>Soil Beta Diversity: <a href="https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0" class="external-link">https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0</a></p>
+<p>Canopy Height: <a href="https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba" class="external-link">https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba</a></p>
+<p>Land Surface Phenology: <a href="https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26" class="external-link">https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other COGs:
-<code><a href="read_asc.html">read_asc()</a></code></p></div>
+<code><a href="read_aet.html">read_aet()</a></code>,
+<code><a href="read_asc.html">read_asc()</a></code>,
+<code><a href="read_canopy_height.html">read_canopy_height()</a></code>,
+<code><a href="read_phenology.html">read_phenology()</a></code>,
+<code><a href="read_slga.html">read_slga()</a></code>,
+<code><a href="read_smips.html">read_smips()</a></code>,
+<code><a href="read_soil_diversity.html">read_soil_diversity()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
-<span class="r-in"><span><span class="co"># Using aliases (short form)</span></span></span>
+<span class="r-in"><span><span class="co"># Using aliases (recommended) ----------------------------------------</span></span></span>
 <span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"SMIPS"</span>, date <span class="op">=</span> <span class="st">"2024-01-15"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">r_asc</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"ASC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r_asc</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Or using full TERN keys (old form still works)</span></span></span>
-<span class="r-in"><span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"TERN/d1995ee8"</span>, date <span class="op">=</span> <span class="st">"2024-01-15"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># SMIPS -- multiple collections</span></span></span>
-<span class="r-in"><span><span class="va">r_smi</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"SMIPS"</span>, date <span class="op">=</span> <span class="st">"2024-01-15"</span>, collection <span class="op">=</span> <span class="st">"SMindex"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># ASC -- confusion index</span></span></span>
-<span class="r-in"><span><span class="va">r_ci</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"ASC"</span>, collection <span class="op">=</span> <span class="st">"CI"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># AET -- monthly evapotranspiration</span></span></span>
 <span class="r-in"><span><span class="va">r_aet</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"AET"</span>, date <span class="op">=</span> <span class="st">"2023-06-01"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># SLGA -- available water capacity, depth 5-15 cm</span></span></span>
-<span class="r-in"><span><span class="va">r_awc</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"AWC"</span>, depth <span class="op">=</span> <span class="st">"005_015"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># SLGA soil attributes — depth and collection</span></span></span>
+<span class="r-in"><span><span class="va">r_clay</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"CLY"</span>, depth <span class="op">=</span> <span class="st">"000_005"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">r_awc</span>  <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"AWC"</span>, depth <span class="op">=</span> <span class="st">"015_030"</span>, collection <span class="op">=</span> <span class="st">"CI"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># SLGA -- all depths stacked</span></span></span>
-<span class="r-in"><span><span class="va">r_awc_all</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"AWC"</span>, depth <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Soil Beta Diversity</span></span></span>
+<span class="r-in"><span><span class="va">r_bact</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"SOILDIV"</span>, collection <span class="op">=</span> <span class="st">"Bacteria"</span>, axis <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Soil diversity -- Fungi NMDS axis 2</span></span></span>
-<span class="r-in"><span><span class="va">r_fungi</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"SOILDIV"</span>, kingdom <span class="op">=</span> <span class="st">"Fungi"</span>, axis <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Canopy Height (single static product)</span></span></span>
+<span class="r-in"><span><span class="va">r_ch</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"CANOPY"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Canopy height</span></span></span>
-<span class="r-in"><span><span class="va">r_canopy</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"CANOPY"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Land Surface Phenology</span></span></span>
+<span class="r-in"><span><span class="va">r_phen</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"PHENOLOGY"</span>, year <span class="op">=</span> <span class="fl">2018</span>, collection <span class="op">=</span> <span class="st">"SGS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Phenology -- End of Growing Season, 2018</span></span></span>
-<span class="r-in"><span><span class="va">r_egs</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"PHENOLOGY"</span>, metric <span class="op">=</span> <span class="st">"EGS"</span>, year <span class="op">=</span> <span class="fl">2018</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Full TERN keys still work ----------------------------------------</span></span></span>
+<span class="r-in"><span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"TERN/d1995ee8"</span>, date <span class="op">=</span> <span class="st">"2024-01-15"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

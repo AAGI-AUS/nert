@@ -18,28 +18,11 @@ read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
 
 - dataset_id:
 
-  A `character` string identifying the dataset. Accepts the full TERN
-  portal key (e.g.\\ `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`), the
-  8-character key prefix (e.g.\\ `"TERN/d1995ee8"`), or a short alias
-  (e.g.\\ `"SMIPS"`, `"AWC"`). Currently supported datasets:
-
-  |               |                                                |
-  |---------------|------------------------------------------------|
-  | **Alias**     | **Dataset**                                    |
-  | `"SMIPS"`     | Daily soil moisture (1 km, 2015-present)       |
-  | `"ASC"`       | Australian Soil Classification (90 m, static)  |
-  | `"AET"`       | Evapotranspiration/CMRSET (30 m, 2000-present) |
-  | `"AWC"`       | SLGA Available Water Capacity (90 m, 6 depths) |
-  | `"CLY"`       | SLGA Clay content (90 m, 6 depths)             |
-  | `"SND"`       | SLGA Sand content (90 m, 6 depths)             |
-  | `"SLT"`       | SLGA Silt content (90 m, 6 depths)             |
-  | `"BDW"`       | SLGA Bulk Density (90 m, 6 depths)             |
-  | `"PHC"`       | SLGA pH (CaCl2) (90 m, 6 depths)               |
-  | `"PHW"`       | SLGA pH (water) (90 m, 6 depths)               |
-  | `"NTO"`       | SLGA Total Nitrogen (90 m, 6 depths)           |
-  | `"SOILDIV"`   | Soil Beta Diversity (90 m, static)             |
-  | `"CANOPY"`    | Canopy Height (30 m, static)                   |
-  | `"PHENOLOGY"` | Land Surface Phenology (500 m, 2003-2018)      |
+  A `character` string identifying the dataset. Accepts a short alias,
+  the full TERN portal key (e.g.\\
+  `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`), or the 8-character key
+  prefix (e.g.\\ `"TERN/d1995ee8"`). See the **Dataset aliases** section
+  for the complete table of supported aliases.
 
 - ...:
 
@@ -70,7 +53,41 @@ A
 object of the national mosaic for the requested dataset (and, where
 applicable, date/collection).
 
-## SMIPS – daily soil moisture (`"TERN/d1995ee8"`)
+## Dataset aliases
+
+In addition to full TERN portal keys and 8-character prefixes,
+`read_tern()` accepts short human-readable aliases (case-insensitive):
+
+|               |                 |                                       |
+|---------------|-----------------|---------------------------------------|
+| **Alias**     | **Dataset ID**  | **Description**                       |
+| `"SMIPS"`     | `TERN/d1995ee8` | Daily soil moisture (~1 km)           |
+| `"ASC"`       | `TERN/15728dba` | Australian Soil Classification (90 m) |
+| `"AET"`       | `TERN/9fefa68b` | Monthly evapotranspiration (CMRSET)   |
+| `"AWC"`       | `TERN/482301c2` | Available Water Capacity (90 m)       |
+| `"CLY"`       | SLGA            | Clay content (90 m)                   |
+| `"SND"`       | SLGA            | Sand content (90 m)                   |
+| `"SLT"`       | SLGA            | Silt content (90 m)                   |
+| `"BDW"`       | SLGA            | Bulk density whole earth (90 m)       |
+| `"PHC"`       | SLGA            | pH CaCl2 (90 m)                       |
+| `"PHW"`       | SLGA            | pH water (90 m)                       |
+| `"NTO"`       | SLGA            | Total Nitrogen (90 m)                 |
+| `"SOILDIV"`   | `TERN/4a428d52` | Soil Beta Diversity (90 m)            |
+| `"CANOPY"`    | `TERN/36c98155` | Canopy Height (30 m)                  |
+| `"PHENOLOGY"` | `TERN/2bb0c81a` | Land Surface Phenology (500 m)        |
+
+Convenience wrappers
+[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
+[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
+[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
+[`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md),
+[`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md),
+[`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md),
+and
+[`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md)
+are also provided for direct access to each dataset.
+
+## SMIPS — daily soil moisture (`"TERN/d1995ee8"`)
 
 - `date`:
 
@@ -108,84 +125,107 @@ Data availability: 2015-11-20 to approximately 7 days before today.
 
 Data availability: 2000-02-01 onwards.
 
-## SLGA soil attributes – AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO
+## SLGA soil attributes (`"AWC"`, `"CLY"`, etc.)
 
-A family of 8 static soil properties from the Soil and Landscape Grid of
-Australia (SLGA), each available at 6 standard depth intervals (0-5,
-5-15, 15-30, 30-60, 60-100, 100-200 cm). 90 m resolution.
-
-- `collection`:
-
-  One of `"AWC"` (Available Water Capacity), `"CLY"` (Clay), `"SND"`
-  (Sand), `"SLT"` (Silt), `"BDW"` (Bulk Density), `"PHC"` (pH CaCl2),
-  `"PHW"` (pH water), or `"NTO"` (Total Nitrogen). Required.
+Eight SLGA (Soil and Landscape Grid of Australia) soil attributes are
+available as static 90 m products, each with six standard depth layers
+and two statistics:
 
 - `depth`:
 
-  Depth interval: `"000_005"` (0-5 cm, default), `"005_015"`,
-  `"015_030"`, `"030_060"`, `"060_100"`, or `"100_200"`. Use `"all"` to
-  return all 6 depths stacked.
+  One of `"000_005"` (default), `"005_015"`, `"015_030"`, `"030_060"`,
+  `"060_100"`, or `"100_200"` (cm).
 
-- `stat`:
+- `collection`:
 
-  One of `"EV"` (estimate, default) or `"CI"` (confidence interval).
+  One of `"EV"` (estimated value, default) or `"CI"` (confidence
+  interval).
 
-Best accessed via
+Supported attributes (use as the `dataset_id` alias):
+
+- `"AWC"`:
+
+  Available Water Capacity (mm)
+
+- `"CLY"`:
+
+  Clay content (percent)
+
+- `"SND"`:
+
+  Sand content (percent)
+
+- `"SLT"`:
+
+  Silt content (percent)
+
+- `"BDW"`:
+
+  Bulk Density whole earth (g/cm3)
+
+- `"PHC"`:
+
+  pH (CaCl2)
+
+- `"PHW"`:
+
+  pH (water)
+
+- `"NTO"`:
+
+  Total Nitrogen (percent)
+
+Convenience wrapper:
 [`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md).
 
-## SOILDIV – Soil Beta Diversity
+## Soil Beta Diversity (`"SOILDIV"`, `TERN/4a428d52`)
 
-Bacteria and Fungi NMDS ordination axes (1-3) from soil surveys. 90 m
-resolution, static.
-
-- `kingdom`:
+- `collection`:
 
   One of `"Bacteria"` (default) or `"Fungi"`.
 
 - `axis`:
 
-  Axis 1, 2, or 3 (default 1). Use `"all"` for all 6 axes stacked.
+  NMDS axis number: `1` (default), `2`, or `3`.
 
-Best accessed via
+Static 90 m product. Convenience wrapper:
 [`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md).
 
-## CANOPY – Canopy Height 30 m (OzTreeMap)
+## Canopy Height (`"CANOPY"`, `TERN/36c98155`)
 
-Composite canopy height model from remote sensing validation. 30 m
-resolution; CRS is `EPSG:3577` (projected). Note: extraction at point
-locations (in geographic coordinates) requires prior CRS transformation.
-No arguments needed beyond `api_key`. Best accessed via
+Single static 30 m composite from the OzTreeMap project. No additional
+arguments required. Convenience wrapper:
 [`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md).
 
-## PHENOLOGY – Land Surface Phenology (MODIS)
-
-Start or End of Growing Season derived from MODIS NDVI. 500 m
-resolution; years 2003-2018.
-
-- `metric`:
-
-  One of `"SGS"` (Start of Growing Season, default) or `"EGS"` (End of
-  Growing Season).
+## Land Surface Phenology (`"PHENOLOGY"`, `TERN/2bb0c81a`)
 
 - `year`:
 
-  Year from 2003 to 2018 (default 2018).
+  Required. An integer year (2003–2018).
 
 - `season`:
 
-  Season number (default 1).
+  Season number: `1` (default) or `2`.
 
-Best accessed via
+- `collection`:
+
+  Phenology metric — one of `"SGS"` (Start of Growing Season, default),
+  `"PGS"` (Peak), `"EGS"` (End), `"LGS"` (Length), `"SOS"` (Start of
+  Season), `"POS"` (Peak of Season), `"EOS"` (End of Season), `"LOS"`
+  (Length of Season), `"ROG"` (Rate of Greening), `"ROS"` (Rate of
+  Senescence).
+
+500 m MODIS resolution. Convenience wrapper:
 [`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md).
 
-## Datasets not implemented
+## Datasets not accessible
 
-The following datasets are inaccessible or require further development:
+The following datasets are tracked in the TERN catalogue but cannot be
+accessed via COG HTTP range requests:
 
-- `TERN/0997cb3c` – Seasonal Fractional Cover (legacy redirect; COGs not
-  accessible via HTTP range request)
+- `TERN/0997cb3c` — Seasonal Fractional Cover (Landsat)
 
-- `TERN/fe9d86e1` – Seasonal Ground Cover (same issue)
+- `TERN/fe9d86e1` — Seasonal Ground Cover (Landsat)
 
 Datasets with integration level L2 or higher (e.g.\\ AusEFlux via
 THREDDS/OPeNDAP, GEE-based products, site-level API streams) cannot be
@@ -194,56 +234,63 @@ scope of nert.
 
 ## References
 
-SMIPS portal:
+SMIPS:
 <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 
-ASC portal:
+ASC:
 <https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c>
 
-AET portal:
+AET:
 <https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 
-AET DOI: <https://dx.doi.org/10.25901/gg27-ck96>
+AWC:
+<https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7>
+
+Soil Beta Diversity:
+<https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
+
+Canopy Height:
+<https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba>
+
+Land Surface Phenology:
+<https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
 
 ## See also
 
 Other COGs:
-[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
+[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
+[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
+[`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md),
+[`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md),
+[`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md),
+[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
+[`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md)
 
 ## Examples
 
 ``` r
 if (FALSE) { # interactive()
-# Using aliases (short form)
+# Using aliases (recommended) ----------------------------------------
 r <- read_tern("SMIPS", date = "2024-01-15")
+autoplot(r)
+
 r_asc <- read_tern("ASC")
-autoplot(r_asc)
-
-# Or using full TERN keys (old form still works)
-r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
-
-# SMIPS -- multiple collections
-r_smi <- read_tern("SMIPS", date = "2024-01-15", collection = "SMindex")
-
-# ASC -- confusion index
-r_ci <- read_tern("ASC", collection = "CI")
-
-# AET -- monthly evapotranspiration
 r_aet <- read_tern("AET", date = "2023-06-01")
 
-# SLGA -- available water capacity, depth 5-15 cm
-r_awc <- read_tern("AWC", depth = "005_015")
+# SLGA soil attributes — depth and collection
+r_clay <- read_tern("CLY", depth = "000_005")
+r_awc  <- read_tern("AWC", depth = "015_030", collection = "CI")
 
-# SLGA -- all depths stacked
-r_awc_all <- read_tern("AWC", depth = "all")
+# Soil Beta Diversity
+r_bact <- read_tern("SOILDIV", collection = "Bacteria", axis = 1)
 
-# Soil diversity -- Fungi NMDS axis 2
-r_fungi <- read_tern("SOILDIV", kingdom = "Fungi", axis = 2)
+# Canopy Height (single static product)
+r_ch <- read_tern("CANOPY")
 
-# Canopy height
-r_canopy <- read_tern("CANOPY")
+# Land Surface Phenology
+r_phen <- read_tern("PHENOLOGY", year = 2018, collection = "SGS")
 
-# Phenology -- End of Growing Season, 2018
-r_egs <- read_tern("PHENOLOGY", metric = "EGS", year = 2018)
+# Full TERN keys still work ----------------------------------------
+r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 }
 ```

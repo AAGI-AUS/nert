@@ -1,11 +1,11 @@
-# Internal handler for Land Surface Phenology (`TERN/2bb0c81a`)
+# Internal handler for Soil Beta Diversity (`TERN/4a428d52`)
 
-Internal handler for Land Surface Phenology (`TERN/2bb0c81a`)
+Internal handler for Soil Beta Diversity (`TERN/4a428d52`)
 
 ## Usage
 
 ``` r
-.read_tern_phenology(dots, api_key, max_tries, initial_delay)
+.read_tern_soil_diversity(dots, api_key, max_tries, initial_delay)
 ```
 
 ## Arguments

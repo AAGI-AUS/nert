@@ -9,10 +9,10 @@ dataset. Static datasets are repeated across all dates.
 
 ``` r
 collect_tern_data(
+  date_range,
   lon = NULL,
   lat = NULL,
   xy = NULL,
-  date_range,
   datasets = NULL,
   depth = "all",
   stat = "EV",
@@ -24,6 +24,13 @@ collect_tern_data(
 ```
 
 ## Arguments
+
+- date_range:
+
+  A `Date` vector or character vector of dates (e.g.
+  `seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")`) OR a
+  length-2 vector giving start and end dates (e.g.
+  `c("2024-01-01", "2024-01-31")`).
 
 - lon:
 
@@ -51,13 +58,6 @@ collect_tern_data(
   columns. Column names should be `x` and `y` or `lon` and `lat`. If
   provided, `lon` and `lat` are ignored. Use `NULL` (default) for
   lon/lat parameters.
-
-- date_range:
-
-  A `Date` vector or character vector of dates (e.g.
-  `seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")`) OR a
-  length-2 vector giving start and end dates (e.g.
-  `c("2024-01-01", "2024-01-31")`).
 
 - datasets:
 
@@ -149,26 +149,26 @@ will contain `NA` for the affected rows.
 if (FALSE) { # interactive()
 # Single location
 dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day")
-dt <- collect_tern_data(
+d_t <- collect_tern_data(
+  date_range = dates,
   lon = 138.6,
   lat = -34.9,
-  date_range = dates,
   datasets = c("SMIPS", "CLY")
 )
-head(dt)
+head(d_t)
 
 # Multiple locations (vectors)
-dt_multi <- collect_tern_data(
+d_t_multi <- collect_tern_data(
   lon = c(138.6, 139.5),
   lat = c(-34.9, -35.5),
   date_range = dates,
   datasets = c("SMIPS", "CANOPY")
 )
-head(dt_multi)
+head(d_t_multi)
 
 # Using xy notation (data.frame)
 xy <- data.frame(lon = c(138.6, 139.5), lat = c(-34.9, -35.5))
-dt_xy <- collect_tern_data(
+d_t_xy <- collect_tern_data(
   xy = xy,
   date_range = dates,
   datasets = "CLY"

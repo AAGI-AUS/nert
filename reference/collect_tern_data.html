@@ -55,10 +55,10 @@ Static datasets are repeated across all dates.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">collect_tern_data</span><span class="op">(</span></span>
+<span>  <span class="va">date_range</span>,</span>
 <span>  lon <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lat <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  xy <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">date_range</span>,</span>
 <span>  datasets <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  depth <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"EV"</span>,</span>
@@ -73,7 +73,14 @@ Static datasets are repeated across all dates.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-lon">lon<a class="anchor" aria-label="anchor" href="#arg-lon"></a></dt>
+<dl><dt id="arg-date-range">date_range<a class="anchor" aria-label="anchor" href="#arg-date-range"></a></dt>
+<dd><p>A <code>Date</code> vector or character vector of dates
+(e.g. <code>seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")</code>)
+OR a length-2 vector giving start and end dates
+(e.g. <code>c("2024-01-01", "2024-01-31")</code>).</p></dd>
+
+
+<dt id="arg-lon">lon<a class="anchor" aria-label="anchor" href="#arg-lon"></a></dt>
 <dd><p>Longitude(s) (WGS84, EPSG:4326). Either:</p><ul><li><p>A single numeric value (scalar)</p></li>
 <li><p>A numeric vector (multiple coordinates, same length as <code>lat</code>)</p></li>
 <li><p>Omitted if using <code>xy</code> notation</p></li>
@@ -92,13 +99,6 @@ Static datasets are repeated across all dates.</p>
 with coordinate columns. Column names should be <code>x</code> and <code>y</code> or
 <code>lon</code> and <code>lat</code>. If provided, <code>lon</code> and <code>lat</code> are ignored.
 Use <code>NULL</code> (default) for lon/lat parameters.</p></dd>
-
-
-<dt id="arg-date-range">date_range<a class="anchor" aria-label="anchor" href="#arg-date-range"></a></dt>
-<dd><p>A <code>Date</code> vector or character vector of dates
-(e.g. <code>seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")</code>)
-OR a length-2 vector giving start and end dates
-(e.g. <code>c("2024-01-01", "2024-01-31")</code>).</p></dd>
 
 
 <dt id="arg-datasets">datasets<a class="anchor" aria-label="anchor" href="#arg-datasets"></a></dt>
@@ -172,26 +172,26 @@ will contain <code>NA</code> for the affected rows.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
 <span class="r-in"><span><span class="co"># Single location</span></span></span>
 <span class="r-in"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2024-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2024-01-05"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu">collect_tern_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">d_t</span> <span class="op">&lt;-</span> <span class="fu">collect_tern_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  date_range <span class="op">=</span> <span class="va">dates</span>,</span></span>
 <span class="r-in"><span>  lon <span class="op">=</span> <span class="fl">138.6</span>,</span></span>
 <span class="r-in"><span>  lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9</span>,</span></span>
-<span class="r-in"><span>  date_range <span class="op">=</span> <span class="va">dates</span>,</span></span>
 <span class="r-in"><span>  datasets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SMIPS"</span>, <span class="st">"CLY"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">d_t</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multiple locations (vectors)</span></span></span>
-<span class="r-in"><span><span class="va">dt_multi</span> <span class="op">&lt;-</span> <span class="fu">collect_tern_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">d_t_multi</span> <span class="op">&lt;-</span> <span class="fu">collect_tern_data</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">138.6</span>, <span class="fl">139.5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">34.9</span>, <span class="op">-</span><span class="fl">35.5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  date_range <span class="op">=</span> <span class="va">dates</span>,</span></span>
 <span class="r-in"><span>  datasets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SMIPS"</span>, <span class="st">"CANOPY"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dt_multi</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">d_t_multi</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using xy notation (data.frame)</span></span></span>
 <span class="r-in"><span><span class="va">xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">138.6</span>, <span class="fl">139.5</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">34.9</span>, <span class="op">-</span><span class="fl">35.5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dt_xy</span> <span class="op">&lt;-</span> <span class="fu">collect_tern_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">d_t_xy</span> <span class="op">&lt;-</span> <span class="fu">collect_tern_data</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  xy <span class="op">=</span> <span class="va">xy</span>,</span></span>
 <span class="r-in"><span>  date_range <span class="op">=</span> <span class="va">dates</span>,</span></span>
 <span class="r-in"><span>  datasets <span class="op">=</span> <span class="st">"CLY"</span></span></span>

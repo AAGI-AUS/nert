@@ -1,25 +1,31 @@
 # Internal handler for SLGA soil attributes
 
-Reads any of 8 SLGA attributes (AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO)
-at one or more depth intervals (or all 6).
+A generic handler that covers all eight SLGA soil attributes. Each
+attribute has a fixed file-naming pattern encoded in
+[.slga_config](https://aagi-aus.github.io/nert/reference/dot-slga_config.md).
 
 ## Usage
 
 ``` r
-.read_tern_slga(collection, dots, api_key, max_tries, initial_delay)
+.read_tern_slga(did, dots, api_key, max_tries, initial_delay)
 ```
 
 ## Arguments
 
-- collection:
+- did:
 
-  SLGA attribute code (e.g. "AWC", "CLY").
+  Normalised dispatch ID (e.g.\\ `"482301c2"`, `"slga_cly"`).
 
 - dots:
 
-  Named list including `depth` and `stat` if provided.
+  Named list of `...` args from
+  [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md).
 
-- api_key, max_tries, initial_delay:
+- api_key:
+
+  URL-encoded API key.
+
+- max_tries, initial_delay:
 
   Passed to
   [`.read_cog()`](https://aagi-aus.github.io/nert/reference/dot-read_cog.md).

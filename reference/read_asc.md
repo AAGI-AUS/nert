@@ -1,10 +1,9 @@
-# Read Australian Soil Classification (ASC) Data
+# Read ASC Soil Classification from TERN
 
-Wrapper around
-[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
-for Australian Soil Classification (ASC) soil order classes at 90 m
-resolution. Returns character soil order descriptions (e.g., "2 -
-Sodosol") with optional mapping reliability (confusion index).
+Read Australian Soil Classification (ASC) Cloud Optimised GeoTIFF (COG)
+files from TERN in your R session. The data are Australian Soil
+Classification Soil Order classes with quantified estimates of mapping
+reliability at a 90 m resolution.
 
 ## Usage
 
@@ -31,48 +30,49 @@ read_asc(
 
 - confusion_index:
 
-  A `logical` value. If `FALSE` (default), returns estimated ASC soil
-  order classes (character). If `TRUE`, returns the Confusion Index
-  (numeric, 0-100) indicating mapping reliability.
+  A `logical` value indicating whether to read the Confusion Index
+  (`TRUE`) or the estimated ASC value (`FALSE`). Defaults to `FALSE`.
 
 - api_key:
 
-  A `character` string containing your API key, a random string provided
-  to you by TERN, for the request. Defaults to automatically detecting
-  your key from your local .Renviron, .Rprofile or similar.
-  Alternatively, you may directly provide your key as a string here or
-  use functionality like that from
-  [keyring](https://CRAN.R-project.org/package=keyring). If nothing is
-  provided, you will be prompted on how to set up your R session so that
-  it is auto-detected and a browser window will open at the TERN website
-  for you to request a key.
+  A `character` string containing your TERN API key. Defaults to
+  automatic detection via
+  [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md).
 
 - max_tries:
 
-  An integer `Integer` with the number of times to retry a failed
-  download before emitting an error message. Defaults to 3.
+  An `integer` giving the maximum number of download retries. Defaults
+  to `3`.
 
 - initial_delay:
 
-  An `Integer` with the number of seconds to delay before retrying the
-  download. This increases as the tries increment. Defaults to 1.
+  An `integer` giving the initial retry delay in seconds (doubles with
+  each attempt). Defaults to `1`.
 
 ## Value
 
 A
 [`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
-object.
+object of the national ASC mosaic.
 
 ## Details
 
-The ASC dataset provides soil order classifications based on the
-Australian Soil Classification system. Each pixel contains the predicted
-soil order and associated reliability/uncertainty estimates.
+Two collection layers are available:
 
-**Output data type:** Character (soil order names and codes)
+- `"EV"`:
 
-**Reliability:** Confusion Index indicates mapping uncertainty (lower =
-more reliable)
+  Estimated soil order class (default).
+
+- `"CI"`:
+
+  Confusion index — a measure of mapping reliability.
+
+This is a static product (no date argument required).
+
+This is a convenience wrapper; you can also call `read_tern("ASC")` —
+see
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
+for the unified interface and additional datasets.
 
 ## References
 
@@ -81,18 +81,23 @@ more reliable)
 ## See also
 
 Other COGs:
+[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
+[`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md),
+[`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md),
+[`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md),
+[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
+[`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md),
 [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
 
 ## Examples
 
 ``` r
 if (FALSE) { # interactive()
+# Read estimated ASC soil order class
+r <- read_asc()
+autoplot(r)
 
-# Australian Soil Classification (soil orders as character)
-r_asc <- read_asc()
-autoplot(r_asc)
-
-# Confusion Index (mapping reliability, lower = more reliable)
+# Read confusion index (mapping reliability)
 r_ci <- read_asc(confusion_index = TRUE)
 autoplot(r_ci)
 }
