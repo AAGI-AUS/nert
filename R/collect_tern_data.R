@@ -758,11 +758,27 @@ collect_tern_data <- function(
   # Create data table
   tbl <- data.table::data.table(
     Alias = datasets,
-    ID = sapply(datasets, function(x) dataset_info[[x]]$id),
+    ID = vapply(
+      datasets,
+      function(x) dataset_info[[x]]$id,
+      character(1L)
+    ),
     Layer = layers_info,
-    Temporal = sapply(datasets, function(x) dataset_info[[x]]$temporal),
-    Resolution = sapply(datasets, function(x) dataset_info[[x]]$resolution),
-    Description = sapply(datasets, function(x) dataset_info[[x]]$description)
+    Temporal = vapply(
+      datasets,
+      function(x) dataset_info[[x]]$temporal,
+      character(1L)
+    ),
+    Resolution = vapply(
+      datasets,
+      function(x) dataset_info[[x]]$resolution,
+      character(1L)
+    ),
+    Description = vapply(
+      datasets,
+      function(x) dataset_info[[x]]$description,
+      character(1L)
+    )
   )
 
   # Print with cli
