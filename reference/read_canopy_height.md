@@ -50,11 +50,9 @@ for full details and additional datasets.
 ## See also
 
 Other COGs:
-[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
 [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
 [`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md),
 [`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md),
-[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
 [`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md),
 [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
 

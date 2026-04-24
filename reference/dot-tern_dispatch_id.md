@@ -1,9 +1,9 @@
 # Normalise a TERN dataset key for switch() dispatch
 
-Resolves human-readable aliases (`"SMIPS"`, `"ASC"`, `"AET"`), strips
-any `TERN/`, `CSIRO/`, `AEKOS/`, or `NCI/` prefix, then extracts the
-first 8 lower-case characters of the UUID. Non-UUID identifiers (e.g.\\
-`"AusEFlux_v2"`) are returned as-is after prefix removal.
+Checks alias table first (case-insensitive), then strips any `TERN/`,
+`CSIRO/`, `AEKOS/`, or `NCI/` prefix and extracts the first 8 lower-case
+characters of the UUID. Non-UUID identifiers (e.g.\\ `"AusEFlux_v2"`)
+are returned as-is after prefix removal.
 
 ## Usage
 

@@ -1,7 +1,7 @@
-# Dataset alias registry
+# Alias mapping for short dataset names Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 
-Named list mapping short human-readable aliases (upper-case) to the
-normalised 8-character dataset ID used for internal dispatch.
+Alias mapping for short dataset names Maps user-friendly short names
+(e.g. "SMIPS", "AWC") to dispatch IDs
 
 ## Usage
 
@@ -11,4 +11,4 @@ normalised 8-character dataset ID used for internal dispatch.
 
 ## Format
 
-A named `list` of `character` strings.
+An object of class `list` of length 14.

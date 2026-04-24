@@ -12,9 +12,6 @@
 <url><loc>https://aagi-aus.github.io/nert/index.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/news/index.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/collect_tern_data.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/dot-PHENOLOGY_METRICS.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/dot-SLGA_META.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/dot-TERN_ALIASES.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-check_aet_date.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-check_api_key.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-check_collection_agreement.html</loc></url>
@@ -27,13 +24,11 @@
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_cog.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_aet.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_asc.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_canopy.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_canopy_height.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_phenology.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_slga.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_smips.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_soil_diversity.html</loc></url>
-<url><loc>https://aagi-aus.github.io/nert/reference/dot-read_tern_soildiv.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-set_tern_key.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-slga_config.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-tern_aliases.html</loc></url>
@@ -43,6 +38,7 @@
 <url><loc>https://aagi-aus.github.io/nert/reference/get_key.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/grain.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/index.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/nert-package.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/read_aet.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/read_asc.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/read_canopy_height.html</loc></url>

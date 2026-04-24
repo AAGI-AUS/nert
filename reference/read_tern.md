@@ -26,7 +26,7 @@ read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
 
 - ...:
 
-  Dataset-specific arguments – `date`, `collection`, etc. See the
+  Dataset-specific arguments — `date`, `collection`, etc. See the
   relevant section above for each dataset.
 
 - api_key:
@@ -258,12 +258,10 @@ Land Surface Phenology:
 ## See also
 
 Other COGs:
-[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
 [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
 [`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md),
 [`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md),
 [`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md),
-[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
 [`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md)
 
 ## Examples
@@ -272,10 +270,8 @@ Other COGs:
 if (FALSE) { # interactive()
 # Using aliases (recommended) ----------------------------------------
 r <- read_tern("SMIPS", date = "2024-01-15")
-autoplot(r)
-
 r_asc <- read_tern("ASC")
-r_aet <- read_tern("AET", date = "2023-06-01")
+autoplot(r_asc)
 
 # SLGA soil attributes — depth and collection
 r_clay <- read_tern("CLY", depth = "000_005")

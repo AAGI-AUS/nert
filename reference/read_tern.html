@@ -77,7 +77,7 @@ aliases.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Dataset-specific arguments – <code>date</code>, <code>collection</code>,
+<dd><p>Dataset-specific arguments — <code>date</code>, <code>collection</code>,
 etc.  See the relevant section above for each dataset.</p></dd>
 
 
@@ -269,12 +269,10 @@ current scope of <span class="pkg">nert</span>.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other COGs:
-<code><a href="read_aet.html">read_aet()</a></code>,
 <code><a href="read_asc.html">read_asc()</a></code>,
 <code><a href="read_canopy_height.html">read_canopy_height()</a></code>,
 <code><a href="read_phenology.html">read_phenology()</a></code>,
 <code><a href="read_slga.html">read_slga()</a></code>,
-<code><a href="read_smips.html">read_smips()</a></code>,
 <code><a href="read_soil_diversity.html">read_soil_diversity()</a></code></p></div>
     </div>
 
@@ -283,10 +281,8 @@ current scope of <span class="pkg">nert</span>.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
 <span class="r-in"><span><span class="co"># Using aliases (recommended) ----------------------------------------</span></span></span>
 <span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"SMIPS"</span>, date <span class="op">=</span> <span class="st">"2024-01-15"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">r_asc</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"ASC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">r_aet</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"AET"</span>, date <span class="op">=</span> <span class="st">"2023-06-01"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r_asc</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># SLGA soil attributes — depth and collection</span></span></span>
 <span class="r-in"><span><span class="va">r_clay</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"CLY"</span>, depth <span class="op">=</span> <span class="st">"000_005"</span><span class="op">)</span></span></span>
