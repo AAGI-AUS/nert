@@ -41,3 +41,6 @@
 ^man/dot-read_tern_canopy_height\.Rd$
 ^man/dot-phenology_metrics\.Rd$
 ^man/dot-read_tern_phenology\.Rd$
+^\.Rproj\.user$
+^\.positai$
+^\.claude$

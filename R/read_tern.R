@@ -269,8 +269,8 @@ read_tern <- function(
 
   # Check alias table first (case-insensitive)
   upper_id <- toupper(id)
-  if (upper_id %in% names(.TERN_ALIASES)) {
-    return(.TERN_ALIASES[[upper_id]])
+  if (upper_id %in% names(.tern_aliases)) {
+    return(.tern_aliases[[upper_id]])
   }
 
   # Strip TERN/ and other prefixes
@@ -539,7 +539,7 @@ read_tern <- function(
 }
 
 
-# ── SLGA handler ──────────────────────────────────────────────────────────────
+# -- SLGA handler --------------------------------------------------------------
 
 #' SLGA attribute configuration registry
 #'
@@ -604,7 +604,7 @@ read_tern <- function(
 }
 
 
-# ── Soil Beta Diversity handler ───────────────────────────────────────────────
+# -- Soil Beta Diversity handler -----------------------------------------------
 
 #' Internal handler for Soil Beta Diversity (\code{TERN/4a428d52})
 #'
@@ -631,7 +631,7 @@ read_tern <- function(
 }
 
 
-# ── Canopy Height handler ────────────────────────────────────────────────────
+# -- Canopy Height handler ----------------------------------------------------
 
 #' Internal handler for Canopy Height (\code{TERN/36c98155})
 #'
@@ -648,7 +648,7 @@ read_tern <- function(
 }
 
 
-# ── Phenology handler ────────────────────────────────────────────────────────
+# -- Phenology handler ---------------------------------------------------------
 
 #' Phenology metric registry
 #'
