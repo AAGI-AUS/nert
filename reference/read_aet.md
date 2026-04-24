@@ -58,7 +58,7 @@ object of the requested ET collection.
 CMRSET portal:
 <https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 
-CMRSET DOI: <https://dx.doi.org/10.25901/gg27-ck96>
+CMRSET DOI: [doi:10.25901/gg27-ck96](https://doi.org/10.25901/gg27-ck96)
 
 ## See also
 

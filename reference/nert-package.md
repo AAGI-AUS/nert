@@ -1,7 +1,7 @@
 # nert: An API Client for TERN Data
 
 Provides access to Australia's TERN (Terrestrial Ecosystem Research
-Network) data through the API, <https://tern.org.au>.
+Network) data through the API, <https://www.tern.org.au/>.
 
 ## See also
 
