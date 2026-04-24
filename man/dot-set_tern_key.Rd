@@ -15,4 +15,3 @@ Opens a browser window at the TERN API key request URL and provides
 instruction on how to store the key. After filling the form you will get
 the key soon, but not immediately.
 }
-\keyword{internal}

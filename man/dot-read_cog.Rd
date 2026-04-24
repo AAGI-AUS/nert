@@ -17,4 +17,3 @@ A \code{\link[terra:rast]{terra::rast()}} object of the requested data.
 \description{
 Read a COG from TERN
 }
-\keyword{internal}

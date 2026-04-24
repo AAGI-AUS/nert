@@ -3,16 +3,16 @@
 \docType{data}
 \name{.tern_aliases}
 \alias{.tern_aliases}
-\title{Dataset alias registry}
+\title{Alias mapping for short dataset names
+Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs}
 \format{
-A named \code{list} of \code{character} strings.
+An object of class \code{list} of length 14.
 }
 \usage{
 .tern_aliases
 }
 \description{
-Named list mapping short human-readable aliases (upper-case) to the
-normalised 8-character dataset ID used for internal dispatch.
+Alias mapping for short dataset names
+Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 }
 \keyword{datasets}
-\keyword{internal}

@@ -21,4 +21,3 @@ A \code{character} GDAL vsicurl URL string.
 \description{
 Build a GDAL vsicurl URL for an AET Collection
 }
-\keyword{internal}

@@ -14,7 +14,7 @@ Accepts a short alias, the full \acronym{TERN} portal key (e.g.\
 \strong{Dataset aliases} section for the complete table of supported
 aliases.}
 
-\item{...}{Dataset-specific arguments -- \code{date}, \code{collection},
+\item{...}{Dataset-specific arguments — \code{date}, \code{collection},
 etc.  See the relevant section above for each dataset.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
@@ -178,10 +178,8 @@ current scope of \pkg{nert}.
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Using aliases (recommended) ----------------------------------------
 r <- read_tern("SMIPS", date = "2024-01-15")
-autoplot(r)
-
 r_asc <- read_tern("ASC")
-r_aet <- read_tern("AET", date = "2023-06-01")
+autoplot(r_asc)
 
 # SLGA soil attributes — depth and collection
 r_clay <- read_tern("CLY", depth = "000_005")
@@ -217,12 +215,10 @@ Land Surface Phenology: \url{https://portal.tern.org.au/metadata/TERN/2bb0c81a-5
 }
 \seealso{
 Other COGs: 
-\code{\link{read_aet}()},
 \code{\link{read_asc}()},
 \code{\link{read_canopy_height}()},
 \code{\link{read_phenology}()},
 \code{\link{read_slga}()},
-\code{\link{read_smips}()},
 \code{\link{read_soil_diversity}()}
 }
 \concept{COGs}

@@ -26,4 +26,3 @@ Accepts three coordinate input formats and returns an \link[sf:sf]{sf::sf} POINT
 (\acronym{EPSG}:4326) with a \code{location} column for use in \verb{extract_*()}
 functions.
 }
-\keyword{internal}

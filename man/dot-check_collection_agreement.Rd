@@ -16,4 +16,3 @@ Not all dates are offered by all collections. This checks the user inputs to
 be sure that unavailable dates are not requested from collections that do not
 provide them.
 }
-\keyword{internal}

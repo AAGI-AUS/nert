@@ -19,4 +19,3 @@
 A generic handler that covers all eight SLGA soil attributes.  Each
 attribute has a fixed file-naming pattern encoded in \link{.slga_config}.
 }
-\keyword{internal}

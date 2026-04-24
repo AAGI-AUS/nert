@@ -2,88 +2,89 @@
 % Please edit documentation in R/read_smips.R
 \name{read_smips}
 \alias{read_smips}
-\title{Read SMIPS Daily Soil Moisture from TERN}
+\title{Read TERN SMIPS Soil Moisture Data}
 \usage{
 read_smips(
   date,
   collection = "totalbucket",
-  api_key = get_key(),
+  api_key = NULL,
   max_tries = 3L,
   initial_delay = 1L
 )
 }
 \arguments{
-\item{date}{A single date to query, e.g.\ \code{"2024-01-15"} or
-\code{as.Date("2024-01-15")}.  Both \code{character} and \code{Date}
-classes are accepted.}
+\item{date}{A day to download (Date or character, e.g.
+\code{"2024-01-15"} or \code{as.Date("2024-01-15")}).  Required.}
 
-\item{collection}{One of \code{"totalbucket"} (default),
-\code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"}, \code{"deepD"},
-or \code{"runoff"}.}
+\item{collection}{SMIPS collection variant (default \code{"totalbucket"}). Options:
+\describe{
+\item{\code{"totalbucket"}}{\strong{Total soil moisture in the full active layer} (mm).
+Represents the total water stored in all soil layers of the active profile.
+Use for: Overall soil water availability, drought monitoring.
+Output column: \code{SMIPS_totalbucket}}
+\item{\code{"SMindex"}}{\strong{Soil Moisture Index, 0-100\%} (standardized metric).
+Rescaled to 0-100\% for comparison across regions and seasons.
+Use for: Regional comparisons, anomaly detection, percentage-based thresholds.
+Output column: \code{SMIPS_SMindex}}
+\item{\code{"bucket1"}}{\strong{Top soil layer moisture} (mm, typically 0-10 cm).
+Represents water in surface soil where seeds germinate and shallow roots operate.
+Use for: Shallow-rooting plants, seed germination, surface runoff prediction.
+Output column: \code{SMIPS_bucket1}}
+\item{\code{"bucket2"}}{\strong{Second soil layer moisture} (mm, typically 10-40 cm).
+Represents water in intermediate soil depth where many plant roots develop.
+Use for: Typical crop rooting depth, plant-available water.
+Output column: \code{SMIPS_bucket2}}
+\item{\code{"deepD"}}{\strong{Deep soil layer moisture} (mm, typically >40 cm).
+Represents water in deeper soil layers accessed by deep-rooting plants.
+Use for: Deep-rooting trees/shrubs, groundwater recharge, long-term drought.
+Output column: \code{SMIPS_deepD}}
+\item{\code{"runoff"}}{\strong{Surface runoff} (mm).
+Represents water predicted to run off the surface (not infiltrate).
+Use for: Flood risk, erosion modeling, drainage engineering.
+Output column: \code{SMIPS_runoff}}
+}}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
+\acronym{API} key.  Defaults to automatic detection from your
+\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{An \code{integer} giving the maximum number of download
-retries.  Defaults to \code{3}.}
+retries before an error is raised.  Defaults to \code{3}.}
 
 \item{initial_delay}{An \code{integer} giving the initial retry delay in
 seconds (doubles with each attempt).  Defaults to \code{1}.}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the national SMIPS mosaic for the
-requested day and collection.
+A \code{\link[terra:rast]{terra::rast()}} object of the requested SMIPS collection.
 }
 \description{
-Read daily Soil Moisture Information from Pedotransfer functions and
-Satellite data (\acronym{SMIPS}) Cloud Optimised GeoTIFF (\acronym{COG})
-files from \acronym{TERN}.  SMIPS provides Australia-wide volumetric soil
-moisture estimates at approximately 1 km (0.01 degree) resolution, derived
-from a combination of satellite observations and pedotransfer modelling.
-}
-\details{
-Six collection layers are available:
-\describe{
-\item{\code{"totalbucket"}}{Total column soil moisture (0--90 cm) in mm
-(default).}
-\item{\code{"SMindex"}}{Soil moisture index expressed as a percentage.}
-\item{\code{"bucket1"}}{Upper layer moisture (0--10 cm) in mm.}
-\item{\code{"bucket2"}}{Lower layer moisture (10--90 cm) in mm.}
-\item{\code{"deepD"}}{Deep drainage flux in mm.}
-\item{\code{"runoff"}}{Surface runoff in mm.}
-}
-
-Data are available from 2015-11-20 (\code{totalbucket} from 2005) to
-approximately 7 days before today.
-
-This is a convenience wrapper around
-\code{read_tern("SMIPS", ...)}; see \code{\link[=read_tern]{read_tern()}} for full
-details and additional datasets.
+Wrapper around \code{\link[=read_tern]{read_tern()}} for TERN/SMIPS daily soil moisture data.
+Provides soil moisture estimates at 1 km resolution from November 2015
+to approximately 7 days before today.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Read total bucket soil moisture for a specific day
-r <- read_smips(date = "2024-01-15")
+# Total bucket soil moisture (default)
+r <- read_smips("2024-01-15")
 autoplot(r)
 
-# Read soil moisture index
-r_smi <- read_smips(date = "2024-01-15", collection = "SMindex")
+# Soil moisture index (0-100\%)
+r_smi <- read_smips("2024-01-15", collection = "SMindex")
 
-# Upper layer moisture only
-r_b1 <- read_smips(date = "2024-06-01", collection = "bucket1")
+# Top soil bucket (shallow rooting plants)
+r_bucket1 <- read_smips("2024-01-15", collection = "bucket1")
+
+# Deep soil layer (deep rooting plants)
+r_deep <- read_smips("2024-01-15", collection = "deepD")
+
+# Surface runoff
+r_runoff <- read_smips("2024-01-15", collection = "runoff")
 \dontshow{\}) # examplesIf}
 }
 \references{
+SMIPS portal:
 \url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
 }
 \seealso{
-Other COGs: 
-\code{\link{read_aet}()},
-\code{\link{read_asc}()},
-\code{\link{read_canopy_height}()},
-\code{\link{read_phenology}()},
-\code{\link{read_slga}()},
-\code{\link{read_soil_diversity}()},
-\code{\link{read_tern}()}
+\code{\link[=read_tern]{read_tern()}}, \code{\link[=read_aet]{read_aet()}}, \code{\link[=read_asc]{read_asc()}}
 }
-\concept{COGs}
