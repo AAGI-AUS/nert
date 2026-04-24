@@ -14,7 +14,7 @@ Accepts a short alias, the full \acronym{TERN} portal key (e.g.\
 \strong{Dataset aliases} section for the complete table of supported
 aliases.}
 
-\item{...}{Dataset-specific arguments — \code{date}, \code{collection},
+\item{...}{Dataset-specific arguments -- \code{date}, \code{collection},
 etc.  See the relevant section above for each dataset.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
@@ -79,17 +79,17 @@ Convenience wrappers \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_
 Data availability: 2015-11-20 to approximately 7 days before today.
 }
 
-\section{ASC — Australian Soil Classification (\code{"TERN/15728dba"})}{
+\section{ASC -- Australian Soil Classification (\code{"TERN/15728dba"})}{
 
 \describe{
 \item{\code{collection}}{One of \code{"EV"} (estimated soil order
-class, default) or \code{"CI"} (confusion index — a measure of
+class, default) or \code{"CI"} (confusion index -- a measure of
 mapping reliability).  No \code{date} argument required; this is a
 static product.}
 }
 }
 
-\section{AET — Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"})}{
+\section{AET -- Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"})}{
 
 \describe{
 \item{\code{date}}{Required.  A month to query, \emph{e.g.}

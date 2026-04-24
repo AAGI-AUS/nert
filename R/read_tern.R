@@ -42,15 +42,15 @@
 #' }
 #' Data availability: 2015-11-20 to approximately 7 days before today.
 #'
-#' @section ASC — Australian Soil Classification (\code{"TERN/15728dba"}):
+#' @section ASC -- Australian Soil Classification (\code{"TERN/15728dba"}):
 #' \describe{
 #'   \item{\code{collection}}{One of \code{"EV"} (estimated soil order
-#'     class, default) or \code{"CI"} (confusion index — a measure of
+#'     class, default) or \code{"CI"} (confusion index -- a measure of
 #'     mapping reliability).  No \code{date} argument required; this is a
 #'     static product.}
 #' }
 #'
-#' @section AET — Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"}):
+#' @section AET -- Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"}):
 #' \describe{
 #'   \item{\code{date}}{Required.  A month to query, _e.g._
 #'     \code{"2023-06-01"} or \code{as.Date("2023-06-01")}.  Both
@@ -145,10 +145,8 @@
 #' @examplesIf interactive()
 #' # Using aliases (recommended) ----------------------------------------
 #' r <- read_tern("SMIPS", date = "2024-01-15")
-#' autoplot(r)
-#'
 #' r_asc <- read_tern("ASC")
-#' r_aet <- read_tern("AET", date = "2023-06-01")
+#' autoplot(r_asc)
 #'
 #' # SLGA soil attributes — depth and collection
 #' r_clay <- read_tern("CLY", depth = "000_005")
@@ -189,8 +187,8 @@
 read_tern <- function(
   dataset_id,
   ...,
-  api_key       = NULL,
-  max_tries     = 3L,
+  api_key = NULL,
+  max_tries = 3L,
   initial_delay = 1L
 ) {
   if (missing(dataset_id)) {
@@ -200,7 +198,7 @@ read_tern <- function(
   # Validate dataset ID and collect dots *before* checking the API key so that
   # input-validation errors surface even when the key is not configured (e.g.
   # in CI without TERN_API_KEY).
-  did  <- .tern_dispatch_id(dataset_id)
+  did <- .tern_dispatch_id(dataset_id)
   dots <- list(...)
 
   # Validate dataset-specific arguments before requiring the API key
@@ -228,14 +226,10 @@ read_tern <- function(
 }
 
 
-# ── Dispatch helpers ──────────────────────────────────────────────────────────
+# -- Aliases and metadata tables -----------------------------------------------
 
-#' Dataset alias registry
-#'
-#' Named list mapping short human-readable aliases (upper-case) to the
-#' normalised 8-character dataset ID used for internal dispatch.
-#'
-#' @format A named \code{list} of \code{character} strings.
+#' Alias mapping for short dataset names
+#' Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 #' @autoglobal
 #' @dev
 .tern_aliases <- list(
@@ -256,13 +250,15 @@ read_tern <- function(
 )
 
 
+# -- Dispatch helpers ----------------------------------------------------------
+
 #' Normalise a TERN dataset key for switch() dispatch
 #'
-#' Resolves human-readable aliases (\code{"SMIPS"}, \code{"ASC"},
-#' \code{"AET"}), strips any \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or
-#' \code{NCI/} prefix, then extracts the first 8 lower-case characters of
-#' the UUID.  Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are
-#' returned as-is after prefix removal.
+#' Checks alias table first (case-insensitive), then strips any
+#' \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or \code{NCI/} prefix
+#' and extracts the first 8 lower-case characters of the UUID.
+#' Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are returned as-is
+#' after prefix removal.
 #'
 #' @param id The raw \code{dataset_id} string supplied by the user.
 #' @returns A normalised \code{character} string for use in \code{switch()}.
@@ -270,13 +266,24 @@ read_tern <- function(
 #' @dev
 .tern_dispatch_id <- function(id) {
   id <- trimws(as.character(id[[1L]]))
-  # Check alias registry first (case-insensitive)
-  alias_match <- .tern_aliases[[toupper(id)]]
-  if (!is.null(alias_match)) return(alias_match)
-  # Standard path: strip org prefix, extract 8-char UUID prefix
+
+  # Check alias table first (case-insensitive)
+  upper_id <- toupper(id)
+  if (upper_id %in% names(.TERN_ALIASES)) {
+    return(.TERN_ALIASES[[upper_id]])
+  }
+
+  # Strip TERN/ and other prefixes
   id <- sub("^(?:TERN|CSIRO|AEKOS|NCI)/", "", id, perl = TRUE)
-  id <- sub("^([0-9a-f]{8})[0-9a-f\\-]*$", "\\1", id,
-            ignore.case = TRUE, perl = TRUE)
+
+  # UUID-like string: keep only the first 8 hex chars
+  id <- sub(
+    "^([0-9a-f]{8})[0-9a-f\\-]*$",
+    "\\1",
+    id,
+    ignore.case = TRUE,
+    perl = TRUE
+  )
   tolower(id)
 }
 
@@ -313,6 +320,7 @@ read_tern <- function(
 .tern_validate_args <- function(did, dots, dataset_id) {
   switch(
     did,
+    # SMIPS (d1995ee8) -- requires date
     "d1995ee8" = {
       date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["day"]]
       if (is.null(date)) {
@@ -322,9 +330,11 @@ read_tern <- function(
         )
       }
     },
+    # ASC (15728dba) -- no required arguments
     "15728dba" = {
-      # ASC — no required arguments beyond collection (has default)
+      # Collection defaults to "EV"; no validation needed
     },
+    # AET (9fefa68b) -- requires date, must be >= 2000-02-01
     "9fefa68b" = {
       date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["month"]]
       if (is.null(date)) {
@@ -373,7 +383,7 @@ read_tern <- function(
 }
 
 
-# ── SMIPS handler ─────────────────────────────────────────────────────────────
+# -- SMIPS handler -------------------------------------------------------------
 
 #' Internal handler for SMIPS (\code{TERN/d1995ee8})
 #'
@@ -391,19 +401,26 @@ read_tern <- function(
        e.g.  {.code date = \"2024-01-15\"}."
     )
   }
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "totalbucket"
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "totalbucket"
+  }
 
-  day      <- .check_date(date)
-  dl_file  <- .make_smips_url(.collection = collection, .day = day)
+  day <- .check_date(date)
+  dl_file <- .make_smips_url(.collection = collection, .day = day)
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
-    api_key, collection, lubridate::year(day), dl_file
+    api_key,
+    collection,
+    lubridate::year(day),
+    dl_file
   )
   .read_cog(full_url, max_tries, initial_delay)
 }
 
 
-# ── ASC handler ───────────────────────────────────────────────────────────────
+# -- ASC handler ---------------------------------------------------------------
 
 #' Internal handler for ASC (\code{TERN/15728dba})
 #'
@@ -411,9 +428,13 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .read_tern_asc <- function(dots, api_key, max_tries, initial_delay) {
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "EV"
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "EV"
+  }
 
-  approved   <- c("EV", "CI")
+  approved <- c("EV", "CI")
   collection <- rlang::arg_match(collection, approved)
 
   dl_file <- data.table::fifelse(
@@ -423,13 +444,14 @@ read_tern <- function(
   )
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
-    api_key, dl_file
+    api_key,
+    dl_file
   )
   .read_cog(full_url, max_tries, initial_delay)
 }
 
 
-# ── AET handler ───────────────────────────────────────────────────────────────
+# -- AET handler ---------------------------------------------------------------
 
 #' Internal handler for AET/CMRSET (\code{TERN/9fefa68b})
 #'
@@ -445,19 +467,23 @@ read_tern <- function(
        e.g.  {.code date = \"2023-06-01\"}."
     )
   }
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "ETa"
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "ETa"
+  }
 
-  month    <- .check_aet_date(date)
+  month <- .check_aet_date(date)
   full_url <- .make_aet_url(
     .collection = collection,
-    .month      = month,
-    .api_key    = api_key
+    .month = month,
+    .api_key = api_key
   )
   .read_cog(full_url, max_tries, initial_delay)
 }
 
 
-# ── AET date/URL helpers (moved from aet.R) ───────────────────────────────────
+# -- AET date/URL helpers (moved from aet.R) -----------------------------------
 
 #' Check User Input Months for AET Validity
 #'
@@ -471,8 +497,8 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .check_aet_date <- function(x) {
-  x  <- .check_date(x)
-  x  <- lubridate::floor_date(x, "month")
+  x <- .check_date(x)
+  x <- lubridate::floor_date(x, "month")
   yr <- lubridate::year(x)
   mo <- lubridate::month(x)
   if (yr < 2000L || (yr == 2000L && mo < 2L)) {
@@ -499,12 +525,16 @@ read_tern <- function(
   approved_collections <- c("ETa", "pixel_qa")
   collection <- rlang::arg_match(.collection, approved_collections)
 
-  year     <- lubridate::year(.month)
+  year <- lubridate::year(.month)
   date_str <- format(.month, "%Y_%m_%d")
 
   sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/landscapes/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
-    .api_key, year, date_str, date_str, collection
+    .api_key,
+    year,
+    date_str,
+    date_str,
+    collection
   )
 }
 

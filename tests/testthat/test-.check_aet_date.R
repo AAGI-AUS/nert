@@ -1,10 +1,10 @@
 test_that("Date is snapped to first of month", {
   date_checked <- .check_aet_date("2023-01-15")
-  expect_equal(format(date_checked, "%Y-%m-%d"), "2023-01-01")
+  expect_identical(format(date_checked, "%Y-%m-%d"), "2023-01-01")
 
   # Already on first of month
   date_checked <- .check_aet_date("2023-06-01")
-  expect_equal(format(date_checked, "%Y-%m-%d"), "2023-06-01")
+  expect_identical(format(date_checked, "%Y-%m-%d"), "2023-06-01")
 })
 
 test_that("Dates before 2000-02-01 throw an error", {
