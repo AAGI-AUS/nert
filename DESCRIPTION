@@ -49,8 +49,7 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
 Language: en-AU
-Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
-    "roxyglobals::global_roclet", "devtag::dev_roclet"))
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd", "roxyglobals::global_roclet", "devtag::dev_roclet"))
 RoxygenNote: 7.3.3
 X-schema.org-applicationCategory: Tools
 X-schema.org-isPartOf: https://grdc.com.au/research/partnerships-and-initiatives/strategic-partnerships/aagi

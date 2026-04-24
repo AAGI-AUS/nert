@@ -18,6 +18,9 @@
 
 ^doc$
 ^Meta$
+^\.Rproj\.user$
+^\.positai$
+^\.claude$
 ^man/dot-create_sf\.Rd$
 ^man/dot-set_tern_key\.Rd$
 ^man/dot-check_not_example_api_key\.Rd$
@@ -41,6 +44,3 @@
 ^man/dot-read_tern_canopy_height\.Rd$
 ^man/dot-phenology_metrics\.Rd$
 ^man/dot-read_tern_phenology\.Rd$
-^\.Rproj\.user$
-^\.positai$
-^\.claude$

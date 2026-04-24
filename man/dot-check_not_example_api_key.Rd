@@ -11,3 +11,4 @@ examples}
 Check that the user hasn't blindly copied the "your_api_key" string from the
 examples
 }
+\keyword{internal}

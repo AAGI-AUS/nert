@@ -24,3 +24,4 @@ This was taken from \CRANpkg{nasapower}.
 \author{
 Adam H. Sparks \email{adamhsparks@curtin.edu.au}
 }
+\keyword{internal}

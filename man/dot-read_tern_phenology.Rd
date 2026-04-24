@@ -16,3 +16,4 @@
 \description{
 Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})
 }
+\keyword{internal}

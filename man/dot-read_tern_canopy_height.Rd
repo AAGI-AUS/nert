@@ -14,3 +14,4 @@
 \description{
 Internal handler for Canopy Height (\code{TERN/36c98155})
 }
+\keyword{internal}

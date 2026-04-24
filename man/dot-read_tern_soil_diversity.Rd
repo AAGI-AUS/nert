@@ -16,3 +16,4 @@
 \description{
 Internal handler for Soil Beta Diversity (\code{TERN/4a428d52})
 }
+\keyword{internal}
