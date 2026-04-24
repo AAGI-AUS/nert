@@ -38,11 +38,10 @@
 get_key <- function() {
   TERN_API_KEY <- Sys.getenv("TERN_API_KEY")
 
-  if (!nzchar(TERN_API_KEY)) {
-    .set_tern_key()
-  } else {
+  if (nzchar(TERN_API_KEY)) {
     return(TERN_API_KEY)
   }
+  .set_tern_key()
 }
 
 #' Help the User Request an API Key for the TERN API

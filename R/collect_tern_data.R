@@ -1,11 +1,14 @@
 #' Collect TERN Data Over Time and Space
 #'
-#' @description
 #' Extract values from one or more TERN datasets at given location(s) over a
 #' date range. Supports single or multiple coordinates. Returns a data.table
 #' with one row per date per location and one column per dataset.
 #' Static datasets are repeated across all dates.
 #'
+#' @param date_range A \code{Date} vector or character vector of dates
+#'   (e.g. \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
+#'   OR a length-2 vector giving start and end dates
+#'   (e.g. \code{c("2024-01-01", "2024-01-31")}).
 #' @param lon Longitude(s) (WGS84, EPSG:4326). Either:
 #'   - A single numeric value (scalar)
 #'   - A numeric vector (multiple coordinates, same length as \code{lat})
@@ -18,10 +21,6 @@
 #'   with coordinate columns. Column names should be \code{x} and \code{y} or
 #'   \code{lon} and \code{lat}. If provided, \code{lon} and \code{lat} are ignored.
 #'   Use \code{NULL} (default) for lon/lat parameters.
-#' @param date_range A \code{Date} vector or character vector of dates
-#'   (e.g. \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
-#'   OR a length-2 vector giving start and end dates
-#'   (e.g. \code{c("2024-01-01", "2024-01-31")}).
 #' @param datasets A \code{character} vector of dataset aliases to collect.
 #'   Default: all 14 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW, PHC,
 #'   PHW, NTO, SOILDIV, CANOPY, PHENOLOGY).
@@ -76,38 +75,37 @@
 #' @examplesIf interactive()
 #' # Single location
 #' dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day")
-#' dt <- collect_tern_data(
+#' d_t <- collect_tern_data(
+#'   date_range = dates,
 #'   lon = 138.6,
 #'   lat = -34.9,
-#'   date_range = dates,
 #'   datasets = c("SMIPS", "CLY")
 #' )
-#' head(dt)
+#' head(d_t)
 #'
 #' # Multiple locations (vectors)
-#' dt_multi <- collect_tern_data(
+#' d_t_multi <- collect_tern_data(
 #'   lon = c(138.6, 139.5),
 #'   lat = c(-34.9, -35.5),
 #'   date_range = dates,
 #'   datasets = c("SMIPS", "CANOPY")
 #' )
-#' head(dt_multi)
+#' head(d_t_multi)
 #'
 #' # Using xy notation (data.frame)
 #' xy <- data.frame(lon = c(138.6, 139.5), lat = c(-34.9, -35.5))
-#' dt_xy <- collect_tern_data(
+#' d_t_xy <- collect_tern_data(
 #'   xy = xy,
 #'   date_range = dates,
 #'   datasets = "CLY"
 #' )
 #'
-#' @importFrom data.table as.data.table setnames rbindlist is.data.table `:=`
 #' @export
 collect_tern_data <- function(
+  date_range,
   lon = NULL,
   lat = NULL,
   xy = NULL,
-  date_range,
   datasets = NULL,
   depth = "all",
   stat = "EV",
@@ -126,17 +124,17 @@ collect_tern_data <- function(
   }
 
   # -- Parse date range ---------------------------------------------------------
-  if (length(date_range) == 2 && !inherits(date_range, "Date")) {
+  if (length(date_range) == 2L && !inherits(date_range, "Date")) {
     dates <- seq(
-      as.Date(date_range[1]),
-      as.Date(date_range[2]),
+      as.Date(date_range[1L]),
+      as.Date(date_range[2L]),
       by = "day"
     )
   } else {
     dates <- as.Date(date_range)
   }
 
-  if (length(dates) == 0) {
+  if (length(dates) == 0L) {
     cli::cli_abort("No valid dates in {.arg date_range}.")
   }
 
@@ -162,7 +160,7 @@ collect_tern_data <- function(
   datasets <- toupper(trimws(datasets))
   datasets <- unique(datasets)
 
-  if (length(datasets) == 0) {
+  if (length(datasets) == 0L) {
     cli::cli_abort("No datasets specified.")
   }
 
@@ -184,7 +182,7 @@ collect_tern_data <- function(
     "PHENOLOGY"
   )
   unsupported <- setdiff(datasets, all_aliases)
-  if (length(unsupported) > 0) {
+  if (length(unsupported) > 0L) {
     cli::cli_warn(
       "Unknown datasets ignored: {.val {unsupported}}. ",
       "Supported: {.val {all_aliases}}"
@@ -214,7 +212,7 @@ collect_tern_data <- function(
       cli::cli_inform("  Location {i}/{nrow(coords_df)}: ({lon_i}, {lat_i})")
     }
 
-    dt_i <- .collect_single_location(
+    d_t_i <- .collect_single_location(
       lon_i,
       lat_i,
       dates,
@@ -227,39 +225,39 @@ collect_tern_data <- function(
     )
 
     if (multi_location) {
-      dt_i[, "lon" := lon_i]
-      dt_i[, "lat" := lat_i]
+      d_t_i[, "lon" := lon_i]
+      d_t_i[, "lat" := lat_i]
     }
 
-    all_results[[i]] <- dt_i
+    all_results[[i]] <- d_t_i
   }
 
   # -- Combine results ----------------------------------------------------------
   if (multi_location) {
-    dt <- data.table::rbindlist(all_results)
+    d_t <- data.table::rbindlist(all_results)
     # Preserve all columns except reorder date/lon/lat first
-    data_cols <- setdiff(names(dt), c("date", "lon", "lat"))
+    data_cols <- setdiff(names(d_t), c("date", "lon", "lat"))
     col_order <- c("date", "lon", "lat", data_cols)
-    dt <- dt[, col_order, with = FALSE]
+    d_t <- d_t[, col_order, with = FALSE]
   } else {
-    dt <- all_results[[1]]
+    d_t <- all_results[[1L]]
   }
 
   if (na.rm) {
     # Remove rows where all dataset columns are NA
     # Identify data columns (not date/lon/lat)
-    data_cols <- setdiff(names(dt), c("date", "lon", "lat"))
+    data_cols <- setdiff(names(d_t), c("date", "lon", "lat"))
     if (length(data_cols) > 0) {
-      na_counts <- rowSums(is.na(dt[, data_cols, with = FALSE]))
-      dt <- dt[na_counts < length(data_cols)]
+      na_counts <- rowSums(is.na(d_t[, data_cols, with = FALSE]))
+      d_t <- d_t[na_counts < length(data_cols)]
     }
   }
 
   if (verbose) {
-    cli::cli_inform("Collected {nrow(dt)} rows x {ncol(dt)} columns")
+    cli::cli_inform("Collected {nrow(d_t)} rows x {ncol(d_t)} columns")
   }
 
-  return(dt)
+  return(d_t)
 }
 
 # -----------------------------------------------------------------------------
@@ -287,10 +285,10 @@ collect_tern_data <- function(
       )
     }
 
-    multi_location <- nrow(coords_df) > 1
+    multi_location <- nrow(coords_df) > 1L
   } else if (!is.null(lon) && !is.null(lat)) {
     # lon/lat notation
-    if (length(lon) == 1 && length(lat) == 1) {
+    if (length(lon) == 1L && length(lat) == 1L) {
       # Single location
       .validate_single_coord(lon, lat)
       coords_df <- data.table::data.table(lon = lon, lat = lat)
@@ -307,7 +305,7 @@ collect_tern_data <- function(
         .validate_single_coord(coords_df$lon[i], coords_df$lat[i])
       }
 
-      multi_location <- nrow(coords_df) > 1
+      multi_location <- nrow(coords_df) > 1L
     }
   } else {
     cli::cli_abort(
@@ -558,7 +556,14 @@ collect_tern_data <- function(
       {
         if (ds %in% c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")) {
           r <- suppressWarnings(
-            read_tern(ds, depth = depth, stat = stat, api_key = api_key)
+            read_tern(ds, depth = depth, collection = stat, api_key = api_key)
+          )
+        } else if (ds == "PHENOLOGY") {
+          # Phenology requires year (2003-2018), use year from first date
+          phen_year <- as.integer(format(dates[1], "%Y"))
+          phen_year <- max(2003L, min(2018L, phen_year))
+          r <- suppressWarnings(
+            read_tern(ds, year = phen_year, api_key = api_key)
           )
         } else {
           r <- suppressWarnings(read_tern(ds, api_key = api_key))
@@ -620,8 +625,8 @@ collect_tern_data <- function(
   }
 
   # Build output data.table
-  dt <- data.table::as.data.table(results_list)
-  dt[, "date" := dates]
+  d_t <- data.table::as.data.table(results_list)
+  d_t[, "date" := dates]
 
   # Reorder: date first, then datasets in order of request (including all layer columns)
   col_order <- c("date")
@@ -630,11 +635,11 @@ collect_tern_data <- function(
       col_order <- c(col_order, dataset_cols[[ds]])
     }
   }
-  # Keep only columns that exist in dt
-  col_order <- intersect(col_order, names(dt))
-  dt <- dt[, col_order, with = FALSE]
+  # Keep only columns that exist in d_t
+  col_order <- intersect(col_order, names(d_t))
+  d_t <- d_t[, col_order, with = FALSE]
 
-  return(dt)
+  return(d_t)
 }
 
 # -----------------------------------------------------------------------------

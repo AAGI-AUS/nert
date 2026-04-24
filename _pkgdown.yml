@@ -14,8 +14,8 @@ reference:
       - read_soil_diversity
       - read_canopy_height
       - read_phenology
-  - title: "Vectorised Collection"
-    desc: "Batch extraction of TERN raster data at point locations."
+  - title: "Batch Extraction"
+    desc: "Extract values from multiple TERN datasets at locations over time."
     contents:
       - collect_tern_data
   - title: "Utilities"

@@ -2,59 +2,54 @@
 % Please edit documentation in R/read_canopy_height.R
 \name{read_canopy_height}
 \alias{read_canopy_height}
-\title{Read Canopy Height Data (OzTreeMap)}
+\title{Read Canopy Height from TERN}
 \usage{
-read_canopy_height(api_key = NULL, max_tries = 3L, initial_delay = 1L)
+read_canopy_height(api_key = get_key(), max_tries = 3L, initial_delay = 1L)
 }
 \arguments{
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection from your
-\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
+\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
 
 \item{max_tries}{An \code{integer} giving the maximum number of download
-retries before an error is raised.  Defaults to \code{3}.}
+retries.  Defaults to \code{3}.}
 
 \item{initial_delay}{An \code{integer} giving the initial retry delay in
 seconds (doubles with each attempt).  Defaults to \code{1}.}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object (single layer, EPSG:3577).
+A \code{\link[terra:rast]{terra::rast()}} object of the national OzTreeMap canopy height
+composite.
 }
 \description{
-Wrapper around \code{\link[=read_tern]{read_tern()}} for Canopy Height Models from OzTreeMap
-(TERN/36c98155).  Provides an Australia-wide composite at 30 m resolution
-(static product).
+Read the OzTreeMap Canopy Height composite Cloud Optimised GeoTIFF
+(\acronym{COG}) from \acronym{TERN}.  This product provides a nationwide
+canopy height map at 30 m resolution derived from Landsat imagery.
+}
+\details{
+This is a single static product --- no date or collection arguments are
+required.
 
-\strong{Important:} The coordinate reference system is \code{EPSG:3577}
-(GDA94/Australian Albers, projected in metres).  If you are extracting
-values at point locations from geographic coordinates (latitude/longitude),
-you must first reproject your points to EPSG:3577 using \code{\link[terra:project]{terra::project()}}
-or \code{\link[sf:st_transform]{sf::st_transform()}}.
+This is a convenience wrapper around
+\code{read_tern("CANOPY")}; see \code{\link[=read_tern]{read_tern()}} for full details and
+additional datasets.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Read canopy height for all of Australia
 r <- read_canopy_height()
-plot(r)
-
-# Extract at a location (Murray Bridge, SA) -- note: must reproject first
-pt <- terra::vect(
-  matrix(c(138.6, -34.9), ncol = 2),
-  type = "points",
-  crs = "EPSG:4326"  # geographic (lat/lon)
-)
-pt_proj <- terra::project(pt, "EPSG:3577")  # project to raster CRS
-val <- terra::extract(r, pt_proj)
-print(val)
+autoplot(r)
 \dontshow{\}) # examplesIf}
 }
 \references{
-TERN portal:
-\url{https://portal.tern.org.au/metadata/TERN/36c98155}
-
-OzTreeMap:
-\url{https://www.tern.org.au/landscapes/}
+\url{https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba}
 }
 \seealso{
-\code{\link[=read_tern]{read_tern()}}, \code{\link[=read_soil_diversity]{read_soil_diversity()}}
+Other COGs: 
+\code{\link{read_aet}()},
+\code{\link{read_asc}()},
+\code{\link{read_phenology}()},
+\code{\link{read_slga}()},
+\code{\link{read_smips}()},
+\code{\link{read_soil_diversity}()},
+\code{\link{read_tern}()}
 }
+\concept{COGs}

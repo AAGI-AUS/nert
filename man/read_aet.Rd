@@ -2,67 +2,85 @@
 % Please edit documentation in R/read_aet.R
 \name{read_aet}
 \alias{read_aet}
-\title{Read CMRSET Actual Evapotranspiration Data}
+\title{Read AET Monthly Evapotranspiration from TERN}
 \usage{
 read_aet(
   date,
   collection = "ETa",
-  api_key = NULL,
+  api_key = get_key(),
   max_tries = 3L,
   initial_delay = 1L
 )
 }
 \arguments{
-\item{date}{A month to download (Date or character, e.g.
-\code{"2023-06-01"} or \code{as.Date("2023-06-01")}).  The value
-is snapped to the first of the month internally.  Required.}
+\item{date}{A single date identifying the month to query, e.g.\
+\code{"2023-06-01"} or \code{as.Date("2023-06-01")}.  Both
+\code{character} and \code{Date} classes are accepted.}
 
-\item{collection}{One of \code{"ETa"} (actual evapotranspiration in
-mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
+\item{collection}{One of \code{"ETa"} (default) or \code{"pixel_qa"}.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection from your
-\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
+\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
 
 \item{max_tries}{An \code{integer} giving the maximum number of download
-retries before an error is raised.  Defaults to \code{3}.}
+retries.  Defaults to \code{3}.}
 
 \item{initial_delay}{An \code{integer} giving the initial retry delay in
 seconds (doubles with each attempt).  Defaults to \code{1}.}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the requested ET collection.
+A \code{\link[terra:rast]{terra::rast()}} object of the national AET/CMRSET mosaic for
+the requested month and collection.
 }
 \description{
-Wrapper around \code{\link[=read_tern]{read_tern()}} for TERN/CMRSET evapotranspiration data.
-Provides monthly estimates of actual ET (mm/month) at 30 m resolution
-from February 2000 onwards.
+Read monthly Actual Evapotranspiration (\acronym{AET}) Cloud Optimised
+GeoTIFF (\acronym{COG}) files from \acronym{TERN}.  This product is
+derived from the CMRSET (CSIRO MODIS Reflectance-based Scaling
+EvapoTranspiration) algorithm applied to Landsat imagery, providing
+Australia-wide monthly actual evapotranspiration estimates.
+}
+\details{
+Two collection layers are available:
+\describe{
+\item{\code{"ETa"}}{Actual evapotranspiration in mm per month
+(default).}
+\item{\code{"pixel_qa"}}{Quality assurance flags for each pixel.}
+}
+
+Data are available from 2000-02-01 onwards.  The supplied date is
+snapped to the first of the month internally.
+
+This is a convenience wrapper around
+\code{read_tern("AET", ...)}; see \code{\link[=read_tern]{read_tern()}} for full
+details and additional datasets.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Actual evapotranspiration (ETa) for June 2023 (mm/month)
-r_eta <- read_aet("2023-06-01")
-autoplot(r_eta)
+# Read monthly actual evapotranspiration
+r <- read_aet(date = "2023-06-01")
+autoplot(r)
 
-# January 2023 ET
-r_jan <- read_aet("2023-01-01")
+# Read quality assurance layer
+r_qa <- read_aet(date = "2023-06-01", collection = "pixel_qa")
 
-# Quality assurance flags for June 2023
-r_qa <- read_aet("2023-06-01", collection = "pixel_qa")
-
-# ET from February 2000 (earliest available)
-r_early <- read_aet("2000-02-01")
-
-# Current/recent ET (within last month)
-r_recent <- read_aet(Sys.Date())
+# Summer month
+r_jan <- read_aet(date = "2024-01-01")
+autoplot(r_jan)
 \dontshow{\}) # examplesIf}
 }
 \references{
-CMRSET portal:
 \url{https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
 
-CMRSET DOI: \url{https://dx.doi.org/10.25901/gg27-ck96}
+DOI: \doi{10.25901/gg27-ck96}
 }
 \seealso{
-\code{\link[=read_tern]{read_tern()}}, \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}
+Other COGs: 
+\code{\link{read_asc}()},
+\code{\link{read_canopy_height}()},
+\code{\link{read_phenology}()},
+\code{\link{read_slga}()},
+\code{\link{read_smips}()},
+\code{\link{read_soil_diversity}()},
+\code{\link{read_tern}()}
 }
+\concept{COGs}

@@ -2,76 +2,94 @@
 % Please edit documentation in R/read_phenology.R
 \name{read_phenology}
 \alias{read_phenology}
-\title{Read Land Surface Phenology Data (MODIS)}
+\title{Read Land Surface Phenology from TERN}
 \usage{
 read_phenology(
-  metric = "SGS",
-  year = 2018,
-  season = 1,
-  api_key = NULL,
+  year,
+  season = 1L,
+  collection = "SGS",
+  api_key = get_key(),
   max_tries = 3L,
   initial_delay = 1L
 )
 }
 \arguments{
-\item{metric}{Phenology metric.  One of:
-\describe{
-\item{\code{"SGS"}}{Start of Growing Season (default)}
-\item{\code{"EGS"}}{End of Growing Season}
-}}
+\item{year}{An integer year (2003--2018).}
 
-\item{year}{Year (2003-2018, default 2018).}
+\item{season}{Season number: \code{1} (default) or \code{2}.}
 
-\item{season}{Season number (default 1).  For most Australian regions,
-season 1 is the primary growing season.  Additional seasons may be
-available for select regions.}
+\item{collection}{Phenology metric abbreviation.  One of \code{"SGS"}
+(default), \code{"PGS"}, \code{"EGS"}, \code{"LGS"}, \code{"SOS"},
+\code{"POS"}, \code{"EOS"}, \code{"LOS"}, \code{"ROG"}, or
+\code{"ROS"}.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection from your
-\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
+\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
 
 \item{max_tries}{An \code{integer} giving the maximum number of download
-retries before an error is raised.  Defaults to \code{3}.}
+retries.  Defaults to \code{3}.}
 
 \item{initial_delay}{An \code{integer} giving the initial retry delay in
 seconds (doubles with each attempt).  Defaults to \code{1}.}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object (single layer).  Pixel values represent day-of-year
-for the specified metric (e.g., 100 = ~April 10 in a non-leap year).
+A \code{\link[terra:rast]{terra::rast()}} object of the national phenology mosaic for
+the requested year, season, and metric.
 }
 \description{
-Wrapper around \code{\link[=read_tern]{read_tern()}} for Land Surface Phenology derived from
-\acronym{MODIS} \acronym{NDVI} (TERN/2bb0c81a).  Provides annual Start
-and End of Growing Season for years 2003-2018 at 500 m resolution
-(static, non-updated product).
+Read Australian Land Surface Phenology Cloud Optimised GeoTIFF
+(\acronym{COG}) files from \acronym{TERN}.  This product provides
+phenological metrics derived from MODIS MYD13A1 imagery at 500 m
+resolution.  Data are available for years 2003--2018, with up to two
+growing seasons per year.
 }
+\section{Phenology metrics}{
+
+Ten phenological metrics are available (use as the \code{collection}
+argument):
+\describe{
+\item{\code{"SGS"}}{Start of Growing Season (default).}
+\item{\code{"PGS"}}{Peak of Growing Season.}
+\item{\code{"EGS"}}{End of Growing Season.}
+\item{\code{"LGS"}}{Length of Growing Season.}
+\item{\code{"SOS"}}{Start of Season.}
+\item{\code{"POS"}}{Peak of Season.}
+\item{\code{"EOS"}}{End of Season.}
+\item{\code{"LOS"}}{Length of Season.}
+\item{\code{"ROG"}}{Rate of Greening.}
+\item{\code{"ROS"}}{Rate of Senescence.}
+}
+
+This is a convenience wrapper around
+\code{read_tern("PHENOLOGY", ...)}; see \code{\link[=read_tern]{read_tern()}} for full
+details and additional datasets.
+}
+
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Start of Growing Season (default: 2018, season 1)
-r_sgs_2018 <- read_phenology()
-autoplot(r_sgs_2018)
+# Read Start of Growing Season for 2018, Season 1
+r <- read_phenology(year = 2018)
+autoplot(r)
 
-# End of Growing Season, 2018
-r_egs_2018 <- read_phenology(metric = "EGS", year = 2018)
+# Read End of Growing Season for 2015, Season 2
+r_egs <- read_phenology(year = 2015, season = 2, collection = "EGS")
+autoplot(r_egs)
 
-# Start of Growing Season, 2015
-r_sgs_2015 <- read_phenology(metric = "SGS", year = 2015)
-
-# Start of Growing Season, 2003 (earliest year)
-r_sgs_2003 <- read_phenology(metric = "SGS", year = 2003)
-
-# End of Growing Season, 2010, season 2 (if available)
-r_egs_s2 <- read_phenology(metric = "EGS", year = 2010, season = 2)
+# Rate of Greening
+r_rog <- read_phenology(year = 2010, collection = "ROG")
 \dontshow{\}) # examplesIf}
 }
 \references{
-TERN portal:
-\url{https://portal.tern.org.au/metadata/TERN/2bb0c81a}
-
-Hill et al. (2017). Land surface phenology and seasonality using
-Functional Data Analysis. \emph{Remote Sensing of Environment}, 203, 49-60.
+\url{https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
 }
 \seealso{
-\code{\link[=read_tern]{read_tern()}}, \code{\link[=read_canopy_height]{read_canopy_height()}}
+Other COGs: 
+\code{\link{read_aet}()},
+\code{\link{read_asc}()},
+\code{\link{read_canopy_height}()},
+\code{\link{read_slga}()},
+\code{\link{read_smips}()},
+\code{\link{read_soil_diversity}()},
+\code{\link{read_tern}()}
 }
+\concept{COGs}
