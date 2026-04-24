@@ -61,7 +61,7 @@ r_recent <- read_aet(Sys.Date())
 CMRSET portal:
 \url{https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
 
-CMRSET DOI: \url{https://dx.doi.org/10.25901/gg27-ck96}
+CMRSET DOI: \doi{10.25901/gg27-ck96}
 }
 \seealso{
 \code{\link[=read_tern]{read_tern()}}, \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}
