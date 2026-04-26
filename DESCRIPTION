@@ -39,7 +39,8 @@ Suggests:
     rmarkdown,
     roxyglobals,
     testthat (>= 3.0.0),
-    usethis
+    usethis,
+    withr
 VignetteBuilder: 
     knitr
 Config/Needs/build: moodymudskipper/devtag
