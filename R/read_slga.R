@@ -80,7 +80,8 @@ read_slga <- function(
   initial_delay = 1L
 ) {
   approved_attrs <- c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")
-  attribute <- rlang::arg_match(toupper(attribute), approved_attrs)
+  attribute <- toupper(attribute)
+  attribute <- rlang::arg_match(attribute, approved_attrs)
   read_tern(
     attribute,
     depth         = depth,
