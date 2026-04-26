@@ -36,7 +36,7 @@
     x <- vapply(xy, function(v) v[["x"]], numeric(1L))
     y <- vapply(xy, function(v) v[["y"]], numeric(1L))
     df <- data.frame(location = location, x = x, y = y)
-    return(sf::st_as_sf(df, coords = c("x", "y"), crs = 4326L))
+    return(sf::st_as_sf(df, coords = c("x", "y"), crs = "EPSG:4326"))
   }
 
   if (is.data.frame(xy)) {
@@ -49,7 +49,7 @@
          Missing: {.field {missing_cols}}."
       )
     }
-    return(sf::st_as_sf(xy, coords = c("x", "y"), crs = 4326L))
+    return(sf::st_as_sf(xy, coords = c("x", "y"), crs = "EPSG:4326"))
   }
 
   cli::cli_abort(

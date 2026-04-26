@@ -17,9 +17,11 @@
 #'
 #' @note
 #' \acronym{TERN} creates \acronym{API} keys that have special characters that
-#'   include \dQuote{/}, which causes the query to fail. Currently, `get_key()`
-#'   checks for this in the `API_KEY` string and replaces it with \dQuote{%2f}
-#'   so that the query will work properly.
+#'   include \dQuote{/}, which causes the query to fail. Currently, the
+#'   `read_*()` functions will test for these problematic characters and
+#'   replace them with the HTML-safe equivalents where necessary so that the
+#'   query will work properly. However, `get_key()` simply returns the
+#'   \acronym{API} key verbatim.
 #'
 #' @details
 #' The suggestion is to use your .Renviron to set up the API key. However, if

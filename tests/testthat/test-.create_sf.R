@@ -29,7 +29,7 @@ test_that("sf POINT object is passed through unchanged", {
     x = c(117.87, 118.28),
     y = c(-32.33, -31.48)
   )
-  sf_obj <- sf::st_as_sf(df, coords = c("x", "y"), crs = 4326L)
+  sf_obj <- sf::st_as_sf(df, coords = c("x", "y"), crs = "EPSG:4326")
   result <- .create_sf(sf_obj)
   expect_s3_class(result, "sf")
   expect_identical(result$location, c("Site1", "Site2"))
@@ -41,7 +41,7 @@ test_that("sf object without location column uses row names", {
     y = c(-32.33, -31.48),
     row.names = c("SiteA", "SiteB")
   )
-  sf_obj <- sf::st_as_sf(df, coords = c("x", "y"), crs = 4326L)
+  sf_obj <- sf::st_as_sf(df, coords = c("x", "y"), crs = "EPSG:4326")
   result <- .create_sf(sf_obj)
   expect_true("location" %in% names(result))
 })
