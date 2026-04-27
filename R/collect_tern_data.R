@@ -425,7 +425,10 @@ collect_tern_data <- function(
               }
             },
             error = function(e) {
-              # Silent error handling
+              cli::cli_warn(c(
+                "Failed to fetch {.val {ds}} variant {.val {variant}} for date {.val {format(dates[i], '%Y-%m-%d')}}.",
+                "x" = "{conditionMessage(e)}"
+              ))
             }
           )
         }
@@ -459,7 +462,11 @@ collect_tern_data <- function(
           n_layers <- terra::nlyr(first_r)
         },
         error = function(e) {
-          # Silent error handling
+          cli::cli_warn(c(
+            "Failed to determine layer structure for {.val {ds}} (first date {.val {format(dates[1], '%Y-%m-%d')}}).",
+            "i" = "Subsequent dates for this dataset will be skipped.",
+            "x" = "{conditionMessage(e)}"
+          ))
         }
       )
 
@@ -539,7 +546,10 @@ collect_tern_data <- function(
             }
           },
           error = function(e) {
-            # Silent error handling
+            cli::cli_warn(c(
+              "Failed to fetch {.val {ds}} for date {.val {format(dates[i], '%Y-%m-%d')}}.",
+              "x" = "{conditionMessage(e)}"
+            ))
           }
         )
       }
@@ -657,7 +667,11 @@ collect_tern_data <- function(
         }
       },
       error = function(e) {
-        # Silent error handling
+        cli::cli_warn(c(
+          "Failed to fetch static dataset {.val {ds}}.",
+          "i" = "Column will be missing from the result.",
+          "x" = "{conditionMessage(e)}"
+        ))
       }
     )
   }
