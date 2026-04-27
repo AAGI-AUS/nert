@@ -1,3 +1,44 @@
+# nert 0.0.4
+
+## Bug fixes
+
+* AET URL prefix corrected from `/landscapes/aet/v2_2/` to
+  `/model-derived/aet/v2_2/` in `.make_aet_url()`. TERN's bucket
+  reorganisation moved CMRSET v2.2 under the model-derived classification
+  (CMRSET is a CSIRO-modelled output, not a satellite landscape product);
+  the legacy path returns 301 → 401 because GDAL `/vsicurl/` does not
+  propagate the `apikey:KEY@host` userinfo across the redirect, surfacing
+  in R as `[rast] file does not exist`. Verified against the live TERN COG
+  listing.
+
+* `read_slga()` now applies `toupper()` to the `attribute` argument before
+  `rlang::arg_match()` (rather than inside it), fixing the
+  `! 'arg' must be a symbol, not a call.` error reported when running the
+  help example.
+
+* `.TERN_ALIASES` casing bug in `.tern_dispatch_id()` resolved (incomplete
+  rename surfaced during PR #30; live name is `.tern_aliases`).
+
+## Internal changes
+
+* Removed unused `.create_sf()` helper and its tests. Originally added as
+  scaffolding for an `extract_aet()` function that was never delivered.
+
+* Removed unused `.check_not_example_api_key()` helper and its test.
+
+* `withr` added to `Suggests` for test fixtures.
+
+* `tests/testthat/setup.R` loads `TERN_API_KEY` from `~/.Renviron` so the
+  network-dependent tests run during `R CMD check` when the user has the
+  key configured locally. CI continues to skip the network tests when no
+  repository secret is configured — intentional behaviour.
+
+* `roxyglobals` and `moodymudskipper/devtag` integrated for `@autoglobal`
+  and `@dev` roxygen tag support; pkgdown reference index now builds
+  without internal-helper warnings.
+
+* `Authors@R`: Max Moldovan ORCID added.
+
 # nert 0.0.3.9000
 
 ## New features
