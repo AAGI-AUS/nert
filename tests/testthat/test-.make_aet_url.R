@@ -4,7 +4,7 @@ test_that("A valid URL is created for the ETa collection", {
   expect_identical(
     url,
     paste0(
-      "/vsicurl/https://apikey:test_key@data.tern.org.au/landscapes/aet/",
+      "/vsicurl/https://apikey:test_key@data.tern.org.au/model-derived/aet/",
       "v2_2/2023/2023_01_01/CMRSET_LANDSAT_V2_2_2023_01_01_ETa.vrt"
     )
   )
@@ -16,7 +16,7 @@ test_that("A valid URL is created for the pixel_qa collection", {
   expect_identical(
     url,
     paste0(
-      "/vsicurl/https://apikey:test_key@data.tern.org.au/landscapes/aet/",
+      "/vsicurl/https://apikey:test_key@data.tern.org.au/model-derived/aet/",
       "v2_2/2023/2023_06_01/CMRSET_LANDSAT_V2_2_2023_06_01_pixel_qa.vrt"
     )
   )
