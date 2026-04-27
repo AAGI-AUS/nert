@@ -3,3 +3,17 @@
 .DS_Store
 .Rproj.user
 .positai
+
+# R build / check artefacts
+*.Rcheck/
+*.tar.gz
+inst/doc/
+revdep/
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+
+# Box / iCloud sync placeholders
+*.icloud
+
