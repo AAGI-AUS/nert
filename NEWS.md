@@ -19,6 +19,23 @@
 * `.TERN_ALIASES` casing bug in `.tern_dispatch_id()` resolved (incomplete
   rename surfaced during PR #30; live name is `.tern_aliases`).
 
+* `collect_tern_data()` now correctly expands `depth = "all"` for the eight
+  SLGA datasets (AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO) into the six
+  GlobalSoilMap depth intervals, producing one column per (dataset, depth)
+  named e.g. `AWC_000_005`. Previously the literal string `"all"` was
+  passed straight through to `.read_tern_slga()` which rejected it via
+  `rlang::arg_match()`; the resulting error was silently swallowed and the
+  eight SLGA datasets disappeared from the result. Returning all 14
+  datasets at all SLGA depths now yields 60 columns (1 date + 6 SMIPS
+  variants + ASC + AET + 8 SLGA x 6 depths + SOILDIV + CANOPY + PHENOLOGY).
+
+* `collect_tern_data()` now surfaces fetch errors via `cli::cli_warn()`
+  instead of silently dropping the failed dataset's column. Failed cells
+  contain `NA`; the warning identifies the dataset, the date (where
+  applicable), and the underlying error message. Pairs with the SLGA fix
+  above to ensure the column count of the result matches the verbose
+  datasets-table announcement.
+
 ## Internal changes
 
 * Removed unused `.create_sf()` helper and its tests. Originally added as
