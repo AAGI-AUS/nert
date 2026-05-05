@@ -1,6 +1,5 @@
 ---
 title: "collect_tern_data() — Vectorized Data Collection"
-author: "Adam H. Sparks"
 output:
   rmarkdown::html_document
 vignette: >

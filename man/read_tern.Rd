@@ -4,7 +4,13 @@
 \alias{read_tern}
 \title{Read TERN COG Datasets}
 \usage{
-read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
+read_tern(
+  dataset_id,
+  ...,
+  api_key = NULL,
+  max_tries = NULL,
+  initial_delay = NULL
+)
 }
 \arguments{
 \item{dataset_id}{A \code{character} string identifying the dataset.
@@ -22,11 +28,15 @@ etc.  See the relevant section above for each dataset.}
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link{get_key}} for
 setup instructions.}
 
-\item{max_tries}{An \code{integer} giving the maximum number of download
-retries before an error is raised.  Defaults to \code{3}.}
+\item{max_tries}{Maximum number of download retries before an error is
+raised.  When \code{NULL} (default), resolved from
+\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+for a single call.}
 
-\item{initial_delay}{An \code{integer} giving the initial retry delay in
-seconds (doubles with each attempt).  Defaults to \code{1}.}
+\item{initial_delay}{Initial retry delay in seconds (doubles with each
+attempt).  When \code{NULL} (default), resolved from
+\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+override for a single call.}
 }
 \value{
 A \code{\link[terra:rast]{terra::rast()}} object of the national mosaic for the
@@ -174,6 +184,25 @@ cannot be read via simple COG HTTP range requests and are outside the
 current scope of \pkg{nert}.
 }
 
+\section{Package options}{
+
+\pkg{nert} reads two package-level options on every call.  Both are
+set to package defaults at load time and may be overridden globally
+(e.g.\ in \code{.Rprofile}) without changing any individual call:
+\describe{
+\item{\code{nert.max_tries}}{Default maximum number of download
+retries.  Default \code{3L}.}
+\item{\code{nert.initial_delay}}{Default initial retry delay in
+seconds (doubles each attempt).  Default \code{1L}.}
+}
+Per-call values supplied via the \code{max_tries} or
+\code{initial_delay} arguments always override the option.  Example:
+\preformatted{
+  options(nert.max_tries = 5L, nert.initial_delay = 2L)
+}
+Closes \href{https://github.com/AAGI-AUS/nert/issues/20}{AAGI-AUS/nert#20}.
+}
+
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Using aliases (recommended) ----------------------------------------
@@ -199,19 +228,21 @@ r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 \dontshow{\}) # examplesIf}
 }
 \references{
-SMIPS: \url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
+TERN GeoNetwork records:
 
-ASC: \url{https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c}
+SMIPS: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
 
-AET: \url{https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
+ASC: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c}
 
-AWC: \url{https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7}
+AET: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
 
-Soil Beta Diversity: \url{https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0}
+AWC: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7}
 
-Canopy Height: \url{https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba}
+Soil Beta Diversity: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0}
 
-Land Surface Phenology: \url{https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
+Canopy Height: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba}
+
+Land Surface Phenology: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
 }
 \seealso{
 Other COGs: 

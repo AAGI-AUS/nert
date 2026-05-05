@@ -425,13 +425,31 @@ collect_tern_data <- function(
               }
             },
             error = function(e) {
-              # Silent error handling
+              # Surface the error rather than silently swallow it. The column
+              # already holds NA from the pre-allocation above, so no value
+              # write is needed in the recovery path.
+              cli::cli_warn(
+                c(
+                  "x" = paste0(
+                    "Failed to fetch {.field {ds}} (variant ",
+                    "{.val {variant}}) at ({lon}, {lat}) on ",
+                    "{.val {format(dates[i])}}."
+                  ),
+                  "i" = paste0(
+                    "Skipping; column {.field SMIPS_{variant}} will be ",
+                    "{.val NA} for this date."
+                  )
+                ),
+                parent = e
+              )
+              invisible(NULL)
             }
           )
         }
       }
     } else {
-      # Standard single-collection handling (SMIPS with specific collection or AET)
+      # Standard single-collection handling
+      # (SMIPS with specific collection, or AET).
       # Initialize: extract first date to determine layer structure
       first_r <- NULL
       layer_names <- NULL
@@ -459,7 +477,23 @@ collect_tern_data <- function(
           n_layers <- terra::nlyr(first_r)
         },
         error = function(e) {
-          # Silent error handling
+          # Surface the failure so the user knows why this dataset's columns
+          # are NA. Defaults of layer_names = NULL and n_layers = 1L are kept
+          # from above, producing a single-layer NA-only column.
+          cli::cli_warn(
+            c(
+              "x" = paste0(
+                "Failed to probe layer structure for {.field {ds}} ",
+                "on {.val {format(dates[1])}}."
+              ),
+              "i" = paste0(
+                "Falling back to single-layer NA-only column for ",
+                "this dataset."
+              )
+            ),
+            parent = e
+          )
+          invisible(NULL)
         }
       )
 
@@ -539,7 +573,22 @@ collect_tern_data <- function(
             }
           },
           error = function(e) {
-            # Silent error handling
+            # Surface the per-date failure. Pre-allocated NA values remain
+            # in place; no recovery write needed.
+            cli::cli_warn(
+              c(
+                "x" = paste0(
+                  "Failed to fetch {.field {ds}} at ({lon}, {lat}) ",
+                  "on {.val {format(dates[i])}}."
+                ),
+                "i" = paste0(
+                  "Skipping; this date's value will be {.val NA} ",
+                  "for {.field {ds}}."
+                )
+              ),
+              parent = e
+            )
+            invisible(NULL)
           }
         )
       }
@@ -619,7 +668,20 @@ collect_tern_data <- function(
         }
       },
       error = function(e) {
-        # Silent error handling
+        # Surface the failure for the static dataset. The output will lack
+        # this dataset's column entirely (no pre-allocation in the static
+        # branch, unlike the time-series one).
+        cli::cli_warn(
+          c(
+            "x" = paste0(
+              "Failed to fetch static dataset {.field {ds}} ",
+              "at ({lon}, {lat})."
+            ),
+            "i" = "Output will not contain a column for {.field {ds}}."
+          ),
+          parent = e
+        )
+        invisible(NULL)
       }
     )
   }

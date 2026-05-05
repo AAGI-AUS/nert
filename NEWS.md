@@ -1,3 +1,32 @@
+# nert 0.1.0
+
+## New features
+
+* Retry behaviour is now configurable via package options
+  `nert.max_tries` (default `3L`) and `nert.initial_delay` (default
+  `1L`, seconds). Set globally with, e.g.,
+  `options(nert.max_tries = 5L, nert.initial_delay = 2L)` in your
+  `.Rprofile` to apply across every `read_*()` and `collect_tern_data()`
+  call. Closes
+  [#20](https://github.com/AAGI-AUS/nert/issues/20).
+
+## Internal / API changes
+
+* The `max_tries` and `initial_delay` arguments of all public read
+  functions (`read_tern()`, `read_aet()`, `read_asc()`,
+  `read_canopy_height()`, `read_phenology()`, `read_slga()`,
+  `read_smips()`, `read_soil_diversity()`) now default to `NULL`.
+  When `NULL`, values are resolved at call time from
+  `getOption("nert.max_tries")` and `getOption("nert.initial_delay")`.
+  This is **non-breaking**: existing user code that passes explicit
+  integers (e.g.\ `read_tern("CANOPY", max_tries = 5L)`) continues to
+  work unchanged and still overrides the option.
+
+* New internal helper `.init_nert_options()` (in `R/zzz.R`) populates
+  the package options on `.onLoad()`. Pattern adapted from the
+  rOpenSci [`read.abares`](https://github.com/ropensci/read.abares)
+  package.
+
 # nert 0.0.3.9000
 
 ## New features
@@ -32,7 +61,7 @@
   for more on these data.
 
 * Addition of `get_asc()` to get Australian Soil Classification data and confusion index values from pattern.
-See <https://www.tern.org.au/news-australian-soil-classification-map/> for more on these data.
+See <https://www.tern.org.au/news/news-australian-soil-classification-map/> for more on these data.
 
 ## Bug fixes
 

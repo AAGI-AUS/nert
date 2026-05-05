@@ -8,6 +8,8 @@
 ^\.Rprofile$
 ^\.Renviron$
 
+^cran-comments\.md$
+
 ^_pkgdown\.yml$
 
 ^air\.toml$
@@ -44,3 +46,4 @@
 ^man/dot-read_tern_canopy_height\.Rd$
 ^man/dot-phenology_metrics\.Rd$
 ^man/dot-read_tern_phenology\.Rd$
+^man/dot-init_nert_options\.Rd$

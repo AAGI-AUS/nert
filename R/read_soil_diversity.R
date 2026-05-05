@@ -22,10 +22,14 @@
 #'   \code{3}.
 #' @param api_key A \code{character} string containing your \acronym{TERN}
 #'   \acronym{API} key.  Defaults to automatic detection via [get_key()].
-#' @param max_tries An \code{integer} giving the maximum number of download
-#'   retries.  Defaults to \code{3}.
-#' @param initial_delay An \code{integer} giving the initial retry delay in
-#'   seconds (doubles with each attempt).  Defaults to \code{1}.
+#' @param max_tries Maximum number of download retries before an error is
+#'   raised.  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+#'   for a single call.
+#' @param initial_delay Initial retry delay in seconds (doubles with each
+#'   attempt).  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+#'   override for a single call.
 #'
 #' @family COGs
 #'
@@ -42,7 +46,8 @@
 #'   mosaic for the requested organism and NMDS axis.
 #'
 #' @references
-#'   <https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
+#'   TERN GeoNetwork record:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
 #'
 #' @autoglobal
 #' @export
@@ -50,8 +55,8 @@ read_soil_diversity <- function(
   collection    = "Bacteria",
   axis          = 1L,
   api_key       = get_key(),
-  max_tries     = 3L,
-  initial_delay = 1L
+  max_tries     = NULL,
+  initial_delay = NULL
 ) {
   read_tern(
     "SOILDIV",

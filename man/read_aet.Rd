@@ -8,8 +8,8 @@ read_aet(
   date,
   collection = "ETa",
   api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 )
 }
 \arguments{
@@ -24,11 +24,15 @@ mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
 \acronym{API} key.  Defaults to automatic detection from your
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
-\item{max_tries}{An \code{integer} giving the maximum number of download
-retries before an error is raised.  Defaults to \code{3}.}
+\item{max_tries}{Maximum number of download retries before an error is
+raised.  When \code{NULL} (default), resolved from
+\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+for a single call.}
 
-\item{initial_delay}{An \code{integer} giving the initial retry delay in
-seconds (doubles with each attempt).  Defaults to \code{1}.}
+\item{initial_delay}{Initial retry delay in seconds (doubles with each
+attempt).  When \code{NULL} (default), resolved from
+\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+override for a single call.}
 }
 \value{
 A \code{\link[terra:rast]{terra::rast()}} object of the requested ET collection.
@@ -58,8 +62,8 @@ r_recent <- read_aet(Sys.Date())
 \dontshow{\}) # examplesIf}
 }
 \references{
-CMRSET portal:
-\url{https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
+CMRSET TERN GeoNetwork record:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
 
 CMRSET DOI: \doi{10.25901/gg27-ck96}
 }

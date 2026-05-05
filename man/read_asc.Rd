@@ -4,17 +4,20 @@
 \alias{read_asc}
 \title{Read Australian Soil Classification (ASC) Data}
 \source{
+Cloud-Optimised GeoTIFFs hosted under
+\verb{data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/}
+(auth-gated; an authenticated TERN API key is required to access them):
 \describe{
-\item{ASC Data}{\url{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif}}
-\item{Confusion Index}{\url{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif}}
+\item{ASC Data}{\code{ASC_EV_C_P_AU_TRN_N.cog.tif}}
+\item{Confusion Index}{\code{ASC_CI_C_P_AU_TRN_N.cog.tif}}
 }
 }
 \usage{
 read_asc(
   confusion_index = FALSE,
   api_key = get_key(),
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 )
 }
 \arguments{
@@ -31,12 +34,15 @@ nothing is provided, you will be prompted on how to set up your \R session
 so that it is auto-detected and a browser window will open at the
 \acronym{TERN} website for you to request a key.}
 
-\item{max_tries}{An integer \code{Integer} with the number of times to retry a
-failed download before emitting an error message.  Defaults to 3.}
+\item{max_tries}{Maximum number of download retries before an error is
+raised.  When \code{NULL} (default), resolved from
+\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override for
+a single call.}
 
-\item{initial_delay}{An \code{Integer} with the number of seconds to delay before
-retrying the download.  This increases as the tries increment.  Defaults to
-1.}
+\item{initial_delay}{Initial retry delay in seconds (doubles with each
+attempt).  When \code{NULL} (default), resolved from
+\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to override
+for a single call.}
 }
 \value{
 A  \code{\link[terra:rast]{terra::rast()}} object.
@@ -68,7 +74,8 @@ autoplot(r_ci)
 \dontshow{\}) # examplesIf}
 }
 \references{
-\url{https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c}
+TERN GeoNetwork record:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c}
 }
 \seealso{
 Other COGs: 
