@@ -8,6 +8,8 @@
 ^\.Rprofile$
 ^\.Renviron$
 
+^cran-comments\.md$
+
 ^_pkgdown\.yml$
 
 ^air\.toml$
