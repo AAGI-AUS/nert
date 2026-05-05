@@ -425,7 +425,10 @@ collect_tern_data <- function(
               }
             },
             error = function(e) {
-              # Silent error handling
+              cli::cli_warn(c(
+                "Failed to fetch {.val {ds}} variant {.val {variant}} for date {.val {format(dates[i], '%Y-%m-%d')}}.",
+                "x" = "{conditionMessage(e)}"
+              ))
             }
           )
         }
@@ -459,7 +462,11 @@ collect_tern_data <- function(
           n_layers <- terra::nlyr(first_r)
         },
         error = function(e) {
-          # Silent error handling
+          cli::cli_warn(c(
+            "Failed to determine layer structure for {.val {ds}} (first date {.val {format(dates[1], '%Y-%m-%d')}}).",
+            "i" = "Subsequent dates for this dataset will be skipped.",
+            "x" = "{conditionMessage(e)}"
+          ))
         }
       )
 
@@ -539,7 +546,10 @@ collect_tern_data <- function(
             }
           },
           error = function(e) {
-            # Silent error handling
+            cli::cli_warn(c(
+              "Failed to fetch {.val {ds}} for date {.val {format(dates[i], '%Y-%m-%d')}}.",
+              "x" = "{conditionMessage(e)}"
+            ))
           }
         )
       }
@@ -547,14 +557,52 @@ collect_tern_data <- function(
   }
 
   # Static: extract once, replicate across all dates
+  slga_aliases <- c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")
+  slga_depths  <- c("000_005", "005_015", "015_030",
+                    "030_060", "060_100", "100_200")
   for (ds in st_datasets) {
     if (verbose) {
       cli::cli_inform("    {ds} (static)...")
     }
 
+    # SLGA + depth = "all": loop over the six GlobalSoilMap depth intervals,
+    # producing one column per (dataset, depth) named e.g. AWC_000_005.
+    # The single-depth SLGA case falls through to the standard handler below.
+    if (ds %in% slga_aliases && depth == "all") {
+      layer_cols <- character(0L)
+      for (d in slga_depths) {
+        col_name <- paste0(ds, "_", d)
+        col_vals <- rep(NA_real_, length(dates))
+        tryCatch(
+          {
+            r <- suppressWarnings(read_tern(
+              ds, depth = d, collection = stat, api_key = api_key
+            ))
+            extracted <- suppressWarnings(terra::extract(r, pt))
+            if (!is.null(extracted) && is.data.frame(extracted) &&
+                ncol(extracted) >= 2L) {
+              val <- as.numeric(extracted[, -1L, drop = FALSE][[1L]][1L])
+              col_vals[] <- val
+            }
+          },
+          error = function(e) {
+            cli::cli_warn(c(
+              "Failed to fetch SLGA {.val {ds}} at depth {.val {d}}.",
+              "i" = "Column {.val {col_name}} will contain {.code NA}.",
+              "x" = "{conditionMessage(e)}"
+            ))
+          }
+        )
+        results_list[[col_name]] <- col_vals
+        layer_cols <- c(layer_cols, col_name)
+      }
+      dataset_cols[[ds]] <- layer_cols
+      next
+    }
+
     tryCatch(
       {
-        if (ds %in% c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")) {
+        if (ds %in% slga_aliases) {
           r <- suppressWarnings(
             read_tern(ds, depth = depth, collection = stat, api_key = api_key)
           )
@@ -619,7 +667,11 @@ collect_tern_data <- function(
         }
       },
       error = function(e) {
-        # Silent error handling
+        cli::cli_warn(c(
+          "Failed to fetch static dataset {.val {ds}}.",
+          "i" = "Column will be missing from the result.",
+          "x" = "{conditionMessage(e)}"
+        ))
       }
     )
   }

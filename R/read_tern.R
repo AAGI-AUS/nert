@@ -294,7 +294,7 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .tern_not_implemented <- function(dataset_id) {
-  aliases <- paste0(names(.tern_aliases), collapse = ", ")
+  aliases <- paste0(names(.tern_aliases), collapse = ", ") # nolint: object_usage_linter.
   cli::cli_abort(c(
     "Dataset {.val {dataset_id}} is not currently implemented in
      {.fn read_tern}.",
@@ -529,7 +529,7 @@ read_tern <- function(
   date_str <- format(.month, "%Y_%m_%d")
 
   sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/landscapes/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
     .api_key,
     year,
     date_str,

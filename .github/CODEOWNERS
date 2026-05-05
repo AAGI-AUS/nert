@@ -1,0 +1,6 @@
+# CODEOWNERS — pull requests touching paths below request a review from the
+# listed owner(s) automatically. Order matters: later entries override earlier
+# ones for the same path.
+
+# Default owner — every PR requests a review from the maintainer.
+* @rogerssam
