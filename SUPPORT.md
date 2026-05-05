@@ -34,8 +34,8 @@ time on issues and PRs is typically within two to four weeks.
 
 | Role | Person | GitHub |
 |---|---|---|
-| Maintainer (`cre`) | Sam Rogers | @samroge |
-| Authors (`aut`) | Adam Sparks, Wasin Pipattungsakul, Russell Edson, Max Moldovan | @adamhsparks, @WasinPip, @RussellEdson, @maxmoldovan |
+| Maintainer (`cre`) | Sam Rogers | @rogerssam |
+| Authors (`aut`) | Adam Sparks, Wasin Pipattungsakul, Russell Edson, Max Moldovan | @adamhsparks, @wvjgsuhp, @RussellAndrewEdson, @max578 |
 | Funding | GRDC project CUR2210-005OPX | — |
 
 If response is needed sooner than two weeks for a specific question, a
