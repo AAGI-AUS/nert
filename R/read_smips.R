@@ -129,7 +129,7 @@ read_smips <- function(
       )
     }
   )
-  return(x)
+  x
 }
 
 
@@ -147,7 +147,6 @@ read_smips <- function(
 #' @dev
 #' @dev
 .check_collection_agreement <- function(.collection, .day) {
-  # .this_year <- lubridate::year(lubridate::today())
   .last_week <- lubridate::today() - 7
   .url_year <- lubridate::year(.day)
 
@@ -204,5 +203,5 @@ read_smips <- function(
     paste0("smips_runoff_mm_", url_date, ".tif")
   )
 
-  return(collection_url)
+  collection_url
 }

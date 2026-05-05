@@ -70,5 +70,5 @@ read_asc <- function(
     api_key,
     dl_file
   )
-  return(.read_cog(full_url, max_tries, initial_delay))
+  .read_cog(full_url, max_tries, initial_delay)
 }

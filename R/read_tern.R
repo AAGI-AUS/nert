@@ -294,7 +294,7 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .tern_not_implemented <- function(dataset_id) {
-  aliases <- paste0(names(.tern_aliases), collapse = ", ")
+  aliases <- paste0(names(.tern_aliases), collapse = ", ") # nolint: object_usage_linter.
   cli::cli_abort(c(
     "Dataset {.val {dataset_id}} is not currently implemented in
      {.fn read_tern}.",
@@ -507,7 +507,7 @@ read_tern <- function(
        You requested {format(x, '%Y-%m-%d')}."
     )
   }
-  return(x)
+  x
 }
 
 
