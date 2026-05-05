@@ -1,6 +1,5 @@
 ---
 title: nert
-author: Adam H. Sparks
 output:
   rmarkdown::html_document
 vignette: >
@@ -98,11 +97,11 @@ The below code downloads the SMIPS "totalbucket" soil moisture data raster for J
 ``` r
 library(nert)
 library(terra)
-#> terra 1.8.54
-#>
+#> terra 1.9.11
+#> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
-#>
+#> 
 #>     spin
 
 r <- read_smips(date = "2024-01-01")
@@ -149,7 +148,7 @@ library(nert)
 library(keyring)
 
 r <- read_smips(
-  day = "2024-01-01",
+  date = "2024-01-01",
   api_key = key_get("NERT_API_KEY", keyring = "nert")
 )
 ```
@@ -163,7 +162,7 @@ Using the example from above, you can get the SMIPS data for all of Australia on
 
 ``` r
 library(nert)
-r <- read_smips(day = "2024-01-01")
+r <- read_smips(date = "2024-01-01")
 ```
 
 Note that {nert} re-exports `tidyterra::autoplot` for ease of visualalising the TERN data.
