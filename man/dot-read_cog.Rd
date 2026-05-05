@@ -4,12 +4,20 @@
 \alias{.read_cog}
 \title{Read a COG from TERN}
 \usage{
-.read_cog(full_url, max_tries, initial_delay)
+.read_cog(full_url, max_tries = NULL, initial_delay = NULL)
 }
 \arguments{
 \item{full_url}{The URL providing access to the requested data.}
 
-\item{max_tries}{The number of times to retry downloading before timing out.}
+\item{max_tries}{Maximum number of download attempts before erroring.
+When \code{NULL} (default), resolved at call time from
+\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+for a single call.}
+
+\item{initial_delay}{Initial retry delay in seconds (doubles each
+attempt).  When \code{NULL} (default), resolved at call time from
+\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to override
+for a single call.}
 }
 \value{
 A \code{\link[terra:rast]{terra::rast()}} object of the requested data.

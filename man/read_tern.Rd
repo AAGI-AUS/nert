@@ -4,7 +4,13 @@
 \alias{read_tern}
 \title{Read TERN COG Datasets}
 \usage{
-read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
+read_tern(
+  dataset_id,
+  ...,
+  api_key = NULL,
+  max_tries = NULL,
+  initial_delay = NULL
+)
 }
 \arguments{
 \item{dataset_id}{A \code{character} string identifying the dataset.
@@ -22,11 +28,15 @@ etc.  See the relevant section above for each dataset.}
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link{get_key}} for
 setup instructions.}
 
-\item{max_tries}{An \code{integer} giving the maximum number of download
-retries before an error is raised.  Defaults to \code{3}.}
+\item{max_tries}{Maximum number of download retries before an error is
+raised.  When \code{NULL} (default), resolved from
+\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+for a single call.}
 
-\item{initial_delay}{An \code{integer} giving the initial retry delay in
-seconds (doubles with each attempt).  Defaults to \code{1}.}
+\item{initial_delay}{Initial retry delay in seconds (doubles with each
+attempt).  When \code{NULL} (default), resolved from
+\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+override for a single call.}
 }
 \value{
 A \code{\link[terra:rast]{terra::rast()}} object of the national mosaic for the
@@ -172,6 +182,25 @@ Datasets with integration level L2 or higher (e.g.\ AusEFlux via
 \acronym{THREDDS}/OPeNDAP, GEE-based products, site-level API streams)
 cannot be read via simple COG HTTP range requests and are outside the
 current scope of \pkg{nert}.
+}
+
+\section{Package options}{
+
+\pkg{nert} reads two package-level options on every call.  Both are
+set to package defaults at load time and may be overridden globally
+(e.g.\ in \code{.Rprofile}) without changing any individual call:
+\describe{
+\item{\code{nert.max_tries}}{Default maximum number of download
+retries.  Default \code{3L}.}
+\item{\code{nert.initial_delay}}{Default initial retry delay in
+seconds (doubles each attempt).  Default \code{1L}.}
+}
+Per-call values supplied via the \code{max_tries} or
+\code{initial_delay} arguments always override the option.  Example:
+\preformatted{
+  options(nert.max_tries = 5L, nert.initial_delay = 2L)
+}
+Closes \href{https://github.com/AAGI-AUS/nert/issues/20}{AAGI-AUS/nert#20}.
 }
 
 \examples{

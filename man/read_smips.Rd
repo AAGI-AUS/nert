@@ -8,8 +8,8 @@ read_smips(
   date,
   collection = "totalbucket",
   api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 )
 }
 \arguments{
@@ -48,11 +48,15 @@ Output column: \code{SMIPS_runoff}}
 \acronym{API} key.  Defaults to automatic detection from your
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
-\item{max_tries}{An \code{integer} giving the maximum number of download
-retries before an error is raised.  Defaults to \code{3}.}
+\item{max_tries}{Maximum number of download retries before an error is
+raised.  When \code{NULL} (default), resolved from
+\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+for a single call.}
 
-\item{initial_delay}{An \code{integer} giving the initial retry delay in
-seconds (doubles with each attempt).  Defaults to \code{1}.}
+\item{initial_delay}{Initial retry delay in seconds (doubles with each
+attempt).  When \code{NULL} (default), resolved from
+\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+override for a single call.}
 }
 \value{
 A \code{\link[terra:rast]{terra::rast()}} object of the requested SMIPS collection.

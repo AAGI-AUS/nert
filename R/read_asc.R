@@ -25,11 +25,14 @@
 #'   nothing is provided, you will be prompted on how to set up your \R session
 #'   so that it is auto-detected and a browser window will open at the
 #'   \acronym{TERN} website for you to request a key.
-#' @param max_tries An integer `Integer` with the number of times to retry a
-#'   failed download before emitting an error message.  Defaults to 3.
-#' @param initial_delay An `Integer` with the number of seconds to delay before
-#'   retrying the download.  This increases as the tries increment.  Defaults to
-#'   1.
+#' @param max_tries Maximum number of download retries before an error is
+#'   raised.  When `NULL` (default), resolved from
+#'   `getOption("nert.max_tries", 3L)`.  Pass an integer to override for
+#'   a single call.
+#' @param initial_delay Initial retry delay in seconds (doubles with each
+#'   attempt).  When `NULL` (default), resolved from
+#'   `getOption("nert.initial_delay", 1L)`.  Pass an integer to override
+#'   for a single call.
 #'
 #' @family COGs
 #'
@@ -55,8 +58,8 @@
 read_asc <- function(
   confusion_index = FALSE,
   api_key = get_key(),
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 ) {
   api_key <- .check_api_key(api_key)
   dl_file <- data.table::fifelse(

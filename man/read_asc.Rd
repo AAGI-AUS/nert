@@ -13,8 +13,8 @@
 read_asc(
   confusion_index = FALSE,
   api_key = get_key(),
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 )
 }
 \arguments{
@@ -31,12 +31,15 @@ nothing is provided, you will be prompted on how to set up your \R session
 so that it is auto-detected and a browser window will open at the
 \acronym{TERN} website for you to request a key.}
 
-\item{max_tries}{An integer \code{Integer} with the number of times to retry a
-failed download before emitting an error message.  Defaults to 3.}
+\item{max_tries}{Maximum number of download retries before an error is
+raised.  When \code{NULL} (default), resolved from
+\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override for
+a single call.}
 
-\item{initial_delay}{An \code{Integer} with the number of seconds to delay before
-retrying the download.  This increases as the tries increment.  Defaults to
-1.}
+\item{initial_delay}{Initial retry delay in seconds (doubles with each
+attempt).  When \code{NULL} (default), resolved from
+\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to override
+for a single call.}
 }
 \value{
 A  \code{\link[terra:rast]{terra::rast()}} object.
