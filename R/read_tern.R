@@ -507,7 +507,7 @@ read_tern <- function(
        You requested {format(x, '%Y-%m-%d')}."
     )
   }
-  x
+  return(x)
 }
 
 

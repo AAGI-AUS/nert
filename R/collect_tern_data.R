@@ -257,7 +257,7 @@ collect_tern_data <- function(
     cli::cli_inform("Collected {nrow(d_t)} rows x {ncol(d_t)} columns")
   }
 
-  d_t
+  return(d_t)
 }
 
 # -----------------------------------------------------------------------------
@@ -691,7 +691,7 @@ collect_tern_data <- function(
   col_order <- intersect(col_order, names(d_t))
   d_t <- d_t[, col_order, with = FALSE]
 
-  d_t
+  return(d_t)
 }
 
 # -----------------------------------------------------------------------------

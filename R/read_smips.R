@@ -129,7 +129,7 @@ read_smips <- function(
       )
     }
   )
-  x
+  return(x)
 }
 
 
@@ -203,5 +203,5 @@ read_smips <- function(
     paste0("smips_runoff_mm_", url_date, ".tif")
   )
 
-  collection_url
+  return(collection_url)
 }
