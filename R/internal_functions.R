@@ -19,12 +19,23 @@
 #' Read a COG from TERN
 #'
 #' @param full_url The URL providing access to the requested data.
-#' @param max_tries The number of times to retry downloading before timing out.
+#' @param max_tries Maximum number of download attempts before erroring.
+#'   When `NULL` (default), resolved at call time from
+#'   `getOption("nert.max_tries", 3L)`.  Pass an integer to override
+#'   for a single call.
+#' @param initial_delay Initial retry delay in seconds (doubles each
+#'   attempt).  When `NULL` (default), resolved at call time from
+#'   `getOption("nert.initial_delay", 1L)`.  Pass an integer to override
+#'   for a single call.
 #'
 #' @returns A [terra::rast()] object of the requested data.
+#' @importFrom rlang %||%
 #' @autoglobal
 #' @dev
-.read_cog <- function(full_url, max_tries, initial_delay) {
+.read_cog <- function(full_url, max_tries = NULL, initial_delay = NULL) {
+  max_tries     <- max_tries     %||% getOption("nert.max_tries", 3L)
+  initial_delay <- initial_delay %||% getOption("nert.initial_delay", 1L)
+
   attempt <- 1L
   success <- FALSE
 
