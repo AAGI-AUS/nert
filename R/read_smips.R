@@ -70,8 +70,8 @@
 #' r_runoff <- read_smips("2024-01-15", collection = "runoff")
 #'
 #' @references
-#'   SMIPS portal:
-#'   <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
+#'   SMIPS TERN GeoNetwork record:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #'
 #' @autoglobal
 #' @export

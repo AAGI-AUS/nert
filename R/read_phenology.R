@@ -61,7 +61,8 @@
 #'   the requested year, season, and metric.
 #'
 #' @references
-#'   <https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
+#'   TERN GeoNetwork record:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
 #'
 #' @autoglobal
 #' @export

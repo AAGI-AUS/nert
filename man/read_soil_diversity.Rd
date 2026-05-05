@@ -67,7 +67,8 @@ autoplot(r_f2)
 \dontshow{\}) # examplesIf}
 }
 \references{
-\url{https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0}
+TERN GeoNetwork record:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0}
 }
 \seealso{
 Other COGs: 

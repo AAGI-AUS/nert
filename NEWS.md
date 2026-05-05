@@ -61,7 +61,7 @@
   for more on these data.
 
 * Addition of `get_asc()` to get Australian Soil Classification data and confusion index values from pattern.
-See <https://www.tern.org.au/news-australian-soil-classification-map/> for more on these data.
+See <https://www.tern.org.au/news/news-australian-soil-classification-map/> for more on these data.
 
 ## Bug fixes
 

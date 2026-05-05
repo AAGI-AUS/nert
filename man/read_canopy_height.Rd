@@ -44,7 +44,8 @@ autoplot(r)
 \dontshow{\}) # examplesIf}
 }
 \references{
-\url{https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba}
+TERN GeoNetwork record:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba}
 }
 \seealso{
 Other COGs: 

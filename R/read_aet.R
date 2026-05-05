@@ -46,8 +46,8 @@
 #' r_recent <- read_aet(Sys.Date())
 #'
 #' @references
-#'   CMRSET portal:
-#'   <https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+#'   CMRSET TERN GeoNetwork record:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 #'
 #'   CMRSET DOI: \doi{10.25901/gg27-ck96}
 #'

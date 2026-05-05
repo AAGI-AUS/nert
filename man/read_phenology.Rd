@@ -84,7 +84,8 @@ r_rog <- read_phenology(year = 2010, collection = "ROG")
 \dontshow{\}) # examplesIf}
 }
 \references{
-\url{https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
+TERN GeoNetwork record:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
 }
 \seealso{
 Other COGs: 

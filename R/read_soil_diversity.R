@@ -46,7 +46,8 @@
 #'   mosaic for the requested organism and NMDS axis.
 #'
 #' @references
-#'   <https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
+#'   TERN GeoNetwork record:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
 #'
 #' @autoglobal
 #' @export
