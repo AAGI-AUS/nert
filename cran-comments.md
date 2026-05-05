@@ -70,6 +70,7 @@ CRAN depends on, imports, or suggests `nert`.
 
 ## Maintainer commitment
 
-`Sam Rogers <sam.rogers@adelaide.edu.au>` (cre) is a real, monitored email
-account at the University of Adelaide. The maintainer commits to responding
-to CRAN-team correspondence within 14 days during business periods.
+`Max Moldovan <max.moldovan@adelaide.edu.au>` (cre) is a real, monitored
+email account at the University of Adelaide. The maintainer commits to
+responding to CRAN-team correspondence within 14 days during business
+periods.
