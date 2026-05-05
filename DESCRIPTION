@@ -27,15 +27,15 @@ Imports:
     data.table,
     ggplot2 (>= 3.5.0),
     lubridate,
-    nlme,
     rlang,
     sf,
     terra,
     tidyterra,
     utils
-Suggests: 
+Suggests:
     keyring,
     knitr,
+    nlme,
     rmarkdown,
     roxyglobals,
     testthat (>= 3.0.0),
