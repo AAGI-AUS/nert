@@ -13,6 +13,7 @@
 ^air\.toml$
 
 ^CODE_OF_CONDUCT\.md$
+^CONTRIBUTING\.md$
 ^LICENSE\.md$
 ^README\.Rmd$
 
