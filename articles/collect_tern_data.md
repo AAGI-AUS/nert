@@ -19,6 +19,7 @@ analysis workflows.
 Extract SMIPS soil moisture for a single location over multiple dates:
 
 ``` r
+
 library(nert)
 
 dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-10"), by = "day")
@@ -53,6 +54,7 @@ extracts **all available variants/depths**:
 This ensures you get comprehensive data without specifying each option:
 
 ``` r
+
 # Gets all 6 SMIPS variants + all 6 AWC depths in one call
 dt <- collect_tern_data(
   lon = 138.6,
@@ -76,6 +78,7 @@ Extract data for multiple coordinates (returns one row per location per
 date):
 
 ``` r
+
 # Vector notation
 dt_multi <- collect_tern_data(
   lon = c(138.6, 139.5, 140.1),
@@ -91,6 +94,7 @@ ncol(dt_multi)  # date + lon + lat + SMIPS_variants(6) + CANOPY(1) = 11 cols
 Or use **xy notation** with a data.frame:
 
 ``` r
+
 locations <- data.frame(
   lon = c(138.6, 139.5, 140.1),
   lat = c(-34.9, -35.2, -34.5)
@@ -108,6 +112,7 @@ dt_xy <- collect_tern_data(
 Extract specific variants or depths instead of all:
 
 ``` r
+
 # Only specific SMIPS collection
 dt_smi <- collect_tern_data(
   lon = 138.6,
@@ -136,6 +141,7 @@ By default,
 collects all 14 datasets when called without specifying `datasets`:
 
 ``` r
+
 # Collect everything
 dt_all <- collect_tern_data(
   lon = 138.6,
@@ -147,12 +153,12 @@ dt_all <- collect_tern_data(
 
 This returns:
 
-| Category              | Datasets                                                    | Columns     |
-|-----------------------|-------------------------------------------------------------|-------------|
-| **Time-series**       | SMIPS (6 variants), AET                                     | 7           |
-| **Soil**              | ASC, AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO (6 depths each) | 1 + 54      |
-| **Vegetation/Canopy** | CANOPY, PHENOLOGY, SOILDIV                                  | 3           |
-| **Total**             | 14 datasets                                                 | ~65 columns |
+| Category | Datasets | Columns |
+|----|----|----|
+| **Time-series** | SMIPS (6 variants), AET | 7 |
+| **Soil** | ASC, AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO (6 depths each) | 1 + 54 |
+| **Vegetation/Canopy** | CANOPY, PHENOLOGY, SOILDIV | 3 |
+| **Total** | 14 datasets | ~65 columns |
 
 ### Understanding Column Names
 
@@ -177,6 +183,7 @@ will contain `NA` for affected rows. Use `na.rm = TRUE` to remove rows
 where all dataset columns are NA:
 
 ``` r
+
 dt <- collect_tern_data(
   lon = 138.6,
   lat = -34.9,
@@ -210,6 +217,7 @@ if you need just the numeric code.
 #### Agricultural Analysis: Soil Properties at a Field
 
 ``` r
+
 # Extract soil properties at one location for a growing season
 field <- list(lon = 138.6, lat = -34.9)
 
@@ -228,6 +236,7 @@ head(dt_soil)
 #### Climate Monitoring: Multiple Sites
 
 ``` r
+
 # Monitor evapotranspiration and canopy height at 5 monitoring stations
 stations <- data.frame(
   name = c("Adelaide", "Murray Bridge", "Naracoorte", "Coonalpyn", "Kingoonya"),

@@ -35,6 +35,7 @@ account, generating an API key, and storing it in your R environment.
     button that appears in the top-right of the browser window.
 
 ``` r
+
 library(nert)
 get_key()
 ```
@@ -117,6 +118,7 @@ credentials store for more security.
     latitude, 138.6007 longitude):
 
 ``` r
+
 library(nert)
 library(terra)
 #> terra 1.8.54
@@ -144,12 +146,14 @@ API key in your system’s credential store. If you don’t have the
 {keyring} package installed, you can install it with:
 
 ``` r
+
 install.packages("keyring")
 ```
 
 Once it’s installed, you can store your API key with:
 
 ``` r
+
 library(keyring)
 
 keyring_create("nert")
@@ -166,6 +170,7 @@ keyring. You will enter the actual key value you copied from the TERN
 website when {keyring} prompts you to do so.
 
 ``` r
+
 library(nert)
 library(keyring)
 
@@ -183,6 +188,7 @@ Using the example from above, you can get the SMIPS data for all of
 Australia on Jan 1, 2024 like so:
 
 ``` r
+
 library(nert)
 r <- read_smips(day = "2024-01-01")
 ```
@@ -192,6 +198,7 @@ Note that {nert} re-exports
 for ease of visualalising the TERN data.
 
 ``` r
+
 autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
@@ -207,6 +214,7 @@ specify them like this using the data object, `r`, from above, which is
 much quicker than fetching the entire dataset:
 
 ``` r
+
 library(terra)
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
@@ -220,6 +228,7 @@ for
 [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md).
 
 ``` r
+
 asc <- read_asc()
 
 autoplot(asc)
@@ -236,6 +245,7 @@ high confusion and 0 is low confusion, you can specify the
 `confusion_index = TRUE` argument like so.
 
 ``` r
+
 asc_ci <- read_asc(confusion_index = TRUE)
 ```
 

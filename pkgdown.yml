@@ -1,11 +1,11 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   collect_tern_data: collect_tern_data.html
   nert_for_agricultural_analytics: nert_for_agricultural_analytics.html
   nert: nert.html
-last_built: 2026-04-26T08:57Z
+last_built: 2026-05-08T06:39Z
 urls:
   reference: https://aagi-aus.github.io/nert/reference
   article: https://aagi-aus.github.io/nert/articles

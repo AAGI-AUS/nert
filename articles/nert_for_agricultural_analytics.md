@@ -21,6 +21,7 @@ dataset is called `grain`, and you can load the package and this dataset
 with:
 
 ``` r
+
 library(nert)
 data(grain)
 str(grain)
@@ -72,6 +73,7 @@ coordinates). We can generate this date range in a straightforward way
 using the `NitrogenDate` column of the `grain` dataset as follows:
 
 ``` r
+
 start_date <- min(grain$NitrogenDate)
 end_date <- max(grain$NitrogenDate) + 30
 date_range <- seq(start_date, end_date, by = "1 day")
@@ -85,6 +87,7 @@ readily retrieve from the `grain` dataset columns `Latitude` and
 `Longitude`:
 
 ``` r
+
 sites <- unique(grain[, c("Site", "Latitude", "Longitude")])
 sites
 #>                    Site  Latitude Longitude
@@ -120,6 +123,7 @@ is particular about the order of the latitude/longitude coordinates:
 longitude should be specified first, followed by latitude.)
 
 ``` r
+
 smips_data <- data.frame()
 for (i in 1:length(date_range)) {
   r <- read_smips(date = date_range[i], collection = "SMindex")
@@ -154,6 +158,7 @@ We can add the `Site` column to the `smips_data` to make it easier to
 use it in conjunction with the `grain` dataset during the analysis:
 
 ``` r
+
 smips_data$Site <- sites$Site
 head(smips_data)
 #>         Date  Latitude Longitude smips_smi_perc               Site
@@ -175,6 +180,7 @@ for a more streamlined workflow that returns a data table ready for
 analysis:
 
 ``` r
+
 # Extract multiple SMIPS collections and soil attributes at all sites
 smips_data <- collect_tern_data(
   xy = sites[, c("Longitude", "Latitude")],
@@ -214,6 +220,7 @@ model. The grain yield `Yield_tha` will be modelled taking the
 replicate (`Rep`) structure of the experiment in a random effect term.
 
 ``` r
+
 library(nlme)
 simple_model <- lme(
   fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2,
@@ -226,6 +233,7 @@ We can check the confidence intervals for the effect sizes of the
 nitrogen treatments for this simple model:
 
 ``` r
+
 simple_model.ints <- intervals(simple_model, which = "fixed")$fixed
 simple_model.Neffects <- simple_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
 simple_model.Neffects
@@ -247,6 +255,7 @@ application until 30 days after the application, which we will store in
 a new column called `SoilMoisture_avg`.
 
 ``` r
+
 for (site in sites$Site) {
   start_date <- unique(grain[which(grain$Site == site), "NitrogenDate"])[1]
   dates <- seq(start_date, start_date + 30, by = "1 day")
@@ -260,6 +269,7 @@ We can then add this average soil moisture as a fixed effect to the
 linear mixed-effect model:
 
 ``` r
+
 augmented_model <- lme(
   fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2
     + SoilMoisture_avg + SoilMoisture_avg:Nitrogen_kgNha,
@@ -272,6 +282,7 @@ The confidence intervals for the effect sizes of the nitrogen
 application treatments for this augmented model are then as follows:
 
 ``` r
+
 augmented_model.ints <- intervals(augmented_model, which = "fixed")$fixed
 augmented_model.Neffects <- augmented_model.ints[paste0("Nitrogen_kgNha", c(30, 60, 90)), ]
 augmented_model.Neffects
@@ -287,6 +298,7 @@ difference attained when we include the soil moisture as a confounding
 term in our modelling:
 
 ``` r
+
 library(ggplot2)
 
 ci <- rbind(

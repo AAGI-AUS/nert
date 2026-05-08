@@ -14,6 +14,7 @@ To get started:
 ### Enable this universe
 
 ``` r
+
 options(
   repos = c(
     AAGI = "https://aagi-aus.r-universe.dev",
@@ -25,6 +26,7 @@ options(
 ### Install
 
 ``` r
+
 install.packages("nert")
 ```
 
@@ -43,6 +45,7 @@ You can install the development version of {nert} from
 [GitHub](https://github.com/AAGI-AUS/nert) with:
 
 ``` r
+
 o <- options() # store original options
 
 options(pkg.build_vignettes = TRUE)
@@ -61,6 +64,7 @@ This is a basic example which shows you how you can fetch one day’s data
 from the SMIPS data and visualise it:
 
 ``` r
+
 library(nert)
 r <- read_smips(day = "2024-01-01")
 
@@ -77,6 +81,7 @@ Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW
 given latitude and longitude values for each.
 
 ``` r
+
 library(terra)
 #> terra 1.9.11
 #> 
@@ -112,6 +117,7 @@ installed {nert} using the R-Universe (the preferred method), you can
 keep {nert} up-to-date locally like so:
 
 ``` r
+
 update.packages()
 ```
 
@@ -160,6 +166,7 @@ devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 To cite nert:
 
 ``` r
+
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
