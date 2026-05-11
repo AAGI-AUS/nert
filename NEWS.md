@@ -1,5 +1,17 @@
 # nert 0.1.0
 
+## Breaking changes
+
+* `read_smips()` argument `day` has been renamed to `date`, matching
+  the unified argument naming used across all `read_*()` functions.
+  Existing code calling `read_smips(day = ...)` will fail with an
+  "unused argument" error; replace `day = ` with `date = `. The
+  rename was introduced when `read_smips()` was reintroduced as a thin
+  wrapper over `read_tern("SMIPS", ...)` (PR #26) but was not
+  surfaced in `NEWS.md` at the time; this 0.1.0 entry corrects the
+  omission per
+  [#35](https://github.com/AAGI-AUS/nert/issues/35).
+
 ## New features
 
 * Retry behaviour is now configurable via package options
