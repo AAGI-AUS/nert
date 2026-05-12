@@ -26,7 +26,9 @@ This is a new release; there are no reverse dependencies on CRAN.
 ## Submission notes
 
 * First CRAN submission of `nert` (TERN data API client).
-* User-facing API surface is small (11 exports) and stable on the 0.0.x
-  development line; we expect to move to 0.1.0 after CRAN acceptance.
+* User-facing API surface is small (11 exports) and stable at 1.0.0,
+  the first stable release. The package matured through the 0.0.x
+  development line via PRs #29 (phase-2 dataset expansion), #31
+  (post-merge follow-up + audit), and #32 (the present submission).
 * No bundled compiled code; all data access is via `terra::rast()` over
   `/vsicurl/` against `data.tern.org.au`.
