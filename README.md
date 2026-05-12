@@ -66,7 +66,7 @@ This is a basic example which shows you how you can fetch one day's data from th
 
 ``` r
 library(nert)
-r <- read_smips(day = "2024-01-01")
+r <- read_smips(date = "2024-01-01")
 
 # `autoplot` is re-exported from {tidyterra}
 autoplot(r)

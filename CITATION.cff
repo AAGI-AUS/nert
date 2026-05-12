@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "nert: An API Client for TERN Data"
+abstract: >-
+  Provides access to Australia's TERN (Terrestrial Ecosystem Research
+  Network) data through the API.
+authors:
+  - family-names: Sparks
+    given-names: Adam H.
+    email: adamhsparks@gmail.com
+    orcid: "https://orcid.org/0000-0002-0061-8359"
+  - family-names: Pipattungsakul
+    given-names: Wasin
+    email: wasin.pipattungsakul@adelaide.edu.au
+  - family-names: Edson
+    given-names: Russell
+    email: russell.edson@adelaide.edu.au
+    orcid: "https://orcid.org/0000-0002-4607-5396"
+  - family-names: Rogers
+    given-names: Sam
+    email: sam.rogers@adelaide.edu.au
+    orcid: "https://orcid.org/0000-0002-8147-1239"
+  - family-names: Moldovan
+    given-names: Max
+    email: max.moldovan@adelaide.edu.au
+    orcid: "https://orcid.org/0000-0001-9680-8474"
+version: "0.0.3.9000"
+license: MIT
+repository-code: "https://github.com/AAGI-AUS/nert"
+url: "https://aagi-aus.github.io/nert/"
+keywords:
+  - TERN
+  - soil-data
+  - Australia
+  - earth-science
+  - data-access
+  - r-package

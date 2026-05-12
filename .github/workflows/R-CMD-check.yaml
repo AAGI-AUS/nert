@@ -48,6 +48,17 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - name: Configure PROJ on macOS
+        # macos-latest runner has proj available but does not export PROJ_LIB,
+        # so sf/terra print "proj_create: Cannot find proj.db" on every load.
+        # R CMD check captures that stderr and elevates several sections to
+        # WARNING. Exporting PROJ_LIB / PROJ_DATA silences it.
+        if: runner.os == 'macOS'
+        run: |
+          brew install proj
+          echo "PROJ_LIB=$(brew --prefix proj)/share/proj" >> "$GITHUB_ENV"
+          echo "PROJ_DATA=$(brew --prefix proj)/share/proj" >> "$GITHUB_ENV"
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true

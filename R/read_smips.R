@@ -147,7 +147,6 @@ read_smips <- function(
 #' @dev
 #' @dev
 .check_collection_agreement <- function(.collection, .day) {
-  # .this_year <- lubridate::year(lubridate::today())
   .last_week <- lubridate::today() - 7
   .url_year <- lubridate::year(.day)
 
