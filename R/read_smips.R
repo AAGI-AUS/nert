@@ -139,9 +139,11 @@ read_smips <- function(
 
 #' Validate Days Requested Align With Collection
 #'
-#' Not all dates are offered by all collections. This checks the user inputs to
-#' be sure that unavailable dates are not requested from collections that do not
-#' provide them.
+#' SMIPS daily COGs are published from 2015-11-20 (the earliest archived
+#' national mosaic on the TERN portal) up to approximately seven days before
+#' today.  Requests outside that window return HTTP 404 from the GDAL vsicurl
+#' driver, which surfaces as an opaque "file does not exist" error from
+#' [terra::rast()].  This helper catches that case before any network I/O.
 #'
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
@@ -149,20 +151,22 @@ read_smips <- function(
 #' @autoglobal
 #'
 #' @dev
-#' @dev
 .check_collection_agreement <- function(.collection, .day) {
-  .last_week <- lubridate::today() - 7
-  .url_year <- lubridate::year(.day)
+  smips_start <- as.Date("2015-11-20")
+  last_week   <- lubridate::today() - 7L
+  day_d       <- as.Date(.day)
 
-  if (
-    .collection == "totalbucket" &&
-      .url_year < 2005L ||
-      # NOTE: this is throwing "'tzone' attributes are inconsistent"
-      .day > .last_week
-  ) {
+  if (day_d < smips_start) {
     cli::cli_abort(
-      "The data are not available before 2005 and roughly
-                   much past { .last_week }"
+      "SMIPS data are not available before {format(smips_start, '%Y-%m-%d')}. \\
+       You requested {format(day_d, '%Y-%m-%d')}."
+    )
+  }
+  if (day_d > last_week) {
+    cli::cli_abort(
+      "SMIPS publishes with a roughly seven-day delay; the most recent date \\
+       available is {format(last_week, '%Y-%m-%d')}. You requested \\
+       {format(day_d, '%Y-%m-%d')}."
     )
   }
 }
