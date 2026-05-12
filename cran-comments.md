@@ -25,21 +25,12 @@ acceptable.
 
 ## Submission notes
 
-* This is a minor release of `nert` (TERN data API client), version 1.1.0.
-  It follows the maintainer-tagged 1.0.0 release (which has not yet been
-  submitted to CRAN) and folds in the findings of a thorough internal
-  audit conducted by an independent reviewer before the inaugural CRAN
-  submission.  The audit and the fixes it produced are described below.
-* The user-facing **API surface** (11 exports, same signatures) is
-  unchanged from 1.0.0.  The bump from `1.0.0` to `1.1.0` (rather than
-  `1.0.1`) is motivated by two observable changes that go beyond strict
-  bug-fixing: (i) `collect_tern_data()` always emits `lon`/`lat` columns,
-  including for single-location calls (previously omitted), and (ii)
-  several input validators have been tightened so that inputs `1.0.0`
-  silently accepted now error informatively.  Both changes are
-  intentional and documented in `NEWS.md`.  The only breaking-rename
-  prior to this release (`read_smips(day=)` → `read_smips(date=)`) is
-  documented in the 1.0.0 NEWS entry on the same line.
+* This is the first stable release of `nert` (TERN data API client),
+  version 1.0.0.  It follows the development line `0.0.1` → `0.0.4` and
+  consolidates the user-facing API surface (11 exports covering 14
+  TERN datasets through a unified `read_tern()` dispatcher and the
+  batch primitive `collect_tern_data()`) together with the audit-driven
+  pre-CRAN polish.  The audit findings folded in are itemised below.
 * No bundled compiled code; all data access is via `terra::rast()` over
   `/vsicurl/` against `data.tern.org.au`.
 * All metadata-page references in Rd were migrated from
@@ -53,9 +44,9 @@ acceptable.
   COG data over `/vsicurl/`.  `R CMD check --as-cran` therefore neither
   attempts nor counts the network-bound examples.
 
-## Patch contents (1.0.1)
+## Audit findings folded into this release
 
-Audit findings addressed:
+The following items are documented in `NEWS.md` under 1.0.0:
 
 * **Vignette runnability** — both bundled vignettes corrected to call
   `read_smips(date = ...)`; the agricultural vignette's `xy = ` argument
@@ -90,4 +81,4 @@ Audit findings addressed:
   the `tern.org.au/news-...` redirect target updated to its current path.
 
 A complete commit summary for reviewers is available in the branch
-`cleanup/cran-prep-1.0.1`.
+`cleanup/cran-prep-1.1.0` (PR #41).
