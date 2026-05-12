@@ -25,7 +25,7 @@ Authors:
   \item Adam H. Sparks \email{adamhsparks@gmail.com} (\href{https://orcid.org/0000-0002-0061-8359}{ORCID})
   \item Wasin Pipattungsakul \email{wasin.pipattungsakul@adelaide.edu.au}
   \item Russell Edson \email{russell.edson@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
-  \item Max Moldovan \email{max.moldovan@adelaide.edu.au}
+  \item Max Moldovan \email{max.moldovan@adelaide.edu.au} (\href{https://orcid.org/0000-0001-9680-8474}{ORCID})
 }
 
 Other contributors:
