@@ -94,9 +94,9 @@ r_phc <- read_slga("PHC", depth = "030_060", collection = "CI")
 \dontshow{\}) # examplesIf}
 }
 \references{
-AWC: \url{https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7}
+AWC: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7}
 
-SLGA: \url{https://www.clw.csiro.au/aclep/soilandlandscapegrid/}
+SLGA: \url{https://esoil.io/TERNLandscapes/Public/Pages/SLGA/}
 }
 \seealso{
 Other COGs: 

@@ -47,7 +47,7 @@
 #'
 #' @references
 #'   CMRSET portal:
-#'   <https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 #'
 #'   CMRSET DOI: \doi{10.25901/gg27-ck96}
 #'

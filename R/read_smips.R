@@ -71,7 +71,7 @@
 #'
 #' @references
 #'   SMIPS portal:
-#'   <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #'
 #' @autoglobal
 #' @export

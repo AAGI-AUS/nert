@@ -4,10 +4,13 @@
 \alias{read_asc}
 \title{Read Australian Soil Classification (ASC) Data}
 \source{
-\describe{
-\item{ASC Data}{\url{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif}}
-\item{Confusion Index}{\url{https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif}}
-}
+ASC mosaic metadata (estimated soil-order class and confusion index):
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c}.
+The underlying COG endpoints (\code{ASC_EV_C_P_AU_TRN_N.cog.tif} and
+\code{ASC_CI_C_P_AU_TRN_N.cog.tif} under
+\code{/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/} on
+\code{data.tern.org.au}) require an authenticated request and are
+constructed internally by this package.
 }
 \usage{
 read_asc(
@@ -71,7 +74,7 @@ autoplot(r_ci)
 \dontshow{\}) # examplesIf}
 }
 \references{
-\url{https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c}
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c}
 }
 \seealso{
 Other COGs: 

@@ -87,7 +87,7 @@ r_runoff <- read_smips("2024-01-15", collection = "runoff")
 }
 \references{
 SMIPS portal:
-\url{https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
 }
 \seealso{
 \code{\link[=read_tern]{read_tern()}}, \code{\link[=read_aet]{read_aet()}}, \code{\link[=read_asc]{read_asc()}}

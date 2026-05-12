@@ -69,9 +69,9 @@
 #'   requested attribute, depth, and statistic.
 #'
 #' @references
-#'   AWC: <https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7>
+#'   AWC: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7>
 #'
-#'   SLGA: <https://www.clw.csiro.au/aclep/soilandlandscapegrid/>
+#'   SLGA: <https://esoil.io/TERNLandscapes/Public/Pages/SLGA/>
 #'
 #' @autoglobal
 #' @export

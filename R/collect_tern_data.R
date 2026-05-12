@@ -439,11 +439,11 @@ collect_tern_data <- function(
       do.call(read_tern, c(list(wi$ds), wi$args, list(api_key = api_key)))
     ),
     error = function(e) {
-      cli::cli_warn(c(
-        "Failed to fetch {.field {wi$label}}; column(s) {.val {wi$cols}} \\
-         left as {.code NA}.",
-        "x" = conditionMessage(e)
-      ))
+      cli::cli_warn(
+        "Failed to fetch {.field {wi$label}}; column(s) \\
+         {.val {wi$cols}} left as {.code NA}.",
+        parent = e
+      )
       NULL
     }
   )
@@ -454,10 +454,10 @@ collect_tern_data <- function(
   ext <- tryCatch(
     suppressWarnings(terra::extract(r, pts)),
     error = function(e) {
-      cli::cli_warn(c(
+      cli::cli_warn(
         "Failed to extract {.field {wi$label}} at requested points.",
-        "x" = conditionMessage(e)
-      ))
+        parent = e
+      )
       NULL
     }
   )

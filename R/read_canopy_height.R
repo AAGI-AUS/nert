@@ -32,7 +32,7 @@
 #'   composite.
 #'
 #' @references
-#'   <https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba>
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba>
 #'
 #' @autoglobal
 #' @export
