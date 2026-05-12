@@ -20,101 +20,92 @@ collect_tern_data(
 }
 \arguments{
 \item{date_range}{A \code{Date} vector or character vector of dates
-(e.g. \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
+(e.g.\ \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
 OR a length-2 vector giving start and end dates
-(e.g. \code{c("2024-01-01", "2024-01-31")}).}
+(e.g.\ \code{c("2024-01-01", "2024-01-31")}).}
 
-\item{lon}{Longitude(s) (WGS84, EPSG:4326). Either:
-\itemize{
-\item A single numeric value (scalar)
-\item A numeric vector (multiple coordinates, same length as \code{lat})
-\item Omitted if using \code{xy} notation
-}}
+\item{lon}{Longitude(s) (WGS84, EPSG:4326).  Numeric scalar or vector
+(same length as \code{lat}).  Omit if using \code{xy} notation.}
 
-\item{lat}{Latitude(s) (WGS84, EPSG:4326). Either:
-\itemize{
-\item A single numeric value (scalar)
-\item A numeric vector (multiple coordinates, same length as \code{lon})
-\item Omitted if using \code{xy} notation
-}}
+\item{lat}{Latitude(s) (WGS84, EPSG:4326).  Numeric scalar or vector
+(same length as \code{lon}).  Omit if using \code{xy} notation.}
 
-\item{xy}{Optional: A \code{data.frame}, \code{data.table}, or \code{matrix}
-with coordinate columns. Column names should be \code{x} and \code{y} or
-\code{lon} and \code{lat}. If provided, \code{lon} and \code{lat} are ignored.
-Use \code{NULL} (default) for lon/lat parameters.}
+\item{xy}{Optional: a \code{data.frame}, \code{data.table}, or \code{matrix} with
+coordinate columns named \code{lon}/\code{lat} or \code{x}/\code{y}.  Takes precedence
+over \code{lon}/\code{lat} when supplied.}
 
-\item{datasets}{A \code{character} vector of dataset aliases to collect.
-Default: all 14 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW, PHC,
-PHW, NTO, SOILDIV, CANOPY, PHENOLOGY).
-Use \code{NULL} or \code{"all"} for all datasets.}
+\item{datasets}{\code{character} vector of dataset aliases to collect.
+Default: all 14 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW,
+PHC, PHW, NTO, SOILDIV, CANOPY, PHENOLOGY).  Use \code{NULL} or \code{"all"}
+for all datasets.}
 
 \item{depth}{For SLGA datasets: depth interval (default \code{"all"}).
 Options: \code{"000_005"}, \code{"005_015"}, \code{"015_030"}, \code{"030_060"},
-\code{"060_100"}, \code{"100_200"}, or \code{"all"} for all 6 depths.
+\code{"060_100"}, \code{"100_200"}, or \code{"all"} for all six GlobalSoilMap depths.
 Ignored for non-SLGA datasets.}
 
-\item{stat}{For SLGA datasets: \code{"EV"} (estimate, default) or
-\code{"CI"} (confidence interval). Ignored for non-SLGA datasets.}
+\item{stat}{For SLGA datasets: \code{"EV"} (estimate, default) or \code{"CI"}
+(confidence interval).  Ignored for non-SLGA datasets.}
 
-\item{smips_collection}{For SMIPS dataset: collection type (default \code{"all"}).
-Options: \code{"totalbucket"} (total soil moisture, full active layer),
-\code{"SMindex"} (soil moisture index, 0-100\%),
-\code{"bucket1"} (top soil layer), \code{"bucket2"} (second soil layer),
-\code{"deepD"} (deep soil layer), \code{"runoff"} (surface runoff),
-or \code{"all"} to collect all 6 SMIPS variants as separate columns.
-Ignored for non-SMIPS datasets.}
+\item{smips_collection}{For SMIPS: \code{"all"} (default, all six variants),
+\code{"totalbucket"}, \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"}, \code{"deepD"},
+or \code{"runoff"}.  Ignored for non-SMIPS datasets.}
 
-\item{api_key}{TERN API key. Default: \code{get_key()}.}
+\item{api_key}{TERN API key.  Default: \code{get_key()}.}
 
-\item{verbose}{Logical. If \code{TRUE}, print progress messages.}
+\item{verbose}{Logical.  If \code{TRUE}, print progress messages.}
 
-\item{na.rm}{Logical. If \code{TRUE}, remove rows with all NA values.}
+\item{na.rm}{Logical.  If \code{TRUE}, drop rows where all dataset columns
+are \code{NA}.}
 }
 \value{
 A \code{data.table} with columns:
 \itemize{
-\item \code{date}: Date
-\item \code{lon}, \code{lat}: Coordinates (if multiple locations)
-\item One column per dataset, named by alias (e.g. \code{SMIPS}, \code{AWC})
+\item \code{date}: \code{Date}.
+\item \code{lon}, \code{lat}: coordinates (always included; constant when a single
+location is requested).
+\item One column per dataset layer.  See \strong{Details} for naming.
 }
 }
 \description{
 Extract values from one or more TERN datasets at given location(s) over a
-date range. Supports single or multiple coordinates. Returns a data.table
-with one row per date per location and one column per dataset.
-Static datasets are repeated across all dates.
+date range. Returns a \code{data.table} with one row per (date, location) and
+one column per dataset layer.  Static datasets are repeated across all
+dates.
 }
 \details{
-\strong{Single location:} Returns N rows (one per date) x K columns (datasets).
+\strong{Vectorised extraction.}  For each unique COG required (a
+(dataset, date, variant, depth) tuple), the function opens the COG
+\strong{once} and calls \code{\link[terra:extract]{terra::extract()}} \strong{once} with all requested
+coordinates as a single \code{SpatVector}.  Returning M locations × N dates
+across K work items therefore costs K COG opens and K extract calls,
+not M × K.  Time-series datasets contribute one work item per date;
+static datasets contribute one work item total (the value is replicated
+across the date axis at output assembly time).
 
-\strong{Multiple locations:} Returns (N x M) rows (dates x locations) x (K+2)
-columns (date + lon + lat + datasets).
-
-\strong{Time-series datasets} (SMIPS, AET): Values extracted for each date.
+\strong{Column naming.}
 \itemize{
-\item SMIPS may have multiple layers (bands) from the COG; all layers are extracted
-as separate columns (e.g., \code{SMIPS_band_1}, \code{SMIPS_band_2}, ...).
-\item AET typically returns a single layer per date.
+\item SMIPS with \code{smips_collection = "all"}: six columns named
+\code{SMIPS_totalbucket}, \code{SMIPS_SMindex}, \code{SMIPS_bucket1}, \code{SMIPS_bucket2},
+\code{SMIPS_deepD}, \code{SMIPS_runoff}.
+\item SMIPS with a single collection: one column \verb{SMIPS_<collection>}.
+\item SLGA with \code{depth = "all"}: six columns per dataset (e.g.\
+\code{AWC_000_005} ... \code{AWC_100_200}).
+\item SLGA with a single depth: one column named for the dataset alias.
+\item AET: one column \code{AET}.
+\item ASC: one column \code{ASC} (character soil-order class).
+\item CANOPY, SOILDIV, PHENOLOGY: one column each named for the alias.
 }
 
-\strong{Static datasets} (SLGA, ASC, SOILDIV, CANOPY, PHENOLOGY): Values repeated
-across all dates.
-\itemize{
-\item SLGA datasets with \code{depth = "all"} expand to 6 columns (one per depth).
-\item Other static datasets typically return single-layer values as one column.
-\item When multi-layer datasets are detected, each layer becomes a separate column
-(named by layer name from the COG).
-}
-
-\strong{ASC data type:} Australian Soil Classification (ASC) returns character values
-(soil order descriptions) instead of numeric codes.
-
-If a request fails (e.g. no internet, API error), that dataset column
-will contain \code{NA} for the affected rows.
+\strong{Failure handling.}  If a work item's COG fetch or extract fails, the
+corresponding column(s) remain \code{NA} for the affected rows and a
+\code{cli::cli_warn()} identifies the dataset/date/error.  The output schema
+(column count and names) is fixed at planning time and is invariant
+under per-COG failure.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Single location
+# Single location, single dataset
 dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day")
 d_t <- collect_tern_data(
   date_range = dates,
@@ -124,16 +115,15 @@ d_t <- collect_tern_data(
 )
 head(d_t)
 
-# Multiple locations (vectors)
+# Multiple locations (vectorised across points within each COG)
 d_t_multi <- collect_tern_data(
   lon = c(138.6, 139.5),
   lat = c(-34.9, -35.5),
   date_range = dates,
   datasets = c("SMIPS", "CANOPY")
 )
-head(d_t_multi)
 
-# Using xy notation (data.frame)
+# xy data.frame notation
 xy <- data.frame(lon = c(138.6, 139.5), lat = c(-34.9, -35.5))
 d_t_xy <- collect_tern_data(
   xy = xy,
