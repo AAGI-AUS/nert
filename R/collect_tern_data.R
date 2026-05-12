@@ -137,8 +137,7 @@ collect_tern_data <- function(
     datasets, dates, depth, stat, smips_collection
   )
 
-  n_rows <- n_dt * n_loc
-  out    <- data.table::data.table(
+  out <- data.table::data.table(
     date = rep(dates, each = n_loc),
     lon  = rep(coords_df$lon, times = n_dt),
     lat  = rep(coords_df$lat, times = n_dt)
