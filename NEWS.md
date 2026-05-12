@@ -8,7 +8,7 @@
   "unused argument" error; replace `day = ` with `date = `. The
   rename was introduced when `read_smips()` was reintroduced as a thin
   wrapper over `read_tern("SMIPS", ...)` (PR #26) but was not
-  surfaced in `NEWS.md` at the time; this 0.1.0 entry corrects the
+  surfaced in `NEWS.md` at the time; this 1.0.0 entry corrects the
   omission per
   [#35](https://github.com/AAGI-AUS/nert/issues/35).
 
@@ -31,7 +31,7 @@
   When `NULL`, values are resolved at call time from
   `getOption("nert.max_tries")` and `getOption("nert.initial_delay")`.
   This is **non-breaking**: existing user code that passes explicit
-  integers (e.g.\ `read_tern("CANOPY", max_tries = 5L)`) continues to
+  integers (e.g., `read_tern("CANOPY", max_tries = 5L)`) continues to
   work unchanged and still overrides the option.
 
 * New internal helper `.init_nert_options()` (in `R/zzz.R`) populates
