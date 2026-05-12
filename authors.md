@@ -11,7 +11,7 @@
 - **Sam Rogers**. Maintainer, author.
   [](https://orcid.org/0000-0002-8147-1239)
 
-- **Max Moldovan**. Author.
+- **Max Moldovan**. Author. [](https://orcid.org/0000-0001-9680-8474)
 
 - **Curtin University**. Copyright holder.
   [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/02n415q13)  
@@ -25,14 +25,14 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/AAGI-AUS/nert/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/AAGI-AUS/nert/blob/main/inst/CITATION)
 
-Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). *nert:
-An API Client for TERN Data*. R package version 0.0.3.9000,
-<https://aagi-aus.github.io/nert/>.
+Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert:
+An API Client for TERN Data. R package version 0.0.3.9000.
+https://aagi-aus.github.io/nert/
 
     @Manual{,
-      title = {nert: An API Client for TERN Data},
+      title = {{nert}: An API Client for TERN Data},
       author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
       year = {2026},
       note = {R package version 0.0.3.9000},

@@ -39,6 +39,26 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.4" id="nert-004">nert 0.0.4<a class="anchor" aria-label="anchor" href="#nert-004"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-0-0-4">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-4"></a></h3>
+<ul><li><p>AET URL prefix corrected from <code>/landscapes/aet/v2_2/</code> to <code>/model-derived/aet/v2_2/</code> in <code><a href="../reference/dot-make_aet_url.html">.make_aet_url()</a></code>. TERN’s bucket reorganisation moved CMRSET v2.2 under the model-derived classification (CMRSET is a CSIRO-modelled output, not a satellite landscape product); the legacy path returns 301 → 401 because GDAL <code>/vsicurl/</code> does not propagate the <code>apikey:KEY@host</code> userinfo across the redirect, surfacing in R as <code>[rast] file does not exist</code>. Verified against the live TERN COG listing.</p></li>
+<li><p><code><a href="../reference/read_slga.html">read_slga()</a></code> now applies <code><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper()</a></code> to the <code>attribute</code> argument before <code><a href="https://rlang.r-lib.org/reference/arg_match.html" class="external-link">rlang::arg_match()</a></code> (rather than inside it), fixing the <code>! 'arg' must be a symbol, not a call.</code> error reported when running the help example.</p></li>
+<li><p><code>.TERN_ALIASES</code> casing bug in <code><a href="../reference/dot-tern_dispatch_id.html">.tern_dispatch_id()</a></code> resolved (incomplete rename surfaced during PR <a href="https://github.com/AAGI-AUS/nert/issues/30" class="external-link">#30</a>; live name is <code>.tern_aliases</code>).</p></li>
+<li><p><code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> now correctly expands <code>depth = "all"</code> for the eight SLGA datasets (AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO) into the six GlobalSoilMap depth intervals, producing one column per (dataset, depth) named e.g. <code>AWC_000_005</code>. Previously the literal string <code>"all"</code> was passed straight through to <code><a href="../reference/dot-read_tern_slga.html">.read_tern_slga()</a></code> which rejected it via <code><a href="https://rlang.r-lib.org/reference/arg_match.html" class="external-link">rlang::arg_match()</a></code>; the resulting error was silently swallowed and the eight SLGA datasets disappeared from the result. Returning all 14 datasets at all SLGA depths now yields 60 columns (1 date + 6 SMIPS variants + ASC + AET + 8 SLGA x 6 depths + SOILDIV + CANOPY + PHENOLOGY).</p></li>
+<li><p><code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> now surfaces fetch errors via <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> instead of silently dropping the failed dataset’s column. Failed cells contain <code>NA</code>; the warning identifies the dataset, the date (where applicable), and the underlying error message. Pairs with the SLGA fix above to ensure the column count of the result matches the verbose datasets-table announcement.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-changes-0-0-4">Internal changes<a class="anchor" aria-label="anchor" href="#internal-changes-0-0-4"></a></h3>
+<ul><li><p>Removed unused <code>.create_sf()</code> helper and its tests. Originally added as scaffolding for an <code>extract_aet()</code> function that was never delivered.</p></li>
+<li><p>Removed unused <code>.check_not_example_api_key()</code> helper and its test.</p></li>
+<li><p><code>withr</code> added to <code>Suggests</code> for test fixtures.</p></li>
+<li><p><code>tests/testthat/setup.R</code> loads <code>TERN_API_KEY</code> from <code>~/.Renviron</code> so the network-dependent tests run during <code>R CMD check</code> when the user has the key configured locally. CI continues to skip the network tests when no repository secret is configured — intentional behaviour.</p></li>
+<li><p><code>roxyglobals</code> and <code>moodymudskipper/devtag</code> integrated for <code>@autoglobal</code> and <code>@dev</code> roxygen tag support; pkgdown reference index now builds without internal-helper warnings.</p></li>
+<li><p><code>Authors@R</code>: Max Moldovan ORCID added.</p></li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.3.9000" id="nert-0039000">nert 0.0.3.9000<a class="anchor" aria-label="anchor" href="#nert-0039000"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-0-3-9000">New features<a class="anchor" aria-label="anchor" href="#new-features-0-0-3-9000"></a></h3>
