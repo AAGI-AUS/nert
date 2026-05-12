@@ -2,11 +2,13 @@
 ^\.github$
 ^\.gitignore$
 ^\.devcontainer$
+^\.lintr$
 ^codecov\.yml$
 ^codemeta\.json$
 ^.*\.Rproj$
 ^\.Rprofile$
 ^\.Renviron$
+^SUPPORT\.md$
 
 ^_pkgdown\.yml$
 
