@@ -1,3 +1,78 @@
+# nert 1.0.1
+
+## Performance
+
+* `collect_tern_data()` is now vectorised across locations. Previously the
+  function looped over (location, dataset, date) tuples and called
+  `read_tern()` + `terra::extract()` once per single point, redownloading
+  the same Cloud Optimised GeoTIFF (COG) once per location. The
+  refactored version plans a list of *work items* (one item per unique
+  COG), opens each COG once via `/vsicurl/`, and calls
+  `terra::extract()` once with all coordinates passed as a single
+  `SpatVector`. For M locations and a work-item budget K, the function
+  now performs K reads and K extracts rather than M × K of each.
+
+## Bug fixes
+
+* `collect_tern_data()` now predeclares every output column at `NA` at
+  planning time. A per-COG fetch failure leaves the affected column at
+  `NA` without removing it from the result, so the column count and
+  schema are invariant under network failure (previously, non-SLGA
+  static datasets could disappear from the result silently).
+* `.check_collection_agreement()` (SMIPS date validator) now uses the
+  documented 2015-11-20 lower bound (was 2005) and emits grammatical,
+  dated error messages. The operator-precedence bug that caused
+  non-`totalbucket` collections to bypass the lower-bound check is fixed.
+* `read_asc(confusion_index = NULL)` previously silently took the
+  Confusion-Index branch via `isFALSE(NULL) == FALSE`. The argument is
+  now strictly required to be a single non-`NA` logical.
+* `.read_cog(max_tries = 0L)` previously returned `NULL` silently
+  because the loop body never executed; now errors with a clear message.
+  Non-integer-coercible `max_tries` (e.g. `"two"`) is also rejected.
+* `.tern_dispatch_id()` now rejects vector input rather than silently
+  collapsing to the first element. The error message points users to
+  `collect_tern_data()` for multi-dataset calls.
+* `read_phenology()` with a missing `year` now surfaces the documented
+  2003--2018 message rather than R's generic missing-argument message
+  (`year` defaults to `NULL`). The validator also rejects non-integer
+  values (e.g. `2018.5`) and vector years.
+* Two vignette runnability defects fixed: the agricultural vignette
+  previously called `read_smips(day = ...)` (now `date = ...`) and
+  contained an injected `collect_tern_data()` section whose output
+  schema clobbered the chunk-to-chunk `smips_data` variable used by
+  later analytics; replaced with a corrected, `eval=FALSE` showcase
+  placed after the analytics. The intro vignette's two remaining
+  `day = ...` calls were also corrected.
+* Prose corrections in vignettes: `Yield_tha` → `Yield_Tha` (matches
+  the data column name); `Ecological` → `Ecosystem` (TERN's actual
+  expansion); `vaporisation` → `volatilisation` (consistent with the
+  earlier paragraph and chemistry); `visualalising` → `visualising`;
+  `SMindex` scale described as "0--100" rather than "0--1" to match
+  the COG.
+* `grain` Rd description corrected: `Variety` factor has 8 levels
+  (matches `levels(grain$Variety)`), not 10.
+
+## Documentation
+
+* All `portal.tern.org.au/metadata/TERN/<UUID>` Rd references migrated
+  to `geonetwork.tern.org.au/...` URLs; several portal URLs returned
+  HTTP 404 as of 2026-05, while GeoNetwork resolves all UUIDs.
+  The dead `www.clw.csiro.au/aclep/...` URL replaced with the active
+  `esoil.io/TERNLandscapes/...` equivalent. `urlchecker::url_check()`
+  is now clean.
+
+## Internal changes
+
+* `sf` removed from Imports (zero references in package code; legacy
+  scaffolding from a never-delivered helper).
+* `nlme` demoted from Imports to Suggests; it is used only by the
+  agricultural vignette, which already declares
+  `%\VignetteDepends{nlme}`. The `@import nlme` directive that pulled
+  it into the namespace without using any of it was removed.
+* `tests/testthat/test-validation.R` and a substantially expanded
+  `test-collect_tern_data.R` cover the new validation paths and the
+  new work-item planner (37 + 9 deterministic offline tests).
+
 # nert 1.0.0
 
 ## Breaking changes
