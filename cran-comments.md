@@ -25,16 +25,21 @@ acceptable.
 
 ## Submission notes
 
-* This is a patch release of `nert` (TERN data API client), version 1.0.1.
+* This is a minor release of `nert` (TERN data API client), version 1.1.0.
   It follows the maintainer-tagged 1.0.0 release (which has not yet been
   submitted to CRAN) and folds in the findings of a thorough internal
   audit conducted by an independent reviewer before the inaugural CRAN
   submission.  The audit and the fixes it produced are described below.
-* User-facing API surface (11 exports) is unchanged from 1.0.0; the
-  package version was bumped to 1.0.1 because several bug fixes were
-  incorporated.  No breaking changes since 1.0.0; the 1.0.0 NEWS entry
-  itself documents the only breaking rename (`read_smips(day=)` →
-  `read_smips(date=)`) introduced on the 0.0.x → 1.0.0 line.
+* The user-facing **API surface** (11 exports, same signatures) is
+  unchanged from 1.0.0.  The bump from `1.0.0` to `1.1.0` (rather than
+  `1.0.1`) is motivated by two observable changes that go beyond strict
+  bug-fixing: (i) `collect_tern_data()` always emits `lon`/`lat` columns,
+  including for single-location calls (previously omitted), and (ii)
+  several input validators have been tightened so that inputs `1.0.0`
+  silently accepted now error informatively.  Both changes are
+  intentional and documented in `NEWS.md`.  The only breaking-rename
+  prior to this release (`read_smips(day=)` → `read_smips(date=)`) is
+  documented in the 1.0.0 NEWS entry on the same line.
 * No bundled compiled code; all data access is via `terra::rast()` over
   `/vsicurl/` against `data.tern.org.au`.
 * All metadata-page references in Rd were migrated from

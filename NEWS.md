@@ -1,4 +1,21 @@
-# nert 1.0.1
+# nert 1.1.0
+
+The version was bumped from `1.0.0` to `1.1.0` (minor) rather than `1.0.1`
+(patch) for two observable changes that go beyond strict bug-fixing:
+
+1. `collect_tern_data()` now always emits `lon` and `lat` columns,
+   including for single-location calls.  Previously these columns were
+   present only when more than one location was requested.
+2. Several input validators are stricter (see *Bug fixes* below).  Inputs
+   that `1.0.0` silently accepted — `read_asc(confusion_index = NULL)`,
+   `read_smips()` for dates before 2015-11-20 in non-`totalbucket`
+   collections, vector `dataset_id` to `read_tern()`, fractional or
+   missing `year` to `read_phenology()` — now raise informative errors.
+
+Both are intentional (the first standardises the output schema across
+call shapes; the second surfaces what used to be silent failures), but
+they are visible to existing call sites and therefore warrant a minor
+rather than patch bump.
 
 ## Performance
 
