@@ -66,7 +66,7 @@
 #' @autoglobal
 #' @export
 read_phenology <- function(
-  year,
+  year          = NULL,
   season        = 1L,
   collection    = "SGS",
   api_key       = get_key(),

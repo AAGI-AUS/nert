@@ -18,6 +18,20 @@
   max_tries     <- max_tries     %||% getOption("nert.max_tries", 3L)
   initial_delay <- initial_delay %||% getOption("nert.initial_delay", 1L)
 
+  max_tries     <- suppressWarnings(as.integer(max_tries))
+  initial_delay <- suppressWarnings(as.integer(initial_delay))
+  if (is.na(max_tries) || max_tries < 1L) {
+    cli::cli_abort(
+      "{.arg max_tries} must be a positive integer; got {.val {max_tries}}."
+    )
+  }
+  if (is.na(initial_delay) || initial_delay < 0L) {
+    cli::cli_abort(
+      "{.arg initial_delay} must be a non-negative integer; \\
+       got {.val {initial_delay}}."
+    )
+  }
+
   attempt <- 1L
   success <- FALSE
 

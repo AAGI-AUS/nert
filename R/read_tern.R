@@ -286,7 +286,14 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .tern_dispatch_id <- function(id) {
-  id <- trimws(as.character(id[[1L]]))
+  if (length(id) != 1L) {
+    cli::cli_abort(
+      "{.arg dataset_id} must be a single character string; \\
+       got length {.val {length(id)}}. To collect multiple datasets in one \\
+       call use {.fn collect_tern_data}."
+    )
+  }
+  id <- trimws(as.character(id))
 
   # Check alias table first (case-insensitive)
   upper_id <- toupper(id)
@@ -390,11 +397,22 @@ read_tern <- function(
            e.g.  {.code year = 2018}."
         )
       }
-      year <- as.integer(year)
-      if (year < 2003L || year > 2018L) {
+      if (length(year) != 1L) {
+        cli::cli_abort(
+          "Phenology {.arg year} must be a single value; got length \\
+           {.val {length(year)}}."
+        )
+      }
+      year_int <- suppressWarnings(as.integer(year))
+      if (is.na(year_int) || year_int != year) {
+        cli::cli_abort(
+          "Phenology {.arg year} must be an integer; got {.val {year}}."
+        )
+      }
+      if (year_int < 2003L || year_int > 2018L) {
         cli::cli_abort(
           "Phenology data are available for years 2003--2018.
-           You requested {year}."
+           You requested {year_int}."
         )
       }
     },

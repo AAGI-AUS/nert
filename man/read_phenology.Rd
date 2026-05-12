@@ -5,7 +5,7 @@
 \title{Read Land Surface Phenology from TERN}
 \usage{
 read_phenology(
-  year,
+  year = NULL,
   season = 1L,
   collection = "SGS",
   api_key = get_key(),

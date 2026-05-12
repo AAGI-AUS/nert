@@ -61,11 +61,19 @@ read_asc <- function(
   max_tries = NULL,
   initial_delay = NULL
 ) {
+  if (!is.logical(confusion_index) ||
+      length(confusion_index) != 1L ||
+      is.na(confusion_index)) {
+    cli::cli_abort(
+      "{.arg confusion_index} must be a single non-NA logical value \\
+       ({.code TRUE} or {.code FALSE})."
+    )
+  }
   api_key <- .check_api_key(api_key)
   dl_file <- data.table::fifelse(
-    isFALSE(confusion_index),
-    "ASC_EV_C_P_AU_TRN_N.cog.tif",
-    "ASC_CI_C_P_AU_TRN_N.cog.tif"
+    confusion_index,
+    "ASC_CI_C_P_AU_TRN_N.cog.tif",
+    "ASC_EV_C_P_AU_TRN_N.cog.tif"
   )
 
   full_url <- sprintf(
