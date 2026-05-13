@@ -1,10 +1,4 @@
 # Cross-cutting helpers for COG access.
-#
-# These helpers are not specific to any single TERN dataset; every
-# read_*() handler ultimately funnels through `.read_cog()` and the
-# `.check_api_key()` URL-encoding step.  Dataset-specific helpers
-# (e.g. `.make_aet_url()`, `.make_smips_url()`) live in the dataset's
-# own read_*.R file alongside its exported wrapper.
 
 #' Read a COG from TERN
 #'

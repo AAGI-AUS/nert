@@ -1,23 +1,4 @@
-# Offline mocking helpers for the network-bound read_*() functions and
-# collect_tern_data().
-#
-# Why this layer (and not httptest2):
-#   All TERN COG access in {nert} flows through `.read_cog()`, which calls
-#   `terra::rast()`.  `terra::rast()` opens a GDAL /vsicurl/ handle and
-#   issues HTTP range requests from C via libcurl -- which httptest2 cannot
-#   intercept (httptest2 mocks the R-side {httr2} request layer).  Mocking
-#   the package-internal `.read_cog()` binding through
-#   `testthat::local_mocked_bindings()` is therefore the right cut: every
-#   read_*() handler funnels through it, the URL string carries every
-#   parameter the user supplied, and no network or libcurl path is ever
-#   exercised offline.
-#
-# Two products are exposed:
-#   * `.fixture_numeric_raster()` / `.fixture_character_raster()` -- tiny
-#     in-memory SpatRasters covering an Australia-shaped bounding box.
-#   * `.use_mocked_cog()` -- installs a mocked `.read_cog` binding in the
-#     {nert} namespace for the lifetime of the calling test, capturing
-#     URLs into a sink environment.
+# Offline mocking helpers for read_*() and collect_tern_data().
 
 # ---- Fixture rasters --------------------------------------------------------
 

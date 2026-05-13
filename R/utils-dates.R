@@ -1,10 +1,4 @@
-# Cross-dataset date helpers.
-#
-# `.check_date()` is used by both the SMIPS and AET handlers; it does
-# not belong in either dataset's file.  Dataset-specific date logic
-# (the SMIPS [2015-11-20, today-7] window, the AET [2000-02-01, today]
-# floor-to-month) lives in the relevant read_*.R file alongside that
-# dataset's exported wrapper.
+# Date helpers shared across datasets.
 
 #' Check User Input Dates for Validity
 #'
