@@ -37,10 +37,14 @@
 #' @param api_key A \code{character} string containing your \acronym{TERN}
 #'   \acronym{API} key.  Defaults to automatic detection from your
 #'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
-#' @param max_tries An \code{integer} giving the maximum number of download
-#'   retries before an error is raised.  Defaults to \code{3}.
-#' @param initial_delay An \code{integer} giving the initial retry delay in
-#'   seconds (doubles with each attempt).  Defaults to \code{1}.
+#' @param max_tries Maximum number of download retries before an error is
+#'   raised.  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+#'   for a single call.
+#' @param initial_delay Initial retry delay in seconds (doubles with each
+#'   attempt).  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+#'   override for a single call.
 #'
 #' @returns
 #' A [terra::rast()] object of the requested SMIPS collection.
@@ -67,7 +71,7 @@
 #'
 #' @references
 #'   SMIPS portal:
-#'   <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #'
 #' @autoglobal
 #' @export
@@ -75,8 +79,8 @@ read_smips <- function(
   date,
   collection = "totalbucket",
   api_key    = NULL,
-  max_tries  = 3L,
-  initial_delay = 1L
+  max_tries  = NULL,
+  initial_delay = NULL
 ) {
   read_tern(
     "SMIPS",
@@ -89,55 +93,52 @@ read_smips <- function(
 }
 
 
-#' Check User Input Dates for Validity
+# -- Internal SMIPS handler --------------------------------------------------
+
+#' Internal handler for SMIPS (\code{TERN/d1995ee8})
 #'
-#' @param x User entered date value
-#' @returns Validated date string as a `POSIXct` object.
-#' @note This was taken from \CRANpkg{nasapower}.
-#' @examples
-#' .check_date("2024-01-01")
-#' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
-#' @dev
-.check_date <- function(x) {
-  if (length(x) > 1L) {
-    cli::cli_abort("Only one day is allowed per request.")
+.read_tern_smips <- function(dots, api_key, max_tries, initial_delay) {
+  # Accept both 'date' and the legacy 'day' parameter name
+  date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["day"]]
+  if (is.null(date)) {
+    cli::cli_abort(
+      "SMIPS requires a {.arg date} argument (daily resolution),
+       e.g.  {.code date = \"2024-01-15\"}."
+    )
   }
-
-  if (lubridate::is.POSIXct(x) || lubridate::is.Date(x)) {
-    tz <- lubridate::tz(x)
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
   } else {
-    tz <- Sys.timezone()
+    "totalbucket"
   }
 
-  tryCatch(
-    x <- lubridate::parse_date_time(
-      x,
-      c(
-        "Ymd",
-        "dmY",
-        "BdY",
-        "Bdy"
-      ),
-      tz = tz
-    ),
-    warning = function(c) {
-      cli::cli_abort(
-        "{ x } is not in a valid date format.
-                     Please enter a valid date format."
-      )
-    }
+  day <- .check_date(date)
+  dl_file <- .make_smips_url(.collection = collection, .day = day)
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
+    api_key,
+    collection,
+    lubridate::year(day),
+    dl_file
   )
-  return(x)
+  .read_cog(full_url, max_tries, initial_delay)
 }
 
 
+# -- SMIPS date-window and URL helpers --------------------------------------
+
 #' Validate Days Requested Align With Collection
 #'
-#' Not all dates are offered by all collections. This checks the user inputs to
-#' be sure that unavailable dates are not requested from collections that do not
-#' provide them.
+#' SMIPS daily COGs are published from 2015-11-20 (the earliest archived
+#' national mosaic on the TERN portal) up to approximately seven days before
+#' today.  Requests outside that window return HTTP 404 from the GDAL vsicurl
+#' driver, which surfaces as an opaque "file does not exist" error from
+#' [terra::rast()].  This helper catches that case before any network I/O.
 #'
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
@@ -145,20 +146,22 @@ read_smips <- function(
 #' @autoglobal
 #'
 #' @dev
-#' @dev
 .check_collection_agreement <- function(.collection, .day) {
-  .last_week <- lubridate::today() - 7
-  .url_year <- lubridate::year(.day)
+  smips_start <- as.Date("2015-11-20")
+  last_week   <- lubridate::today() - 7L
+  day_d       <- as.Date(.day)
 
-  if (
-    .collection == "totalbucket" &&
-      .url_year < 2005L ||
-      # NOTE: this is throwing "'tzone' attributes are inconsistent"
-      .day > .last_week
-  ) {
+  if (day_d < smips_start) {
     cli::cli_abort(
-      "The data are not available before 2005 and roughly
-                   much past { .last_week }"
+      "SMIPS data are not available before {format(smips_start, '%Y-%m-%d')}. \\
+       You requested {format(day_d, '%Y-%m-%d')}."
+    )
+  }
+  if (day_d > last_week) {
+    cli::cli_abort(
+      "SMIPS publishes with a roughly seven-day delay; the most recent date \\
+       available is {format(last_week, '%Y-%m-%d')}. You requested \\
+       {format(day_d, '%Y-%m-%d')}."
     )
   }
 }

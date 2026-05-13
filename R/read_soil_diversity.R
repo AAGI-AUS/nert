@@ -22,10 +22,14 @@
 #'   \code{3}.
 #' @param api_key A \code{character} string containing your \acronym{TERN}
 #'   \acronym{API} key.  Defaults to automatic detection via [get_key()].
-#' @param max_tries An \code{integer} giving the maximum number of download
-#'   retries.  Defaults to \code{3}.
-#' @param initial_delay An \code{integer} giving the initial retry delay in
-#'   seconds (doubles with each attempt).  Defaults to \code{1}.
+#' @param max_tries Maximum number of download retries before an error is
+#'   raised.  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+#'   for a single call.
+#' @param initial_delay Initial retry delay in seconds (doubles with each
+#'   attempt).  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+#'   override for a single call.
 #'
 #' @family COGs
 #'
@@ -42,7 +46,7 @@
 #'   mosaic for the requested organism and NMDS axis.
 #'
 #' @references
-#'   <https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
 #'
 #' @autoglobal
 #' @export
@@ -50,8 +54,8 @@ read_soil_diversity <- function(
   collection    = "Bacteria",
   axis          = 1L,
   api_key       = get_key(),
-  max_tries     = 3L,
-  initial_delay = 1L
+  max_tries     = NULL,
+  initial_delay = NULL
 ) {
   read_tern(
     "SOILDIV",
@@ -61,4 +65,33 @@ read_soil_diversity <- function(
     max_tries     = max_tries,
     initial_delay = initial_delay
   )
+}
+
+
+# -- Internal Soil Beta Diversity handler -----------------------------------
+
+#' Internal handler for Soil Beta Diversity (\code{TERN/4a428d52})
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @autoglobal
+#' @dev
+.read_tern_soil_diversity <- function(dots, api_key, max_tries, initial_delay) {
+  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "Bacteria"
+  axis       <- if (!is.null(dots[["axis"]])) as.integer(dots[["axis"]]) else 1L
+
+  approved_collections <- c("Bacteria", "Fungi")
+  collection <- rlang::arg_match(collection, approved_collections)
+
+  if (!axis %in% 1L:3L) {
+    cli::cli_abort("Soil Beta Diversity {.arg axis} must be 1, 2, or 3.")
+  }
+
+  fname <- sprintf("NMDS_%s_%d_%s_pred.tif", collection, axis, collection)
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/Other/SoilBetaDiversity/%s",
+    api_key, fname
+  )
+  .read_cog(full_url, max_tries, initial_delay)
 }

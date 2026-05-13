@@ -135,10 +135,31 @@
 #'   \acronym{API} key.  Defaults to automatic detection from your
 #'   \code{.Renviron} or \code{.Rprofile}.  See \code{\link{get_key}} for
 #'   setup instructions.
-#' @param max_tries An \code{integer} giving the maximum number of download
-#'   retries before an error is raised.  Defaults to \code{3}.
-#' @param initial_delay An \code{integer} giving the initial retry delay in
-#'   seconds (doubles with each attempt).  Defaults to \code{1}.
+#' @param max_tries Maximum number of download retries before an error is
+#'   raised.  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
+#'   for a single call.
+#' @param initial_delay Initial retry delay in seconds (doubles with each
+#'   attempt).  When \code{NULL} (default), resolved from
+#'   \code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
+#'   override for a single call.
+#'
+#' @section Package options:
+#' \pkg{nert} reads two package-level options on every call.  Both are
+#' set to package defaults at load time and may be overridden globally
+#' (e.g.\ in \code{.Rprofile}) without changing any individual call:
+#' \describe{
+#'   \item{\code{nert.max_tries}}{Default maximum number of download
+#'     retries.  Default \code{3L}.}
+#'   \item{\code{nert.initial_delay}}{Default initial retry delay in
+#'     seconds (doubles each attempt).  Default \code{1L}.}
+#' }
+#' Per-call values supplied via the \code{max_tries} or
+#' \code{initial_delay} arguments always override the option.  Example:
+#' \preformatted{
+#'   options(nert.max_tries = 5L, nert.initial_delay = 2L)
+#' }
+#' Closes \href{https://github.com/AAGI-AUS/nert/issues/20}{AAGI-AUS/nert#20}.
 #'
 #' @family COGs
 #'
@@ -168,19 +189,19 @@
 #'   requested dataset (and, where applicable, date/collection).
 #'
 #' @references
-#'   SMIPS: <https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
+#'   SMIPS: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #'
-#'   ASC: <https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c>
+#'   ASC: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>
 #'
-#'   AET: <https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+#'   AET: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 #'
-#'   AWC: <https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7>
+#'   AWC: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7>
 #'
-#'   Soil Beta Diversity: <https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
+#'   Soil Beta Diversity: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
 #'
-#'   Canopy Height: <https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba>
+#'   Canopy Height: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba>
 #'
-#'   Land Surface Phenology: <https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
+#'   Land Surface Phenology: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
 #'
 #' @autoglobal
 #' @export
@@ -188,8 +209,8 @@ read_tern <- function(
   dataset_id,
   ...,
   api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 ) {
   if (missing(dataset_id)) {
     cli::cli_abort("You must provide a {.arg dataset_id}.")
@@ -265,7 +286,14 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .tern_dispatch_id <- function(id) {
-  id <- trimws(as.character(id[[1L]]))
+  if (length(id) != 1L) {
+    cli::cli_abort(
+      "{.arg dataset_id} must be a single character string; \\
+       got length {.val {length(id)}}. To collect multiple datasets in one \\
+       call use {.fn collect_tern_data}."
+    )
+  }
+  id <- trimws(as.character(id))
 
   # Check alias table first (case-insensitive)
   upper_id <- toupper(id)
@@ -369,331 +397,26 @@ read_tern <- function(
            e.g.  {.code year = 2018}."
         )
       }
-      year <- as.integer(year)
-      if (year < 2003L || year > 2018L) {
+      if (length(year) != 1L) {
+        cli::cli_abort(
+          "Phenology {.arg year} must be a single value; got length \\
+           {.val {length(year)}}."
+        )
+      }
+      year_int <- suppressWarnings(as.integer(year))
+      if (is.na(year_int) || year_int != year) {
+        cli::cli_abort(
+          "Phenology {.arg year} must be an integer; got {.val {year}}."
+        )
+      }
+      if (year_int < 2003L || year_int > 2018L) {
         cli::cli_abort(
           "Phenology data are available for years 2003--2018.
-           You requested {year}."
+           You requested {year_int}."
         )
       }
     },
     .tern_not_implemented(dataset_id)
   )
   invisible(NULL)
-}
-
-
-# -- SMIPS handler -------------------------------------------------------------
-
-#' Internal handler for SMIPS (\code{TERN/d1995ee8})
-#'
-#' @param dots Named list of \code{...} args from [read_tern()].
-#' @param api_key URL-encoded API key.
-#' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
-#' @dev
-.read_tern_smips <- function(dots, api_key, max_tries, initial_delay) {
-  # Accept both 'date' and the legacy 'day' parameter name
-  date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["day"]]
-  if (is.null(date)) {
-    cli::cli_abort(
-      "SMIPS requires a {.arg date} argument (daily resolution),
-       e.g.  {.code date = \"2024-01-15\"}."
-    )
-  }
-  collection <- if (!is.null(dots[["collection"]])) {
-    dots[["collection"]]
-  } else {
-    "totalbucket"
-  }
-
-  day <- .check_date(date)
-  dl_file <- .make_smips_url(.collection = collection, .day = day)
-  full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
-    api_key,
-    collection,
-    lubridate::year(day),
-    dl_file
-  )
-  .read_cog(full_url, max_tries, initial_delay)
-}
-
-
-# -- ASC handler ---------------------------------------------------------------
-
-#' Internal handler for ASC (\code{TERN/15728dba})
-#'
-#' @inheritParams .read_tern_smips
-#' @autoglobal
-#' @dev
-.read_tern_asc <- function(dots, api_key, max_tries, initial_delay) {
-  collection <- if (!is.null(dots[["collection"]])) {
-    dots[["collection"]]
-  } else {
-    "EV"
-  }
-
-  approved <- c("EV", "CI")
-  collection <- rlang::arg_match(collection, approved)
-
-  dl_file <- data.table::fifelse(
-    collection == "EV",
-    "ASC_EV_C_P_AU_TRN_N.cog.tif",
-    "ASC_CI_C_P_AU_TRN_N.cog.tif"
-  )
-  full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
-    api_key,
-    dl_file
-  )
-  .read_cog(full_url, max_tries, initial_delay)
-}
-
-
-# -- AET handler ---------------------------------------------------------------
-
-#' Internal handler for AET/CMRSET (\code{TERN/9fefa68b})
-#'
-#' @inheritParams .read_tern_smips
-#' @autoglobal
-#' @dev
-.read_tern_aet <- function(dots, api_key, max_tries, initial_delay) {
-  # Accept both 'date' and the legacy 'month' parameter name
-  date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["month"]]
-  if (is.null(date)) {
-    cli::cli_abort(
-      "AET requires a {.arg date} argument (monthly resolution),
-       e.g.  {.code date = \"2023-06-01\"}."
-    )
-  }
-  collection <- if (!is.null(dots[["collection"]])) {
-    dots[["collection"]]
-  } else {
-    "ETa"
-  }
-
-  month <- .check_aet_date(date)
-  full_url <- .make_aet_url(
-    .collection = collection,
-    .month = month,
-    .api_key = api_key
-  )
-  .read_cog(full_url, max_tries, initial_delay)
-}
-
-
-# -- AET date/URL helpers (moved from aet.R) -----------------------------------
-
-#' Check User Input Months for AET Validity
-#'
-#' Validates and snaps a user-supplied date value to the first of the month,
-#' then checks it against the \acronym{AET} data availability window
-#' (from 2000-02-01 onwards).
-#'
-#' @param x User-entered date value (any format accepted by [.check_date()]).
-#' @returns A \code{POSIXct} object snapped to the first of the requested
-#'   month.
-#' @autoglobal
-#' @dev
-.check_aet_date <- function(x) {
-  x <- .check_date(x)
-  x <- lubridate::floor_date(x, "month")
-  yr <- lubridate::year(x)
-  mo <- lubridate::month(x)
-  if (yr < 2000L || (yr == 2000L && mo < 2L)) {
-    cli::cli_abort(
-      "AET data are not available before 2000-02-01.
-       You requested {format(x, '%Y-%m-%d')}."
-    )
-  }
-  return(x)
-}
-
-
-#' Build a GDAL vsicurl URL for an AET Collection
-#'
-#' @param .collection The user-supplied \acronym{AET} collection
-#'   (\code{"ETa"} or \code{"pixel_qa"}).
-#' @param .month The validated \code{POSIXct} date snapped to the first of
-#'   the month.
-#' @param .api_key The \acronym{URL}-encoded \acronym{API} key.
-#' @returns A \code{character} GDAL vsicurl URL string.
-#' @autoglobal
-#' @dev
-.make_aet_url <- function(.collection, .month, .api_key) {
-  approved_collections <- c("ETa", "pixel_qa")
-  collection <- rlang::arg_match(.collection, approved_collections)
-
-  year <- lubridate::year(.month)
-  date_str <- format(.month, "%Y_%m_%d")
-
-  sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
-    .api_key,
-    year,
-    date_str,
-    date_str,
-    collection
-  )
-}
-
-
-# -- SLGA handler --------------------------------------------------------------
-
-#' SLGA attribute configuration registry
-#'
-#' Named list mapping normalised dispatch IDs to their SLGA file-naming
-#' parameters: directory name, file prefix, version, release date, and
-#' filename suffix.
-#'
-#' @format A named \code{list} of \code{list}s.
-#' @autoglobal
-#' @dev
-.slga_config <- list(
-  "482301c2" = list(dir = "AWC", prefix = "AWC", version = "v2",
-                    date = "20210614", suffix = "AU_TRN_N"),
-  "slga_cly" = list(dir = "CLY", prefix = "CLY", version = "v2",
-                    date = "20210902", suffix = "AU_TRN_N"),
-  "slga_snd" = list(dir = "SND", prefix = "SND", version = "v2",
-                    date = "20210902", suffix = "AU_TRN_N"),
-  "slga_slt" = list(dir = "SLT", prefix = "SLT", version = "v2",
-                    date = "20210902", suffix = "AU_TRN_N"),
-  "slga_bdw" = list(dir = "BDW", prefix = "BDW", version = "v2",
-                    date = "20230607", suffix = "AU_TRN_N"),
-  "slga_phc" = list(dir = "pHc", prefix = "PHC", version = "v2",
-                    date = "20210913", suffix = "AU_NAT_C"),
-  "slga_phw" = list(dir = "PHW", prefix = "PHW", version = "v1",
-                    date = "20220520", suffix = "AU_TRN_N"),
-  "slga_nto" = list(dir = "NTO", prefix = "NTO", version = "v2",
-                    date = "20231101", suffix = "AU_NAT_C")
-)
-
-
-#' Internal handler for SLGA soil attributes
-#'
-#' A generic handler that covers all eight SLGA soil attributes.  Each
-#' attribute has a fixed file-naming pattern encoded in [.slga_config].
-#'
-#' @param did Normalised dispatch ID (e.g.\ \code{"482301c2"}, \code{"slga_cly"}).
-#' @param dots Named list of \code{...} args from [read_tern()].
-#' @param api_key URL-encoded API key.
-#' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
-#' @dev
-.read_tern_slga <- function(did, dots, api_key, max_tries, initial_delay) {
-  cfg <- .slga_config[[did]]
-
-  depth      <- if (!is.null(dots[["depth"]])) dots[["depth"]] else "000_005"
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "EV"
-
-  approved_depths <- c("000_005", "005_015", "015_030",
-                       "030_060", "060_100", "100_200")
-  depth <- rlang::arg_match(depth, approved_depths)
-
-  approved_stats <- c("EV", "CI")
-  collection <- rlang::arg_match(collection, approved_stats)
-
-  fname <- sprintf("%s_%s_%s_N_P_%s_%s.tif",
-                   cfg$prefix, depth, collection, cfg$suffix, cfg$date)
-  full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/%s/%s/%s",
-    api_key, cfg$dir, cfg$version, fname
-  )
-  .read_cog(full_url, max_tries, initial_delay)
-}
-
-
-# -- Soil Beta Diversity handler -----------------------------------------------
-
-#' Internal handler for Soil Beta Diversity (\code{TERN/4a428d52})
-#'
-#' @inheritParams .read_tern_smips
-#' @autoglobal
-#' @dev
-.read_tern_soil_diversity <- function(dots, api_key, max_tries, initial_delay) {
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "Bacteria"
-  axis       <- if (!is.null(dots[["axis"]])) as.integer(dots[["axis"]]) else 1L
-
-  approved_collections <- c("Bacteria", "Fungi")
-  collection <- rlang::arg_match(collection, approved_collections)
-
-  if (!axis %in% 1L:3L) {
-    cli::cli_abort("Soil Beta Diversity {.arg axis} must be 1, 2, or 3.")
-  }
-
-  fname <- sprintf("NMDS_%s_%d_%s_pred.tif", collection, axis, collection)
-  full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/Other/SoilBetaDiversity/%s",
-    api_key, fname
-  )
-  .read_cog(full_url, max_tries, initial_delay)
-}
-
-
-# -- Canopy Height handler ----------------------------------------------------
-
-#' Internal handler for Canopy Height (\code{TERN/36c98155})
-#'
-#' @param api_key URL-encoded API key.
-#' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
-#' @dev
-.read_tern_canopy_height <- function(api_key, max_tries, initial_delay) {
-  full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif",
-    api_key
-  )
-  .read_cog(full_url, max_tries, initial_delay)
-}
-
-
-# -- Phenology handler ---------------------------------------------------------
-
-#' Phenology metric registry
-#'
-#' Named list mapping metric abbreviations to their subdirectory names on
-#' the TERN data server.
-#'
-#' @format A named \code{list} of \code{character} strings.
-#' @autoglobal
-#' @dev
-.phenology_metrics <- list(
-  SGS = "1_Start_of_the_growing_season",
-  PGS = "2_Peak_of_the_growing_season",
-  EGS = "3_End_of_the_growing_season",
-  LGS = "4_Length_of_the_growing_season",
-  SOS = "5_Start_of_season",
-  POS = "6_Peak_of_season",
-  EOS = "7_End_of_season",
-  LOS = "8_Length_of_season",
-  ROG = "9_Rate_of_greening",
-  ROS = "10_Rate_of_senescence"
-)
-
-
-#' Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})
-#'
-#' @inheritParams .read_tern_smips
-#' @autoglobal
-#' @dev
-.read_tern_phenology <- function(dots, api_key, max_tries, initial_delay) {
-  year       <- as.integer(dots[["year"]])
-  season     <- if (!is.null(dots[["season"]])) as.integer(dots[["season"]]) else 1L
-  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "SGS"
-
-  approved_metrics <- names(.phenology_metrics)
-  collection <- rlang::arg_match(collection, approved_metrics)
-
-  if (!season %in% 1L:2L) {
-    cli::cli_abort("Phenology {.arg season} must be 1 or 2.")
-  }
-
-  metric_dir <- .phenology_metrics[[collection]]
-  fname <- sprintf("%s_%d_Season%d.tif", collection, year, season)
-  full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/%s/%s",
-    api_key, metric_dir, fname
-  )
-  .read_cog(full_url, max_tries, initial_delay)
 }

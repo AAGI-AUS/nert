@@ -17,9 +17,11 @@ guidance in setting up the keys.
 }
 \note{
 \acronym{TERN} creates \acronym{API} keys that have special characters that
-include \dQuote{/}, which causes the query to fail. Currently, \code{get_key()}
-checks for this in the \code{API_KEY} string and replaces it with \dQuote{\%2f}
-so that the query will work properly.
+include \dQuote{/}, which causes the query to fail. Currently, the
+\verb{read_*()} functions will test for these problematic characters and
+replace them with the HTML-safe equivalents where necessary so that the
+query will work properly. However, \code{get_key()} simply returns the
+\acronym{API} key verbatim.
 }
 \section{Requesting an API Key}{
 To request an \acronym{API} key, go to

@@ -26,7 +26,7 @@ degrees Easting.
 \item \code{NitrogenDate}: The date that the Nitrogen treatments
 were applied.
 \item \code{Rep}: Replicate number. (Each site has 3 replicates.)
-\item \code{Variety}: The anonymised variety (10 levels).
+\item \code{Variety}: The anonymised variety (8 levels).
 \item \code{Nitrogen_kgNha}: The applied Nitrogen rate treatment,
 in kg N/ha.
 \item \code{SeedRate_plantsm2}: The seeding rate, measured in

@@ -17,7 +17,7 @@ vignette: >
 
 
 
-The Australian Terrestrial Ecological Research Network (TERN) offers several data sets as Cloud Optimised Geotiff (COG) files.
+The Australian Terrestrial Ecosystem Research Network (TERN) offers several data sets as Cloud Optimised Geotiff (COG) files.
 The Soil Moisture Integration and Prediction System (SMIPS) generates useful measurements of soil moisture at 1km resolution across all of Australia and the Australian Soil Classification map (ASC) provides modelled soil class data at a resolution of 90m.
 TERN provides these data as packaged daily datasets [via their TERN Data Portal](https://portal.tern.org.au/results).
 The {nert} package provides ease of access to these datasets for use and inclusion in R data analytics workflows.
@@ -149,7 +149,7 @@ library(nert)
 library(keyring)
 
 r <- read_smips(
-  day = "2024-01-01",
+  date = "2024-01-01",
   api_key = key_get("NERT_API_KEY", keyring = "nert")
 )
 ```
@@ -163,10 +163,10 @@ Using the example from above, you can get the SMIPS data for all of Australia on
 
 ``` r
 library(nert)
-r <- read_smips(day = "2024-01-01")
+r <- read_smips(date = "2024-01-01")
 ```
 
-Note that {nert} re-exports `tidyterra::autoplot` for ease of visualalising the TERN data.
+Note that {nert} re-exports `tidyterra::autoplot` for ease of visualising the TERN data.
 
 
 ``` r

@@ -25,11 +25,14 @@
 #'   nothing is provided, you will be prompted on how to set up your \R session
 #'   so that it is auto-detected and a browser window will open at the
 #'   \acronym{TERN} website for you to request a key.
-#' @param max_tries An integer `Integer` with the number of times to retry a
-#'   failed download before emitting an error message.  Defaults to 3.
-#' @param initial_delay An `Integer` with the number of seconds to delay before
-#'   retrying the download.  This increases as the tries increment.  Defaults to
-#'   1.
+#' @param max_tries Maximum number of download retries before an error is
+#'   raised.  When `NULL` (default), resolved from
+#'   `getOption("nert.max_tries", 3L)`.  Pass an integer to override for
+#'   a single call.
+#' @param initial_delay Initial retry delay in seconds (doubles with each
+#'   attempt).  When `NULL` (default), resolved from
+#'   `getOption("nert.initial_delay", 1L)`.  Pass an integer to override
+#'   for a single call.
 #'
 #' @family COGs
 #'
@@ -45,24 +48,35 @@
 #'
 #' @returns A  [terra::rast()] object.
 #' @source
-#' \describe{
-#'  \item{ASC Data}{<https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif>}
-#'  \item{Confusion Index}{<https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif>}
-#'  }
+#'   ASC mosaic metadata (estimated soil-order class and confusion index):
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>.
+#'   The underlying COG endpoints (\code{ASC_EV_C_P_AU_TRN_N.cog.tif} and
+#'   \code{ASC_CI_C_P_AU_TRN_N.cog.tif} under
+#'   \code{/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/} on
+#'   \code{data.tern.org.au}) require an authenticated request and are
+#'   constructed internally by this package.
 #' @autoglobal
-#' @references <https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c>
+#' @references <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>
 #' @export
 read_asc <- function(
   confusion_index = FALSE,
   api_key = get_key(),
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 ) {
+  if (!is.logical(confusion_index) ||
+      length(confusion_index) != 1L ||
+      is.na(confusion_index)) {
+    cli::cli_abort(
+      "{.arg confusion_index} must be a single non-NA logical value \\
+       ({.code TRUE} or {.code FALSE})."
+    )
+  }
   api_key <- .check_api_key(api_key)
   dl_file <- data.table::fifelse(
-    isFALSE(confusion_index),
-    "ASC_EV_C_P_AU_TRN_N.cog.tif",
-    "ASC_CI_C_P_AU_TRN_N.cog.tif"
+    confusion_index,
+    "ASC_CI_C_P_AU_TRN_N.cog.tif",
+    "ASC_EV_C_P_AU_TRN_N.cog.tif"
   )
 
   full_url <- sprintf(
@@ -71,4 +85,37 @@ read_asc <- function(
     dl_file
   )
   return(.read_cog(full_url, max_tries, initial_delay))
+}
+
+
+# -- Internal ASC handler ----------------------------------------------------
+
+#' Internal handler for ASC (\code{TERN/15728dba})
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @autoglobal
+#' @dev
+.read_tern_asc <- function(dots, api_key, max_tries, initial_delay) {
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "EV"
+  }
+
+  approved <- c("EV", "CI")
+  collection <- rlang::arg_match(collection, approved)
+
+  dl_file <- data.table::fifelse(
+    collection == "EV",
+    "ASC_EV_C_P_AU_TRN_N.cog.tif",
+    "ASC_CI_C_P_AU_TRN_N.cog.tif"
+  )
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
+    api_key,
+    dl_file
+  )
+  .read_cog(full_url, max_tries, initial_delay)
 }
