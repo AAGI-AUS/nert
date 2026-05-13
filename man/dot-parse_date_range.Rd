@@ -13,7 +13,7 @@
 A \code{Date} vector.
 }
 \description{
-Accepts a length-2 character/Date vector as a \link{start, end} range and any
+Accepts a length-2 character/Date vector as a \verb{[start, end]} range and any
 longer vector as the explicit set of dates.
 }
 \keyword{internal}
