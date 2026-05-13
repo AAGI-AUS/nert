@@ -123,6 +123,29 @@ review.
   `test-collect_tern_data.R` cover the validation paths and the
   work-item planner (37 + 9 deterministic offline tests).
 
+* **Test coverage uplift via offline mocks.** Seven new test files
+  (`test-url-snapshots.R`, `test-read_aet.R`, `test-read_slga.R`,
+  `test-read_soil_diversity.R`, `test-read_canopy_height.R`,
+  `test-read_phenology.R`, `test-collect_tern_data_mocked.R`) and
+  expanded `test-read_asc.R` lift package coverage from ~58% to ~83%.
+  Mocking is done by `testthat::local_mocked_bindings()` against the
+  internal `.read_cog()` binding -- the single funnel through which
+  every public `read_*()` reaches `terra::rast()`.  We deliberately
+  did **not** adopt `httptest2`: the COG reads use the GDAL
+  `/vsicurl/` driver, which issues HTTP range requests from C, and
+  `httptest2` only intercepts R-side `httr2` requests (it cannot
+  see traffic that does not originate in `httr2`).  Mocking at `.read_cog()` is the
+  correct cut: it catches every URL the package would ever issue
+  without any network or C-level HTTP involvement, and reusable fixture
+  `SpatRaster`s built in `helper-mocks.R` let real `terra::extract()`
+  exercise the downstream output-assembly path.  The new
+  `test-url-snapshots.R` file additionally pins every URL template
+  via `expect_snapshot()` so any accidental change to a TERN bucket
+  path, version, or filename convention is caught at check time
+  rather than at user-facing HTTP 404.
+* Bumped `testthat (>= 3.0.0)` -> `testthat (>= 3.2.0)` in
+  `Suggests` for `local_mocked_bindings()` support.
+
 # nert 0.0.4
 
 ## Bug fixes

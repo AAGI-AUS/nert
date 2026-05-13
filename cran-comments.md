@@ -16,7 +16,9 @@ acceptable.
 
 | NOTE | Category | Justification |
 | --- | --- | --- |
-| _none yet_ | _intrinsic / environmental / source-fix-attempted / deferred-with-reason_ | _to be filled in at submission_ |
+| `checking CRAN incoming feasibility ... NOTE` (New submission; CITATION file read fails when package is not installed) | intrinsic | First-submission marker for a package that is not yet on CRAN. The CITATION read note arises because `tools::CITATION()` is called against the un-installed source tree at check time; once the build step installs the package, the CITATION file is read correctly (verified locally). |
+| `checking for future file timestamps ... NOTE` (unable to verify current time) | environmental | Local check environment without NTP access; not reproducible on CRAN's infrastructure. |
+| `checking HTML version of manual ... NOTE` (Skipping checking HTML validation: 'tidy' doesn't look like recent enough HTML Tidy) | environmental | Local macOS lacks a recent enough HTML Tidy binary. CRAN's infrastructure has a current HTML Tidy. |
 
 ## Reverse dependencies
 
