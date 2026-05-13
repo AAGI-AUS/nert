@@ -7,7 +7,7 @@ resolution derived from Landsat imagery.
 ## Usage
 
 ``` r
-read_canopy_height(api_key = get_key(), max_tries = 3L, initial_delay = 1L)
+read_canopy_height(api_key = get_key(), max_tries = NULL, initial_delay = NULL)
 ```
 
 ## Arguments
@@ -20,13 +20,15 @@ read_canopy_height(api_key = get_key(), max_tries = 3L, initial_delay = 1L)
 
 - max_tries:
 
-  An `integer` giving the maximum number of download retries. Defaults
-  to `3`.
+  Maximum number of download retries before an error is raised. When
+  `NULL` (default), resolved from `getOption("nert.max_tries", 3L)`.
+  Pass an integer to override for a single call.
 
 - initial_delay:
 
-  An `integer` giving the initial retry delay in seconds (doubles with
-  each attempt). Defaults to `1`.
+  Initial retry delay in seconds (doubles with each attempt). When
+  `NULL` (default), resolved from `getOption("nert.initial_delay", 1L)`.
+  Pass an integer to override for a single call.
 
 ## Value
 
@@ -45,7 +47,7 @@ for full details and additional datasets.
 
 ## References
 
-<https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba>
 
 ## See also
 

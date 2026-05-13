@@ -11,7 +11,7 @@ soil order classes at 90 m resolution. Returns character soil order descriptions
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,22 +54,21 @@ soil order classes at 90 m resolution. Returns character soil order descriptions
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_asc</span><span class="op">(</span></span>
 <span>  confusion_index <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="fu"><a href="get_key.html">get_key</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  max_tries <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span>  initial_delay <span class="op">=</span> <span class="fl">1L</span></span>
+<span>  max_tries <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  initial_delay <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
-
-<dl><dt>ASC Data</dt>
-<dd><p><a href="https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif" class="external-link">https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_EV_C_P_AU_TRN_N.cog.tif</a></p></dd>
-
-<dt>Confusion Index</dt>
-<dd><p><a href="https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif" class="external-link">https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/ASC_CI_C_P_AU_TRN_N.cog.tif</a></p></dd>
-
-
-</dl></div>
+    <p>ASC mosaic metadata (estimated soil-order class and confusion index):
+<a href="https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c" class="external-link">https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c</a>.
+The underlying COG endpoints (<code>ASC_EV_C_P_AU_TRN_N.cog.tif</code> and
+<code>ASC_CI_C_P_AU_TRN_N.cog.tif</code> under
+<code>/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/</code> on
+<code>data.tern.org.au</code>) require an authenticated request and are
+constructed internally by this package.</p>
+    </div>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
@@ -92,14 +91,17 @@ so that it is auto-detected and a browser window will open at the
 
 
 <dt id="arg-max-tries">max_tries<a class="anchor" aria-label="anchor" href="#arg-max-tries"></a></dt>
-<dd><p>An integer <code>Integer</code> with the number of times to retry a
-failed download before emitting an error message.  Defaults to 3.</p></dd>
+<dd><p>Maximum number of download retries before an error is
+raised.  When <code>NULL</code> (default), resolved from
+<code>getOption("nert.max_tries", 3L)</code>.  Pass an integer to override for
+a single call.</p></dd>
 
 
 <dt id="arg-initial-delay">initial_delay<a class="anchor" aria-label="anchor" href="#arg-initial-delay"></a></dt>
-<dd><p>An <code>Integer</code> with the number of seconds to delay before
-retrying the download.  This increases as the tries increment.  Defaults to
-1.</p></dd>
+<dd><p>Initial retry delay in seconds (doubles with each
+attempt).  When <code>NULL</code> (default), resolved from
+<code>getOption("nert.initial_delay", 1L)</code>.  Pass an integer to override
+for a single call.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -116,7 +118,7 @@ associated reliability/uncertainty estimates.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p><a href="https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c" class="external-link">https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c</a></p>
+    <p><a href="https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c" class="external-link">https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

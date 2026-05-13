@@ -18,9 +18,10 @@ A string value with your API key value.
 ## Note
 
 TERN creates API keys that have special characters that include “/”,
-which causes the query to fail. Currently, `get_key()` checks for this
-in the `API_KEY` string and replaces it with “%2f” so that the query
-will work properly.
+which causes the query to fail. Currently, the `read_*()` functions will
+test for these problematic characters and replace them with the
+HTML-safe equivalents where necessary so that the query will work
+properly. However, `get_key()` simply returns the API key verbatim.
 
 ## Requesting an API Key
 

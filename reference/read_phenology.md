@@ -9,12 +9,12 @@ MODIS MYD13A1 imagery at 500 m resolution. Data are available for years
 
 ``` r
 read_phenology(
-  year,
+  year = NULL,
   season = 1L,
   collection = "SGS",
   api_key = get_key(),
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 )
 ```
 
@@ -42,13 +42,15 @@ read_phenology(
 
 - max_tries:
 
-  An `integer` giving the maximum number of download retries. Defaults
-  to `3`.
+  Maximum number of download retries before an error is raised. When
+  `NULL` (default), resolved from `getOption("nert.max_tries", 3L)`.
+  Pass an integer to override for a single call.
 
 - initial_delay:
 
-  An `integer` giving the initial retry delay in seconds (doubles with
-  each attempt). Defaults to `1`.
+  Initial retry delay in seconds (doubles with each attempt). When
+  `NULL` (default), resolved from `getOption("nert.initial_delay", 1L)`.
+  Pass an integer to override for a single call.
 
 ## Value
 
@@ -108,7 +110,7 @@ for full details and additional datasets.
 
 ## References
 
-<https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
 
 ## See also
 

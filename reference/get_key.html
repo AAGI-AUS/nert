@@ -13,7 +13,7 @@ guidance in setting up the keys."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,9 +64,11 @@ guidance in setting up the keys.</p>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p><acronym>TERN</acronym> creates <acronym>API</acronym> keys that have special characters that
-include “/”, which causes the query to fail. Currently, <code>get_key()</code>
-checks for this in the <code>API_KEY</code> string and replaces it with “%2f”
-so that the query will work properly.</p>
+include “/”, which causes the query to fail. Currently, the
+<code>read_*()</code> functions will test for these problematic characters and
+replace them with the HTML-safe equivalents where necessary so that the
+query will work properly. However, <code>get_key()</code> simply returns the
+<acronym>API</acronym> key verbatim.</p>
     </div>
     <div class="section level2">
     <h2 id="requesting-an-api-key">Requesting an API Key<a class="anchor" aria-label="anchor" href="#requesting-an-api-key"></a></h2>

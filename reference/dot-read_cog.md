@@ -5,7 +5,7 @@ Read a COG from TERN
 ## Usage
 
 ``` r
-.read_cog(full_url, max_tries, initial_delay)
+.read_cog(full_url, max_tries = NULL, initial_delay = NULL)
 ```
 
 ## Arguments
@@ -16,7 +16,17 @@ Read a COG from TERN
 
 - max_tries:
 
-  The number of times to retry downloading before timing out.
+  Maximum number of download attempts before erroring. When `NULL`
+  (default), resolved at call time from
+  `getOption("nert.max_tries", 3L)`. Pass an integer to override for a
+  single call.
+
+- initial_delay:
+
+  Initial retry delay in seconds (doubles each attempt). When `NULL`
+  (default), resolved at call time from
+  `getOption("nert.initial_delay", 1L)`. Pass an integer to override for
+  a single call.
 
 ## Value
 

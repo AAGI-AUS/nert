@@ -29,6 +29,7 @@ Authors:
   ([ORCID](https://orcid.org/0000-0002-4607-5396))
 
 - Max Moldovan <max.moldovan@adelaide.edu.au>
+  ([ORCID](https://orcid.org/0000-0001-9680-8474))
 
 Other contributors:
 

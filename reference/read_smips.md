@@ -13,8 +13,8 @@ read_smips(
   date,
   collection = "totalbucket",
   api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 )
 ```
 
@@ -79,13 +79,15 @@ read_smips(
 
 - max_tries:
 
-  An `integer` giving the maximum number of download retries before an
-  error is raised. Defaults to `3`.
+  Maximum number of download retries before an error is raised. When
+  `NULL` (default), resolved from `getOption("nert.max_tries", 3L)`.
+  Pass an integer to override for a single call.
 
 - initial_delay:
 
-  An `integer` giving the initial retry delay in seconds (doubles with
-  each attempt). Defaults to `1`.
+  Initial retry delay in seconds (doubles with each attempt). When
+  `NULL` (default), resolved from `getOption("nert.initial_delay", 1L)`.
+  Pass an integer to override for a single call.
 
 ## Value
 
@@ -96,7 +98,7 @@ object of the requested SMIPS collection.
 ## References
 
 SMIPS portal:
-<https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 
 ## See also
 

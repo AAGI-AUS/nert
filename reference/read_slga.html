@@ -13,7 +13,7 @@ depth layers and two statistics (estimated value or confidence interval)."></hea
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,8 +59,8 @@ depth layers and two statistics (estimated value or confidence interval).</p>
 <span>  depth <span class="op">=</span> <span class="st">"000_005"</span>,</span>
 <span>  collection <span class="op">=</span> <span class="st">"EV"</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="fu"><a href="get_key.html">get_key</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  max_tries <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span>  initial_delay <span class="op">=</span> <span class="fl">1L</span></span>
+<span>  max_tries <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  initial_delay <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -91,13 +91,17 @@ depth layers and two statistics (estimated value or confidence interval).</p>
 
 
 <dt id="arg-max-tries">max_tries<a class="anchor" aria-label="anchor" href="#arg-max-tries"></a></dt>
-<dd><p>An <code>integer</code> giving the maximum number of download
-retries.  Defaults to <code>3</code>.</p></dd>
+<dd><p>Maximum number of download retries before an error is
+raised.  When <code>NULL</code> (default), resolved from
+<code>getOption("nert.max_tries", 3L)</code>.  Pass an integer to override
+for a single call.</p></dd>
 
 
 <dt id="arg-initial-delay">initial_delay<a class="anchor" aria-label="anchor" href="#arg-initial-delay"></a></dt>
-<dd><p>An <code>integer</code> giving the initial retry delay in
-seconds (doubles with each attempt).  Defaults to <code>1</code>.</p></dd>
+<dd><p>Initial retry delay in seconds (doubles with each
+attempt).  When <code>NULL</code> (default), resolved from
+<code>getOption("nert.initial_delay", 1L)</code>.  Pass an integer to
+override for a single call.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -146,8 +150,8 @@ details and additional datasets.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>AWC: <a href="https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7" class="external-link">https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7</a></p>
-<p>SLGA: <a href="https://www.clw.csiro.au/aclep/soilandlandscapegrid/" class="external-link">https://www.clw.csiro.au/aclep/soilandlandscapegrid/</a></p>
+    <p>AWC: <a href="https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7" class="external-link">https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7</a></p>
+<p>SLGA: <a href="https://esoil.io/TERNLandscapes/Public/Pages/SLGA/" class="external-link">https://esoil.io/TERNLandscapes/Public/Pages/SLGA/</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

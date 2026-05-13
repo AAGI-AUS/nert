@@ -18,7 +18,7 @@ follows:
 
 - `Rep`: Replicate number. (Each site has 3 replicates.)
 
-- `Variety`: The anonymised variety (10 levels).
+- `Variety`: The anonymised variety (8 levels).
 
 - `Nitrogen_kgNha`: The applied Nitrogen rate treatment, in kg N/ha.
 

@@ -61,9 +61,9 @@ interest are:
 1.  `totalbucket`: an estimate of the *volumetric soil moisture* (in
     units of mm) from the SMIPS bucket moisture store,
 
-2.  `SMindex`: the SMIPS *soil moisture index* (i.e., a number between 0
-    and 1 that indicates how full the SMIPS bucket moisture store is
-    relative to its 90cm capacity).
+2.  `SMindex`: the SMIPS *soil moisture index* (i.e., a percentage
+    between 0 and 100 that indicates how full the SMIPS bucket moisture
+    store is relative to its 90cm capacity).
 
 For simplicity, suppose we are interested in the SMIPS soil moisture
 index (`SMindex`) data, for all days falling between the earliest
@@ -125,7 +125,7 @@ longitude should be specified first, followed by latitude.)
 ``` r
 
 smips_data <- data.frame()
-for (i in 1:length(date_range)) {
+for (i in seq_along(date_range)) {
   r <- read_smips(date = date_range[i], collection = "SMindex")
   smips_points <- terra::extract(
     x = r,
@@ -172,39 +172,6 @@ head(smips_data)
 
 We are now ready to proceed with the analytics.
 
-## Simplified approach: Using `collect_tern_data()`
-
-Alternatively, you can use
-[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
-for a more streamlined workflow that returns a data table ready for
-analysis:
-
-``` r
-
-# Extract multiple SMIPS collections and soil attributes at all sites
-smips_data <- collect_tern_data(
-  xy = sites[, c("Longitude", "Latitude")],
-  date_range = c(start_date, end_date),
-  datasets = c("SMIPS", "AWC", "CLY"),
-  smips_collection = "all",  # Gets all 6 variants
-  depth = "000_005",  # Top 5 cm for soil texture
-  verbose = TRUE
-)
-
-head(smips_data)
-#>         date       lon    lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1 ...
-```
-
-This single function call extracts: - All 6 SMIPS variants (totalbucket,
-SMindex, bucket1, bucket2, deepD, runoff) - Available Water Capacity
-(AWC) - Clay content (CLY)
-
-All as properly named columns ready for your analysis pipeline. This is
-equivalent to calling
-[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
-[`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md),
-etc. individually but returns everything as a data table.
-
 ## A simple model for grain yield
 
 First, we model the grain yield with a simple model without taking into
@@ -214,7 +181,7 @@ SMIPS data to see how including the soil moisture as a covariate
 improves the nitrogen treatment effect size estimates.
 
 Here we will use the **nlme** package to fit a linear mixed-effect
-model. The grain yield `Yield_tha` will be modelled taking the
+model. The grain yield `Yield_Tha` will be modelled taking the
 `Variety`, nitrogen application rate `Nitrogen_kgNha` and seeding rate
 `SeedRate_plantsm2` as fixed terms, and incorporating the `Site` and
 replicate (`Rep`) structure of the experiment in a random effect term.
@@ -325,4 +292,35 @@ From the comparison of the effect sizes for the nitrogen treatment, we
 can see that ignoring the effect of soil moisture in the simple model
 underestimates the direct nitrogen treatment effect. The augmented
 model, in contrast, accounts for the soil moisture and the potential
-nitrogen vaporisation that may occur in higher soil moisture conditions.
+nitrogen volatilisation that may occur in higher soil moisture
+conditions.
+
+## Simplified collection with `collect_tern_data()`
+
+The hand-written `for` loop above is shown for didactic purposes — it
+makes the per-date COG read and per-site point extraction explicit. For
+routine use,
+[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+performs the same operation vectorised across locations, with one COG
+open per (dataset, date, variant) regardless of the number of points.
+The same `SMindex` time series can be produced with a single call:
+
+``` r
+
+smips_dt <- collect_tern_data(
+  xy = data.frame(lon = sites$Longitude, lat = sites$Latitude),
+  date_range = c(start_date, end_date),
+  datasets = "SMIPS",
+  smips_collection = "SMindex",
+  verbose = FALSE
+)
+head(smips_dt)
+```
+
+`smips_dt` is a `data.table` with one row per (date, location); a single
+extraction call replaces the inner
+[`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
+of the loop. The example above is shown with `eval=FALSE` to avoid
+duplicating the network traffic already performed by the loop; the
+output schema is identical to `smips_data` apart from the column name
+(`SMIPS_SMindex` rather than `smips_smi_perc`).

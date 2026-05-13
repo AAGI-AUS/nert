@@ -12,8 +12,8 @@ read_aet(
   date,
   collection = "ETa",
   api_key = NULL,
-  max_tries = 3L,
-  initial_delay = 1L
+  max_tries = NULL,
+  initial_delay = NULL
 )
 ```
 
@@ -39,13 +39,15 @@ read_aet(
 
 - max_tries:
 
-  An `integer` giving the maximum number of download retries before an
-  error is raised. Defaults to `3`.
+  Maximum number of download retries before an error is raised. When
+  `NULL` (default), resolved from `getOption("nert.max_tries", 3L)`.
+  Pass an integer to override for a single call.
 
 - initial_delay:
 
-  An `integer` giving the initial retry delay in seconds (doubles with
-  each attempt). Defaults to `1`.
+  Initial retry delay in seconds (doubles with each attempt). When
+  `NULL` (default), resolved from `getOption("nert.initial_delay", 1L)`.
+  Pass an integer to override for a single call.
 
 ## Value
 
@@ -56,7 +58,7 @@ object of the requested ET collection.
 ## References
 
 CMRSET portal:
-<https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 
 CMRSET DOI: [doi:10.25901/gg27-ck96](https://doi.org/10.25901/gg27-ck96)
 

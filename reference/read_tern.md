@@ -11,7 +11,13 @@ tidyterra workflows.
 ## Usage
 
 ``` r
-read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
+read_tern(
+  dataset_id,
+  ...,
+  api_key = NULL,
+  max_tries = NULL,
+  initial_delay = NULL
+)
 ```
 
 ## Arguments
@@ -38,13 +44,15 @@ read_tern(dataset_id, ..., api_key = NULL, max_tries = 3L, initial_delay = 1L)
 
 - max_tries:
 
-  An `integer` giving the maximum number of download retries before an
-  error is raised. Defaults to `3`.
+  Maximum number of download retries before an error is raised. When
+  `NULL` (default), resolved from `getOption("nert.max_tries", 3L)`.
+  Pass an integer to override for a single call.
 
 - initial_delay:
 
-  An `integer` giving the initial retry delay in seconds (doubles with
-  each attempt). Defaults to `1`.
+  Initial retry delay in seconds (doubles with each attempt). When
+  `NULL` (default), resolved from `getOption("nert.initial_delay", 1L)`.
+  Pass an integer to override for a single call.
 
 ## Value
 
@@ -232,28 +240,51 @@ THREDDS/OPeNDAP, GEE-based products, site-level API streams) cannot be
 read via simple COG HTTP range requests and are outside the current
 scope of nert.
 
+## Package options
+
+nert reads two package-level options on every call. Both are set to
+package defaults at load time and may be overridden globally (e.g.\\ in
+`.Rprofile`) without changing any individual call:
+
+- `nert.max_tries`:
+
+  Default maximum number of download retries. Default `3L`.
+
+- `nert.initial_delay`:
+
+  Default initial retry delay in seconds (doubles each attempt). Default
+  `1L`.
+
+Per-call values supplied via the `max_tries` or `initial_delay`
+arguments always override the option. Example:
+
+
+      options(nert.max_tries = 5L, nert.initial_delay = 2L)
+
+Closes [AAGI-AUS/nert#20](https://github.com/AAGI-AUS/nert/issues/20).
+
 ## References
 
 SMIPS:
-<https://portal.tern.org.au/metadata/TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 
 ASC:
-<https://portal.tern.org.au/metadata/TERN/15728dba-b49c-4da5-9073-13d8abe67d7c>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>
 
 AET:
-<https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 
 AWC:
-<https://portal.tern.org.au/metadata/TERN/482301c2-2837-4b0b-bf95-4883a04e5ff7>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7>
 
 Soil Beta Diversity:
-<https://portal.tern.org.au/metadata/TERN/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
 
 Canopy Height:
-<https://portal.tern.org.au/metadata/TERN/36c98155-c137-44b8-b4e0-6a3e824bbfba>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba>
 
 Land Surface Phenology:
-<https://portal.tern.org.au/metadata/TERN/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
 
 ## See also
 

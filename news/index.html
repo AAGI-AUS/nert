@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,59 @@
       <small>Source: <a href="https://github.com/AAGI-AUS/nert/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="nert-100">nert 1.0.0<a class="anchor" aria-label="anchor" href="#nert-100"></a></h2>
+<p>First stable release. The package has matured through the 0.0.x development line and is presented here with its complete user-facing surface — 11 exports covering 14 TERN datasets via a unified <code><a href="../reference/read_tern.html">read_tern()</a></code> dispatcher and the batch primitive <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> — along with the audit-driven polish accumulated during pre-CRAN review.</p>
+<div class="section level3">
+<h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/read_smips.html">read_smips()</a></code> argument <code>day</code> has been renamed to <code>date</code>, matching the unified argument naming used across all <code>read_*()</code> functions. Existing code calling <code>read_smips(day = ...)</code> will fail with an “unused argument” error; replace <code>day =</code> with <code>date =</code>. The rename was introduced when <code><a href="../reference/read_smips.html">read_smips()</a></code> was reintroduced as a thin wrapper over <code>read_tern("SMIPS", ...)</code> (PR <a href="https://github.com/AAGI-AUS/nert/issues/26" class="external-link">#26</a>) but was not surfaced in <code>NEWS.md</code> at the time; this 1.0.0 entry corrects the omission per <a href="https://github.com/AAGI-AUS/nert/issues/35" class="external-link">#35</a>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
+<ul><li>Retry behaviour is now configurable via package options <code>nert.max_tries</code> (default <code>3L</code>) and <code>nert.initial_delay</code> (default <code>1L</code>, seconds). Set globally with, e.g., <code>options(nert.max_tries = 5L, nert.initial_delay = 2L)</code> in your <code>.Rprofile</code> to apply across every <code>read_*()</code> and <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> call. Closes <a href="https://github.com/AAGI-AUS/nert/issues/20" class="external-link">#20</a>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-1-0-0">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> is now vectorised across locations. An earlier implementation looped over <code>(location, dataset, date)</code> tuples and called <code><a href="../reference/read_tern.html">read_tern()</a></code> + <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">terra::extract()</a></code> once per single point, redownloading the same Cloud Optimised GeoTIFF (COG) once per location. The refactored version plans a list of <em>work items</em> (one item per unique COG), opens each COG once via <code>/vsicurl/</code>, and calls <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">terra::extract()</a></code> once with all coordinates passed as a single <code>SpatVector</code>. For M locations and a work-item budget K, the function now performs K reads and K extracts rather than M × K of each.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-0"></a></h3>
+<ul><li>
+<code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> now predeclares every output column at <code>NA</code> at planning time. A per-COG fetch failure leaves the affected column at <code>NA</code> without removing it from the result, so the column count and schema are invariant under network failure (non-SLGA static datasets no longer disappear from the result on a transient fetch error).</li>
+<li>
+<code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> now always emits <code>lon</code> and <code>lat</code> columns, including for single-location calls (previously omitted when only one location was passed), standardising the output schema across call shapes.</li>
+<li>
+<code><a href="../reference/dot-check_collection_agreement.html">.check_collection_agreement()</a></code> (SMIPS date validator) now uses the documented 2015-11-20 lower bound (was 2005) and emits grammatical, dated error messages. The operator-precedence bug that caused non-<code>totalbucket</code> collections to bypass the lower-bound check is fixed.</li>
+<li>
+<code>read_asc(confusion_index = NULL)</code> previously silently took the Confusion-Index branch via <code>isFALSE(NULL) == FALSE</code>. The argument is now strictly required to be a single non-<code>NA</code> logical.</li>
+<li>
+<code>.read_cog(max_tries = 0L)</code> previously returned <code>NULL</code> silently because the loop body never executed; now errors with a clear message. Non-integer-coercible <code>max_tries</code> (e.g. <code>"two"</code>) is also rejected.</li>
+<li>
+<code><a href="../reference/dot-tern_dispatch_id.html">.tern_dispatch_id()</a></code> now rejects vector input rather than silently collapsing to the first element. The error message points users to <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> for multi-dataset calls.</li>
+<li>
+<code><a href="../reference/read_phenology.html">read_phenology()</a></code> with a missing <code>year</code> now surfaces the documented 2003–2018 message rather than R’s generic missing-argument message (<code>year</code> defaults to <code>NULL</code>). The validator also rejects non-integer values (e.g. <code>2018.5</code>) and vector years.</li>
+<li>Two vignette runnability defects fixed: the agricultural vignette previously called <code>read_smips(day = ...)</code> (now <code>date = ...</code>) and contained an injected <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> section whose output schema clobbered the chunk-to-chunk <code>smips_data</code> variable used by later analytics; replaced with a corrected, <code>eval=FALSE</code> showcase placed after the analytics. The intro vignette’s two remaining <code>day = ...</code> calls were also corrected.</li>
+<li>Prose corrections in vignettes: <code>Yield_tha</code> → <code>Yield_Tha</code> (matches the data column name); <code>Ecological</code> → <code>Ecosystem</code> (TERN’s actual expansion); <code>vaporisation</code> → <code>volatilisation</code> (consistent with the earlier paragraph and chemistry); <code>visualalising</code> → <code>visualising</code>; <code>SMindex</code> scale described as “0–100” rather than “0–1” to match the COG.</li>
+<li>
+<code>grain</code> Rd description corrected: <code>Variety</code> factor has 8 levels (matches <code>levels(grain$Variety)</code>), not 10.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation-1-0-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-0"></a></h3>
+<ul><li>All <code>portal.tern.org.au/metadata/TERN/&lt;UUID&gt;</code> Rd references migrated to <code>geonetwork.tern.org.au/...</code> URLs; several portal URLs returned HTTP 404 as of 2026-05, while GeoNetwork resolves all UUIDs. The dead <code>www.clw.csiro.au/aclep/...</code> URL replaced with the active <code>esoil.io/TERNLandscapes/...</code> equivalent. <code>urlchecker::url_check()</code> is now clean.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal--api-changes-1-0-0">Internal / API changes<a class="anchor" aria-label="anchor" href="#internal--api-changes-1-0-0"></a></h3>
+<ul><li><p>The <code>max_tries</code> and <code>initial_delay</code> arguments of all public read functions (<code><a href="../reference/read_tern.html">read_tern()</a></code>, <code><a href="../reference/read_aet.html">read_aet()</a></code>, <code><a href="../reference/read_asc.html">read_asc()</a></code>, <code><a href="../reference/read_canopy_height.html">read_canopy_height()</a></code>, <code><a href="../reference/read_phenology.html">read_phenology()</a></code>, <code><a href="../reference/read_slga.html">read_slga()</a></code>, <code><a href="../reference/read_smips.html">read_smips()</a></code>, <code><a href="../reference/read_soil_diversity.html">read_soil_diversity()</a></code>) now default to <code>NULL</code>. When <code>NULL</code>, values are resolved at call time from <code>getOption("nert.max_tries")</code> and <code>getOption("nert.initial_delay")</code>. This is <strong>non-breaking</strong>: existing user code that passes explicit integers (e.g., <code>read_tern("CANOPY", max_tries = 5L)</code>) continues to work unchanged and still overrides the option.</p></li>
+<li><p>New internal helper <code><a href="../reference/dot-init_nert_options.html">.init_nert_options()</a></code> (in <code>R/zzz.R</code>) populates the package options on <code>.onLoad()</code>. Pattern adapted from the rOpenSci <a href="https://github.com/ropensci/read.abares" class="external-link"><code>read.abares</code></a> package.</p></li>
+<li><p><code>sf</code> removed from <code>Imports</code> (zero references in package code; legacy scaffolding from a never-delivered helper).</p></li>
+<li><p><code>nlme</code> demoted from <code>Imports</code> to <code>Suggests</code>; it is used only by the agricultural vignette, which already declares <code>%\VignetteDepends{nlme}</code>. The <code>@import nlme</code> directive that pulled it into the namespace without using any of it was removed.</p></li>
+<li><p><code>tests/testthat/test-validation.R</code> and a substantially expanded <code>test-collect_tern_data.R</code> cover the validation paths and the work-item planner (37 + 9 deterministic offline tests).</p></li>
+<li><p><strong>Test coverage uplift.</strong> Eight new/expanded offline test files (<code>test-url-snapshots.R</code>, <code>test-read_aet.R</code>, <code>test-read_slga.R</code>, <code>test-read_soil_diversity.R</code>, <code>test-read_canopy_height.R</code>, <code>test-read_phenology.R</code>, <code>test-collect_tern_data_mocked.R</code>, <code>test-read_asc.R</code>) lift package coverage from ~58% to ~83%, with every <code>read_*()</code> reader at 100%. Mocking is done at the internal <code><a href="../reference/dot-read_cog.html">.read_cog()</a></code> binding via <code><a href="https://testthat.r-lib.org/reference/local_mocked_bindings.html" class="external-link">testthat::local_mocked_bindings()</a></code>; <code>test-url-snapshots.R</code> pins every URL template via <code>expect_snapshot()</code>.</p></li>
+<li><p>Bumped <code>testthat (&gt;= 3.0.0)</code> -&gt; <code>testthat (&gt;= 3.2.0)</code> in <code>Suggests</code> for <code>local_mocked_bindings()</code> support.</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.4" id="nert-004">nert 0.0.4<a class="anchor" aria-label="anchor" href="#nert-004"></a></h2>
 <div class="section level3">
@@ -79,7 +132,7 @@
 <div class="section level3">
 <h3 id="minor-changes-0-0-1-9000">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-0-1-9000"></a></h3>
 <ul><li><p>Addition of <code><a href="../reference/read_aet.html">read_aet()</a></code> and <code>extract_aet()</code> to read Actual Evapotranspiration (AET) CMRSET data from TERN. See <a href="https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97" class="external-link uri">https://portal.tern.org.au/metadata/TERN/9fefa68b-dbed-4c20-88db-a9429fb4ba97</a> for more on these data.</p></li>
-<li><p>Addition of <code>get_asc()</code> to get Australian Soil Classification data and confusion index values from pattern. See <a href="https://www.tern.org.au/news-australian-soil-classification-map/" class="external-link uri">https://www.tern.org.au/news-australian-soil-classification-map/</a> for more on these data.</p></li>
+<li><p>Addition of <code>get_asc()</code> to get Australian Soil Classification data and confusion index values from pattern. See <a href="https://www.tern.org.au/news/news-australian-soil-classification-map/" class="external-link uri">https://www.tern.org.au/news/news-australian-soil-classification-map/</a> for more on these data.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-0-1-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-0-1-9000"></a></h3>

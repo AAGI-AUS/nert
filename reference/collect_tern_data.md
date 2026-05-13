@@ -1,9 +1,9 @@
 # Collect TERN Data Over Time and Space
 
 Extract values from one or more TERN datasets at given location(s) over
-a date range. Supports single or multiple coordinates. Returns a
-data.table with one row per date per location and one column per
-dataset. Static datasets are repeated across all dates.
+a date range. Returns a `data.table` with one row per (date, location)
+and one column per dataset layer. Static datasets are repeated across
+all dates.
 
 ## Usage
 
@@ -27,41 +27,30 @@ collect_tern_data(
 
 - date_range:
 
-  A `Date` vector or character vector of dates (e.g.
+  A `Date` vector or character vector of dates (e.g.\\
   `seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")`) OR a
-  length-2 vector giving start and end dates (e.g.
+  length-2 vector giving start and end dates (e.g.\\
   `c("2024-01-01", "2024-01-31")`).
 
 - lon:
 
-  Longitude(s) (WGS84, EPSG:4326). Either:
-
-  - A single numeric value (scalar)
-
-  - A numeric vector (multiple coordinates, same length as `lat`)
-
-  - Omitted if using `xy` notation
+  Longitude(s) (WGS84, EPSG:4326). Numeric scalar or vector (same length
+  as `lat`). Omit if using `xy` notation.
 
 - lat:
 
-  Latitude(s) (WGS84, EPSG:4326). Either:
-
-  - A single numeric value (scalar)
-
-  - A numeric vector (multiple coordinates, same length as `lon`)
-
-  - Omitted if using `xy` notation
+  Latitude(s) (WGS84, EPSG:4326). Numeric scalar or vector (same length
+  as `lon`). Omit if using `xy` notation.
 
 - xy:
 
-  Optional: A `data.frame`, `data.table`, or `matrix` with coordinate
-  columns. Column names should be `x` and `y` or `lon` and `lat`. If
-  provided, `lon` and `lat` are ignored. Use `NULL` (default) for
-  lon/lat parameters.
+  Optional: a `data.frame`, `data.table`, or `matrix` with coordinate
+  columns named `lon`/`lat` or `x`/`y`. Takes precedence over
+  `lon`/`lat` when supplied.
 
 - datasets:
 
-  A `character` vector of dataset aliases to collect. Default: all 14
+  `character` vector of dataset aliases to collect. Default: all 14
   datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO,
   SOILDIV, CANOPY, PHENOLOGY). Use `NULL` or `"all"` for all datasets.
 
@@ -69,8 +58,8 @@ collect_tern_data(
 
   For SLGA datasets: depth interval (default `"all"`). Options:
   `"000_005"`, `"005_015"`, `"015_030"`, `"030_060"`, `"060_100"`,
-  `"100_200"`, or `"all"` for all 6 depths. Ignored for non-SLGA
-  datasets.
+  `"100_200"`, or `"all"` for all six GlobalSoilMap depths. Ignored for
+  non-SLGA datasets.
 
 - stat:
 
@@ -79,12 +68,9 @@ collect_tern_data(
 
 - smips_collection:
 
-  For SMIPS dataset: collection type (default `"all"`). Options:
-  `"totalbucket"` (total soil moisture, full active layer), `"SMindex"`
-  (soil moisture index, 0-100%), `"bucket1"` (top soil layer),
-  `"bucket2"` (second soil layer), `"deepD"` (deep soil layer),
-  `"runoff"` (surface runoff), or `"all"` to collect all 6 SMIPS
-  variants as separate columns. Ignored for non-SMIPS datasets.
+  For SMIPS: `"all"` (default, all six variants), `"totalbucket"`,
+  `"SMindex"`, `"bucket1"`, `"bucket2"`, `"deepD"`, or `"runoff"`.
+  Ignored for non-SMIPS datasets.
 
 - api_key:
 
@@ -97,57 +83,62 @@ collect_tern_data(
 
 - na.rm:
 
-  Logical. If `TRUE`, remove rows with all NA values.
+  Logical. If `TRUE`, drop rows where all dataset columns are `NA`.
 
 ## Value
 
 A `data.table` with columns:
 
-- `date`: Date
+- `date`: `Date`.
 
-- `lon`, `lat`: Coordinates (if multiple locations)
+- `lon`, `lat`: coordinates (always included; constant when a single
+  location is requested).
 
-- One column per dataset, named by alias (e.g. `SMIPS`, `AWC`)
+- One column per dataset layer. See **Details** for naming.
 
 ## Details
 
-**Single location:** Returns N rows (one per date) x K columns
-(datasets).
+**Vectorised extraction.** For each unique COG required (a (dataset,
+date, variant, depth) tuple), the function opens the COG **once** and
+calls
+[`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
+**once** with all requested coordinates as a single `SpatVector`.
+Returning M locations × N dates across K work items therefore costs K
+COG opens and K extract calls, not M × K. Time-series datasets
+contribute one work item per date; static datasets contribute one work
+item total (the value is replicated across the date axis at output
+assembly time).
 
-**Multiple locations:** Returns (N x M) rows (dates x locations) x (K+2)
-columns (date + lon + lat + datasets).
+**Column naming.**
 
-**Time-series datasets** (SMIPS, AET): Values extracted for each date.
+- SMIPS with `smips_collection = "all"`: six columns named
+  `SMIPS_totalbucket`, `SMIPS_SMindex`, `SMIPS_bucket1`,
+  `SMIPS_bucket2`, `SMIPS_deepD`, `SMIPS_runoff`.
 
-- SMIPS may have multiple layers (bands) from the COG; all layers are
-  extracted as separate columns (e.g., `SMIPS_band_1`, `SMIPS_band_2`,
-  ...).
+- SMIPS with a single collection: one column `SMIPS_<collection>`.
 
-- AET typically returns a single layer per date.
+- SLGA with `depth = "all"`: six columns per dataset (e.g.\\
+  `AWC_000_005` ... `AWC_100_200`).
 
-**Static datasets** (SLGA, ASC, SOILDIV, CANOPY, PHENOLOGY): Values
-repeated across all dates.
+- SLGA with a single depth: one column named for the dataset alias.
 
-- SLGA datasets with `depth = "all"` expand to 6 columns (one per
-  depth).
+- AET: one column `AET`.
 
-- Other static datasets typically return single-layer values as one
-  column.
+- ASC: one column `ASC` (character soil-order class).
 
-- When multi-layer datasets are detected, each layer becomes a separate
-  column (named by layer name from the COG).
+- CANOPY, SOILDIV, PHENOLOGY: one column each named for the alias.
 
-**ASC data type:** Australian Soil Classification (ASC) returns
-character values (soil order descriptions) instead of numeric codes.
-
-If a request fails (e.g. no internet, API error), that dataset column
-will contain `NA` for the affected rows.
+**Failure handling.** If a work item's COG fetch or extract fails, the
+corresponding column(s) remain `NA` for the affected rows and a
+[`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html)
+identifies the dataset/date/error. The output schema (column count and
+names) is fixed at planning time and is invariant under per-COG failure.
 
 ## Examples
 
 ``` r
 if (FALSE) { # interactive()
-# Single location
+# Single location, single dataset
 dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day")
 d_t <- collect_tern_data(
   date_range = dates,
@@ -157,16 +148,15 @@ d_t <- collect_tern_data(
 )
 head(d_t)
 
-# Multiple locations (vectors)
+# Multiple locations (vectorised across points within each COG)
 d_t_multi <- collect_tern_data(
   lon = c(138.6, 139.5),
   lat = c(-34.9, -35.5),
   date_range = dates,
   datasets = c("SMIPS", "CANOPY")
 )
-head(d_t_multi)
 
-# Using xy notation (data.frame)
+# xy data.frame notation
 xy <- data.frame(lon = c(138.6, 139.5), lat = c(-34.9, -35.5))
 d_t_xy <- collect_tern_data(
   xy = xy,
