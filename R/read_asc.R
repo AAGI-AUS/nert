@@ -86,3 +86,36 @@ read_asc <- function(
   )
   return(.read_cog(full_url, max_tries, initial_delay))
 }
+
+
+# -- Internal ASC handler ----------------------------------------------------
+
+#' Internal handler for ASC (\code{TERN/15728dba})
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @autoglobal
+#' @dev
+.read_tern_asc <- function(dots, api_key, max_tries, initial_delay) {
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "EV"
+  }
+
+  approved <- c("EV", "CI")
+  collection <- rlang::arg_match(collection, approved)
+
+  dl_file <- data.table::fifelse(
+    collection == "EV",
+    "ASC_EV_C_P_AU_TRN_N.cog.tif",
+    "ASC_CI_C_P_AU_TRN_N.cog.tif"
+  )
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
+    api_key,
+    dl_file
+  )
+  .read_cog(full_url, max_tries, initial_delay)
+}

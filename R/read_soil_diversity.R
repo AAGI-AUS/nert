@@ -66,3 +66,32 @@ read_soil_diversity <- function(
     initial_delay = initial_delay
   )
 }
+
+
+# -- Internal Soil Beta Diversity handler -----------------------------------
+
+#' Internal handler for Soil Beta Diversity (\code{TERN/4a428d52})
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @autoglobal
+#' @dev
+.read_tern_soil_diversity <- function(dots, api_key, max_tries, initial_delay) {
+  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "Bacteria"
+  axis       <- if (!is.null(dots[["axis"]])) as.integer(dots[["axis"]]) else 1L
+
+  approved_collections <- c("Bacteria", "Fungi")
+  collection <- rlang::arg_match(collection, approved_collections)
+
+  if (!axis %in% 1L:3L) {
+    cli::cli_abort("Soil Beta Diversity {.arg axis} must be 1, 2, or 3.")
+  }
+
+  fname <- sprintf("NMDS_%s_%d_%s_pred.tif", collection, axis, collection)
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/Other/SoilBetaDiversity/%s",
+    api_key, fname
+  )
+  .read_cog(full_url, max_tries, initial_delay)
+}

@@ -69,3 +69,93 @@ read_aet <- function(
     initial_delay = initial_delay
   )
 }
+
+
+# -- Internal AET handler ----------------------------------------------------
+
+#' Internal handler for AET/CMRSET (\code{TERN/9fefa68b})
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @autoglobal
+#' @dev
+.read_tern_aet <- function(dots, api_key, max_tries, initial_delay) {
+  # Accept both 'date' and the legacy 'month' parameter name
+  date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["month"]]
+  if (is.null(date)) {
+    cli::cli_abort(
+      "AET requires a {.arg date} argument (monthly resolution),
+       e.g.  {.code date = \"2023-06-01\"}."
+    )
+  }
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
+  } else {
+    "ETa"
+  }
+
+  month <- .check_aet_date(date)
+  full_url <- .make_aet_url(
+    .collection = collection,
+    .month = month,
+    .api_key = api_key
+  )
+  .read_cog(full_url, max_tries, initial_delay)
+}
+
+
+# -- AET date and URL helpers -----------------------------------------------
+
+#' Check User Input Months for AET Validity
+#'
+#' Validates and snaps a user-supplied date value to the first of the month,
+#' then checks it against the \acronym{AET} data availability window
+#' (from 2000-02-01 onwards).
+#'
+#' @param x User-entered date value (any format accepted by [.check_date()]).
+#' @returns A \code{POSIXct} object snapped to the first of the requested
+#'   month.
+#' @autoglobal
+#' @dev
+.check_aet_date <- function(x) {
+  x <- .check_date(x)
+  x <- lubridate::floor_date(x, "month")
+  yr <- lubridate::year(x)
+  mo <- lubridate::month(x)
+  if (yr < 2000L || (yr == 2000L && mo < 2L)) {
+    cli::cli_abort(
+      "AET data are not available before 2000-02-01.
+       You requested {format(x, '%Y-%m-%d')}."
+    )
+  }
+  return(x)
+}
+
+
+#' Build a GDAL vsicurl URL for an AET Collection
+#'
+#' @param .collection The user-supplied \acronym{AET} collection
+#'   (\code{"ETa"} or \code{"pixel_qa"}).
+#' @param .month The validated \code{POSIXct} date snapped to the first of
+#'   the month.
+#' @param .api_key The \acronym{URL}-encoded \acronym{API} key.
+#' @returns A \code{character} GDAL vsicurl URL string.
+#' @autoglobal
+#' @dev
+.make_aet_url <- function(.collection, .month, .api_key) {
+  approved_collections <- c("ETa", "pixel_qa")
+  collection <- rlang::arg_match(.collection, approved_collections)
+
+  year <- lubridate::year(.month)
+  date_str <- format(.month, "%Y_%m_%d")
+
+  sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
+    .api_key,
+    year,
+    date_str,
+    date_str,
+    collection
+  )
+}

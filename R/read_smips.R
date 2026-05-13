@@ -93,49 +93,44 @@ read_smips <- function(
 }
 
 
-#' Check User Input Dates for Validity
+# -- Internal SMIPS handler --------------------------------------------------
+
+#' Internal handler for SMIPS (\code{TERN/d1995ee8})
 #'
-#' @param x User entered date value
-#' @returns Validated date string as a `POSIXct` object.
-#' @note This was taken from \CRANpkg{nasapower}.
-#' @examples
-#' .check_date("2024-01-01")
-#' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
-#' @dev
-.check_date <- function(x) {
-  if (length(x) > 1L) {
-    cli::cli_abort("Only one day is allowed per request.")
+.read_tern_smips <- function(dots, api_key, max_tries, initial_delay) {
+  # Accept both 'date' and the legacy 'day' parameter name
+  date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["day"]]
+  if (is.null(date)) {
+    cli::cli_abort(
+      "SMIPS requires a {.arg date} argument (daily resolution),
+       e.g.  {.code date = \"2024-01-15\"}."
+    )
   }
-
-  if (lubridate::is.POSIXct(x) || lubridate::is.Date(x)) {
-    tz <- lubridate::tz(x)
+  collection <- if (!is.null(dots[["collection"]])) {
+    dots[["collection"]]
   } else {
-    tz <- Sys.timezone()
+    "totalbucket"
   }
 
-  tryCatch(
-    x <- lubridate::parse_date_time(
-      x,
-      c(
-        "Ymd",
-        "dmY",
-        "BdY",
-        "Bdy"
-      ),
-      tz = tz
-    ),
-    warning = function(c) {
-      cli::cli_abort(
-        "{ x } is not in a valid date format.
-                     Please enter a valid date format."
-      )
-    }
+  day <- .check_date(date)
+  dl_file <- .make_smips_url(.collection = collection, .day = day)
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
+    api_key,
+    collection,
+    lubridate::year(day),
+    dl_file
   )
-  return(x)
+  .read_cog(full_url, max_tries, initial_delay)
 }
 
+
+# -- SMIPS date-window and URL helpers --------------------------------------
 
 #' Validate Days Requested Align With Collection
 #'

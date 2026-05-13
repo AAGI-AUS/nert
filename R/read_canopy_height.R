@@ -48,3 +48,20 @@ read_canopy_height <- function(
     initial_delay = initial_delay
   )
 }
+
+
+# -- Internal Canopy Height handler -----------------------------------------
+
+#' Internal handler for Canopy Height (\code{TERN/36c98155})
+#'
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @autoglobal
+#' @dev
+.read_tern_canopy_height <- function(api_key, max_tries, initial_delay) {
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif",
+    api_key
+  )
+  .read_cog(full_url, max_tries, initial_delay)
+}

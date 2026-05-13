@@ -95,3 +95,70 @@ read_slga <- function(
     initial_delay = initial_delay
   )
 }
+
+
+# -- SLGA attribute registry -------------------------------------------------
+
+#' SLGA attribute configuration registry
+#'
+#' Named list mapping normalised dispatch IDs to their SLGA file-naming
+#' parameters: directory name, file prefix, version, release date, and
+#' filename suffix.
+#'
+#' @format A named \code{list} of \code{list}s.
+#' @autoglobal
+#' @dev
+.slga_config <- list(
+  "482301c2" = list(dir = "AWC", prefix = "AWC", version = "v2",
+                    date = "20210614", suffix = "AU_TRN_N"),
+  "slga_cly" = list(dir = "CLY", prefix = "CLY", version = "v2",
+                    date = "20210902", suffix = "AU_TRN_N"),
+  "slga_snd" = list(dir = "SND", prefix = "SND", version = "v2",
+                    date = "20210902", suffix = "AU_TRN_N"),
+  "slga_slt" = list(dir = "SLT", prefix = "SLT", version = "v2",
+                    date = "20210902", suffix = "AU_TRN_N"),
+  "slga_bdw" = list(dir = "BDW", prefix = "BDW", version = "v2",
+                    date = "20230607", suffix = "AU_TRN_N"),
+  "slga_phc" = list(dir = "pHc", prefix = "PHC", version = "v2",
+                    date = "20210913", suffix = "AU_NAT_C"),
+  "slga_phw" = list(dir = "PHW", prefix = "PHW", version = "v1",
+                    date = "20220520", suffix = "AU_TRN_N"),
+  "slga_nto" = list(dir = "NTO", prefix = "NTO", version = "v2",
+                    date = "20231101", suffix = "AU_NAT_C")
+)
+
+
+# -- Internal SLGA handler ---------------------------------------------------
+
+#' Internal handler for SLGA soil attributes
+#'
+#' A generic handler that covers all eight SLGA soil attributes.  Each
+#' attribute has a fixed file-naming pattern encoded in [.slga_config].
+#'
+#' @param did Normalised dispatch ID (e.g.\ \code{"482301c2"}, \code{"slga_cly"}).
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param api_key URL-encoded API key.
+#' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @autoglobal
+#' @dev
+.read_tern_slga <- function(did, dots, api_key, max_tries, initial_delay) {
+  cfg <- .slga_config[[did]]
+
+  depth      <- if (!is.null(dots[["depth"]])) dots[["depth"]] else "000_005"
+  collection <- if (!is.null(dots[["collection"]])) dots[["collection"]] else "EV"
+
+  approved_depths <- c("000_005", "005_015", "015_030",
+                       "030_060", "060_100", "100_200")
+  depth <- rlang::arg_match(depth, approved_depths)
+
+  approved_stats <- c("EV", "CI")
+  collection <- rlang::arg_match(collection, approved_stats)
+
+  fname <- sprintf("%s_%s_%s_N_P_%s_%s.tif",
+                   cfg$prefix, depth, collection, cfg$suffix, cfg$date)
+  full_url <- sprintf(
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/%s/%s/%s",
+    api_key, cfg$dir, cfg$version, fname
+  )
+  .read_cog(full_url, max_tries, initial_delay)
+}
