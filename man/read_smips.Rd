@@ -14,34 +14,28 @@ read_smips(
 }
 \arguments{
 \item{date}{A day to download (Date or character, e.g.
-\code{"2024-01-15"} or \code{as.Date("2024-01-15")}).  Required.}
+\code{"2024-01-15"} or \code{as.Date("2024-01-15")}).}
 
 \item{collection}{SMIPS collection variant (default \code{"totalbucket"}). Options:
 \describe{
-\item{\code{"totalbucket"}}{\strong{Total soil moisture in the full active layer} (mm).
-Represents the total water stored in all soil layers of the active profile.
-Use for: Overall soil water availability, drought monitoring.
-Output column: \code{SMIPS_totalbucket}}
-\item{\code{"SMindex"}}{\strong{Soil Moisture Index, 0-100\%} (standardized metric).
-Rescaled to 0-100\% for comparison across regions and seasons.
-Use for: Regional comparisons, anomaly detection, percentage-based thresholds.
-Output column: \code{SMIPS_SMindex}}
-\item{\code{"bucket1"}}{\strong{Top soil layer moisture} (mm, typically 0-10 cm).
-Represents water in surface soil where seeds germinate and shallow roots operate.
-Use for: Shallow-rooting plants, seed germination, surface runoff prediction.
-Output column: \code{SMIPS_bucket1}}
-\item{\code{"bucket2"}}{\strong{Second soil layer moisture} (mm, typically 10-40 cm).
-Represents water in intermediate soil depth where many plant roots develop.
-Use for: Typical crop rooting depth, plant-available water.
-Output column: \code{SMIPS_bucket2}}
-\item{\code{"deepD"}}{\strong{Deep soil layer moisture} (mm, typically >40 cm).
-Represents water in deeper soil layers accessed by deep-rooting plants.
-Use for: Deep-rooting trees/shrubs, groundwater recharge, long-term drought.
-Output column: \code{SMIPS_deepD}}
-\item{\code{"runoff"}}{\strong{Surface runoff} (mm).
-Represents water predicted to run off the surface (not infiltrate).
-Use for: Flood risk, erosion modeling, drainage engineering.
-Output column: \code{SMIPS_runoff}}
+\item{\code{"totalbucket"}}{\strong{Soil moisture of the 0-90cm two-bucket store} (mm).
+An estimate of the volumetric soil moisture of the complete 0-90cm
+SMIPS two-bucket soil moisture store.}
+\item{\code{"SMindex"}}{\strong{Soil moisture index, 0-1}.
+A unitless index between 0.0 and 1.0, approximating how full the
+complete SMIPS 0-90cm soil moisture two-bucket store is.}
+\item{\code{"bucket1"}}{\strong{Soil moisture in the upper 0-10cm bucket} (mm).
+An estimate of the volumetric soil moisture of the upper 0-10cm
+soil bucket.}
+\item{\code{"bucket2"}}{\strong{Soil moisture in the lower 10-90cm bucket} (mm).
+An estimate of the volumetric soil moisture of the lower 10-90cm
+soil bucket.}
+\item{\code{"deepD"}}{\strong{Drainage between two buckets} (mm).
+An estimate of the drainage from the top 0-1cm soil bucket through
+to the lower 10-90cm bucket.}
+\item{\code{"runoff"}}{\strong{Runoff/overtopping moisture loss} (mm).
+An estimate of the moisture lost from the top 0-10cm bucket due to
+runoff or overtopping.}
 }}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
@@ -49,46 +43,56 @@ Output column: \code{SMIPS_runoff}}
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is
-raised.  When \code{NULL} (default), resolved from
-\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-for a single call.}
+raised. Default=\code{NULL}, in which case the maximum retry number is
+resolved from the option \code{nert.max_tries} if that option exists.
+(Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
 
 \item{initial_delay}{Initial retry delay in seconds (doubles with each
-attempt).  When \code{NULL} (default), resolved from
-\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-override for a single call.}
+attempt). Default=\code{NULL}, in which case the initial delay is
+resolved from the option \code{nert.initial_delay} if that option exists.
+(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+not been set.)}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the requested SMIPS collection.
+A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested SMIPS collection.
 }
 \description{
-Wrapper around \code{\link[=read_tern]{read_tern()}} for TERN/SMIPS daily soil moisture data.
-Provides soil moisture estimates at 1 km resolution from November 2015
-to approximately 7 days before today.
+Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the SMIPS v1.0 daily soil
+moisture data from the TERN Data Portal. SMIPS provides soil moisture
+estimates at roughly 1km X 1km spatial resolution across Australia,
+from 1st January 2015 to approximately 7 days before today.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Total bucket soil moisture (default)
+# Total volumetric soil moisture across both buckets (default)
 r <- read_smips("2024-01-15")
 autoplot(r)
 
-# Soil moisture index (0-100\%)
+# Soil moisture index (0-1)
 r_smi <- read_smips("2024-01-15", collection = "SMindex")
 
-# Top soil bucket (shallow rooting plants)
+# Upper soil bucket
 r_bucket1 <- read_smips("2024-01-15", collection = "bucket1")
 
-# Deep soil layer (deep rooting plants)
+# Lower soil bucket
+r_bucket2 <- read_smips("2024-01-15", collection = "bucket2")
+
+# Drainage between upper and lower buckets
 r_deep <- read_smips("2024-01-15", collection = "deepD")
 
-# Surface runoff
+# Top bucket runoff
 r_runoff <- read_smips("2024-01-15", collection = "runoff")
 \dontshow{\}) # examplesIf}
 }
 \references{
-SMIPS portal:
+Stenson, M., Searle, R., Malone, B., Sommer, A., Renzullo, L. & Di, H.
+(2021): Australia wide daily volumetric soil moisture estimates.
+Version 1.0. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25901/b020-nm39}.
+
+TERN SMIPS Point-of-truth metadata URL:
 \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
 }
 \seealso{
-\code{\link[=read_tern]{read_tern()}}, \code{\link[=read_aet]{read_aet()}}, \code{\link[=read_asc]{read_asc()}}
+\code{\link[=read_tern]{read_tern()}}
 }

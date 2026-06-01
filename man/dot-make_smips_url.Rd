@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_smips.R
 \name{.make_smips_url}
 \alias{.make_smips_url}
-\title{Create an SMIPS URL}
+\title{Create a SMIPS URL}
 \usage{
 .make_smips_url(.collection, .day)
 }

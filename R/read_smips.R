@@ -1,76 +1,80 @@
 #' Read TERN SMIPS Soil Moisture Data
 #'
 #' @description
-#' Wrapper around [read_tern()] for TERN/SMIPS daily soil moisture data.
-#' Provides soil moisture estimates at 1 km resolution from November 2015
-#' to approximately 7 days before today.
+#' Wrapper around [read_tern()] for retrieving the SMIPS v1.0 daily soil
+#' moisture data from the TERN Data Portal. SMIPS provides soil moisture
+#' estimates at roughly 1km X 1km spatial resolution across Australia,
+#' from 1st January 2015 to approximately 7 days before today.
 #'
 #' @param date A day to download (Date or character, e.g.
-#'   \code{"2024-01-15"} or \code{as.Date("2024-01-15")}).  Required.
+#'   \code{"2024-01-15"} or \code{as.Date("2024-01-15")}).
 #' @param collection SMIPS collection variant (default \code{"totalbucket"}). Options:
 #'   \describe{
-#'     \item{\code{"totalbucket"}}{**Total soil moisture in the full active layer** (mm).
-#'       Represents the total water stored in all soil layers of the active profile.
-#'       Use for: Overall soil water availability, drought monitoring.
-#'       Output column: \code{SMIPS_totalbucket}}
-#'     \item{\code{"SMindex"}}{**Soil Moisture Index, 0-100%** (standardized metric).
-#'       Rescaled to 0-100% for comparison across regions and seasons.
-#'       Use for: Regional comparisons, anomaly detection, percentage-based thresholds.
-#'       Output column: \code{SMIPS_SMindex}}
-#'     \item{\code{"bucket1"}}{**Top soil layer moisture** (mm, typically 0-10 cm).
-#'       Represents water in surface soil where seeds germinate and shallow roots operate.
-#'       Use for: Shallow-rooting plants, seed germination, surface runoff prediction.
-#'       Output column: \code{SMIPS_bucket1}}
-#'     \item{\code{"bucket2"}}{**Second soil layer moisture** (mm, typically 10-40 cm).
-#'       Represents water in intermediate soil depth where many plant roots develop.
-#'       Use for: Typical crop rooting depth, plant-available water.
-#'       Output column: \code{SMIPS_bucket2}}
-#'     \item{\code{"deepD"}}{**Deep soil layer moisture** (mm, typically >40 cm).
-#'       Represents water in deeper soil layers accessed by deep-rooting plants.
-#'       Use for: Deep-rooting trees/shrubs, groundwater recharge, long-term drought.
-#'       Output column: \code{SMIPS_deepD}}
-#'     \item{\code{"runoff"}}{**Surface runoff** (mm).
-#'       Represents water predicted to run off the surface (not infiltrate).
-#'       Use for: Flood risk, erosion modeling, drainage engineering.
-#'       Output column: \code{SMIPS_runoff}}
+#'     \item{\code{"totalbucket"}}{**Soil moisture of the 0-90cm two-bucket store** (mm).
+#'       An estimate of the volumetric soil moisture of the complete 0-90cm
+#'       SMIPS two-bucket soil moisture store.}
+#'     \item{\code{"SMindex"}}{**Soil moisture index, 0-1**.
+#'       A unitless index between 0.0 and 1.0, approximating how full the
+#'       complete SMIPS 0-90cm soil moisture two-bucket store is.}
+#'     \item{\code{"bucket1"}}{**Soil moisture in the upper 0-10cm bucket** (mm).
+#'       An estimate of the volumetric soil moisture of the upper 0-10cm
+#'       soil bucket.}
+#'     \item{\code{"bucket2"}}{**Soil moisture in the lower 10-90cm bucket** (mm).
+#'       An estimate of the volumetric soil moisture of the lower 10-90cm
+#'       soil bucket.}
+#'     \item{\code{"deepD"}}{**Drainage between two buckets** (mm).
+#'       An estimate of the drainage from the top 0-1cm soil bucket through
+#'       to the lower 10-90cm bucket.}
+#'     \item{\code{"runoff"}}{**Runoff/overtopping moisture loss** (mm).
+#'       An estimate of the moisture lost from the top 0-10cm bucket due to
+#'       runoff or overtopping.}
 #'   }
 #' @param api_key A \code{character} string containing your \acronym{TERN}
 #'   \acronym{API} key.  Defaults to automatic detection from your
 #'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised.  When \code{NULL} (default), resolved from
-#'   \code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-#'   for a single call.
+#'   raised. Default=\code{NULL}, in which case the maximum retry number is
+#'   resolved from the option \code{nert.max_tries} if that option exists.
+#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt).  When \code{NULL} (default), resolved from
-#'   \code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-#'   override for a single call.
+#'   attempt). Default=\code{NULL}, in which case the initial delay is
+#'   resolved from the option \code{nert.initial_delay} if that option exists.
+#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   not been set.)
 #'
 #' @returns
-#' A [terra::rast()] object of the requested SMIPS collection.
+#' A [terra::SpatRaster] object of the requested SMIPS collection.
 #'
 #' @seealso
-#' [read_tern()], [read_aet()], [read_asc()]
+#' [read_tern()]
 #'
 #' @examplesIf interactive()
-#' # Total bucket soil moisture (default)
+#' # Total volumetric soil moisture across both buckets (default)
 #' r <- read_smips("2024-01-15")
 #' autoplot(r)
 #'
-#' # Soil moisture index (0-100%)
+#' # Soil moisture index (0-1)
 #' r_smi <- read_smips("2024-01-15", collection = "SMindex")
 #'
-#' # Top soil bucket (shallow rooting plants)
+#' # Upper soil bucket
 #' r_bucket1 <- read_smips("2024-01-15", collection = "bucket1")
 #'
-#' # Deep soil layer (deep rooting plants)
+#' # Lower soil bucket
+#' r_bucket2 <- read_smips("2024-01-15", collection = "bucket2")
+#'
+#' # Drainage between upper and lower buckets
 #' r_deep <- read_smips("2024-01-15", collection = "deepD")
 #'
-#' # Surface runoff
+#' # Top bucket runoff
 #' r_runoff <- read_smips("2024-01-15", collection = "runoff")
 #'
 #' @references
-#'   SMIPS portal:
+#'   Stenson, M., Searle, R., Malone, B., Sommer, A., Renzullo, L. & Di, H.
+#'   (2021): Australia wide daily volumetric soil moisture estimates.
+#'   Version 1.0. Terrestrial Ecosystem Research Network. (Dataset).
+#'   \doi{10.25901/b020-nm39}.
+#'
+#'   TERN SMIPS Point-of-truth metadata URL:
 #'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #'
 #' @autoglobal
@@ -78,24 +82,22 @@
 read_smips <- function(
   date,
   collection = "totalbucket",
-  api_key    = NULL,
-  max_tries  = NULL,
+  api_key = NULL,
+  max_tries = NULL,
   initial_delay = NULL
 ) {
   read_tern(
     "SMIPS",
-    date       = date,
+    date = date,
     collection = collection,
-    api_key    = api_key,
-    max_tries  = max_tries,
+    api_key = api_key,
+    max_tries = max_tries,
     initial_delay = initial_delay
   )
 }
 
 
-# -- Internal SMIPS handler --------------------------------------------------
-
-#' Internal handler for SMIPS (\code{TERN/d1995ee8})
+#' Internal handler for retrieving SMIPS datasets
 #'
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
@@ -104,11 +106,15 @@ read_smips <- function(
 #' @dev
 .read_tern_smips <- function(dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'day' parameter name
-  date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["day"]]
+  date <- if (!is.null(dots[["date"]])) {
+    dots[["date"]]
+  } else {
+    dots[["day"]]
+  }
   if (is.null(date)) {
     cli::cli_abort(
       "SMIPS requires a {.arg date} argument (daily resolution),
-       e.g.  {.code date = \"2024-01-15\"}."
+       e.g. {.code date = \"2024-01-15\"}."
     )
   }
   collection <- if (!is.null(dots[["collection"]])) {
@@ -130,15 +136,14 @@ read_smips <- function(
 }
 
 
-# -- SMIPS date-window and URL helpers --------------------------------------
-
-#' Validate Days Requested Align With Collection
+#' Validate date requested aligns with SMIPS collection extent
 #'
-#' SMIPS daily COGs are published from 2015-11-20 (the earliest archived
-#' national mosaic on the TERN portal) up to approximately seven days before
-#' today.  Requests outside that window return HTTP 404 from the GDAL vsicurl
-#' driver, which surfaces as an opaque "file does not exist" error from
-#' [terra::rast()].  This helper catches that case before any network I/O.
+#' SMIPS daily COGs are published from 2015-01-01 (the earliest archived
+#' complete set of soil moisture GeoTIFFs available on the TERN Data Portal),
+#' up to approximately seven days before today.  Requests outside that
+#' window will return HTTP 404 from the GDAL vsicurl driver, resulting in a
+#' "file does not exist" error from [terra::rast()].  This helper function
+#' catches this case before any network I/O.
 #'
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
@@ -147,14 +152,20 @@ read_smips <- function(
 #'
 #' @dev
 .check_collection_agreement <- function(.collection, .day) {
-  smips_start <- as.Date("2015-11-20")
-  last_week   <- lubridate::today() - 7L
-  day_d       <- as.Date(.day)
+  smips_start <- as.Date("2015-01-01")
+
+  #FIXME Russell (01/06): As explained in issue #46, I don't think we need
+  #  to bother with checking this upper bound (or just make it today's date).
+  #  The mythical "7-day publishing delay" appears to be an AI fabrication.
+  last_week <- lubridate::today() - 7L
+
+  day_d <- as.Date(.day)
 
   if (day_d < smips_start) {
     cli::cli_abort(
-      "SMIPS data are not available before {format(smips_start, '%Y-%m-%d')}. \\
-       You requested {format(day_d, '%Y-%m-%d')}."
+      "SMIPS data are not generally available before
+      {format(smips_start, '%Y-%m-%d')}. \\
+      You requested {format(day_d, '%Y-%m-%d')}."
     )
   }
   if (day_d > last_week) {
@@ -166,7 +177,8 @@ read_smips <- function(
   }
 }
 
-#' Create an SMIPS URL
+
+#' Create a SMIPS URL
 #'
 #' Creates the SMIPS specific portion of a URL to read or fetch a COG.
 #'
@@ -174,7 +186,6 @@ read_smips <- function(
 #' @param .day The user-supplied date being asked for.
 #'
 #' @autoglobal
-#' @dev
 #' @dev
 .make_smips_url <- function(.collection, .day) {
   url_date <- gsub("-", "", .day, fixed = TRUE)
