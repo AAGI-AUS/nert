@@ -1,4 +1,4 @@
-#' Read Canopy Height from TERN
+#' Read OzTreeMap Canopy Height Data from TERN
 #'
 #' Read the OzTreeMap Canopy Height composite Cloud Optimised GeoTIFF
 #' (\acronym{COG}) from \acronym{TERN}.  This product provides a nationwide

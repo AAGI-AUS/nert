@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_asc.R
 \name{read_asc}
 \alias{read_asc}
-\title{Read Australian Soil Classification (ASC) Data}
+\title{Read Australian Soil Classification (ASC) Data from TERN}
 \source{
 ASC mosaic metadata (estimated soil-order class and confusion index):
 \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c}.
@@ -79,7 +79,6 @@ autoplot(r_ci)
 \seealso{
 Other COGs: 
 \code{\link{read_canopy_height}()},
-\code{\link{read_phenology}()},
 \code{\link{read_tern}()}
 }
 \concept{COGs}

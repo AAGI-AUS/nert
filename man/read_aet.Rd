@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_aet.R
 \name{read_aet}
 \alias{read_aet}
-\title{Read CMRSET Actual Evapotranspiration Data}
+\title{Read CMRSET Actual Evapotranspiration Data from TERN}
 \usage{
 read_aet(
   date,

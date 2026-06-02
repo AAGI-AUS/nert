@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_smips.R
 \name{read_smips}
 \alias{read_smips}
-\title{Read TERN SMIPS Soil Moisture Data}
+\title{Read SMIPS Soil Moisture Data from TERN}
 \usage{
 read_smips(
   date,
@@ -39,7 +39,7 @@ runoff or overtopping.}
 }}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection from your
+\acronym{API} key. Defaults to automatic detection from your
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is

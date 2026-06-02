@@ -1,4 +1,4 @@
-#' Read Australian Soil Classification (ASC) Data
+#' Read Australian Soil Classification (ASC) Data from TERN
 #'
 #' @description
 #' Wrapper around [read_tern()] for Australian Soil Classification (\acronym{ASC})

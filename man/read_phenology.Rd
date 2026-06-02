@@ -19,54 +19,65 @@ read_phenology(
 \item{season}{Season number: \code{1} (default) or \code{2}.}
 
 \item{collection}{Phenology metric abbreviation.  One of \code{"SGS"}
-(default), \code{"PGS"}, \code{"EGS"}, \code{"LGS"}, \code{"SOS"},
-\code{"POS"}, \code{"EOS"}, \code{"LOS"}, \code{"ROG"}, or
-\code{"ROS"}.}
+(default), \code{"PGS"}, \code{"EGS"}, \code{"LGS"}, \code{"EVI1"},
+\code{"EVI2"}, \code{"EVIP"}, or \code{"EVII"}.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
+\acronym{API} key. Defaults to automatic detection from your
+\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is
-raised.  When \code{NULL} (default), resolved from
-\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-for a single call.}
+raised. Default=\code{NULL}, in which case the maximum retry number is
+resolved from the option \code{nert.max_tries} if that option exists.
+(Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
 
 \item{initial_delay}{Initial retry delay in seconds (doubles with each
-attempt).  When \code{NULL} (default), resolved from
-\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-override for a single call.}
+attempt). Default=\code{NULL}, in which case the initial delay is
+resolved from the option \code{nert.initial_delay} if that option exists.
+(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+not been set.)}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the national phenology mosaic for
-the requested year, season, and metric.
+A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested phenology metric.
 }
 \description{
-Read Australian Land Surface Phenology Cloud Optimised GeoTIFF
-(\acronym{COG}) files from \acronym{TERN}.  This product provides
-phenological metrics derived from MODIS MYD13A1 imagery at 500 m
-resolution.  Data are available for years 2003--2018, with up to two
-growing seasons per year.
+Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the Australian land surface
+phenology dataset (v1.0) from the TERN Data Portal. This data comprises
+phenology metrics from two growing seasons per year between 2003 and
+2018 (inclusive), estimated at 500m X 500m spatial resolution across
+all of Australia using thresholded MODIS Enhanced Vegetation Index (EVI)
+imagery.
 }
 \section{Phenology metrics}{
 
-Ten phenological metrics are available (use as the \code{collection}
-argument):
+Eight phenological metrics are available via the \code{collection}
+argument:
 \describe{
-\item{\code{"SGS"}}{Start of Growing Season (default).}
-\item{\code{"PGS"}}{Peak of Growing Season.}
-\item{\code{"EGS"}}{End of Growing Season.}
-\item{\code{"LGS"}}{Length of Growing Season.}
-\item{\code{"SOS"}}{Start of Season.}
-\item{\code{"POS"}}{Peak of Season.}
-\item{\code{"EOS"}}{End of Season.}
-\item{\code{"LOS"}}{Length of Season.}
-\item{\code{"ROG"}}{Rate of Greening.}
-\item{\code{"ROS"}}{Rate of Senescence.}
+\item{\code{"SGS"}}{\strong{Start of Growing Season} (default). A number
+between -150 and 345 indicating the start of the growing season (with
+negative numbers meaning the prior year).}
+\item{\code{"PGS"}}{\strong{Peak of Growing Season}. A number between 9 and
+361 indicating the day of the year for the peak of the growing season.}
+\item{\code{"EGS"}}{\strong{End of Growing Season}. A number between 25 and
+519 indicating the day of the year that marks the end of the growing
+season, with numbers above 365 (or 366 for leap years) meaning the
+following year.}
+\item{\code{"LGS"}}{\strong{Length of Growing Season}, measured in days.}
+\item{\code{"EVI1"}}{\strong{Minimum of EVI before peak}. A unitless index
+between 0 and 10000 (i.e., scaled by 10000) for the minimum
+value of the Enhanced Vegetation Index \emph{before} the peak of the growing
+season.}
+\item{\code{"EVI2"}}{\strong{Minimum of EVI after peak}. A unitless index
+between 0 and 10000 (i.e., scaled by 10000) for the minimum
+value of the Enhanced Vegetation Index \emph{after} the peak of the growing
+season.}
+\item{\code{"EVIP"}}{\strong{Peak EVI}. A unitless index between 0 and 10000
+(i.e., scaled by 10000) for the value of the Enhanced Vegetation Index
+\emph{at} the peak of the growing season.}
+\item{\code{"EVII"}}{\strong{Integral of the EVI across the season}. The
+calculated integral of the Enhanced Vegetation Index (including the
+factor of 10000 scaling) under the growing season cycle curve.}
 }
-
-This is a convenience wrapper around
-\code{read_tern("PHENOLOGY", ...)}; see \code{\link[=read_tern]{read_tern()}} for full
-details and additional datasets.
 }
 
 \examples{
@@ -78,18 +89,16 @@ autoplot(r)
 # Read End of Growing Season for 2015, Season 2
 r_egs <- read_phenology(year = 2015, season = 2, collection = "EGS")
 autoplot(r_egs)
-
-# Rate of Greening
-r_rog <- read_phenology(year = 2010, collection = "ROG")
 \dontshow{\}) # examplesIf}
 }
 \references{
+Xie, Q. & Huete, A. (2024). Australian land surface phenology dataset at
+500m resolution. Version 1.0. Terrestrial Ecosystem Research Network.
+(Dataset). URL: \url{https://portal.tern.org.au/metadata/2bb0c81a-41a9-434c-b87a-db0301cb52fb}.
+
+TERN Land Surface Phenology Point-of-truth metadata URL:
 \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
 }
 \seealso{
-Other COGs: 
-\code{\link{read_asc}()},
-\code{\link{read_canopy_height}()},
-\code{\link{read_tern}()}
+\code{\link[=read_tern]{read_tern()}}
 }
-\concept{COGs}

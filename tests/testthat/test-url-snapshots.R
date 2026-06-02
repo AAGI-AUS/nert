@@ -90,10 +90,9 @@ test_that("Canopy Height URL is stable", {
 
 # ---- Phenology -------------------------------------------------------------
 
-test_that("Phenology URLs are stable across all ten metrics", {
+test_that("Phenology URLs are stable across all eight metrics", {
   sink <- .use_mocked_cog()
-  for (m in c("SGS", "PGS", "EGS", "LGS", "SOS",
-              "POS", "EOS", "LOS", "ROG", "ROS")) {
+  for (m in c("SGS", "PGS", "EGS", "LGS", "EVI1", "EVI2", "EVIP", "EVII")) {
     read_phenology(year = 2018L, season = 1L, collection = m, api_key = KEY)
   }
   expect_snapshot(cat(sink$urls, sep = "\n"))

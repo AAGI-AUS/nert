@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_canopy_height.R
 \name{read_canopy_height}
 \alias{read_canopy_height}
-\title{Read Canopy Height from TERN}
+\title{Read OzTreeMap Canopy Height Data from TERN}
 \usage{
 read_canopy_height(api_key = get_key(), max_tries = NULL, initial_delay = NULL)
 }
@@ -49,7 +49,6 @@ autoplot(r)
 \seealso{
 Other COGs: 
 \code{\link{read_asc}()},
-\code{\link{read_phenology}()},
 \code{\link{read_tern}()}
 }
 \concept{COGs}

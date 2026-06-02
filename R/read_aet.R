@@ -1,4 +1,4 @@
-#' Read CMRSET Actual Evapotranspiration Data
+#' Read CMRSET Actual Evapotranspiration Data from TERN
 #'
 #' @description
 #' Wrapper around [read_tern()] for retrieving the CMRSET actual
