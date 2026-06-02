@@ -26,58 +26,43 @@ read_slga(
 \code{"CI"} (confidence interval).}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
+\acronym{API} key. Defaults to automatic detection from your
+\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is
-raised.  When \code{NULL} (default), resolved from
-\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-for a single call.}
+raised. Default=\code{NULL}, in which case the maximum retry number is
+resolved from the option \code{nert.max_tries} if that option exists.
+(Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
 
 \item{initial_delay}{Initial retry delay in seconds (doubles with each
-attempt).  When \code{NULL} (default), resolved from
-\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-override for a single call.}
+attempt). Default=\code{NULL}, in which case the initial delay is
+resolved from the option \code{nert.initial_delay} if that option exists.
+(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+not been set.)}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the national SLGA mosaic for the
-requested attribute, depth, and statistic.
+A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested SLGA soil attribute.
 }
 \description{
-Read Soil and Landscape Grid of Australia (\acronym{SLGA}) Cloud Optimised
-GeoTIFF (\acronym{COG}) files from \acronym{TERN}.  Eight soil attributes
-are available as static 90 m national products, each with six standard
-depth layers and two statistics (estimated value or confidence interval).
+Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving various Soil and Landscape
+Grid of Australia (SLGA) datasets from the TERN Data Portal. Eight soil
+attributes are available at 90m X 90m spatial resolution across Australia,
+each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
+60-100cm, 100-200cm) and two statistics (estimated value, confidence
+interval).
 }
-\section{Supported attributes}{
+\section{Supported soil attributes}{
 
 \describe{
-\item{\code{"AWC"}}{Available Water Capacity (mm)}
-\item{\code{"CLY"}}{Clay content (percent)}
-\item{\code{"SND"}}{Sand content (percent)}
-\item{\code{"SLT"}}{Silt content (percent)}
-\item{\code{"BDW"}}{Bulk Density whole earth (g/cm3)}
-\item{\code{"PHC"}}{pH (CaCl2)}
-\item{\code{"PHW"}}{pH (water)}
-\item{\code{"NTO"}}{Total Nitrogen (percent)}
+\item{\code{"AWC"}}{Available Water Capacity (\%)}
+\item{\code{"CLY"}}{Clay content (\%)}
+\item{\code{"SND"}}{Sand content (\%)}
+\item{\code{"SLT"}}{Silt content (\%)}
+\item{\code{"BDW"}}{Bulk Density (Whole Earth) (g/cm3)}
+\item{\code{"PHC"}}{pH (of 1:5 soil/0.01M CaCl2 extract)}
+\item{\code{"PHW"}}{pH (of 1:5 soil water solution)}
+\item{\code{"NTO"}}{Total Nitrogen (\%)}
 }
-}
-
-\section{Depth layers}{
-
-Six standard \acronym{GlobalSoilMap} depth intervals are available
-(values in cm):
-\tabular{l}{
-\code{"000_005"} — 0--5 cm (default) \cr
-\code{"005_015"} — 5--15 cm \cr
-\code{"015_030"} — 15--30 cm \cr
-\code{"030_060"} — 30--60 cm \cr
-\code{"060_100"} — 60--100 cm \cr
-\code{"100_200"} — 100--200 cm \cr
-}
-
-This is a convenience wrapper around
-\code{read_tern(<attribute>, ...)}; see \code{\link[=read_tern]{read_tern()}} for full
-details and additional datasets.
 }
 
 \examples{
@@ -94,15 +79,66 @@ r_phc <- read_slga("PHC", depth = "030_060", collection = "CI")
 \dontshow{\}) # examplesIf}
 }
 \references{
-AWC: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7}
-
-SLGA: \url{https://esoil.io/TERNLandscapes/Public/Pages/SLGA/}
+\describe{
+\item{\strong{AWC: Available Volumetric Water Capacity}}{
+Searle, R., Nimalka Somarathna, P. & Malone, B. (2023). Soil and
+Landscape Grid National Soil Attribute Maps - Available Volumetric
+Water Capacity (Percent) (3 arc second resolution) Version 2.
+Version 2.0. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/4jwj-na34}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-b9a1-4345-b142-815f9b37890a}
+}
+\item{\strong{CLY: Clay content}}{
+Malone, B. & Searle, R. (2022). Soil and Landscape Grid National
+Soil Attribute Maps - Clay (3" resolution) - Release 2. Version 2.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/hc4s-3130}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/f95dc442-013b-4fad-b31f-91ba86fbe7f5}
+}
+\item{\strong{SND: Sand content}}{
+Malone, B. & Searle, R. (2022). Soil and Landscape Grid National Soil
+Attribute Maps - Sand (3" resolution) - Release 2. Version 2.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/rjmy-pa10}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4224ddff-5fb4-4170-b5ea-c0c500599700}
+}
+\item{\strong{SLT: Silt content}}{
+Malone, B. & Searle, R. (2022). Soil and Landscape Grid National Soil
+Attribute Maps - Silt (3" resolution) - Release 2. Version 2.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/2ew1-0w57}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/11375f04-b5cd-46a7-bcac-0e83fcb58605}
+}
+\item{\strong{BDW: Bulk Density (Whole Earth)}}{
+Malone, B. (2023). Soil and Landscape Grid National Soil Attribute
+Maps - Bulk Density - Whole Earth - Release 2. Version 2.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/gxyn-pd07}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/95978aec-6ba8-446b-a721-2b875d9f61a8}
+}
+\item{\strong{PHC: pH (of 1:5 soil/0.01M CaCl2 extract)}}{
+Malone, B. & Searle, R. (2024). Soil and Landscape Grid National Soil
+Attribute Maps - pH - Calcium Chloride (3" resolution) - Release 2.
+Version 2. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/7320-hw30}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/258afc98-7407-4781-b241-cb0293b4b8aa}
+}
+\item{\strong{PHW: pH (of 1:5 soil water solution)}}{
+Malone, B. (2022). Soil and Landscape Grid National Soil Attribute
+Maps - pH (Water) (3" resolution) - Release 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/37z2-0q10}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/c37439a5-e622-44ab-9c24-bfd632d8203c}
+}
+\item{\strong{NTO: Total nitrogen}}{
+Malone, B. & Searle, R. (2024). Soil and Landscape Grid National Soil
+Attribute Maps - Total Nitrogen (3" resolution) - Release 2. Version 2.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/pm2n-ww12}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/e9484508-c705-4c23-9195-f26d64b9d4f1}
+}
+}
 }
 \seealso{
-Other COGs: 
-\code{\link{read_asc}()},
-\code{\link{read_canopy_height}()},
-\code{\link{read_phenology}()},
-\code{\link{read_tern}()}
+\code{\link[=read_tern]{read_tern()}}
 }
-\concept{COGs}

@@ -90,7 +90,6 @@ r_rog <- read_phenology(year = 2010, collection = "ROG")
 Other COGs: 
 \code{\link{read_asc}()},
 \code{\link{read_canopy_height}()},
-\code{\link{read_slga}()},
 \code{\link{read_tern}()}
 }
 \concept{COGs}

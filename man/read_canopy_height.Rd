@@ -50,7 +50,6 @@ autoplot(r)
 Other COGs: 
 \code{\link{read_asc}()},
 \code{\link{read_phenology}()},
-\code{\link{read_slga}()},
 \code{\link{read_tern}()}
 }
 \concept{COGs}
