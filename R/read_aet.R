@@ -1,8 +1,9 @@
 #' Read CMRSET Actual Evapotranspiration Data
 #'
 #' @description
-#' Wrapper around [read_tern()] for TERN/CMRSET evapotranspiration data.
-#' Provides monthly estimates of actual ET (mm/month) at 30 m resolution
+#' Wrapper around [read_tern()] for retrieving the CMRSET actual
+#' evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
+#' provides monthly estimates of actual ET (mm/month) at 30 m resolution
 #' from February 2000 onwards.
 #'
 #' @param date A month to download (Date or character, e.g.

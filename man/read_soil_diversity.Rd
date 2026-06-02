@@ -19,42 +19,32 @@ read_soil_diversity(
 \code{3}.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection via \code{\link[=get_key]{get_key()}}.}
+\acronym{API} key. Defaults to automatic detection from your
+\code{.Renviron} or \code{.Rprofile}. See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is
-raised.  When \code{NULL} (default), resolved from
-\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-for a single call.}
+raised. Default=\code{NULL}, in which case the maximum retry number is
+resolved from the option \code{nert.max_tries} if that option exists.
+(Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
 
 \item{initial_delay}{Initial retry delay in seconds (doubles with each
-attempt).  When \code{NULL} (default), resolved from
-\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-override for a single call.}
+attempt). Default=\code{NULL}, in which case the initial delay is
+resolved from the option \code{nert.initial_delay} if that option exists.
+(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+not been set.)}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the national Soil Beta Diversity
-mosaic for the requested organism and NMDS axis.
+A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested Beta Diversity NMDS axis.
 }
 \description{
-Read Soil Beta Diversity Cloud Optimised GeoTIFF (\acronym{COG}) files
-from \acronym{TERN}.  This product provides Non-metric Multidimensional
-Scaling (\acronym{NMDS}) axes 1--3 for soil Bacteria and Fungi
-communities across Australia at 90 m resolution.
+Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the v1.0 datasets for
+soil bacteria and soil fungi Beta Diversity from the TERN Data Portal.
+The Beta Diversity datasets were constructed using Digital Soil Mapping
+techniques together with Biome of Australia Soil Environments (BASE)
+DNA sequences, and provide Non-metric MultiDimensional Scaling (NMDS)
+axes for soil bacteria and fungi at 90m X 90m spatial resolution across
+Australia.
 }
-\section{Collections}{
-
-\describe{
-\item{\code{"Bacteria"}}{Bacterial community beta diversity (default).}
-\item{\code{"Fungi"}}{Fungal community beta diversity.}
-}
-
-This is a static product (no date argument required).
-
-This is a convenience wrapper around
-\code{read_tern("SOILDIV", ...)}; see \code{\link[=read_tern]{read_tern()}} for full
-details and additional datasets.
-}
-
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Read bacterial diversity NMDS axis 1
@@ -67,14 +57,14 @@ autoplot(r_f2)
 \dontshow{\}) # examplesIf}
 }
 \references{
-\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0}
+Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid National
+Soil Attribute Maps - Soil Bacteria and Fungi Beta Diversity (3"
+resolution) - Release 1. Version 1.0. Terrestrial Ecosystem Research
+Network. (Dataset). \doi{10.25919/4x7n-y874}.
+
+TERN Soil Beta Diversity Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-dda6-4097-8dd9-d3ec63973029}
 }
 \seealso{
-Other COGs: 
-\code{\link{read_asc}()},
-\code{\link{read_canopy_height}()},
-\code{\link{read_phenology}()},
-\code{\link{read_slga}()},
-\code{\link{read_tern}()}
+\code{\link[=read_tern]{read_tern()}}
 }
-\concept{COGs}

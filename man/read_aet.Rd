@@ -38,8 +38,9 @@ override for a single call.}
 A \code{\link[terra:rast]{terra::rast()}} object of the requested ET collection.
 }
 \description{
-Wrapper around \code{\link[=read_tern]{read_tern()}} for TERN/CMRSET evapotranspiration data.
-Provides monthly estimates of actual ET (mm/month) at 30 m resolution
+Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the CMRSET actual
+evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
+provides monthly estimates of actual ET (mm/month) at 30 m resolution
 from February 2000 onwards.
 }
 \examples{
