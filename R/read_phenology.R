@@ -76,7 +76,7 @@
 #'   (Dataset). URL: <https://portal.tern.org.au/metadata/2bb0c81a-41a9-434c-b87a-db0301cb52fb>.
 #'
 #'   TERN Land Surface Phenology Point-of-truth metadata URL:
-#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-41a9-434c-b87a-db0301cb52fb>
 #'
 #' @autoglobal
 #' @export
