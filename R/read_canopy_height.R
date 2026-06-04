@@ -1,58 +1,63 @@
 #' Read OzTreeMap Canopy Height Data from TERN
 #'
-#' Read the OzTreeMap Canopy Height composite Cloud Optimised GeoTIFF
-#' (\acronym{COG}) from \acronym{TERN}.  This product provides a nationwide
-#' canopy height map at 30 m resolution derived from Landsat imagery.
-#'
-#' This is a single static product --- no date or collection arguments are
-#' required.
-#'
-#' This is a convenience wrapper around
-#' \code{read_tern("CANOPY")}; see [read_tern()] for full details and
-#' additional datasets.
+#' @description
+#' Wrapper around [read_tern()] for retrieving the OzTreeMap Best-Pick
+#' Canopy Height model dataset from the TERN Data Portal. The model estimates
+#' the vegetation canopy height (in metres) at 30m X 30m spatial resolution
+#' across Australia, based on underlying ML-derived vegetation models
+#' tuned to variable time periods between 2007 and 2020.
 #'
 #' @param api_key A \code{character} string containing your \acronym{TERN}
-#'   \acronym{API} key.  Defaults to automatic detection via [get_key()].
+#'   \acronym{API} key. Defaults to automatic detection from your
+#'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised.  When \code{NULL} (default), resolved from
-#'   \code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-#'   for a single call.
+#'   raised. Default=\code{NULL}, in which case the maximum retry number is
+#'   resolved from the option \code{nert.max_tries} if that option exists.
+#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt).  When \code{NULL} (default), resolved from
-#'   \code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-#'   override for a single call.
+#'   attempt). Default=\code{NULL}, in which case the initial delay is
+#'   resolved from the option \code{nert.initial_delay} if that option exists.
+#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   not been set.)
 #'
-#' @family COGs
+#' @returns
+#' A [terra::SpatRaster] object of the requested vegetation canopy height.
+#' Note that the raster returned by this function uses the Australian Albers
+#' (EPSG:3577) coordinate reference system, not WGS84 (EPSG:4326).
+#'
+#' @seealso
+#' [read_tern()]
 #'
 #' @examplesIf interactive()
 #' r <- read_canopy_height()
 #' autoplot(r)
 #'
-#' @returns A [terra::rast()] object of the national OzTreeMap canopy height
-#'   composite.
-#'
 #' @references
-#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba>
+#'   Pucino, N., McVicar, T., Levick, S. & Albert van Dijk (2025).
+#'   Australia-Wide 30 m Machine Learning-Derived Canopy Height Models
+#'   Composites: Best Pick and Median. Version 1. Terrestrial Ecosystem
+#'   Research Network. (Dataset). \doi{10.25901/xqv7-jk46}.
+#'
+#'   TERN Canopy Height model Point-of-truth metadata URL:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-39c8-4eec-9070-a978933f3fa3>
 #'
 #' @autoglobal
 #' @export
 read_canopy_height <- function(
-  api_key       = get_key(),
-  max_tries     = NULL,
+  api_key = get_key(),
+  max_tries = NULL,
   initial_delay = NULL
 ) {
   read_tern(
     "CANOPY",
-    api_key       = api_key,
-    max_tries     = max_tries,
+    api_key = api_key,
+    max_tries = max_tries,
     initial_delay = initial_delay
   )
 }
 
 
-# -- Internal Canopy Height handler -----------------------------------------
-
-#' Internal handler for Canopy Height (\code{TERN/36c98155})
+#' Internal handler for retrieving Canopy Height data
 #'
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].

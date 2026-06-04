@@ -244,7 +244,6 @@ Land Surface Phenology: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/c
 }
 \seealso{
 Other COGs: 
-\code{\link{read_asc}()},
-\code{\link{read_canopy_height}()}
+\code{\link{read_asc}()}
 }
 \concept{COGs}

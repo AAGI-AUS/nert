@@ -78,7 +78,6 @@ autoplot(r_ci)
 }
 \seealso{
 Other COGs: 
-\code{\link{read_canopy_height}()},
 \code{\link{read_tern}()}
 }
 \concept{COGs}
