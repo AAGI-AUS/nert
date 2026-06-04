@@ -28,8 +28,8 @@ test_that("SMIPS URLs are stable across all six collections", {
 
 test_that("ASC URLs are stable for EV and CI", {
   sink <- .use_mocked_cog()
-  read_asc(confusion_index = FALSE, api_key = KEY)
-  read_asc(confusion_index = TRUE,  api_key = KEY)
+  read_asc(collection = "EV", api_key = KEY)
+  read_asc(collection = "CI", api_key = KEY)
   expect_snapshot(cat(sink$urls, sep = "\n"))
 })
 

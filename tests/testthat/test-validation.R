@@ -27,14 +27,20 @@ test_that(".read_cog rejects negative initial_delay", {
 
 # read_asc -- confusion_index strict logical ---------------------------------
 
-test_that("read_asc rejects non-logical confusion_index", {
-  expect_error(read_asc(confusion_index = NULL), "single non-NA logical")
-  expect_error(read_asc(confusion_index = NA), "single non-NA logical")
-  expect_error(read_asc(confusion_index = "TRUE"), "single non-NA logical")
-  expect_error(read_asc(confusion_index = c(TRUE, FALSE)),
-               "single non-NA logical")
-  expect_error(read_asc(confusion_index = 1L), "single non-NA logical")
-})
+#FIXME: Russell (04/06): Since we've changed the interface to be
+#  collection-based, this test for non-logical confusion_index no longer
+#  makes sense. Presumably we should replace it with one that tests that
+#  the collection choice is valid, but we want those sorts of tests for
+#  every one of the read_* functions actually.
+
+# test_that("read_asc rejects non-logical confusion_index", {
+#   expect_error(read_asc(confusion_index = NULL), "single non-NA logical")
+#   expect_error(read_asc(confusion_index = NA), "single non-NA logical")
+#   expect_error(read_asc(confusion_index = "TRUE"), "single non-NA logical")
+#   expect_error(read_asc(confusion_index = c(TRUE, FALSE)),
+#                "single non-NA logical")
+#   expect_error(read_asc(confusion_index = 1L), "single non-NA logical")
+# })
 
 # .tern_dispatch_id -- vector inputs -----------------------------------------
 

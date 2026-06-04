@@ -242,8 +242,4 @@ Canopy Height: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.se
 
 Land Surface Phenology: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
 }
-\seealso{
-Other COGs: 
-\code{\link{read_asc}()}
-}
 \concept{COGs}

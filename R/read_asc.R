@@ -1,96 +1,83 @@
 #' Read Australian Soil Classification (ASC) Data from TERN
 #'
 #' @description
-#' Wrapper around [read_tern()] for Australian Soil Classification (\acronym{ASC})
-#' soil order classes at 90 m resolution. Returns character soil order descriptions
-#' (e.g., "2 - Sodosol") with optional mapping reliability (confusion index).
+#' Wrapper around [read_tern()] for retrieving Australian Soil Classification
+#' (\acronym{ASC}) soil order classes from the TERN Data Portal. The ASC dataset
+#' provides a comprehensive map at 90m X 90m spatial resolution across
+#' Australia, mapping each spatial pixel to one of 14 soil order classes using
+#' a Random Forest classifier. The dataset also provides a confusion index
+#' raster that estimates the uncertainty (between 0.0 and 1.0) associated with
+#' the classification.
 #'
-#' @details
-#' The ASC dataset provides soil order classifications based on the Australian
-#' Soil Classification system. Each pixel contains the predicted soil order and
-#' associated reliability/uncertainty estimates.
-#'
-#' **Output data type:** Character (soil order names and codes)
-#'
-#' **Reliability:** Confusion Index indicates mapping uncertainty (lower = more reliable)
-#'
-#' @param confusion_index A `logical` value. If `FALSE` (default), returns
-#'   estimated \acronym{ASC} soil order classes (character). If `TRUE`, returns
-#'   the Confusion Index (numeric, 0-100) indicating mapping reliability.
-#' @param api_key A `character` string containing your \acronym{API} key,
-#'   a random string provided to you by \acronym{TERN}, for the request.
-#'   Defaults to automatically detecting your key from your local .Renviron,
-#'   .Rprofile or similar.  Alternatively, you may directly provide your key as
-#'   a string here or use functionality like that from \CRANpkg{keyring}.  If
-#'   nothing is provided, you will be prompted on how to set up your \R session
-#'   so that it is auto-detected and a browser window will open at the
-#'   \acronym{TERN} website for you to request a key.
+#' @param collection The ASC dataset collection variant (default \code{"EV"}). Options:
+#'   \describe{
+#'     \item{\code{"EV"}}{**(Estimated) Soil Order Class** (character). The
+#'       estimated ASC soil order class. Each pixel of the raster maps to one
+#'       of 14 soil order classes: Vertosol, Sodosol, Dermosol, Chromosol,
+#'       Ferrosol, Kurosol, Tenosol, Kandosol, Hydrosol, Podosol, Rudosol,
+#'       Calcarasol, Organosol, Anthroposol.}
+#'     \item{\code{"CI"}}{**Confusion Index** (0-1). A unitless index between
+#'       0.0 and 1.0, approximating the uncertainty of the Random Forest
+#'       classification for the soil order at each pixel. (A higher value of the
+#'       confusion index means that the classification at that pixel is more
+#'       uncertain.)}
+#'   }
+#' @param api_key A \code{character} string containing your \acronym{TERN}
+#'   \acronym{API} key. Defaults to automatic detection from your
+#'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised.  When `NULL` (default), resolved from
-#'   `getOption("nert.max_tries", 3L)`.  Pass an integer to override for
-#'   a single call.
+#'   raised. Default=\code{NULL}, in which case the maximum retry number is
+#'   resolved from the option \code{nert.max_tries} if that option exists.
+#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt).  When `NULL` (default), resolved from
-#'   `getOption("nert.initial_delay", 1L)`.  Pass an integer to override
-#'   for a single call.
+#'   attempt). Default=\code{NULL}, in which case the initial delay is
+#'   resolved from the option \code{nert.initial_delay} if that option exists.
+#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   not been set.)
 #'
-#' @family COGs
+#' @returns
+#' A [terra::SpatRaster] object containing the soil order classes (or the
+#' values of the confusion index).
+#'
+#' @seealso
+#' [read_tern()]
 #'
 #' @examplesIf interactive()
-#'
 #' # Australian Soil Classification (soil orders as character)
 #' r_asc <- read_asc()
 #' autoplot(r_asc)
 #'
-#' # Confusion Index (mapping reliability, lower = more reliable)
-#' r_ci <- read_asc(confusion_index = TRUE)
+#' # Confusion Index (uncertainty of the classification, higher=more uncertain)
+#' r_ci <- read_asc(collection = "CI")
 #' autoplot(r_ci)
 #'
-#' @returns A  [terra::rast()] object.
-#' @source
-#'   ASC mosaic metadata (estimated soil-order class and confusion index):
-#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>.
-#'   The underlying COG endpoints (\code{ASC_EV_C_P_AU_TRN_N.cog.tif} and
-#'   \code{ASC_CI_C_P_AU_TRN_N.cog.tif} under
-#'   \code{/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/} on
-#'   \code{data.tern.org.au}) require an authenticated request and are
-#'   constructed internally by this package.
+#' @references
+#'   Searle, R. (2021). Australian Soil Classification Map. Version 1.
+#'   Terrestrial Ecosystem Research Network. (Dataset).
+#'   \doi{10.25901/edyr-wg85}.
+#'
+#'   TERN ASC Point-of-truth metadata URL:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>
+#'
 #' @autoglobal
-#' @references <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>
 #' @export
 read_asc <- function(
-  confusion_index = FALSE,
+  collection = "EV",
   api_key = get_key(),
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  if (!is.logical(confusion_index) ||
-      length(confusion_index) != 1L ||
-      is.na(confusion_index)) {
-    cli::cli_abort(
-      "{.arg confusion_index} must be a single non-NA logical value \\
-       ({.code TRUE} or {.code FALSE})."
-    )
-  }
-  api_key <- .check_api_key(api_key)
-  dl_file <- data.table::fifelse(
-    confusion_index,
-    "ASC_CI_C_P_AU_TRN_N.cog.tif",
-    "ASC_EV_C_P_AU_TRN_N.cog.tif"
+  read_tern(
+    "ASC",
+    collection = collection,
+    api_key = api_key,
+    max_tries = max_tries,
+    initial_delay = initial_delay
   )
-
-  full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
-    api_key,
-    dl_file
-  )
-  return(.read_cog(full_url, max_tries, initial_delay))
 }
 
 
-# -- Internal ASC handler ----------------------------------------------------
-
-#' Internal handler for ASC (\code{TERN/15728dba})
+#' Internal handler for retrieving ASC rasters
 #'
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
@@ -107,11 +94,7 @@ read_asc <- function(
   approved <- c("EV", "CI")
   collection <- rlang::arg_match(collection, approved)
 
-  dl_file <- data.table::fifelse(
-    collection == "EV",
-    "ASC_EV_C_P_AU_TRN_N.cog.tif",
-    "ASC_CI_C_P_AU_TRN_N.cog.tif"
-  )
+  dl_file <- paste0("ASC_", collection, "_C_P_AU_TRN_N.cog.tif")
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
     api_key,
