@@ -1,6 +1,7 @@
 # MIT License
 
-Copyright (c) 2024 nert authors
+Copyright (c) 2024 Grains Research and Development Corporation, Adelaide 
+University, Curtin University, University of Queensland
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
