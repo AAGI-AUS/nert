@@ -15,8 +15,9 @@ read_slga(
 }
 \arguments{
 \item{attribute}{One of \code{"AWC"}, \code{"CLY"}, \code{"SND"},
-\code{"SLT"}, \code{"BDW"}, \code{"PHC"}, \code{"PHW"}, or
-\code{"NTO"}.}
+\code{"SLT"}, \code{"BDW"}, \code{"PHC"}, \code{"PHW"}, \code{"NTO"},
+\code{"AVP"}, \code{"PTO"}, \code{"CEC"}, \code{"ECE"}, \code{"DUL"}, or
+\code{"L15"}.}
 
 \item{depth}{One of \code{"000_005"} (default), \code{"005_015"},
 \code{"015_030"}, \code{"030_060"}, \code{"060_100"}, or
@@ -45,7 +46,7 @@ A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested SLGA 
 }
 \description{
 Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving various Soil and Landscape
-Grid of Australia (SLGA) datasets from the TERN Data Portal. Eight soil
+Grid of Australia (SLGA) datasets from the TERN Data Portal. 14 soil
 attributes are available at 90m X 90m spatial resolution across Australia,
 each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
 60-100cm, 100-200cm) and two statistics (estimated value, confidence
@@ -62,12 +63,18 @@ interval).
 \item{\code{"PHC"}}{pH (of 1:5 soil/0.01M CaCl2 extract)}
 \item{\code{"PHW"}}{pH (of 1:5 soil water solution)}
 \item{\code{"NTO"}}{Total Nitrogen (\%)}
+\item{\code{"AVP"}}{Available soil Phosphorus (mg/kg)}
+\item{\code{"PTO"}}{Total soil Phosphorus (\%)}
+\item{\code{"CEC"}}{Cation Exchange Capacity (meq/100g)}
+\item{\code{"ECE"}}{Effective Cation Exchange Capacity (meq/100g)}
+\item{\code{"DUL"}}{Drained Upper Limit volumetric water content (\%)}
+\item{\code{"L15"}}{15 Bar Lower Limit volumetric water content (\%)}
 }
 }
 
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Read clay content at 0-5 cm depth
+# Read clay content at 0-5 cm depth (default depth)
 r <- read_slga("CLY")
 autoplot(r)
 
@@ -136,6 +143,52 @@ Attribute Maps - Total Nitrogen (3" resolution) - Release 2. Version 2.
 Terrestrial Ecosystem Research Network. (Dataset).
 \doi{10.25919/pm2n-ww12}.\cr\cr TERN Point-of-truth metadata URL:
 \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/e9484508-c705-4c23-9195-f26d64b9d4f1}
+}
+\item{\strong{AVP: Available phosphorus}}{
+Zund, P. (2022). Soil and Landscape Grid National Soil Attribute Maps
+- Available Phosphorus (3" resolution) - Release 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/6qzh-b979}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/c6ef289b-1ca8-4e53-b8b4-aa97e4706c63}
+}
+\item{\strong{PTO: Total phosphorus}}{
+Malone, B. & Searle, R. (2024). Soil and Landscape Grid National Soil
+Attribute Maps - Total Phosphorus (3" resolution) - Release 2.
+Version 2. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/7j78-md43}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/be382e63-5ff6-40a9-930f-c84655a5bd87}
+}
+\item{\strong{CEC: Cation exchange capacity}}{
+Malone, B. (2024). Soil and Landscape Grid National Soil Attribute Maps
+- Cation Exchange Capacity (3" resolution) - Release 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/pkva-gf85}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/5b4b2991-bfa6-41df-be33-7009a5d0a5b0}
+}
+\item{\strong{ECE: Effective cation exchange capacity}}{
+Viscarra Rossel, R., Chen, C., Grundy, M., Searle, R., Clifford, D.,
+Odgers, N., Holmes, K., Griffin, T., Liddicoat, C. & Kidd, D. (2014).
+Soil and Landscape Grid National Soil Attribute Maps - Effective Cation
+Exchange Capacity (3" resolution) - Release 1. Version 1. Terrestrial
+Ecosystem Research Network. (Dataset).
+\doi{10.4225/08/546F091C11777}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/0d27cf8b-6627-4f33-8398-1b525bc1a210}
+}
+\item{\strong{DUL: Drained upper limit volumetric water content}}{
+Searle, R. & Nimalka Somarathna, P. (2022). Soil and Landscape Grid
+National Soil Attribute Maps - Drained Upper Limit Volumetric Water
+Content (Percent) (3 arc second resolution) Version 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/jnvd-3a26}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/de9ddc12-b8e4-4ff2-99c4-390227a848aa}
+}
+\item{\strong{L15: 15 bar lower limit volumetric water content}}{
+Searle, R. & Nimalka Somarathna, P. (2022). Soil and Landscape Grid
+National Soil Attribute Maps - 15 Bar Lower Limit Volumetric Water
+Content (Percent) (3 arc second resolution) Version 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/awp8-nv68}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4443f5df-a0b2-4352-b44b-83f7feb1e27d}
 }
 }
 }

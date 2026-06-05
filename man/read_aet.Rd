@@ -41,7 +41,7 @@ A \code{\link[terra:rast]{terra::rast()}} object of the requested ET collection.
 Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the CMRSET actual
 evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
 provides monthly estimates of actual ET (mm/month) at 30 m resolution
-from February 2000 onwards.
+from February 2000 onwards. #FIXME: May 1987 actually.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}

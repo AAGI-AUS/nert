@@ -4,28 +4,34 @@
 #' data from \acronym{TERN} and related repositories.  Dispatches to a
 #' dataset-specific handler based on \code{dataset_id} and passes any
 #' additional arguments through \code{...}.  The returned object is a
-#' [terra::rast()] that can be plotted, cropped, or extracted with standard
-#' \pkg{terra} or \pkg{tidyterra} workflows.
+#' [terra::SpatRaster] that can be plotted, cropped, or extracted with
+#' standard \pkg{terra} or \pkg{tidyterra} workflows.
 #'
 #' @section Dataset aliases:
 #' In addition to full \acronym{TERN} portal keys and 8-character prefixes,
 #' \code{read_tern()} accepts short human-readable aliases (case-insensitive):
 #' \tabular{lll}{
-#'   \strong{Alias}        \tab \strong{Dataset ID}        \tab \strong{Description} \cr
-#'   \code{"SMIPS"}         \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
-#'   \code{"ASC"}           \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
-#'   \code{"AET"}           \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration (CMRSET) \cr
-#'   \code{"AWC"}           \tab \code{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
-#'   \code{"CLY"}           \tab SLGA                 \tab Clay content (90 m) \cr
-#'   \code{"SND"}           \tab SLGA                 \tab Sand content (90 m) \cr
-#'   \code{"SLT"}           \tab SLGA                 \tab Silt content (90 m) \cr
-#'   \code{"BDW"}           \tab SLGA                 \tab Bulk density whole earth (90 m) \cr
-#'   \code{"PHC"}           \tab SLGA                 \tab pH CaCl2 (90 m) \cr
-#'   \code{"PHW"}           \tab SLGA                 \tab pH water (90 m) \cr
-#'   \code{"NTO"}           \tab SLGA                 \tab Total Nitrogen (90 m) \cr
-#'   \code{"SOILDIV"}       \tab \code{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
-#'   \code{"CANOPY"}        \tab \code{TERN/36c98155} \tab Canopy Height (30 m) \cr
-#'   \code{"PHENOLOGY"}     \tab \code{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
+#'   \strong{Alias} \tab \strong{Dataset ID} \tab \strong{Description} \cr
+#'   \code{"SMIPS"} \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
+#'   \code{"ASC"} \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
+#'   \code{"AET"} \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration (CMRSET) \cr
+#'   \code{"AWC"} \tab \code{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
+#'   \code{"CLY"} \tab SLGA \tab Clay content (90 m) \cr
+#'   \code{"SND"} \tab SLGA \tab Sand content (90 m) \cr
+#'   \code{"SLT"} \tab SLGA \tab Silt content (90 m) \cr
+#'   \code{"BDW"} \tab SLGA \tab Bulk density whole earth (90 m) \cr
+#'   \code{"PHC"} \tab SLGA \tab pH CaCl2 (90 m) \cr
+#'   \code{"PHW"} \tab SLGA \tab pH water (90 m) \cr
+#'   \code{"NTO"} \tab SLGA \tab Total Nitrogen (90 m) \cr
+#'   \code{"AVP"} \tab SLGA \tab Available Phosphorus (90 m) \cr
+#'   \code{"PTO"} \tab SLGA \tab Total Phosphorus (90 m) \cr
+#'   \code{"CEC"} \tab SLGA \tab Cation Exchange Capacity (90 m) \cr
+#'   \code{"ECE"} \tab SLGA \tab Effective Cation Exchange Capacity (90 m) \cr
+#'   \code{"DUL"} \tab SLGA \tab Drained Upper Limit water content (90 m) \cr
+#'   \code{"L15"} \tab SLGA \tab 15 Bar Lower Limit water content (90 m) \cr
+#'   \code{"SOILDIV"} \tab \code{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
+#'   \code{"CANOPY"} \tab \code{TERN/36c98155} \tab Canopy Height (30 m) \cr
+#'   \code{"PHENOLOGY"} \tab \code{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
 #' }
 #' Convenience wrappers [read_smips()], [read_asc()], [read_aet()],
 #' [read_slga()], [read_soil_diversity()], [read_canopy_height()], and
@@ -40,13 +46,13 @@
 #'     \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"},
 #'     \code{"deepD"}, or \code{"runoff"}.}
 #' }
-#' Data availability: 2015-11-20 to approximately 7 days before today.
+#' Data availability: 2015-01-01 to approximately 7 days before today.
 #'
 #' @section ASC -- Australian Soil Classification (\code{"TERN/15728dba"}):
 #' \describe{
 #'   \item{\code{collection}}{One of \code{"EV"} (estimated soil order
 #'     class, default) or \code{"CI"} (confusion index -- a measure of
-#'     mapping reliability).  No \code{date} argument required; this is a
+#'     mapping uncertainty).  No \code{date} argument required; this is a
 #'     static product.}
 #' }
 #'
@@ -59,10 +65,10 @@
 #'   \item{\code{collection}}{One of \code{"ETa"} (primary AET band in
 #'     mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
 #' }
-#' Data availability: 2000-02-01 onwards.
+#' Data availability: 1987-05-01 onwards.
 #'
 #' @section SLGA soil attributes (\code{"AWC"}, \code{"CLY"}, etc.):
-#' Eight \acronym{SLGA} (Soil and Landscape Grid of Australia) soil
+#' 14 \acronym{SLGA} (Soil and Landscape Grid of Australia) soil
 #' attributes are available as static 90 m products, each with six standard
 #' depth layers and two statistics:
 #' \describe{
@@ -74,7 +80,7 @@
 #' }
 #' Supported attributes (use as the \code{dataset_id} alias):
 #' \describe{
-#'   \item{\code{"AWC"}}{Available Water Capacity (mm)}
+#'   \item{\code{"AWC"}}{Available Water Capacity (percent)}
 #'   \item{\code{"CLY"}}{Clay content (percent)}
 #'   \item{\code{"SND"}}{Sand content (percent)}
 #'   \item{\code{"SLT"}}{Silt content (percent)}
@@ -82,6 +88,12 @@
 #'   \item{\code{"PHC"}}{pH (CaCl2)}
 #'   \item{\code{"PHW"}}{pH (water)}
 #'   \item{\code{"NTO"}}{Total Nitrogen (percent)}
+#'   \item{\code{"AVP"}}{Available Phosphorus (mg/kg)}
+#'   \item{\code{"PTO"}}{Total Phosphorus (percent)}
+#'   \item{\code{"CEC"}}{Cation Exchange Capacity (meq/100g)}
+#'   \item{\code{"ECE"}}{Effective Cation Exchange Capacity (meq/100g)}
+#'   \item{\code{"DUL"}}{Drained Upper Limit volumetric water content (percent)}
+#'   \item{\code{"L15"}}{15 Bar Lower Limit volumetric water content (percent)}
 #' }
 #' Convenience wrapper: [read_slga()].
 #'
@@ -95,21 +107,22 @@
 #' Static 90 m product.  Convenience wrapper: [read_soil_diversity()].
 #'
 #' @section Canopy Height (\code{"CANOPY"}, \code{TERN/36c98155}):
-#' Single static 30 m composite from the OzTreeMap project.  No additional
-#' arguments required.  Convenience wrapper: [read_canopy_height()].
+#' Single static 30 m best-pick composite from the OzTreeMap project.
+#' No additional arguments required.
+#' Convenience wrapper: [read_canopy_height()].
 #'
 #' @section Land Surface Phenology (\code{"PHENOLOGY"}, \code{TERN/2bb0c81a}):
 #' \describe{
 #'   \item{\code{year}}{Required.  An integer year (2003--2018).}
 #'   \item{\code{season}}{Season number: \code{1} (default) or \code{2}.}
 #'   \item{\code{collection}}{Phenology metric — one of \code{"SGS"}
-#'     (Start of Growing Season, default), \code{"PGS"} (Peak),
-#'     \code{"EGS"} (End), \code{"LGS"} (Length), \code{"SOS"} (Start of
-#'     Season), \code{"POS"} (Peak of Season), \code{"EOS"} (End of Season),
-#'     \code{"LOS"} (Length of Season), \code{"ROG"} (Rate of Greening),
-#'     \code{"ROS"} (Rate of Senescence).}
+#'     (Start of Growing Season, default), \code{"PGS"} (Peak of Growing Season),
+#'     \code{"EGS"} (End of Growing Season), \code{"LGS"} (Length of Growing Season),
+#'     \code{"EVI1"} (Minimum EVI before peak), \code{"EVI2"} (Minimum EVI after peak),
+#'     \code{"EVIP"} (EVI at Peak of Growing Season),
+#'     \code{"EVII"} (Integral of EVI under growing season curve).}
 #' }
-#' 500 m MODIS resolution.  Convenience wrapper: [read_phenology()].
+#' 500 m resolution.  Convenience wrapper: [read_phenology()].
 #'
 #' @section Datasets not accessible:
 #' The following datasets are tracked in the \acronym{TERN} catalogue but
@@ -159,12 +172,9 @@
 #' \preformatted{
 #'   options(nert.max_tries = 5L, nert.initial_delay = 2L)
 #' }
-#' Closes \href{https://github.com/AAGI-AUS/nert/issues/20}{AAGI-AUS/nert#20}.
-#'
-#' @family COGs
 #'
 #' @examplesIf interactive()
-#' # Using aliases (recommended) ----------------------------------------
+#' # Using aliases (recommended)
 #' r <- read_tern("SMIPS", date = "2024-01-15")
 #' r_asc <- read_tern("ASC")
 #' autoplot(r_asc)
@@ -182,25 +192,19 @@
 #' # Land Surface Phenology
 #' r_phen <- read_tern("PHENOLOGY", year = 2018, collection = "SGS")
 #'
-#' # Full TERN keys still work ----------------------------------------
+#' # Full TERN keys still work
 #' r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 #'
-#' @returns A [terra::rast()] object of the national mosaic for the
+#' @returns A [terra::SpatRaster] object of the national mosaic for the
 #'   requested dataset (and, where applicable, date/collection).
 #'
 #' @references
 #'   SMIPS: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
-#'
 #'   ASC: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>
-#'
 #'   AET: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
-#'
 #'   AWC: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7>
-#'
 #'   Soil Beta Diversity: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
-#'
 #'   Canopy Height: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba>
-#'
 #'   Land Surface Phenology: <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26>
 #'
 #' @autoglobal
@@ -216,30 +220,32 @@ read_tern <- function(
     cli::cli_abort("You must provide a {.arg dataset_id}.")
   }
 
-  # Validate dataset ID and collect dots *before* checking the API key so that
-  # input-validation errors surface even when the key is not configured (e.g.
-  # in CI without TERN_API_KEY).
-  did <- .tern_dispatch_id(dataset_id)
+  # Validate dataset ID and specific arguments *before* checking API key
   dots <- list(...)
-
-  # Validate dataset-specific arguments before requiring the API key
+  did <- .tern_dispatch_id(dataset_id)
   .tern_validate_args(did, dots, dataset_id)
-
   api_key <- .check_api_key(api_key %||% get_key())
 
+  # Dispatch to specific dataset helpers
   switch(
     did,
     "d1995ee8" = .read_tern_smips(dots, api_key, max_tries, initial_delay),
     "15728dba" = .read_tern_asc(dots, api_key, max_tries, initial_delay),
     "9fefa68b" = .read_tern_aet(dots, api_key, max_tries, initial_delay),
-    "482301c2" = ,
+    "482301c2" = ,  # Switch fall-through for SLGA datasets
     "slga_cly" = ,
     "slga_snd" = ,
     "slga_slt" = ,
     "slga_bdw" = ,
     "slga_phc" = ,
     "slga_phw" = ,
-    "slga_nto" = .read_tern_slga(did, dots, api_key, max_tries, initial_delay),
+    "slga_nto" = ,
+    "slga_avp" = ,
+    "slga_pto" = ,
+    "slga_cec" = ,
+    "slga_ece" = ,
+    "slga_dul" = ,
+    "slga_l15" = .read_tern_slga(did, dots, api_key, max_tries, initial_delay),
     "4a428d52" = .read_tern_soil_diversity(dots, api_key, max_tries, initial_delay),
     "36c98155" = .read_tern_canopy_height(api_key, max_tries, initial_delay),
     "2bb0c81a" = .read_tern_phenology(dots, api_key, max_tries, initial_delay)
@@ -247,31 +253,33 @@ read_tern <- function(
 }
 
 
-# -- Aliases and metadata tables -----------------------------------------------
-
 #' Alias mapping for short dataset names
 #' Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 #' @autoglobal
 #' @dev
 .tern_aliases <- list(
-  SMIPS    = "d1995ee8",
-  ASC      = "15728dba",
-  AET      = "9fefa68b",
-  AWC      = "482301c2",
-  CLY      = "slga_cly",
-  SND      = "slga_snd",
-  SLT      = "slga_slt",
-  BDW      = "slga_bdw",
-  PHC      = "slga_phc",
-  PHW      = "slga_phw",
-  NTO      = "slga_nto",
-  SOILDIV  = "4a428d52",
-  CANOPY   = "36c98155",
+  SMIPS = "d1995ee8",
+  ASC = "15728dba",
+  AET = "9fefa68b",
+  AWC = "482301c2",
+  CLY = "slga_cly",
+  SND = "slga_snd",
+  SLT = "slga_slt",
+  BDW = "slga_bdw",
+  PHC = "slga_phc",
+  PHW = "slga_phw",
+  NTO = "slga_nto",
+  AVP = "slga_avp",
+  PTO = "slga_pto",
+  CEC = "slga_cec",
+  ECE = "slga_ece",
+  DUL = "slga_dul",
+  L15 = "slga_l15",
+  SOILDIV = "4a428d52",
+  CANOPY = "36c98155",
   PHENOLOGY = "2bb0c81a"
 )
 
-
-# -- Dispatch helpers ----------------------------------------------------------
 
 #' Normalise a TERN dataset key for switch() dispatch
 #'
@@ -346,6 +354,10 @@ read_tern <- function(
 #' @autoglobal
 #' @dev
 .tern_validate_args <- function(did, dots, dataset_id) {
+  #FIXME: Russell (05/06) as mentioned in Issue #36 discussion, surely
+  #  at some point we move these argument validation bits to their own
+  #  specific dataset file (e.g., SMIPS validation in read_smips.R) to
+  #  improve the SoC.
   switch(
     did,
     # SMIPS (d1995ee8) -- requires date
@@ -380,7 +392,13 @@ read_tern <- function(
     "slga_bdw" = ,
     "slga_phc" = ,
     "slga_phw" = ,
-    "slga_nto" = {
+    "slga_nto" = ,
+    "slga_avp" = ,
+    "slga_pto" = ,
+    "slga_cec" = ,
+    "slga_ece" = ,
+    "slga_dul" = ,
+    "slga_l15" = {
       # SLGA — all static, optional depth/collection with defaults
     },
     "4a428d52" = {

@@ -4,7 +4,7 @@
 #' Wrapper around [read_tern()] for retrieving the CMRSET actual
 #' evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
 #' provides monthly estimates of actual ET (mm/month) at 30 m resolution
-#' from February 2000 onwards.
+#' from February 2000 onwards. #FIXME: May 1987 actually.
 #'
 #' @param date A month to download (Date or character, e.g.
 #'   \code{"2023-06-01"} or \code{as.Date("2023-06-01")}).  The value
