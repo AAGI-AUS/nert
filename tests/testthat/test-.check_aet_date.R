@@ -7,19 +7,19 @@ test_that("Date is snapped to first of month", {
   expect_identical(format(date_checked, "%Y-%m-%d"), "2023-06-01")
 })
 
-test_that("Dates before 2000-02-01 throw an error", {
+test_that("Dates before 1987-05-01 throw an error", {
   expect_error(
-    .check_aet_date("2000-01-01"),
-    "AET data are not available before 2000-02-01"
+    .check_aet_date("1980-01-01"),
+    "AET data are not available before 1987-05-01"
   )
   expect_error(
-    .check_aet_date("1999-12-01"),
-    "AET data are not available before 2000-02-01"
+    .check_aet_date("1960-12-20"),
+    "AET data are not available before 1987-05-01"
   )
 })
 
-test_that("Dates on or after 2000-02-01 are accepted", {
-  expect_no_error(.check_aet_date("2000-02-01"))
+test_that("Dates on or after 1987-05-01 are accepted", {
+  expect_no_error(.check_aet_date("1987-05-01"))
   expect_no_error(.check_aet_date("2023-06-15"))
 })
 

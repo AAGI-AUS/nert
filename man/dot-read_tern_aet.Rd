@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_aet.R
 \name{.read_tern_aet}
 \alias{.read_tern_aet}
-\title{Internal handler for AET/CMRSET (\code{TERN/9fefa68b})}
+\title{Internal handler for retrieving the AET data}
 \usage{
 .read_tern_aet(dots, api_key, max_tries, initial_delay)
 }
@@ -14,6 +14,6 @@
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-Internal handler for AET/CMRSET (\code{TERN/9fefa68b})
+Internal handler for retrieving the AET data
 }
 \keyword{internal}

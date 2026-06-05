@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_aet.R
 \name{.make_aet_url}
 \alias{.make_aet_url}
-\title{Build a GDAL vsicurl URL for an AET Collection}
+\title{Build a GDAL vsicurl URL to retrieve AET data}
 \usage{
 .make_aet_url(.collection, .month, .api_key)
 }
@@ -19,6 +19,6 @@ the month.}
 A \code{character} GDAL vsicurl URL string.
 }
 \description{
-Build a GDAL vsicurl URL for an AET Collection
+Build a GDAL vsicurl URL to retrieve AET data
 }
 \keyword{internal}
