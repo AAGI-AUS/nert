@@ -4,7 +4,8 @@
 #' Wrapper around [read_tern()] for retrieving the SMIPS v1.0 daily soil
 #' moisture data from the TERN Data Portal. SMIPS provides soil moisture
 #' estimates at roughly 1km X 1km spatial resolution across Australia,
-#' from 1st January 2015 to approximately 7 days before today.
+#' from 1st January 2015 onward (updated approximately daily on the TERN
+#' server).
 #'
 #' @param date A day to download (Date or character, e.g.
 #'   \code{"2024-01-15"} or \code{as.Date("2024-01-15")}).
@@ -102,6 +103,7 @@ read_smips <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
+#'
 #' @autoglobal
 #' @dev
 .read_tern_smips <- function(dots, api_key, max_tries, initial_delay) {
@@ -140,39 +142,37 @@ read_smips <- function(
 #'
 #' SMIPS daily COGs are published from 2015-01-01 (the earliest archived
 #' complete set of soil moisture GeoTIFFs available on the TERN Data Portal),
-#' up to approximately seven days before today.  Requests outside that
-#' window will return HTTP 404 from the GDAL vsicurl driver, resulting in a
-#' "file does not exist" error from [terra::rast()].  This helper function
-#' catches this case before any network I/O.
+#' up to today. Requests outside that window will definitely return HTTP 404
+#' from the GDAL vsicurl driver, resulting in a "file does not exist" error
+#' from [terra::rast()].  This helper function catches this case before
+#' any network I/O. (Note: the requested rasters may still be unavailable
+#' even if this check passes, e.g., if the user has requested a very recent
+#' raster that has not been added to the TERN server yet. This validation
+#' function simply checks for the obviously impossible cases.)
 #'
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
 #'
 #' @autoglobal
-#'
 #' @dev
 .check_collection_agreement <- function(.collection, .day) {
+  # Convert everything to Date objects to enable simple and sane comparison
   smips_start <- as.Date("2015-01-01")
+  .day <- as.Date(as.character(.day))
+  smips_end <- Sys.Date()
 
-  #FIXME Russell (01/06): As explained in issue #46, I don't think we need
-  #  to bother with checking this upper bound (or just make it today's date).
-  #  The mythical "7-day publishing delay" appears to be an AI fabrication.
-  last_week <- lubridate::today() - 7L
-
-  day_d <- as.Date(.day)
-
-  if (day_d < smips_start) {
+  if (.day < smips_start) {
     cli::cli_abort(
       "SMIPS data are not generally available before
       {format(smips_start, '%Y-%m-%d')}. \\
-      You requested {format(day_d, '%Y-%m-%d')}."
+      You requested {format(.day, '%Y-%m-%d')}."
     )
   }
-  if (day_d > last_week) {
+  if (.day > smips_end) {
     cli::cli_abort(
-      "SMIPS publishes with a roughly seven-day delay; the most recent date \\
-       available is {format(last_week, '%Y-%m-%d')}. You requested \\
-       {format(day_d, '%Y-%m-%d')}."
+      "SMIPS data are not yet available for dates beyond
+      {format(smips_end, '%Y-%m-%d')}. \\
+      You requested {format(.day, '%Y-%m-%d')}."
     )
   }
 }
@@ -199,7 +199,6 @@ read_smips <- function(
     "runoff"
   )
   collection <- rlang::arg_match(.collection, approved_collections)
-
   .check_collection_agreement(.collection = .collection, .day = .day)
 
   collection_url <- data.table::fcase(

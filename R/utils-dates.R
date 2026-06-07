@@ -7,7 +7,7 @@
 #' @note This was taken from \CRANpkg{nasapower}.
 #' @examples
 #' .check_date("2024-01-01")
-#' @author Adam H. Sparks \email{adamhsparks@@curtin.edu.au}
+#' @author Adam H. Sparks \email{adamhsparks@curtin.edu.au}
 #' @autoglobal
 #' @dev
 .check_date <- function(x) {
