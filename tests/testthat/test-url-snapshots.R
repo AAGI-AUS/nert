@@ -42,11 +42,15 @@ test_that("AET URLs are stable for ETa and pixel_qa", {
   expect_snapshot(cat(sink$urls, sep = "\n"))
 })
 
-# ---- SLGA (all eight attributes, default depth 000_005, stat EV) ------------
+# ---- SLGA (all attributes, default depth 000_005, stat EV) ------------
 
-test_that("SLGA URLs are stable across all eight attributes", {
+test_that("SLGA URLs are stable across all attributes", {
   sink <- .use_mocked_cog()
-  for (attr in c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")) {
+  attrs <- c(
+    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
+    "CEC", "ECE", "DUL", "L15"
+  )
+  for (attr in attrs) {
     read_slga(attr, api_key = KEY)
   }
   expect_snapshot(cat(sink$urls, sep = "\n"))
@@ -61,10 +65,11 @@ test_that("SLGA URLs are stable across all six depth intervals", {
   expect_snapshot(cat(sink$urls, sep = "\n"))
 })
 
-test_that("SLGA EV vs CI URLs are stable", {
+test_that("SLGA EV vs CI (05, 95) URLs are stable", {
   sink <- .use_mocked_cog()
   read_slga("AWC", collection = "EV", api_key = KEY)
-  read_slga("AWC", collection = "CI", api_key = KEY)
+  read_slga("AWC", collection = "05", api_key = KEY)
+  read_slga("AWC", collection = "95", api_key = KEY)
   expect_snapshot(cat(sink$urls, sep = "\n"))
 })
 

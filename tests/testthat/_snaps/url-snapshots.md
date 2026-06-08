@@ -26,7 +26,7 @@
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/aet/v2_2/2023/2023_06_01/CMRSET_LANDSAT_V2_2_2023_06_01_ETa.vrt
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/aet/v2_2/2023/2023_06_01/CMRSET_LANDSAT_V2_2_2023_06_01_pixel_qa.vrt
 
-# SLGA URLs are stable across all eight attributes
+# SLGA URLs are stable across all attributes
 
     Code
       cat(sink$urls, sep = "\n")
@@ -39,6 +39,12 @@
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/pHc/v2/PHC_000_005_EV_N_P_AU_NAT_C_20210913.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/PHW/v1/PHW_000_005_EV_N_P_AU_TRN_N_20220520.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/NTO/v2/NTO_000_005_EV_N_P_AU_NAT_C_20231101.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/AVP/v1/AVP_000_005_EV_N_P_AU_TRN_N_20220826.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/PTO/v2/PTO_000_005_EV_N_P_AU_NAT_C_20231101.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/CEC/v1/CEC_000_005_EV_N_P_AU_TRN_N_20220826.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/ECE/v1/ECE_000_005_EV_N_P_AU_NAT_C_20140801.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/DUL/v1/DUL_000_005_EV_N_P_AU_TRN_N_20210614.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/L15/v1/L15_000_005_EV_N_P_AU_TRN_N_20210614.tif
 
 # SLGA URLs are stable across all six depth intervals
 
@@ -52,13 +58,14 @@
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/AWC/v2/AWC_060_100_EV_N_P_AU_TRN_N_20210614.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/AWC/v2/AWC_100_200_EV_N_P_AU_TRN_N_20210614.tif
 
-# SLGA EV vs CI URLs are stable
+# SLGA EV vs CI (05, 95) URLs are stable
 
     Code
       cat(sink$urls, sep = "\n")
     Output
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/AWC/v2/AWC_000_005_EV_N_P_AU_TRN_N_20210614.tif
-      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/AWC/v2/AWC_000_005_CI_N_P_AU_TRN_N_20210614.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/AWC/v2/AWC_000_005_05_N_P_AU_TRN_N_20210614.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/AWC/v2/AWC_000_005_95_N_P_AU_TRN_N_20210614.tif
 
 # Soil Beta Diversity URLs are stable across collections and axes
 

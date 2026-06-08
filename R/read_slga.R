@@ -4,8 +4,8 @@
 #' Grid of Australia (SLGA) datasets from the TERN Data Portal. 14 soil
 #' attributes are available at 90m X 90m spatial resolution across Australia,
 #' each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
-#' 60-100cm, 100-200cm) and two statistics (estimated value, confidence
-#' interval).
+#' 60-100cm, 100-200cm) and three statistics (estimated value, and the lower
+#' (05) and upper (95) percentile limits for the confidence interval).
 #'
 #' @section Supported soil attributes:
 #' \describe{
@@ -32,8 +32,9 @@
 #' @param depth One of \code{"000_005"} (default), \code{"005_015"},
 #'   \code{"015_030"}, \code{"030_060"}, \code{"060_100"}, or
 #'   \code{"100_200"}.
-#' @param collection One of \code{"EV"} (estimated value, default) or
-#'   \code{"CI"} (confidence interval).
+#' @param collection One of \code{"EV"} (estimated value, default),
+#'   \code{"05"} (lower percentile limit for the 95% confidence interval) or
+#'   \code{"95"} (upper percentile limit for the confidence interval).
 #' @param api_key A \code{character} string containing your \acronym{TERN}
 #'   \acronym{API} key. Defaults to automatic detection from your
 #'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
@@ -62,7 +63,8 @@
 #' r_awc <- read_slga("AWC", depth = "015_030")
 #'
 #' # Read pH (CaCl2) confidence interval at 30-60 cm
-#' r_phc <- read_slga("PHC", depth = "030_060", collection = "CI")
+#' r_phc_low <- read_slga("PHC", depth = "030_060", collection = "05")
+#' r_phc_up <- read_slga("PHC", depth = "030_060", collection = "95")
 #'
 #' @references
 #' \describe{
@@ -187,6 +189,7 @@ read_slga <- function(
   )
   attribute <- toupper(attribute)
   attribute <- rlang::arg_match(attribute, approved_attrs)
+
   read_tern(
     attribute,
     depth = depth,
@@ -261,7 +264,7 @@ read_slga <- function(
   } else {
     "000_005"
   }
-  collection <- if (!is.null(dots[["collection"]])){
+  collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {
     "EV"
@@ -271,10 +274,7 @@ read_slga <- function(
                        "100_200")
   depth <- rlang::arg_match(depth, approved_depths)
 
-  #FIXME: Russell (02/06) as noted by Wasin in Issue #45, the "CI" statistic
-  #  doesn't work. We need to return either of the lower or upper confidence
-  #  interval limits separately. (E.g., return the "05", "95" rasters.)
-  approved_stats <- c("EV", "CI")
+  approved_stats <- c("EV", "05", "95")
   collection <- rlang::arg_match(collection, approved_stats)
 
   fname <- sprintf("%s_%s_%s_N_P_%s_%s.tif",
