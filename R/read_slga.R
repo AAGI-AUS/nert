@@ -211,36 +211,33 @@ read_slga <- function(
 #' @autoglobal
 #' @dev
 .slga_config <- list(
-  #FIXME: Russell (02/06) Why is the AWC dispatch ID an alphanumeric
-  #  instead of just "slga_awc" like the others? Does anything depend
-  #  on it being this way?
   "482301c2" = list(dir = "AWC", prefix = "AWC", version = "v2",
                     date = "20210614", suffix = "AU_TRN_N"),
-  "slga_cly" = list(dir = "CLY", prefix = "CLY", version = "v2",
+  "f95dc442" = list(dir = "CLY", prefix = "CLY", version = "v2",
                     date = "20210902", suffix = "AU_TRN_N"),
-  "slga_snd" = list(dir = "SND", prefix = "SND", version = "v2",
+  "4224ddff" = list(dir = "SND", prefix = "SND", version = "v2",
                     date = "20210902", suffix = "AU_TRN_N"),
-  "slga_slt" = list(dir = "SLT", prefix = "SLT", version = "v2",
+  "11375f04" = list(dir = "SLT", prefix = "SLT", version = "v2",
                     date = "20210902", suffix = "AU_TRN_N"),
-  "slga_bdw" = list(dir = "BDW", prefix = "BDW", version = "v2",
+  "95978aec" = list(dir = "BDW", prefix = "BDW", version = "v2",
                     date = "20230607", suffix = "AU_TRN_N"),
-  "slga_phc" = list(dir = "pHc", prefix = "PHC", version = "v2",
+  "258afc98" = list(dir = "pHc", prefix = "PHC", version = "v2",
                     date = "20210913", suffix = "AU_NAT_C"),
-  "slga_phw" = list(dir = "PHW", prefix = "PHW", version = "v1",
+  "c37439a5" = list(dir = "PHW", prefix = "PHW", version = "v1",
                     date = "20220520", suffix = "AU_TRN_N"),
-  "slga_nto" = list(dir = "NTO", prefix = "NTO", version = "v2",
+  "e9484508" = list(dir = "NTO", prefix = "NTO", version = "v2",
                     date = "20231101", suffix = "AU_NAT_C"),
-  "slga_avp" = list(dir = "AVP", prefix = "AVP", version = "v1",
+  "c6ef289b" = list(dir = "AVP", prefix = "AVP", version = "v1",
                     date = "20220826", suffix = "AU_TRN_N"),
-  "slga_pto" = list(dir = "PTO", prefix = "PTO", version = "v2",
+  "be382e63" = list(dir = "PTO", prefix = "PTO", version = "v2",
                     date = "20231101", suffix = "AU_NAT_C"),
-  "slga_cec" = list(dir = "CEC", prefix = "CEC", version = "v1",
+  "5b4b2991" = list(dir = "CEC", prefix = "CEC", version = "v1",
                     date = "20220826", suffix = "AU_TRN_N"),
-  "slga_ece" = list(dir = "ECE", prefix = "ECE", version = "v1",
+  "0d27cf8b" = list(dir = "ECE", prefix = "ECE", version = "v1",
                     date = "20140801", suffix = "AU_NAT_C"),
-  "slga_dul" = list(dir = "DUL", prefix = "DUL", version = "v1",
+  "de9ddc12" = list(dir = "DUL", prefix = "DUL", version = "v1",
                     date = "20210614", suffix = "AU_TRN_N"),
-  "slga_l15" = list(dir = "L15", prefix = "L15", version = "v1",
+  "4443f5df" = list(dir = "L15", prefix = "L15", version = "v1",
                     date = "20210614", suffix = "AU_TRN_N")
 )
 
