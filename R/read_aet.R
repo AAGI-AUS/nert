@@ -44,8 +44,8 @@
 #' # Quality assurance flags for June 2023
 #' r_qa <- read_aet("2023-06-01", collection = "pixel_qa")
 #'
-#' # ET from February 2000 (earliest available)
-#' r_early <- read_aet("2000-02-01")
+#' # ET from May 1987 (earliest available)
+#' r_early <- read_aet("1987-05-01")
 #'
 #' # Current/recent ET (within last month)
 #' r_recent <- read_aet(Sys.Date())

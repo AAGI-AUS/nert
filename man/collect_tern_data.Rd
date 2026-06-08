@@ -35,9 +35,9 @@ coordinate columns named \code{lon}/\code{lat} or \code{x}/\code{y}.  Takes prec
 over \code{lon}/\code{lat} when supplied.}
 
 \item{datasets}{\code{character} vector of dataset aliases to collect.
-Default: all 14 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW,
-PHC, PHW, NTO, SOILDIV, CANOPY, PHENOLOGY).  Use \code{NULL} or \code{"all"}
-for all datasets.}
+Default: all 20 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW,
+PHC, PHW, NTO, AVP, PTO, CEC, ECE, DUL, L15, SOILDIV, CANOPY, PHENOLOGY).
+Use \code{NULL} or \code{"all"} for all datasets.}
 
 \item{depth}{For SLGA datasets: depth interval (default \code{"all"}).
 Options: \code{"000_005"}, \code{"005_015"}, \code{"015_030"}, \code{"030_060"},

@@ -17,9 +17,9 @@
 #'   coordinate columns named `lon`/`lat` or `x`/`y`.  Takes precedence
 #'   over `lon`/`lat` when supplied.
 #' @param datasets `character` vector of dataset aliases to collect.
-#'   Default: all 14 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW,
-#'   PHC, PHW, NTO, SOILDIV, CANOPY, PHENOLOGY).  Use `NULL` or `"all"`
-#'   for all datasets.
+#'   Default: all 20 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW,
+#'   PHC, PHW, NTO, AVP, PTO, CEC, ECE, DUL, L15, SOILDIV, CANOPY, PHENOLOGY).
+#'   Use `NULL` or `"all"` for all datasets.
 #' @param depth For SLGA datasets: depth interval (default `"all"`).
 #'   Options: `"000_005"`, `"005_015"`, `"015_030"`, `"030_060"`,
 #'   `"060_100"`, `"100_200"`, or `"all"` for all six GlobalSoilMap depths.
@@ -112,11 +112,9 @@ collect_tern_data <- function(
   na.rm = FALSE
 ) {
   coords_df <- .parse_coordinates(lon, lat, xy)
-  n_loc     <- nrow(coords_df)
-
+  n_loc <- nrow(coords_df)
   dates <- .parse_date_range(date_range)
-  n_dt  <- length(dates)
-
+  n_dt <- length(dates)
   datasets <- .normalise_datasets(datasets)
 
   if (verbose) {
@@ -127,6 +125,12 @@ collect_tern_data <- function(
     )
   }
 
+  #FIXME: Russell (08/06): Note that the canopy height data is returned
+  #  in the Australian Albers EPSG:3577 coordinate reference system,
+  #  rather than WGS84/EPSG:4326. This aggregation might not work when
+  #  the user includes the canopy height data for retrieval. We might
+  #  have to add some specific logic to .parse_coordinates() to handle
+  #  this case for us.
   pts <- terra::vect(
     as.matrix(coords_df[, c("lon", "lat")]),
     type = "points",
@@ -139,8 +143,8 @@ collect_tern_data <- function(
 
   out <- data.table::data.table(
     date = rep(dates, each = n_loc),
-    lon  = rep(coords_df$lon, times = n_dt),
-    lat  = rep(coords_df$lat, times = n_dt)
+    lon = rep(coords_df$lon, times = n_dt),
+    lat = rep(coords_df$lat, times = n_dt)
   )
 
   for (wi in work_items) {
@@ -178,9 +182,6 @@ collect_tern_data <- function(
   out[]
 }
 
-# -----------------------------------------------------------------------------
-# Coordinate / date / dataset parsers
-# -----------------------------------------------------------------------------
 
 #' Normalise coordinate input
 #'
@@ -228,6 +229,12 @@ collect_tern_data <- function(
   if (any(is.na(coords$lon) | is.na(coords$lat))) {
     cli::cli_abort("Coordinates must not be {.code NA}.")
   }
+
+  #FIXME: Russell (08/06): Surely we can be more specific than this. They
+  #  are strictly Australian datasets in decimal degrees Northing, so really
+  #  anything outside of -44 < lat < -10 ish, and 112 < lon < 154 ish is
+  #  going to be out-of-bounds (in WGS84 at least--not sure if/how that
+  #  changes for the canopy height dataset in Aust Albers coordinates).
   if (any(coords$lon < -180 | coords$lon > 180 |
             coords$lat < -90  | coords$lat > 90)) {
     cli::cli_abort(
@@ -236,6 +243,7 @@ collect_tern_data <- function(
   }
   coords
 }
+
 
 #' Normalise a date_range argument
 #'
@@ -273,8 +281,8 @@ collect_tern_data <- function(
 .normalise_datasets <- function(datasets) {
   all_aliases <- c(
     "SMIPS", "ASC", "AET",
-    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO",
-    "SOILDIV", "CANOPY", "PHENOLOGY"
+    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
+    "CEC", "ECE", "DUL", "L15", "SOILDIV", "CANOPY", "PHENOLOGY"
   )
   if (is.null(datasets) ||
         (length(datasets) == 1L && identical(datasets, "all"))) {
@@ -300,9 +308,6 @@ collect_tern_data <- function(
   datasets
 }
 
-# -----------------------------------------------------------------------------
-# Work-item planner: one item per COG fetch
-# -----------------------------------------------------------------------------
 
 #' Plan the list of COG fetches
 #'
@@ -319,20 +324,22 @@ collect_tern_data <- function(
 #' @param datasets Normalised alias vector.
 #' @param dates Resolved `Date` vector.
 #' @param depth SLGA depth selector.
-#' @param stat SLGA stat selector (`"EV"` or `"CI"`).
+#' @param stat SLGA stat selector (`"EV"`, `"05"` or `"95"`).
 #' @param smips_collection SMIPS collection selector.
 #' @returns A list of work-item lists.
 #' @autoglobal
 #' @dev
 .build_work_items <- function(datasets, dates, depth, stat, smips_collection) {
-  slga_aliases <- c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")
+  slga_aliases <- c(
+    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
+    "CEC", "ECE", "DUL", "L15"
+  )
   slga_depths  <- c("000_005", "005_015", "015_030",
                     "030_060", "060_100", "100_200")
   smips_variants <- c("totalbucket", "SMindex", "bucket1",
                       "bucket2", "deepD", "runoff")
 
   items <- list()
-
   for (ds in datasets) {
     if (ds == "SMIPS") {
       variants <- if (smips_collection == "all") {
@@ -344,24 +351,24 @@ collect_tern_data <- function(
         col <- paste0("SMIPS_", v)
         for (i in seq_along(dates)) {
           items[[length(items) + 1L]] <- list(
-            ds       = "SMIPS",
-            type     = "numeric",
-            cols     = col,
+            ds = "SMIPS",
+            type = "numeric",
+            cols = col,
             date_idx = i,
-            args     = list(date = dates[i], collection = v),
-            label    = sprintf("SMIPS %s %s", v, format(dates[i], "%Y-%m-%d"))
+            args = list(date = dates[i], collection = v),
+            label = sprintf("SMIPS %s %s", v, format(dates[i], "%Y-%m-%d"))
           )
         }
       }
     } else if (ds == "AET") {
       for (i in seq_along(dates)) {
         items[[length(items) + 1L]] <- list(
-          ds       = "AET",
-          type     = "numeric",
-          cols     = "AET",
+          ds = "AET",
+          type = "numeric",
+          cols = "AET",
           date_idx = i,
-          args     = list(date = dates[i]),
-          label    = sprintf("AET %s", format(dates[i], "%Y-%m-%d"))
+          args = list(date = dates[i]),
+          label = sprintf("AET %s", format(dates[i], "%Y-%m-%d"))
         )
       }
     } else if (ds %in% slga_aliases) {
@@ -369,42 +376,42 @@ collect_tern_data <- function(
       for (d in depths) {
         col <- if (depth == "all") paste0(ds, "_", d) else ds
         items[[length(items) + 1L]] <- list(
-          ds       = ds,
-          type     = "numeric",
-          cols     = col,
+          ds = ds,
+          type = "numeric",
+          cols = col,
           date_idx = NA_integer_,
-          args     = list(depth = d, collection = stat),
-          label    = sprintf("%s depth %s (static)", ds, d)
+          args = list(depth = d, collection = stat),
+          label = sprintf("%s depth %s (static)", ds, d)
         )
       }
     } else if (ds == "ASC") {
       items[[length(items) + 1L]] <- list(
-        ds       = "ASC",
-        type     = "character",
-        cols     = "ASC",
+        ds = "ASC",
+        type = "character",
+        cols = "ASC",
         date_idx = NA_integer_,
-        args     = list(),
-        label    = "ASC (static)"
+        args = list(),
+        label = "ASC (static)"
       )
     } else if (ds == "PHENOLOGY") {
       phen_year <- as.integer(format(dates[1L], "%Y"))
       phen_year <- max(2003L, min(2018L, phen_year))
       items[[length(items) + 1L]] <- list(
-        ds       = "PHENOLOGY",
-        type     = "numeric",
-        cols     = "PHENOLOGY",
+        ds = "PHENOLOGY",
+        type = "numeric",
+        cols = "PHENOLOGY",
         date_idx = NA_integer_,
-        args     = list(year = phen_year),
-        label    = sprintf("PHENOLOGY year %d (static)", phen_year)
+        args = list(year = phen_year),
+        label = sprintf("PHENOLOGY year %d (static)", phen_year)
       )
     } else {
       items[[length(items) + 1L]] <- list(
-        ds       = ds,
-        type     = "numeric",
-        cols     = ds,
+        ds = ds,
+        type = "numeric",
+        cols = ds,
         date_idx = NA_integer_,
-        args     = list(),
-        label    = sprintf("%s (static)", ds)
+        args = list(),
+        label = sprintf("%s (static)", ds)
       )
     }
   }
@@ -412,9 +419,6 @@ collect_tern_data <- function(
   items
 }
 
-# -----------------------------------------------------------------------------
-# Per-COG extractor: one read_tern + one terra::extract per work item
-# -----------------------------------------------------------------------------
 
 #' Fetch one work item and write its values into the output table by reference.
 #'
@@ -429,7 +433,6 @@ collect_tern_data <- function(
 #' @param n_dt Number of dates.
 #' @param n_loc Number of locations.
 #' @param api_key TERN API key.
-#' @returns `invisible(NULL)`.
 #' @autoglobal
 #' @dev
 .fill_work_item <- function(out, wi, pts, n_dt, n_loc, api_key) {
@@ -483,16 +486,13 @@ collect_tern_data <- function(
     out[, (wi$cols[1L]) := rep(v, times = n_dt)]
   } else {
     row_start <- (wi$date_idx - 1L) * n_loc + 1L
-    row_end   <- wi$date_idx * n_loc
+    row_end <- wi$date_idx * n_loc
     out[seq.int(row_start, row_end), (wi$cols[1L]) := v]
   }
 
   invisible(NULL)
 }
 
-# -----------------------------------------------------------------------------
-# Pretty datasets-table for verbose output
-# -----------------------------------------------------------------------------
 
 #' Print the user-facing datasets-table summarising what will be fetched.
 #'
@@ -505,69 +505,98 @@ collect_tern_data <- function(
 #' @dev
 .print_datasets_table <- function(datasets, depth, smips_collection, stat) {
   dataset_info <- list(
-    SMIPS     = list(id = "TERN/d1995ee8", temporal = "Daily",
-                     resolution = "1 km",
-                     description = "Soil Moisture Integration & Prediction System"),
-    ASC       = list(id = "TERN/15728dba", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Australian Soil Classification (soil order)"),
-    AET       = list(id = "TERN/9fefa68b", temporal = "Monthly",
-                     resolution = "30 m",
-                     description = "Actual Evapotranspiration (CMRSET)"),
-    AWC       = list(id = "TERN/482301c2", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Available Water Capacity (SLGA)"),
-    CLY       = list(id = "TERN/slga_cly", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Clay content % (SLGA)"),
-    SND       = list(id = "TERN/slga_snd", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Sand content % (SLGA)"),
-    SLT       = list(id = "TERN/slga_slt", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Silt content % (SLGA)"),
-    BDW       = list(id = "TERN/slga_bdw", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Bulk Density whole soil (SLGA)"),
-    PHC       = list(id = "TERN/slga_phc", temporal = "Static",
-                     resolution = "90 m",
-                     description = "pH (CaCl2) soil acidity (SLGA)"),
-    PHW       = list(id = "TERN/slga_phw", temporal = "Static",
-                     resolution = "90 m",
-                     description = "pH (water) soil acidity (SLGA)"),
-    NTO       = list(id = "TERN/slga_nto", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Total Nitrogen % weight (SLGA)"),
+    SMIPS = list(id = "TERN/d1995ee8", temporal = "Daily",
+                 resolution = "1 km",
+                 description = "Soil Moisture Integration & Prediction System"),
+    ASC = list(id = "TERN/15728dba", temporal = "Static",
+               resolution = "90 m",
+               description = "Australian Soil Classification (soil order)"),
+    AET = list(id = "TERN/9fefa68b", temporal = "Monthly",
+               resolution = "30 m",
+               description = "Actual Evapotranspiration via CMRSET"),
+    AWC = list(id = "TERN/482301c2", temporal = "Static",
+               resolution = "90 m",
+               description = "Available Water Capacity % (SLGA)"),
+    CLY = list(id = "TERN/f95dc442", temporal = "Static",
+               resolution = "90 m",
+               description = "Clay content % (SLGA)"),
+    SND = list(id = "TERN/4224ddff", temporal = "Static",
+               resolution = "90 m",
+               description = "Sand content % (SLGA)"),
+    SLT = list(id = "TERN/11375f04", temporal = "Static",
+               resolution = "90 m",
+               description = "Silt content % (SLGA)"),
+    BDW = list(id = "TERN/95978aec", temporal = "Static",
+               resolution = "90 m",
+               description = "Bulk Density whole earth (g/cm3) (SLGA)"),
+    PHC = list(id = "TERN/258afc98", temporal = "Static",
+               resolution = "90 m",
+               description = "pH (CaCl2) (SLGA)"),
+    PHW = list(id = "TERN/c37439a5", temporal = "Static",
+               resolution = "90 m",
+               description = "pH (water) (SLGA)"),
+    NTO = list(id = "TERN/e9484508", temporal = "Static",
+               resolution = "90 m",
+               description = "Total Nitrogen % (SLGA)"),
+    AVP = list(id = "TERN/c6ef289b", temporal = "Static",
+               resolution = "90 m",
+               description = "Available Phosphorus (mg/kg) (SLGA)"),
+    PTO = list(id = "TERN/be382e63", temporal = "Static",
+               resolution = "90 m",
+               description = "Total Phosphorus % (SLGA)"),
+    CEC = list(id = "TERN/5b4b2991", temporal = "Static",
+               resolution = "90 m",
+               description = "Cation Exchange Capacity (meq/100g) (SLGA)"),
+    ECE = list(id = "TERN/0d27cf8b", temporal = "Static",
+               resolution = "90 m",
+               description = "Effective Cation Exchange Capacity (meq/100g) (SLGA)"),
+    DUL = list(id = "TERN/de9ddc12", temporal = "Static",
+               resolution = "90 m",
+               description = "Drained upper limit water content % (SLGA)"),
+    L15 = list(id = "TERN/4443f5df", temporal = "Static",
+               resolution = "90 m",
+               description = "15 bar lower limit water content % (SLGA)"),
     SOILDIV   = list(id = "TERN/4a428d52", temporal = "Static",
                      resolution = "90 m",
-                     description = "Soil Beta Diversity (NMDS ordination)"),
+                     description = "Soil Beta Diversity (NMDS components)"),
     CANOPY    = list(id = "TERN/36c98155", temporal = "Static",
                      resolution = "30 m",
-                     description = "Canopy Height composite (OzTreeMap)"),
+                     description = "Canopy Height Best-pick composite (OzTreeMap)"),
     PHENOLOGY = list(id = "TERN/2bb0c81a", temporal = "Annual",
                      resolution = "500 m",
-                     description = "Land Surface Phenology (MODIS, 2003-2018)")
+                     description = "Land Surface Phenology")
   )
 
   layers_info <- vapply(datasets, function(ds) {
-    if (ds %in% c("AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO")) {
-      if (depth == "all") "6 depths" else paste0("Depth ", depth)
+    slga_datasets <- c(
+      "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
+      "CEC", "ECE", "DUL", "L15"
+    )
+    if (ds %in% slga_datasets) {
+      if (depth == "all") {
+        "6 depths"
+      } else {
+        paste0("Depth ", depth)
+      }
     } else if (ds == "SMIPS") {
-      if (smips_collection == "all") "6 variants" else smips_collection
+      if (smips_collection == "all") {
+        "6 variants"
+      } else {
+        smips_collection
+      }
     } else {
       "Single"
     }
   }, character(1L))
 
   tbl <- data.table::data.table(
-    Alias       = datasets,
-    ID          = vapply(datasets, function(x) dataset_info[[x]]$id,
-                         character(1L)),
-    Layer       = layers_info,
-    Temporal    = vapply(datasets, function(x) dataset_info[[x]]$temporal,
-                         character(1L)),
-    Resolution  = vapply(datasets, function(x) dataset_info[[x]]$resolution,
-                         character(1L)),
+    Alias = datasets,
+    ID = vapply(datasets, function(x) dataset_info[[x]]$id, character(1L)),
+    Layer = layers_info,
+    Temporal = vapply(datasets, function(x) dataset_info[[x]]$temporal,
+                      character(1L)),
+    Resolution = vapply(datasets, function(x) dataset_info[[x]]$resolution,
+                        character(1L)),
     Description = vapply(datasets, function(x) dataset_info[[x]]$description,
                          character(1L))
   )

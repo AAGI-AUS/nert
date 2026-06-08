@@ -87,7 +87,7 @@ test_that(".parse_date_range rejects unparseable dates", {
 # .normalise_datasets -------------------------------------------------------
 
 test_that(".normalise_datasets returns the full alias set for NULL/'all'", {
-  expect_identical(length(.normalise_datasets(NULL)), 14L)
+  expect_identical(length(.normalise_datasets(NULL)), 20L)
   expect_identical(.normalise_datasets("all"), .normalise_datasets(NULL))
 })
 

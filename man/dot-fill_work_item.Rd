@@ -19,9 +19,6 @@
 
 \item{api_key}{TERN API key.}
 }
-\value{
-\code{invisible(NULL)}.
-}
 \description{
 For a time-series work item, exactly one row block (\code{length(coords)}
 rows) is filled.  For a static work item, the value is replicated

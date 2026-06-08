@@ -13,7 +13,7 @@
 
 \item{depth}{SLGA depth selector.}
 
-\item{stat}{SLGA stat selector (\code{"EV"} or \code{"CI"}).}
+\item{stat}{SLGA stat selector (\code{"EV"}, \code{"05"} or \code{"95"}).}
 
 \item{smips_collection}{SMIPS collection selector.}
 }
