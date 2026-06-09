@@ -25,7 +25,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/AAGI-AUS/nert/blob/v1.0.0/inst/CITATION)
+[`inst/CITATION`](https://github.com/AAGI-AUS/nert/blob/main/inst/CITATION)
 
 Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert:
 An API Client for TERN Data. R package version 1.0.0.
