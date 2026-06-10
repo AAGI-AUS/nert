@@ -20,7 +20,8 @@ read_phenology(
 
 \item{collection}{Phenology metric abbreviation.  One of \code{"SGS"}
 (default), \code{"PGS"}, \code{"EGS"}, \code{"LGS"}, \code{"EVI1"},
-\code{"EVI2"}, \code{"EVIP"}, or \code{"EVII"}.}
+\code{"EVI2"}, \code{"EVIP"}, \code{"EVII"}, \code{"SGS_month"},
+\code{"PGS_month"} or \code{"EGS_month"}.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
 \acronym{API} key. Defaults to automatic detection from your
@@ -50,7 +51,7 @@ imagery.
 }
 \section{Phenology metrics}{
 
-Eight phenological metrics are available via the \code{collection}
+Eleven phenological metrics are available via the \code{collection}
 argument:
 \describe{
 \item{\code{"SGS"}}{\strong{Start of Growing Season} (default). A number
@@ -77,6 +78,18 @@ season.}
 \item{\code{"EVII"}}{\strong{Integral of the EVI across the season}. The
 calculated integral of the Enhanced Vegetation Index (including the
 factor of 10000 scaling) under the growing season cycle curve.}
+\item{\code{"SGS_month"}}{\strong{Start of the growing season by month}.
+A number between 1 and 12, indicating the month for the start of the
+growing season (i.e., the \code{"SGS"} metric but reprocessed to
+monthly time resolution).}
+\item{\code{"PGS_month"}}{\strong{Peak of the growing season by month}.
+A number between 1 and 12, indicating the month for the peak of the
+growing season (i.e., the \code{"PGS"} metric but reprocessed to
+monthly time resolution).}
+\item{\code{"EGS_month"}}{\strong{End of the growing season by month}.
+A number between 1 and 12, indicating the month for the end of the
+growing season (i.e., the \code{"EGS"} metric but reprocessed to
+monthly time resolution).}
 }
 }
 

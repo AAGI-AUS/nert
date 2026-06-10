@@ -175,7 +175,10 @@ from the OzTreeMap project. No function arguments required.
 \code{"EGS"} (End of Growing Season), \code{"LGS"} (Length of Growing Season),
 \code{"EVI1"} (Minimum EVI before peak), \code{"EVI2"} (Minimum EVI after peak),
 \code{"EVIP"} (EVI at Peak of Growing Season),
-\code{"EVII"} (Integral of EVI under growing season curve).}
+\code{"EVII"} (Integral of EVI under growing season curve),
+\code{"SGS_month"} (Start of Growing Season, monthly resolution),
+\code{"PGS_month"} (Peak of the Growing Season, monthly resolution),
+\code{"EGS_month"} (End of Growing Season, monthly resolution).}
 }
 }
 

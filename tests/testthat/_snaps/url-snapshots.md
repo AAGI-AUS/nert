@@ -86,7 +86,7 @@
     Output
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif
 
-# Phenology URLs are stable across all eight metrics
+# Phenology URLs are stable across all eleven metrics
 
     Code
       cat(sink$urls, sep = "\n")
@@ -99,6 +99,9 @@
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/6_Minimum_EVI_value_after_PGS/EVI2_2018_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/7_Peak_EVI_value_of_the_growing_season/EVIP_2018_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/8_Integral_EVI_value_of_the_growing_season/EVII_2018_Season1.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/9_Start_of_the_growing_season_by_month/SGS_2018_Season1.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/10_Peak_of_the_growing_season_by_month/PGS_2018_Season1.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/11_End_of_the_growing_season_by_month/EGS_2018_Season1.tif
 
 # Phenology URLs are stable across seasons and years
 

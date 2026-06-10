@@ -8,7 +8,7 @@
 #' imagery.
 #'
 #' @section Phenology metrics:
-#' Eight phenological metrics are available via the \code{collection}
+#' Eleven phenological metrics are available via the \code{collection}
 #' argument:
 #' \describe{
 #'   \item{\code{"SGS"}}{**Start of Growing Season** (default). A number
@@ -35,13 +35,26 @@
 #'   \item{\code{"EVII"}}{**Integral of the EVI across the season**. The
 #'     calculated integral of the Enhanced Vegetation Index (including the
 #'     factor of 10000 scaling) under the growing season cycle curve.}
+#'   \item{\code{"SGS_month"}}{**Start of the growing season by month**.
+#'     A number between 1 and 12, indicating the month for the start of the
+#'     growing season (i.e., the \code{"SGS"} metric but reprocessed to
+#'     monthly time resolution).}
+#'   \item{\code{"PGS_month"}}{**Peak of the growing season by month**.
+#'     A number between 1 and 12, indicating the month for the peak of the
+#'     growing season (i.e., the \code{"PGS"} metric but reprocessed to
+#'     monthly time resolution).}
+#'   \item{\code{"EGS_month"}}{**End of the growing season by month**.
+#'     A number between 1 and 12, indicating the month for the end of the
+#'     growing season (i.e., the \code{"EGS"} metric but reprocessed to
+#'     monthly time resolution).}
 #' }
 #'
 #' @param year An integer year (2003--2018).
 #' @param season Season number: \code{1} (default) or \code{2}.
 #' @param collection Phenology metric abbreviation.  One of \code{"SGS"}
 #'   (default), \code{"PGS"}, \code{"EGS"}, \code{"LGS"}, \code{"EVI1"},
-#'   \code{"EVI2"}, \code{"EVIP"}, or \code{"EVII"}.
+#'   \code{"EVI2"}, \code{"EVIP"}, \code{"EVII"}, \code{"SGS_month"},
+#'   \code{"PGS_month"} or \code{"EGS_month"}.
 #' @param api_key A \code{character} string containing your \acronym{TERN}
 #'   \acronym{API} key. Defaults to automatic detection from your
 #'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
@@ -116,7 +129,10 @@ read_phenology <- function(
   EVI1 = "5_Minimum_EVI_value_before_PGS",
   EVI2 = "6_Minimum_EVI_value_after_PGS",
   EVIP = "7_Peak_EVI_value_of_the_growing_season",
-  EVII = "8_Integral_EVI_value_of_the_growing_season"
+  EVII = "8_Integral_EVI_value_of_the_growing_season",
+  SGS_month = "9_Start_of_the_growing_season_by_month",
+  PGS_month = "10_Peak_of_the_growing_season_by_month",
+  EGS_month = "11_End_of_the_growing_season_by_month"
 )
 
 
@@ -148,7 +164,15 @@ read_phenology <- function(
   }
 
   metric_dir <- .phenology_metrics[[collection]]
-  fname <- sprintf("%s_%d_Season%d.tif", collection, year, season)
+
+  # For the monthly rasters, strip the "_month" bit off the end
+  # to match to the raster filenames in the TERN server directory
+  fname <- sprintf(
+    "%s_%d_Season%d.tif",
+    sub("_month", "", collection, fixed = TRUE),
+    year,
+    season
+  )
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/%s/%s",
     api_key, metric_dir, fname
