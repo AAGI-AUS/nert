@@ -7,17 +7,17 @@ Functions to read Cloud Optimised GeoTIFF data from TERN.
 - [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
   : Read TERN COG Datasets
 - [`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
-  : Read TERN SMIPS Soil Moisture Data
+  : Read SMIPS Soil Moisture Data from TERN
 - [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
-  : Read Australian Soil Classification (ASC) Data
+  : Read Australian Soil Classification (ASC) Data from TERN
 - [`read_aet()`](https://aagi-aus.github.io/nert/reference/read_aet.md)
-  : Read CMRSET Actual Evapotranspiration Data
+  : Read CMRSET Actual Evapotranspiration Data from TERN
 - [`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md)
   : Read SLGA Soil Attributes from TERN
 - [`read_soil_diversity()`](https://aagi-aus.github.io/nert/reference/read_soil_diversity.md)
   : Read Soil Beta Diversity from TERN
 - [`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md)
-  : Read Canopy Height from TERN
+  : Read OzTreeMap Canopy Height Data from TERN
 - [`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md)
   : Read Land Surface Phenology from TERN
 

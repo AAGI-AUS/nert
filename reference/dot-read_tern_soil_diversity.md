@@ -1,6 +1,6 @@
-# Internal handler for Soil Beta Diversity (`TERN/4a428d52`)
+# Internal handler for retrieving Soil Beta Diversity datasets
 
-Internal handler for Soil Beta Diversity (`TERN/4a428d52`)
+Internal handler for retrieving Soil Beta Diversity datasets
 
 ## Usage
 

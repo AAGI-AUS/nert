@@ -50,9 +50,10 @@ collect_tern_data(
 
 - datasets:
 
-  `character` vector of dataset aliases to collect. Default: all 14
+  `character` vector of dataset aliases to collect. Default: all 20
   datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO,
-  SOILDIV, CANOPY, PHENOLOGY). Use `NULL` or `"all"` for all datasets.
+  AVP, PTO, CEC, ECE, DUL, L15, SOILDIV, CANOPY, PHENOLOGY). Use `NULL`
+  or `"all"` for all datasets.
 
 - depth:
 

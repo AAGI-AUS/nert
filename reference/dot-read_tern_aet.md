@@ -1,6 +1,6 @@
-# Internal handler for AET/CMRSET (`TERN/9fefa68b`)
+# Internal handler for retrieving the AET data
 
-Internal handler for AET/CMRSET (`TERN/9fefa68b`)
+Internal handler for retrieving the AET data
 
 ## Usage
 

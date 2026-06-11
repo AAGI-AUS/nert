@@ -1,9 +1,14 @@
-# Read CMRSET Actual Evapotranspiration Data
+# Read CMRSET Actual Evapotranspiration Data from TERN
 
 Wrapper around
 [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
-for TERN/CMRSET evapotranspiration data. Provides monthly estimates of
-actual ET (mm/month) at 30 m resolution from February 2000 onwards.
+for retrieving the CMRSET actual evapotranspiration data (v2.2) from the
+TERN Data Portal. This dataset provides monthly estimates of actual ET
+(mm/month) at 30 m resolution from May 1987 onwards, using the CSIRO
+MODIS Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm
+that combines potential evapotranspiration data from the Bureau of
+Meteorology together with satellite image data provided by MODIS, VIIRS,
+Landsat and Sentinel-2.
 
 ## Usage
 
@@ -28,7 +33,7 @@ read_aet(
 - collection:
 
   One of `"ETa"` (actual evapotranspiration in mm/month, default) or
-  `"pixel_qa"` (quality assurance flags).
+  `"pixel_qa"` (quality assurance attributes).
 
 - api_key:
 
@@ -39,34 +44,38 @@ read_aet(
 
 - max_tries:
 
-  Maximum number of download retries before an error is raised. When
-  `NULL` (default), resolved from `getOption("nert.max_tries", 3L)`.
-  Pass an integer to override for a single call.
+  Maximum number of download retries before an error is raised.
+  Default=`NULL`, in which case the maximum retry number is resolved
+  from the option `nert.max_tries` if that option exists. (Defaults to 3
+  retries if `nert.max_tries` has not been set.)
 
 - initial_delay:
 
-  Initial retry delay in seconds (doubles with each attempt). When
-  `NULL` (default), resolved from `getOption("nert.initial_delay", 1L)`.
-  Pass an integer to override for a single call.
+  Initial retry delay in seconds (doubles with each attempt).
+  Default=`NULL`, in which case the initial delay is resolved from the
+  option `nert.initial_delay` if that option exists. (Defaults to a 1
+  second initial delay if `nert.initial_delay` has not been set.)
 
 ## Value
 
 A
-[`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
-object of the requested ET collection.
+[terra::SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
+object of the requested Evapotranspiration collection.
 
 ## References
 
-CMRSET portal:
-<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+McVicar, T., Vleeshouwer, J., Van Niel, T., Guerschman, J. &
+Peña-Arancibia, J. (2022). Actual Evapotranspiration for Australia using
+CMRSET algorithm. Version 1.0. Terrestrial Ecosystem Research Network.
+(Dataset). [doi:10.25901/gg27-ck96](https://doi.org/10.25901/gg27-ck96)
+.
 
-CMRSET DOI: [doi:10.25901/gg27-ck96](https://doi.org/10.25901/gg27-ck96)
+TERM CMRSET Actual Evapotranspiration Point-of-truth metadata URL:
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 
 ## See also
 
-[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md),
-[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
-[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
 
 ## Examples
 
@@ -82,8 +91,8 @@ r_jan <- read_aet("2023-01-01")
 # Quality assurance flags for June 2023
 r_qa <- read_aet("2023-06-01", collection = "pixel_qa")
 
-# ET from February 2000 (earliest available)
-r_early <- read_aet("2000-02-01")
+# ET from May 1987 (earliest available)
+r_early <- read_aet("1987-05-01")
 
 # Current/recent ET (within last month)
 r_recent <- read_aet(Sys.Date())

@@ -1,4 +1,4 @@
-# Create an SMIPS URL
+# Create a SMIPS URL
 
 Creates the SMIPS specific portion of a URL to read or fetch a COG.
 

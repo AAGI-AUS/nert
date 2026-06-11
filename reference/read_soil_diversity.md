@@ -1,9 +1,13 @@
 # Read Soil Beta Diversity from TERN
 
-Read Soil Beta Diversity Cloud Optimised GeoTIFF (COG) files from TERN.
-This product provides Non-metric Multidimensional Scaling (NMDS) axes
-1–3 for soil Bacteria and Fungi communities across Australia at 90 m
-resolution.
+Wrapper around
+[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
+for retrieving the v1.0 datasets for soil bacteria and soil fungi Beta
+Diversity from the TERN Data Portal. The Beta Diversity datasets were
+constructed using Digital Soil Mapping techniques together with Biome of
+Australia Soil Environments (BASE) DNA sequences, and provide Non-metric
+MultiDimensional Scaling (NMDS) axes for soil bacteria and fungi at 90m
+X 90m spatial resolution across Australia.
 
 ## Usage
 
@@ -30,55 +34,43 @@ read_soil_diversity(
 - api_key:
 
   A `character` string containing your TERN API key. Defaults to
-  automatic detection via
-  [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md).
+  automatic detection from your `.Renviron` or `.Rprofile`. See
+  [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
+  for setup.
 
 - max_tries:
 
-  Maximum number of download retries before an error is raised. When
-  `NULL` (default), resolved from `getOption("nert.max_tries", 3L)`.
-  Pass an integer to override for a single call.
+  Maximum number of download retries before an error is raised.
+  Default=`NULL`, in which case the maximum retry number is resolved
+  from the option `nert.max_tries` if that option exists. (Defaults to 3
+  retries if `nert.max_tries` has not been set.)
 
 - initial_delay:
 
-  Initial retry delay in seconds (doubles with each attempt). When
-  `NULL` (default), resolved from `getOption("nert.initial_delay", 1L)`.
-  Pass an integer to override for a single call.
+  Initial retry delay in seconds (doubles with each attempt).
+  Default=`NULL`, in which case the initial delay is resolved from the
+  option `nert.initial_delay` if that option exists. (Defaults to a 1
+  second initial delay if `nert.initial_delay` has not been set.)
 
 ## Value
 
 A
-[`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
-object of the national Soil Beta Diversity mosaic for the requested
-organism and NMDS axis.
-
-## Collections
-
-- `"Bacteria"`:
-
-  Bacterial community beta diversity (default).
-
-- `"Fungi"`:
-
-  Fungal community beta diversity.
-
-This is a static product (no date argument required).
-
-This is a convenience wrapper around `read_tern("SOILDIV", ...)`; see
-[`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
-for full details and additional datasets.
+[terra::SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
+object of the requested Beta Diversity NMDS axis.
 
 ## References
 
-<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0>
+Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid
+National Soil Attribute Maps - Soil Bacteria and Fungi Beta Diversity
+(3" resolution) - Release 1. Version 1.0. Terrestrial Ecosystem Research
+Network. (Dataset).
+[doi:10.25919/4x7n-y874](https://doi.org/10.25919/4x7n-y874) .
+
+TERN Soil Beta Diversity Point-of-truth metadata URL:
+<https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-dda6-4097-8dd9-d3ec63973029>
 
 ## See also
 
-Other COGs:
-[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
-[`read_canopy_height()`](https://aagi-aus.github.io/nert/reference/read_canopy_height.md),
-[`read_phenology()`](https://aagi-aus.github.io/nert/reference/read_phenology.md),
-[`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md),
 [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
 
 ## Examples

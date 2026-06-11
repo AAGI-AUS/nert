@@ -1,6 +1,6 @@
-# Internal handler for Canopy Height (`TERN/36c98155`)
+# Internal handler for retrieving Canopy Height data
 
-Internal handler for Canopy Height (`TERN/36c98155`)
+Internal handler for retrieving Canopy Height data
 
 ## Usage
 

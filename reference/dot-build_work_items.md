@@ -28,7 +28,7 @@ round-trip and produces one or more columns in the output table.
 
 - stat:
 
-  SLGA stat selector (`"EV"` or `"CI"`).
+  SLGA stat selector (`"EV"`, `"05"` or `"95"`).
 
 - smips_collection:
 

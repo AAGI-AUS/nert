@@ -1,6 +1,6 @@
-# Build a GDAL vsicurl URL for an AET Collection
+# Build a GDAL vsicurl URL to retrieve AET data
 
-Build a GDAL vsicurl URL for an AET Collection
+Build a GDAL vsicurl URL to retrieve AET data
 
 ## Usage
 

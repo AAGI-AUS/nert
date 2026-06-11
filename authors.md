@@ -13,14 +13,10 @@
 
 - **Max Moldovan**. Author. [](https://orcid.org/0000-0001-9680-8474)
 
-- **Curtin University**. Copyright holder.
-  [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/02n415q13)  
-  Provided support through Adam Sparks's time.
-
 - **Grains Research and Development Corporation**. Funder, copyright
   holder.
   [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/02xwr1996)  
-  GRDC Project CUR2210-005OPX (AAGI-CU)
+  GRDC Project CUR2210-005OPX (AAGI-CU), UOA2301-005OPX (AAGI-AU)
 
 ## Citation
 
@@ -28,13 +24,13 @@ Source:
 [`inst/CITATION`](https://github.com/AAGI-AUS/nert/blob/main/inst/CITATION)
 
 Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert:
-An API Client for TERN Data. R package version 1.0.0.
+An API Client for TERN Data. R package version 1.1.0.
 https://aagi-aus.github.io/nert/
 
     @Manual{,
       title = {{nert}: An API Client for TERN Data},
       author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
       year = {2026},
-      note = {R package version 1.0.0},
+      note = {R package version 1.1.0},
       url = {https://aagi-aus.github.io/nert/},
     }

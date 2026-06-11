@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,19 @@
       <small>Source: <a href="https://github.com/AAGI-AUS/nert/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="nert-110">nert 1.1.0<a class="anchor" aria-label="anchor" href="#nert-110"></a></h2>
+<p>Updated version, fixing a number of issues with the TERN dataset retrieval.</p>
+<ul><li>
+<code><a href="../reference/read_smips.html">read_smips()</a></code> now tests the correct day when validating the date for a requested raster.</li>
+<li>
+<code><a href="../reference/read_phenology.html">read_phenology()</a></code> now provides access to all of the phenology datasets available on the TERN Data Portal, including the monthly SGS/PGS/EGS.</li>
+<li>
+<code><a href="../reference/read_slga.html">read_slga()</a></code> provides access to an additional six datasets (CEC,ECE, AVP,PTO,DUL,L15), and also allows the user to pull the 05 and 95 percentile limits for the 95% confidence interval.</li>
+<li>
+<code><a href="../reference/read_asc.html">read_asc()</a></code> now provides access to its data and confusion index rasters using a consistent interface with the rest of the <code>read_*()</code> functions.</li>
+<li>Documentation for the functions and their TERN datasets has been reviewed and improved.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="nert-100">nert 1.0.0<a class="anchor" aria-label="anchor" href="#nert-100"></a></h2>
 <p>First stable release. The package has matured through the 0.0.x development line and is presented here with its complete user-facing surface — 11 exports covering 14 TERN datasets via a unified <code><a href="../reference/read_tern.html">read_tern()</a></code> dispatcher and the batch primitive <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> — along with the audit-driven polish accumulated during pre-CRAN review.</p>

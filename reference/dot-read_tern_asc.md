@@ -1,6 +1,6 @@
-# Internal handler for ASC (`TERN/15728dba`)
+# Internal handler for retrieving ASC rasters
 
-Internal handler for ASC (`TERN/15728dba`)
+Internal handler for retrieving ASC rasters
 
 ## Usage
 

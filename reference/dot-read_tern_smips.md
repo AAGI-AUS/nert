@@ -1,6 +1,6 @@
-# Internal handler for SMIPS (`TERN/d1995ee8`)
+# Internal handler for retrieving SMIPS datasets
 
-Internal handler for SMIPS (`TERN/d1995ee8`)
+Internal handler for retrieving SMIPS datasets
 
 ## Usage
 

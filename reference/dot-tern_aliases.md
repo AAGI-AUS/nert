@@ -1,7 +1,6 @@
-# Alias mapping for short dataset names Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
+# Alias mapping for short dataset names
 
-Alias mapping for short dataset names Maps user-friendly short names
-(e.g. "SMIPS", "AWC") to dispatch IDs
+Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 
 ## Usage
 
@@ -11,4 +10,4 @@ Alias mapping for short dataset names Maps user-friendly short names
 
 ## Format
 
-An object of class `list` of length 14.
+An object of class `list` of length 20.

@@ -1,12 +1,16 @@
-# Validate Days Requested Align With Collection
+# Validate date requested aligns with SMIPS collection extent
 
-SMIPS daily COGs are published from 2015-11-20 (the earliest archived
-national mosaic on the TERN portal) up to approximately seven days
-before today. Requests outside that window return HTTP 404 from the GDAL
-vsicurl driver, which surfaces as an opaque "file does not exist" error
-from
+SMIPS daily COGs are published from 2015-01-01 (the earliest archived
+complete set of soil moisture GeoTIFFs available on the TERN Data
+Portal), up to today. Requests outside that window will definitely
+return HTTP 404 from the GDAL vsicurl driver, resulting in a "file does
+not exist" error from
 [`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html).
-This helper catches that case before any network I/O.
+This helper function catches this case before any network I/O. (Note:
+the requested rasters may still be unavailable even if this check
+passes, e.g., if the user has requested a very recent raster that has
+not been added to the TERN server yet. This validation function simply
+checks for the obviously impossible cases.)
 
 ## Usage
 

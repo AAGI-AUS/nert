@@ -39,7 +39,3 @@ the underlying error.
 - api_key:
 
   TERN API key.
-
-## Value
-
-`invisible(NULL)`.

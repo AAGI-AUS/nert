@@ -1,4 +1,4 @@
-# Internal handler for SLGA soil attributes
+# Internal handler for retrieving SLGA soil attributes
 
 A generic handler that covers all eight SLGA soil attributes. Each
 attribute has a fixed file-naming pattern encoded in
