@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_canopy_height.R
 \name{.read_tern_canopy_height}
 \alias{.read_tern_canopy_height}
-\title{Internal handler for Canopy Height (\code{TERN/36c98155})}
+\title{Internal handler for retrieving Canopy Height data}
 \usage{
 .read_tern_canopy_height(api_key, max_tries, initial_delay)
 }
@@ -12,6 +12,6 @@
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-Internal handler for Canopy Height (\code{TERN/36c98155})
+Internal handler for retrieving Canopy Height data
 }
 \keyword{internal}

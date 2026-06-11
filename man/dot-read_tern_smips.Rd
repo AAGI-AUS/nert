@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_smips.R
 \name{.read_tern_smips}
 \alias{.read_tern_smips}
-\title{Internal handler for SMIPS (\code{TERN/d1995ee8})}
+\title{Internal handler for retrieving SMIPS datasets}
 \usage{
 .read_tern_smips(dots, api_key, max_tries, initial_delay)
 }
@@ -14,6 +14,6 @@
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-Internal handler for SMIPS (\code{TERN/d1995ee8})
+Internal handler for retrieving SMIPS datasets
 }
 \keyword{internal}

@@ -2,7 +2,7 @@ KEY <- "test-key-0000"
 
 # ---- Network integration tests (skipped without API key) -------------------
 
-test_that("get_asc returns the soil classification data", {
+test_that("read_asc returns the soil classification data", {
   skip_on_cran()
   skip_on_ci()
   skip_if(!nzchar(Sys.getenv("TERN_API_KEY")), "TERN API key not available")
@@ -11,11 +11,11 @@ test_that("get_asc returns the soil classification data", {
 })
 
 
-test_that("get_smips returns the confusion index for soil class", {
+test_that("read_asc returns the confusion index for soil class", {
   skip_on_cran()
   skip_on_ci()
   skip_if(!nzchar(Sys.getenv("TERN_API_KEY")), "TERN API key not available")
-  asc <- read_asc(confusion_index = TRUE)
+  asc <- read_asc(collection = "CI")
   expect_named(asc, "ASC_CI_C_P_AU_TRN_N.cog")
 })
 
@@ -33,9 +33,9 @@ test_that("read_asc() default builds the EV URL", {
   )
 })
 
-test_that("read_asc(confusion_index = TRUE) builds the CI URL", {
+test_that("read_asc(collection = \"CI\") builds the CI URL", {
   sink <- .use_mocked_cog()
-  read_asc(confusion_index = TRUE, api_key = KEY)
+  read_asc(collection = "CI", api_key = KEY)
   expect_match(sink$urls, "ASC_CI_C_P_AU_TRN_N.cog.tif", fixed = TRUE)
 })
 

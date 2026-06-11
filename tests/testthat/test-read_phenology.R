@@ -10,15 +10,21 @@ METRIC_DIR <- list(
   PGS = "2_Peak_of_the_growing_season",
   EGS = "3_End_of_the_growing_season",
   LGS = "4_Length_of_the_growing_season",
-  SOS = "5_Start_of_season",
-  POS = "6_Peak_of_season",
-  EOS = "7_End_of_season",
-  LOS = "8_Length_of_season",
-  ROG = "9_Rate_of_greening",
-  ROS = "10_Rate_of_senescence"
+  EVI1 = "5_Minimum_EVI_value_before_PGS",
+  EVI2 = "6_Minimum_EVI_value_after_PGS",
+  EVIP = "7_Peak_EVI_value_of_the_growing_season",
+  EVII = "8_Integral_EVI_value_of_the_growing_season",
+  SGS_month = "9_Start_of_the_growing_season_by_month",
+  PGS_month = "10_Peak_of_the_growing_season_by_month",
+  EGS_month = "11_End_of_the_growing_season_by_month"
 )
-
-# ---- All ten metrics map to the documented subdirectory --------------------
+#FIXME: Russell (02/06): This is an inadequate test fixture (and it's why
+#  we didn't catch the hallucinated variables ala Issue #44). We need these
+#  to actually match with what TERN's directories are on their server. As
+#  noble as the idea of "No network I/O" is, I reckon we need at least a
+#  single request here just to verify that the directories are what the
+#  package expects them to be (and so the testing can flag if they are
+#  ever changed on the remote server too).
 
 test_that("every phenology metric maps to its documented subdirectory", {
   sink <- .use_mocked_cog()
@@ -27,8 +33,9 @@ test_that("every phenology metric maps to its documented subdirectory", {
   }
   expect_length(sink$urls, length(METRIC_DIR))
   for (i in seq_along(METRIC_DIR)) {
-    m   <- names(METRIC_DIR)[[i]]
+    m <- names(METRIC_DIR)[[i]]
     dir <- METRIC_DIR[[m]]
+    m <- sub("_month", "", m, fixed = TRUE)
     expect_match(
       sink$urls[[i]],
       sprintf("/phenology_myd13a1/%s/%s_2018_Season1.tif", dir, m),

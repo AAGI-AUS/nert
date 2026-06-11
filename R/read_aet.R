@@ -1,32 +1,37 @@
-#' Read CMRSET Actual Evapotranspiration Data
+#' Read CMRSET Actual Evapotranspiration Data from TERN
 #'
 #' @description
-#' Wrapper around [read_tern()] for TERN/CMRSET evapotranspiration data.
-#' Provides monthly estimates of actual ET (mm/month) at 30 m resolution
-#' from February 2000 onwards.
+#' Wrapper around [read_tern()] for retrieving the CMRSET actual
+#' evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
+#' provides monthly estimates of actual ET (mm/month) at 30 m resolution
+#' from May 1987 onwards, using the CSIRO MODIS Reflectance-based Scaling
+#' EvapoTranspiration (CMRSET) algorithm that combines potential
+#' evapotranspiration data from the Bureau of Meteorology together with
+#' satellite image data provided by MODIS, VIIRS, Landsat and Sentinel-2.
 #'
 #' @param date A month to download (Date or character, e.g.
 #'   \code{"2023-06-01"} or \code{as.Date("2023-06-01")}).  The value
 #'   is snapped to the first of the month internally.  Required.
 #' @param collection One of \code{"ETa"} (actual evapotranspiration in
-#'   mm/month, default) or \code{"pixel_qa"} (quality assurance flags).
+#'   mm/month, default) or \code{"pixel_qa"} (quality assurance attributes).
 #' @param api_key A \code{character} string containing your \acronym{TERN}
-#'   \acronym{API} key.  Defaults to automatic detection from your
+#'   \acronym{API} key. Defaults to automatic detection from your
 #'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised.  When \code{NULL} (default), resolved from
-#'   \code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-#'   for a single call.
+#'   raised. Default=\code{NULL}, in which case the maximum retry number is
+#'   resolved from the option \code{nert.max_tries} if that option exists.
+#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt).  When \code{NULL} (default), resolved from
-#'   \code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-#'   override for a single call.
+#'   attempt). Default=\code{NULL}, in which case the initial delay is
+#'   resolved from the option \code{nert.initial_delay} if that option exists.
+#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   not been set.)
 #'
 #' @returns
-#' A [terra::rast()] object of the requested ET collection.
+#' A [terra::SpatRaster] object of the requested Evapotranspiration collection.
 #'
 #' @seealso
-#' [read_tern()], [read_smips()], [read_asc()]
+#' [read_tern()]
 #'
 #' @examplesIf interactive()
 #' # Actual evapotranspiration (ETa) for June 2023 (mm/month)
@@ -39,17 +44,20 @@
 #' # Quality assurance flags for June 2023
 #' r_qa <- read_aet("2023-06-01", collection = "pixel_qa")
 #'
-#' # ET from February 2000 (earliest available)
-#' r_early <- read_aet("2000-02-01")
+#' # ET from May 1987 (earliest available)
+#' r_early <- read_aet("1987-05-01")
 #'
 #' # Current/recent ET (within last month)
 #' r_recent <- read_aet(Sys.Date())
 #'
 #' @references
-#'   CMRSET portal:
-#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
+#'   McVicar, T., Vleeshouwer, J., Van Niel, T., Guerschman, J. &
+#'   Peña-Arancibia, J. (2022). Actual Evapotranspiration for Australia
+#'   using CMRSET algorithm. Version 1.0. Terrestrial Ecosystem Research
+#'   Network. (Dataset). \doi{10.25901/gg27-ck96}.
 #'
-#'   CMRSET DOI: \doi{10.25901/gg27-ck96}
+#'   TERM CMRSET Actual Evapotranspiration Point-of-truth metadata URL:
+#'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 #'
 #' @autoglobal
 #' @export
@@ -71,9 +79,7 @@ read_aet <- function(
 }
 
 
-# -- Internal AET handler ----------------------------------------------------
-
-#' Internal handler for AET/CMRSET (\code{TERN/9fefa68b})
+#' Internal handler for retrieving the AET data
 #'
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
@@ -82,7 +88,11 @@ read_aet <- function(
 #' @dev
 .read_tern_aet <- function(dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'month' parameter name
-  date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["month"]]
+  date <- if (!is.null(dots[["date"]])) {
+    dots[["date"]]
+  } else {
+    dots[["month"]]
+  }
   if (is.null(date)) {
     cli::cli_abort(
       "AET requires a {.arg date} argument (monthly resolution),
@@ -105,13 +115,11 @@ read_aet <- function(
 }
 
 
-# -- AET date and URL helpers -----------------------------------------------
-
 #' Check User Input Months for AET Validity
 #'
 #' Validates and snaps a user-supplied date value to the first of the month,
 #' then checks it against the \acronym{AET} data availability window
-#' (from 2000-02-01 onwards).
+#' (from 1987-05-01 onwards).
 #'
 #' @param x User-entered date value (any format accepted by [.check_date()]).
 #' @returns A \code{POSIXct} object snapped to the first of the requested
@@ -121,11 +129,9 @@ read_aet <- function(
 .check_aet_date <- function(x) {
   x <- .check_date(x)
   x <- lubridate::floor_date(x, "month")
-  yr <- lubridate::year(x)
-  mo <- lubridate::month(x)
-  if (yr < 2000L || (yr == 2000L && mo < 2L)) {
+  if (x < as.POSIXct("1987-05-01")) {
     cli::cli_abort(
-      "AET data are not available before 2000-02-01.
+      "AET data are not available before 1987-05-01.
        You requested {format(x, '%Y-%m-%d')}."
     )
   }
@@ -133,7 +139,7 @@ read_aet <- function(
 }
 
 
-#' Build a GDAL vsicurl URL for an AET Collection
+#' Build a GDAL vsicurl URL to retrieve AET data
 #'
 #' @param .collection The user-supplied \acronym{AET} collection
 #'   (\code{"ETa"} or \code{"pixel_qa"}).

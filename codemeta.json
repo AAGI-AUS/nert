@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/AAGI-AUS/nert",
   "issueTracker": "https://github.com/AAGI-AUS/nert/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.5.1 (2025-06-13)",
+  "runtimePlatform": "R version 4.5.2 (2025-10-31)",
   "author": [
     {
       "@type": "Person",
@@ -47,14 +47,11 @@
       "@type": "Person",
       "givenName": "Max",
       "familyName": "Moldovan",
-      "email": "max.moldovan@adelaide.edu.au"
+      "email": "max.moldovan@adelaide.edu.au",
+      "@id": "https://orcid.org/0000-0001-9680-8474"
     }
   ],
   "copyrightHolder": [
-    {
-      "@type": "Organization",
-      "name": "Curtin University"
-    },
     {
       "@type": "Organization",
       "name": "Grains Research and Development Corporation"
@@ -102,6 +99,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "nlme",
+      "name": "nlme",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=nlme"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "rmarkdown",
       "name": "rmarkdown",
       "provider": {
@@ -128,7 +137,7 @@
       "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
-      "version": ">= 3.0.0",
+      "version": ">= 3.2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -148,6 +157,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=usethis"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "withr",
+      "name": "withr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=withr"
     }
   ],
   "softwareRequirements": {
@@ -208,18 +229,6 @@
     },
     "6": {
       "@type": "SoftwareApplication",
-      "identifier": "nlme",
-      "name": "nlme",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=nlme"
-    },
-    "7": {
-      "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
       "provider": {
@@ -230,7 +239,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    "8": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "terra",
       "name": "terra",
@@ -242,7 +251,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=terra"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "tidyterra",
       "name": "tidyterra",
@@ -254,7 +263,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyterra"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
@@ -264,8 +273,44 @@
   "applicationCategory": "Tools",
   "isPartOf": "https://grdc.com.au/research/partnerships-and-initiatives/strategic-partnerships/aagi",
   "keywords": ["TERN", "soil-data", "Australia", "earth-science", "data-access"],
-  "fileSize": "1178.007KB",
-  "releaseNotes": "https://github.com/AAGI-AUS/nert/blob/master/NEWS.md",
+  "fileSize": "1444.548KB",
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "datePublished": "2026",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Adam H.",
+          "familyName": "Sparks"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Wasin",
+          "familyName": "Pipattungsakul"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Russell",
+          "familyName": "Edson"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Sam",
+          "familyName": "Rogers"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Max",
+          "familyName": "Moldovan"
+        }
+      ],
+      "name": "{nert}: An API Client for TERN Data",
+      "url": "https://aagi-aus.github.io/nert/",
+      "description": "R package version 1.1.0"
+    }
+  ],
+  "releaseNotes": "https://github.com/AAGI-AUS/nert/blob/main/NEWS.md",
   "readme": "https://github.com/AAGI-AUS/nert/blob/main/README.md",
-  "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://codecov.io/gh/AAGI-AUS/nert"]
+  "contIntegration": ["https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/AAGI-AUS/nert"]
 }

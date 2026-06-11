@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_smips.R
 \name{.check_collection_agreement}
 \alias{.check_collection_agreement}
-\title{Validate Days Requested Align With Collection}
+\title{Validate date requested aligns with SMIPS collection extent}
 \usage{
 .check_collection_agreement(.collection, .day)
 }
@@ -12,10 +12,14 @@
 \item{.day}{The user-supplied date being asked for.}
 }
 \description{
-SMIPS daily COGs are published from 2015-11-20 (the earliest archived
-national mosaic on the TERN portal) up to approximately seven days before
-today.  Requests outside that window return HTTP 404 from the GDAL vsicurl
-driver, which surfaces as an opaque "file does not exist" error from
-\code{\link[terra:rast]{terra::rast()}}.  This helper catches that case before any network I/O.
+SMIPS daily COGs are published from 2015-01-01 (the earliest archived
+complete set of soil moisture GeoTIFFs available on the TERN Data Portal),
+up to today. Requests outside that window will definitely return HTTP 404
+from the GDAL vsicurl driver, resulting in a "file does not exist" error
+from \code{\link[terra:rast]{terra::rast()}}.  This helper function catches this case before
+any network I/O. (Note: the requested rasters may still be unavailable
+even if this check passes, e.g., if the user has requested a very recent
+raster that has not been added to the TERN server yet. This validation
+function simply checks for the obviously impossible cases.)
 }
 \keyword{internal}

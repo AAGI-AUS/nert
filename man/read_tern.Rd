@@ -24,109 +24,115 @@ aliases.}
 etc.  See the relevant section above for each dataset.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection from your
-\code{.Renviron} or \code{.Rprofile}.  See \code{\link{get_key}} for
-setup instructions.}
+\acronym{API} key. Defaults to automatic detection from your
+\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is
-raised.  When \code{NULL} (default), resolved from
-\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-for a single call.}
+raised. Default=\code{NULL}, in which case the maximum retry number is
+resolved from the option \code{nert.max_tries} if that option exists.
+(Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
 
 \item{initial_delay}{Initial retry delay in seconds (doubles with each
-attempt).  When \code{NULL} (default), resolved from
-\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-override for a single call.}
+attempt). Default=\code{NULL}, in which case the initial delay is
+resolved from the option \code{nert.initial_delay} if that option exists.
+(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+not been set.)}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the national mosaic for the
-requested dataset (and, where applicable, date/collection).
+A \link[terra:SpatRaster-class]{terra::SpatRaster} object for the requested dataset.
 }
 \description{
 A unified interface for reading Cloud Optimised GeoTIFF (\acronym{COG})
-data from \acronym{TERN} and related repositories.  Dispatches to a
-dataset-specific handler based on \code{dataset_id} and passes any
-additional arguments through \code{...}.  The returned object is a
-\code{\link[terra:rast]{terra::rast()}} that can be plotted, cropped, or extracted with standard
-\pkg{terra} or \pkg{tidyterra} workflows.
+data from the \acronym{TERN} Data Portal. This function effectively
+dispatches to dataset-specific handlers based on the dataset requested
+(e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
+through \code{...}.  The returned object is a \link[terra:SpatRaster-class]{terra::SpatRaster} that
+can be plotted, cropped, or extracted with standard \pkg{terra} or
+\pkg{tidyterra} workflows.
 }
 \section{Dataset aliases}{
 
 In addition to full \acronym{TERN} portal keys and 8-character prefixes,
 \code{read_tern()} accepts short human-readable aliases (case-insensitive):
 \tabular{lll}{
-\strong{Alias}        \tab \strong{Dataset ID}        \tab \strong{Description} \cr
-\code{"SMIPS"}         \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
-\code{"ASC"}           \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
-\code{"AET"}           \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration (CMRSET) \cr
-\code{"AWC"}           \tab \code{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
-\code{"CLY"}           \tab SLGA                 \tab Clay content (90 m) \cr
-\code{"SND"}           \tab SLGA                 \tab Sand content (90 m) \cr
-\code{"SLT"}           \tab SLGA                 \tab Silt content (90 m) \cr
-\code{"BDW"}           \tab SLGA                 \tab Bulk density whole earth (90 m) \cr
-\code{"PHC"}           \tab SLGA                 \tab pH CaCl2 (90 m) \cr
-\code{"PHW"}           \tab SLGA                 \tab pH water (90 m) \cr
-\code{"NTO"}           \tab SLGA                 \tab Total Nitrogen (90 m) \cr
-\code{"SOILDIV"}       \tab \code{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
-\code{"CANOPY"}        \tab \code{TERN/36c98155} \tab Canopy Height (30 m) \cr
-\code{"PHENOLOGY"}     \tab \code{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
+\strong{Alias} \tab \strong{Dataset ID} \tab \strong{Description} \cr
+\code{"SMIPS"} \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
+\code{"ASC"} \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
+\code{"AET"} \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration via CMRSET (30 m) \cr
+\code{"AWC"} \tab \code{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
+\code{"CLY"} \tab \code{TERN/f95dc442} \tab Clay content (90 m) \cr
+\code{"SND"} \tab \code{TERN/4224ddff} \tab Sand content (90 m) \cr
+\code{"SLT"} \tab \code{TERN/11375f04} \tab Silt content (90 m) \cr
+\code{"BDW"} \tab \code{TERN/95978aec} \tab Bulk density whole earth (90 m) \cr
+\code{"PHC"} \tab \code{TERN/258afc98} \tab pH CaCl2 (90 m) \cr
+\code{"PHW"} \tab \code{TERN/c37439a5} \tab pH water (90 m) \cr
+\code{"NTO"} \tab \code{TERN/e9484508} \tab Total Nitrogen (90 m) \cr
+\code{"AVP"} \tab \code{TERN/c6ef289b} \tab Available Phosphorus (90 m) \cr
+\code{"PTO"} \tab \code{TERN/be382e63} \tab Total Phosphorus (90 m) \cr
+\code{"CEC"} \tab \code{TERN/5b4b2991} \tab Cation Exchange Capacity (90 m) \cr
+\code{"ECE"} \tab \code{TERN/0d27cf8b} \tab Effective Cation Exchange Capacity (90 m) \cr
+\code{"DUL"} \tab \code{TERN/de9ddc12} \tab Drained Upper Limit water content (90 m) \cr
+\code{"L15"} \tab \code{TERN/4443f5df} \tab 15 Bar Lower Limit water content (90 m) \cr
+\code{"SOILDIV"} \tab \code{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
+\code{"CANOPY"} \tab \code{TERN/36c98155} \tab Canopy Height (30 m) \cr
+\code{"PHENOLOGY"} \tab \code{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
 }
 Convenience wrappers \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}, \code{\link[=read_aet]{read_aet()}},
 \code{\link[=read_slga]{read_slga()}}, \code{\link[=read_soil_diversity]{read_soil_diversity()}}, \code{\link[=read_canopy_height]{read_canopy_height()}}, and
-\code{\link[=read_phenology]{read_phenology()}} are also provided for direct access to each dataset.
+\code{\link[=read_phenology]{read_phenology()}} are also provided for simplified access to each dataset.
 }
 
-\section{SMIPS — daily soil moisture (\code{"TERN/d1995ee8"})}{
+\section{SMIPS — daily soil moisture (\code{"SMIPS"})}{
 
 \describe{
-\item{\code{date}}{Required.  A single day to query, \emph{e.g.}
+\item{\code{date}}{Required. A single day to query, \emph{e.g.}
 \code{"2024-01-15"} or \code{as.Date("2024-01-15")}.  Both
-\code{Character} and \code{Date} classes are accepted.}
+\code{character} and \code{Date} classes are accepted.}
 \item{\code{collection}}{One of \code{"totalbucket"} (default),
 \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"},
 \code{"deepD"}, or \code{"runoff"}.}
 }
-Data availability: 2015-11-20 to approximately 7 days before today.
+Data availability: from 2005-01-01 to today. (Updated regularly.)
 }
 
-\section{ASC -- Australian Soil Classification (\code{"TERN/15728dba"})}{
+\section{ASC -- Australian Soil Classification (\code{"ASC"})}{
 
 \describe{
 \item{\code{collection}}{One of \code{"EV"} (estimated soil order
-class, default) or \code{"CI"} (confusion index -- a measure of
-mapping reliability).  No \code{date} argument required; this is a
-static product.}
+class, default) or \code{"CI"} (confusion index -- a measure of the
+classification uncertainty).}
 }
 }
 
-\section{AET -- Actual Evapotranspiration/CMRSET (\code{"TERN/9fefa68b"})}{
+\section{AET -- Actual Evapotranspiration/CMRSET (\code{"AET"})}{
 
 \describe{
-\item{\code{date}}{Required.  A month to query, \emph{e.g.}
+\item{\code{date}}{Required. A month to query, \emph{e.g.}
 \code{"2023-06-01"} or \code{as.Date("2023-06-01")}.  Both
-\code{Character} and \code{Date} classes are accepted.  The value is
-snapped to the first of the month internally.}
+\code{character} and \code{Date} classes are accepted.  The value is
+snapped to the first of the month.}
 \item{\code{collection}}{One of \code{"ETa"} (primary AET band in
-mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
+mm/month, default) or \code{"pixel_qa"} (quality assurance attributes).}
 }
-Data availability: 2000-02-01 onwards.
+Data availability: 1987-05-01 onward, monthly.
 }
 
 \section{SLGA soil attributes (\code{"AWC"}, \code{"CLY"}, etc.)}{
 
-Eight \acronym{SLGA} (Soil and Landscape Grid of Australia) soil
+14 \acronym{SLGA} (Soil and Landscape Grid of Australia) soil
 attributes are available as static 90 m products, each with six standard
-depth layers and two statistics:
+depth layers and three statistics:
 \describe{
 \item{\code{depth}}{One of \code{"000_005"} (default), \code{"005_015"},
 \code{"015_030"}, \code{"030_060"}, \code{"060_100"}, or
 \code{"100_200"} (cm).}
-\item{\code{collection}}{One of \code{"EV"} (estimated value, default)
-or \code{"CI"} (confidence interval).}
+\item{\code{collection}}{One of \code{"EV"} (estimated value, default),
+\code{"05"} (lower percentile limit for the 95\% confidence interval)
+or \code{"95"} (upper percentile limit for the confidence interval).}
 }
 Supported attributes (use as the \code{dataset_id} alias):
 \describe{
-\item{\code{"AWC"}}{Available Water Capacity (mm)}
+\item{\code{"AWC"}}{Available Water Capacity (percent)}
 \item{\code{"CLY"}}{Clay content (percent)}
 \item{\code{"SND"}}{Sand content (percent)}
 \item{\code{"SLT"}}{Silt content (percent)}
@@ -134,40 +140,46 @@ Supported attributes (use as the \code{dataset_id} alias):
 \item{\code{"PHC"}}{pH (CaCl2)}
 \item{\code{"PHW"}}{pH (water)}
 \item{\code{"NTO"}}{Total Nitrogen (percent)}
+\item{\code{"AVP"}}{Available Phosphorus (mg/kg)}
+\item{\code{"PTO"}}{Total Phosphorus (percent)}
+\item{\code{"CEC"}}{Cation Exchange Capacity (meq/100g)}
+\item{\code{"ECE"}}{Effective Cation Exchange Capacity (meq/100g)}
+\item{\code{"DUL"}}{Drained Upper Limit volumetric water content (percent)}
+\item{\code{"L15"}}{15 Bar Lower Limit volumetric water content (percent)}
 }
-Convenience wrapper: \code{\link[=read_slga]{read_slga()}}.
 }
 
-\section{Soil Beta Diversity (\code{"SOILDIV"}, \code{TERN/4a428d52})}{
+\section{Soil Beta Diversity (\code{"SOILDIV"})}{
 
 \describe{
 \item{\code{collection}}{One of \code{"Bacteria"} (default) or
 \code{"Fungi"}.}
-\item{\code{axis}}{NMDS axis number: \code{1} (default), \code{2}, or
+\item{\code{axis}}{NMDS axis: \code{1} (default), \code{2}, or
 \code{3}.}
 }
-Static 90 m product.  Convenience wrapper: \code{\link[=read_soil_diversity]{read_soil_diversity()}}.
 }
 
-\section{Canopy Height (\code{"CANOPY"}, \code{TERN/36c98155})}{
+\section{Canopy Height (\code{"CANOPY"})}{
 
-Single static 30 m composite from the OzTreeMap project.  No additional
-arguments required.  Convenience wrapper: \code{\link[=read_canopy_height]{read_canopy_height()}}.
+Single static 30 m X 30 m best-pick canopy height model composite,
+from the OzTreeMap project. No function arguments required.
 }
 
-\section{Land Surface Phenology (\code{"PHENOLOGY"}, \code{TERN/2bb0c81a})}{
+\section{Land Surface Phenology (\code{"PHENOLOGY"})}{
 
 \describe{
-\item{\code{year}}{Required.  An integer year (2003--2018).}
+\item{\code{year}}{Required. An integer year (2003--2018).}
 \item{\code{season}}{Season number: \code{1} (default) or \code{2}.}
 \item{\code{collection}}{Phenology metric — one of \code{"SGS"}
-(Start of Growing Season, default), \code{"PGS"} (Peak),
-\code{"EGS"} (End), \code{"LGS"} (Length), \code{"SOS"} (Start of
-Season), \code{"POS"} (Peak of Season), \code{"EOS"} (End of Season),
-\code{"LOS"} (Length of Season), \code{"ROG"} (Rate of Greening),
-\code{"ROS"} (Rate of Senescence).}
+(Start of Growing Season, default), \code{"PGS"} (Peak of Growing Season),
+\code{"EGS"} (End of Growing Season), \code{"LGS"} (Length of Growing Season),
+\code{"EVI1"} (Minimum EVI before peak), \code{"EVI2"} (Minimum EVI after peak),
+\code{"EVIP"} (EVI at Peak of Growing Season),
+\code{"EVII"} (Integral of EVI under growing season curve),
+\code{"SGS_month"} (Start of Growing Season, monthly resolution),
+\code{"PGS_month"} (Peak of the Growing Season, monthly resolution),
+\code{"EGS_month"} (End of Growing Season, monthly resolution).}
 }
-500 m MODIS resolution.  Convenience wrapper: \code{\link[=read_phenology]{read_phenology()}}.
 }
 
 \section{Datasets not accessible}{
@@ -200,54 +212,181 @@ Per-call values supplied via the \code{max_tries} or
 \preformatted{
   options(nert.max_tries = 5L, nert.initial_delay = 2L)
 }
-Closes \href{https://github.com/AAGI-AUS/nert/issues/20}{AAGI-AUS/nert#20}.
 }
 
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-# Using aliases (recommended) ----------------------------------------
+# Using aliases (recommended)
 r <- read_tern("SMIPS", date = "2024-01-15")
 r_asc <- read_tern("ASC")
 autoplot(r_asc)
 
-# SLGA soil attributes — depth and collection
+# SLGA soil attributes
 r_clay <- read_tern("CLY", depth = "000_005")
-r_awc  <- read_tern("AWC", depth = "015_030", collection = "CI")
+r_awc_upper  <- read_tern("AWC", depth = "015_030", collection = "95")
+r_awc_lower  <- read_tern("AWC", depth = "015_030", collection = "05")
 
 # Soil Beta Diversity
 r_bact <- read_tern("SOILDIV", collection = "Bacteria", axis = 1)
 
-# Canopy Height (single static product)
+# Canopy Height
 r_ch <- read_tern("CANOPY")
 
 # Land Surface Phenology
 r_phen <- read_tern("PHENOLOGY", year = 2018, collection = "SGS")
 
-# Full TERN keys still work ----------------------------------------
+# Full TERN dataset IDs also work
 r2 <- read_tern("TERN/d1995ee8", date = "2024-01-15")
 \dontshow{\}) # examplesIf}
 }
 \references{
-SMIPS: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
-
-ASC: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c}
-
-AET: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
-
-AWC: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-2837-4b0b-bf95-4883a04e5ff7}
-
-Soil Beta Diversity: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-d15c-4bfc-8a67-80697f8c0aa0}
-
-Canopy Height: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-c137-44b8-b4e0-6a3e824bbfba}
-
-Land Surface Phenology: \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-5a09-4a0e-bd86-5cd2be8def26}
+\describe{
+\item{\strong{SMIPS: Daily volumetric soil moisture}}{
+Stenson, M., Searle, R., Malone, B., Sommer, A., Renzullo, L. & Di, H.
+(2021): Australia wide daily volumetric soil moisture estimates.
+Version 1.0. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25901/b020-nm39}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0}
 }
-\seealso{
-Other COGs: 
-\code{\link{read_asc}()},
-\code{\link{read_canopy_height}()},
-\code{\link{read_phenology}()},
-\code{\link{read_slga}()},
-\code{\link{read_soil_diversity}()}
+\item{\strong{ASC: Australian Soil Classification Map}}{
+Searle, R. (2021). Australian Soil Classification Map. Version 1.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25901/edyr-wg85}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c}
 }
-\concept{COGs}
+\item{\strong{AET: Actual Evapotranspiration using the CMRSET algorithm}}{
+McVicar, T., Vleeshouwer, J., Van Niel, T., Guerschman, J. &
+Peña-Arancibia, J. (2022). Actual Evapotranspiration for Australia
+using CMRSET algorithm. Version 1.0. Terrestrial Ecosystem Research
+Network. (Dataset). \doi{10.25901/gg27-ck96}.\cr\cr
+TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
+}
+\item{\strong{AWC: SLGA Attribute - Available Volumetric Water Capacity}}{
+Searle, R., Nimalka Somarathna, P. & Malone, B. (2023). Soil and
+Landscape Grid National Soil Attribute Maps - Available Volumetric
+Water Capacity (Percent) (3 arc second resolution) Version 2.
+Version 2.0. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/4jwj-na34}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/482301c2-b9a1-4345-b142-815f9b37890a}
+}
+\item{\strong{CLY: SLGA Attribute - Clay content}}{
+Malone, B. & Searle, R. (2022). Soil and Landscape Grid National
+Soil Attribute Maps - Clay (3" resolution) - Release 2. Version 2.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/hc4s-3130}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/f95dc442-013b-4fad-b31f-91ba86fbe7f5}
+}
+\item{\strong{SND: SLGA Attribute - Sand content}}{
+Malone, B. & Searle, R. (2022). Soil and Landscape Grid National Soil
+Attribute Maps - Sand (3" resolution) - Release 2. Version 2.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/rjmy-pa10}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4224ddff-5fb4-4170-b5ea-c0c500599700}
+}
+\item{\strong{SLT: SLGA Attribute - Silt content}}{
+Malone, B. & Searle, R. (2022). Soil and Landscape Grid National Soil
+Attribute Maps - Silt (3" resolution) - Release 2. Version 2.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/2ew1-0w57}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/11375f04-b5cd-46a7-bcac-0e83fcb58605}
+}
+\item{\strong{BDW: SLGA Attribute - Bulk Density (Whole Earth)}}{
+Malone, B. (2023). Soil and Landscape Grid National Soil Attribute
+Maps - Bulk Density - Whole Earth - Release 2. Version 2.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/gxyn-pd07}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/95978aec-6ba8-446b-a721-2b875d9f61a8}
+}
+\item{\strong{PHC: SLGA Attribute - pH (of 1:5 soil/0.01M CaCl2 extract)}}{
+Malone, B. & Searle, R. (2024). Soil and Landscape Grid National Soil
+Attribute Maps - pH - Calcium Chloride (3" resolution) - Release 2.
+Version 2. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/7320-hw30}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/258afc98-7407-4781-b241-cb0293b4b8aa}
+}
+\item{\strong{PHW: SLGA Attribute - pH (of 1:5 soil water solution)}}{
+Malone, B. (2022). Soil and Landscape Grid National Soil Attribute
+Maps - pH (Water) (3" resolution) - Release 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/37z2-0q10}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/c37439a5-e622-44ab-9c24-bfd632d8203c}
+}
+\item{\strong{NTO: SLGA Attribute - Total nitrogen}}{
+Malone, B. & Searle, R. (2024). Soil and Landscape Grid National Soil
+Attribute Maps - Total Nitrogen (3" resolution) - Release 2. Version 2.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/pm2n-ww12}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/e9484508-c705-4c23-9195-f26d64b9d4f1}
+}
+\item{\strong{AVP: SLGA Attribute - Available phosphorus}}{
+Zund, P. (2022). Soil and Landscape Grid National Soil Attribute Maps
+- Available Phosphorus (3" resolution) - Release 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/6qzh-b979}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/c6ef289b-1ca8-4e53-b8b4-aa97e4706c63}
+}
+\item{\strong{PTO: SLGA Attribute - Total phosphorus}}{
+Malone, B. & Searle, R. (2024). Soil and Landscape Grid National Soil
+Attribute Maps - Total Phosphorus (3" resolution) - Release 2.
+Version 2. Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/7j78-md43}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/be382e63-5ff6-40a9-930f-c84655a5bd87}
+}
+\item{\strong{CEC: SLGA Attribute - Cation exchange capacity}}{
+Malone, B. (2024). Soil and Landscape Grid National Soil Attribute Maps
+- Cation Exchange Capacity (3" resolution) - Release 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/pkva-gf85}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/5b4b2991-bfa6-41df-be33-7009a5d0a5b0}
+}
+\item{\strong{ECE: SLGA Attribute - Effective cation exchange capacity}}{
+Viscarra Rossel, R., Chen, C., Grundy, M., Searle, R., Clifford, D.,
+Odgers, N., Holmes, K., Griffin, T., Liddicoat, C. & Kidd, D. (2014).
+Soil and Landscape Grid National Soil Attribute Maps - Effective Cation
+Exchange Capacity (3" resolution) - Release 1. Version 1. Terrestrial
+Ecosystem Research Network. (Dataset).
+\doi{10.4225/08/546F091C11777}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/0d27cf8b-6627-4f33-8398-1b525bc1a210}
+}
+\item{\strong{DUL: SLGA Attribute - Drained upper limit volumetric water content}}{
+Searle, R. & Nimalka Somarathna, P. (2022). Soil and Landscape Grid
+National Soil Attribute Maps - Drained Upper Limit Volumetric Water
+Content (Percent) (3 arc second resolution) Version 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/jnvd-3a26}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/de9ddc12-b8e4-4ff2-99c4-390227a848aa}
+}
+\item{\strong{L15: SLGA Attribute - 15 bar lower limit volumetric water content}}{
+Searle, R. & Nimalka Somarathna, P. (2022). Soil and Landscape Grid
+National Soil Attribute Maps - 15 Bar Lower Limit Volumetric Water
+Content (Percent) (3 arc second resolution) Version 1. Version 1.0.
+Terrestrial Ecosystem Research Network. (Dataset).
+\doi{10.25919/awp8-nv68}.\cr\cr TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4443f5df-a0b2-4352-b44b-83f7feb1e27d}
+}
+\item{\strong{SOILDIV: Soil Bacteria and Soil Fungi Beta Diversity}}{
+Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid National
+Soil Attribute Maps - Soil Bacteria and Fungi Beta Diversity (3"
+resolution) - Release 1. Version 1.0. Terrestrial Ecosystem Research
+Network. (Dataset). \doi{10.25919/4x7n-y874}.\cr\cr
+TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-dda6-4097-8dd9-d3ec63973029}
+}
+\item{\strong{CANOPY: OzTreeMap Best-Pick Canopy Height Model}}{
+Pucino, N., McVicar, T., Levick, S. & Albert van Dijk (2025).
+Australia-Wide 30 m Machine Learning-Derived Canopy Height Models
+Composites: Best Pick and Median. Version 1. Terrestrial Ecosystem
+Research Network. (Dataset). \doi{10.25901/xqv7-jk46}.\cr\cr
+TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-39c8-4eec-9070-a978933f3fa3}
+}
+\item{\strong{PHENOLOGY: Australian Land Surface Phenology}}{
+Xie, Q. & Huete, A. (2024). Australian land surface phenology dataset at
+500m resolution. Version 1.0. Terrestrial Ecosystem Research Network.
+(Dataset). URL: \url{https://portal.tern.org.au/metadata/2bb0c81a-41a9-434c-b87a-db0301cb52fb}.\cr\cr
+TERN Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-41a9-434c-b87a-db0301cb52fb}
+}
+}
+}

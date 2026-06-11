@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_asc.R
 \name{.read_tern_asc}
 \alias{.read_tern_asc}
-\title{Internal handler for ASC (\code{TERN/15728dba})}
+\title{Internal handler for retrieving ASC rasters}
 \usage{
 .read_tern_asc(dots, api_key, max_tries, initial_delay)
 }
@@ -14,6 +14,6 @@
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-Internal handler for ASC (\code{TERN/15728dba})
+Internal handler for retrieving ASC rasters
 }
 \keyword{internal}

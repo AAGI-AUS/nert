@@ -3,16 +3,14 @@
 \docType{data}
 \name{.tern_aliases}
 \alias{.tern_aliases}
-\title{Alias mapping for short dataset names
-Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs}
+\title{Alias mapping for short dataset names}
 \format{
-An object of class \code{list} of length 14.
+An object of class \code{list} of length 20.
 }
 \usage{
 .tern_aliases
 }
 \description{
-Alias mapping for short dataset names
 Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 }
 \keyword{datasets}

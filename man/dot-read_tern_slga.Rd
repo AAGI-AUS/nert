@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_slga.R
 \name{.read_tern_slga}
 \alias{.read_tern_slga}
-\title{Internal handler for SLGA soil attributes}
+\title{Internal handler for retrieving SLGA soil attributes}
 \usage{
 .read_tern_slga(did, dots, api_key, max_tries, initial_delay)
 }

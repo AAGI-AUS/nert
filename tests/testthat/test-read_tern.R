@@ -70,15 +70,15 @@ test_that("read_tern AET errors when date is missing", {
 test_that("read_tern AET accepts legacy 'month' arg name", {
   # Should reach .check_aet_date, not the missing-date guard
   expect_error(
-    read_tern("TERN/9fefa68b", month = "1999-01-01"),
-    "AET data are not available before 2000"
+    read_tern("TERN/9fefa68b", month = "1980-01-01"),
+    "AET data are not available before 1987"
   )
 })
 
-test_that("read_tern AET errors for date before 2000-02-01", {
+test_that("read_tern AET errors for date before 1987-05-01", {
   expect_error(
-    read_tern("TERN/9fefa68b", date = "2000-01-01"),
-    "AET data are not available before 2000"
+    read_tern("TERN/9fefa68b", date = "1987-04-15"),
+    "AET data are not available before 1987"
   )
 })
 

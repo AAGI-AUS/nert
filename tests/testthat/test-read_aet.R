@@ -47,21 +47,21 @@ test_that("read_aet errors when date is missing", {
   expect_error(read_aet(), "argument \"date\" is missing")
 })
 
-test_that("read_aet errors for dates before 2000-02-01", {
+test_that("read_aet errors for dates before 1987-05-01", {
   expect_error(
-    read_aet("1999-06-01", api_key = KEY),
-    "AET data are not available before 2000"
+    read_aet("1979-06-01", api_key = KEY),
+    "AET data are not available before 1987"
   )
   expect_error(
-    read_aet("2000-01-31", api_key = KEY),
-    "AET data are not available before 2000"
+    read_aet("1987-04-30", api_key = KEY),
+    "AET data are not available before 1987"
   )
 })
 
-test_that("read_aet accepts the earliest available date (2000-02-01)", {
+test_that("read_aet accepts the earliest available date (1987-05-01)", {
   sink <- .use_mocked_cog()
-  read_aet("2000-02-01", api_key = KEY)
-  expect_match(sink$urls, "2000_02_01_ETa.vrt$")
+  read_aet("1987-05-01", api_key = KEY)
+  expect_match(sink$urls, "1987_05_01_ETa.vrt$")
 })
 
 test_that("read_aet rejects an unknown collection at .make_aet_url", {

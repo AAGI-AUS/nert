@@ -25,17 +25,6 @@ test_that(".read_cog rejects negative initial_delay", {
   )
 })
 
-# read_asc -- confusion_index strict logical ---------------------------------
-
-test_that("read_asc rejects non-logical confusion_index", {
-  expect_error(read_asc(confusion_index = NULL), "single non-NA logical")
-  expect_error(read_asc(confusion_index = NA), "single non-NA logical")
-  expect_error(read_asc(confusion_index = "TRUE"), "single non-NA logical")
-  expect_error(read_asc(confusion_index = c(TRUE, FALSE)),
-               "single non-NA logical")
-  expect_error(read_asc(confusion_index = 1L), "single non-NA logical")
-})
-
 # .tern_dispatch_id -- vector inputs -----------------------------------------
 
 test_that(".tern_dispatch_id rejects vector input", {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_soil_diversity.R
 \name{.read_tern_soil_diversity}
 \alias{.read_tern_soil_diversity}
-\title{Internal handler for Soil Beta Diversity (\code{TERN/4a428d52})}
+\title{Internal handler for retrieving Soil Beta Diversity datasets}
 \usage{
 .read_tern_soil_diversity(dots, api_key, max_tries, initial_delay)
 }
@@ -14,6 +14,6 @@
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
 \description{
-Internal handler for Soil Beta Diversity (\code{TERN/4a428d52})
+Internal handler for retrieving Soil Beta Diversity datasets
 }
 \keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_aet.R
 \name{read_aet}
 \alias{read_aet}
-\title{Read CMRSET Actual Evapotranspiration Data}
+\title{Read CMRSET Actual Evapotranspiration Data from TERN}
 \usage{
 read_aet(
   date,
@@ -18,29 +18,34 @@ read_aet(
 is snapped to the first of the month internally.  Required.}
 
 \item{collection}{One of \code{"ETa"} (actual evapotranspiration in
-mm/month, default) or \code{"pixel_qa"} (quality assurance flags).}
+mm/month, default) or \code{"pixel_qa"} (quality assurance attributes).}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key.  Defaults to automatic detection from your
+\acronym{API} key. Defaults to automatic detection from your
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is
-raised.  When \code{NULL} (default), resolved from
-\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-for a single call.}
+raised. Default=\code{NULL}, in which case the maximum retry number is
+resolved from the option \code{nert.max_tries} if that option exists.
+(Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
 
 \item{initial_delay}{Initial retry delay in seconds (doubles with each
-attempt).  When \code{NULL} (default), resolved from
-\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to
-override for a single call.}
+attempt). Default=\code{NULL}, in which case the initial delay is
+resolved from the option \code{nert.initial_delay} if that option exists.
+(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+not been set.)}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the requested ET collection.
+A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested Evapotranspiration collection.
 }
 \description{
-Wrapper around \code{\link[=read_tern]{read_tern()}} for TERN/CMRSET evapotranspiration data.
-Provides monthly estimates of actual ET (mm/month) at 30 m resolution
-from February 2000 onwards.
+Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the CMRSET actual
+evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
+provides monthly estimates of actual ET (mm/month) at 30 m resolution
+from May 1987 onwards, using the CSIRO MODIS Reflectance-based Scaling
+EvapoTranspiration (CMRSET) algorithm that combines potential
+evapotranspiration data from the Bureau of Meteorology together with
+satellite image data provided by MODIS, VIIRS, Landsat and Sentinel-2.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
@@ -54,19 +59,22 @@ r_jan <- read_aet("2023-01-01")
 # Quality assurance flags for June 2023
 r_qa <- read_aet("2023-06-01", collection = "pixel_qa")
 
-# ET from February 2000 (earliest available)
-r_early <- read_aet("2000-02-01")
+# ET from May 1987 (earliest available)
+r_early <- read_aet("1987-05-01")
 
 # Current/recent ET (within last month)
 r_recent <- read_aet(Sys.Date())
 \dontshow{\}) # examplesIf}
 }
 \references{
-CMRSET portal:
-\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
+McVicar, T., Vleeshouwer, J., Van Niel, T., Guerschman, J. &
+Peña-Arancibia, J. (2022). Actual Evapotranspiration for Australia
+using CMRSET algorithm. Version 1.0. Terrestrial Ecosystem Research
+Network. (Dataset). \doi{10.25901/gg27-ck96}.
 
-CMRSET DOI: \doi{10.25901/gg27-ck96}
+TERM CMRSET Actual Evapotranspiration Point-of-truth metadata URL:
+\url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97}
 }
 \seealso{
-\code{\link[=read_tern]{read_tern()}}, \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}
+\code{\link[=read_tern]{read_tern()}}
 }
