@@ -1,3 +1,20 @@
+# nert 1.1.0
+
+Updated version, fixing a number of issues with the TERN dataset retrieval.
+
+- `read_smips()` now tests the correct day when validating the date for
+  a requested raster.
+- `read_phenology()` now provides access to all of the phenology datasets
+  available on the TERN Data Portal, including the monthly SGS/PGS/EGS.
+- `read_slga()` provides access to an additional six datasets (CEC,ECE,
+  AVP,PTO,DUL,L15), and also allows the user to pull the 05 and 95
+  percentile limits for the 95% confidence interval.
+- `read_asc()` now provides access to its data and confusion index rasters
+  using a consistent interface with the rest of the `read_*()` functions.
+- Documentation for the functions and their TERN datasets has been
+  reviewed and improved.
+
+
 # nert 1.0.0
 
 First stable release.  The package has matured through the 0.0.x
