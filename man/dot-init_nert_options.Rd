@@ -6,10 +6,6 @@
 \usage{
 .init_nert_options()
 }
-\value{
-\code{NULL}, invisibly.  Called for its side effect on
-\code{\link[base:options]{base::options()}}.
-}
 \description{
 Extracted from \code{.onLoad()} to allow direct unit testing.  Sets
 package-level defaults for the retry behaviour shared by every
