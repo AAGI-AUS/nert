@@ -5,10 +5,20 @@ Internal handler for retrieving Canopy Height data
 ## Usage
 
 ``` r
-.read_tern_canopy_height(api_key, max_tries, initial_delay)
+.read_tern_canopy_height(did, dots, api_key, max_tries, initial_delay)
 ```
 
 ## Arguments
+
+- did:
+
+  Normalised 8-char dataset ID (unused; uniform handler signature).
+
+- dots:
+
+  Named list of `...` args from
+  [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
+  (unused).
 
 - api_key:
 

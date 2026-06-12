@@ -1,6 +1,8 @@
 # Alias mapping for short dataset names
 
-Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
+Named `character` vector mapping user-friendly short names (e.g.
+`"SMIPS"`, `"AWC"`) to dispatch IDs. Derived from
+[.tern_datasets](https://aagi-aus.github.io/nert/reference/dot-tern_datasets.md).
 
 ## Usage
 
@@ -10,4 +12,4 @@ Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
 
 ## Format
 
-An object of class `list` of length 20.
+An object of class `character` of length 20.

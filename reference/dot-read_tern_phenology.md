@@ -5,10 +5,14 @@ Internal handler for Land Surface Phenology (`TERN/2bb0c81a`)
 ## Usage
 
 ``` r
-.read_tern_phenology(dots, api_key, max_tries, initial_delay)
+.read_tern_phenology(did, dots, api_key, max_tries, initial_delay)
 ```
 
 ## Arguments
+
+- did:
+
+  Normalised 8-char dataset ID (unused; uniform handler signature).
 
 - dots:
 

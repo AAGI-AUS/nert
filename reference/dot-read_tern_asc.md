@@ -5,10 +5,14 @@ Internal handler for retrieving ASC rasters
 ## Usage
 
 ``` r
-.read_tern_asc(dots, api_key, max_tries, initial_delay)
+.read_tern_asc(did, dots, api_key, max_tries, initial_delay)
 ```
 
 ## Arguments
+
+- did:
+
+  Normalised 8-char dataset ID (unused; uniform handler signature).
 
 - dots:
 
