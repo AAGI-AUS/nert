@@ -87,14 +87,14 @@ read_smips <- function(
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  read_tern(
+  return(read_tern(
     "SMIPS",
     date = date,
     collection = collection,
     api_key = api_key,
     max_tries = max_tries,
     initial_delay = initial_delay
-  )
+  ))
 }
 
 
@@ -134,7 +134,7 @@ read_smips <- function(
     lubridate::year(day),
     dl_file
   )
-  .read_cog(full_url, max_tries, initial_delay)
+  return(.read_cog(full_url, max_tries, initial_delay))
 }
 
 
@@ -175,6 +175,8 @@ read_smips <- function(
       You requested {format(.day, '%Y-%m-%d')}."
     )
   }
+
+  return(invisible(NULL))
 }
 
 

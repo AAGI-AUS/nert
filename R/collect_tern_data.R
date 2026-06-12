@@ -179,7 +179,7 @@ collect_tern_data <- function(
     )
   }
 
-  out[]
+  return(out[])
 }
 
 
@@ -241,7 +241,7 @@ collect_tern_data <- function(
       "Coordinate out of bounds: lon in [-180, 180], lat in [-90, 90]."
     )
   }
-  coords
+  return(coords)
 }
 
 
@@ -255,7 +255,9 @@ collect_tern_data <- function(
 #' @autoglobal
 #' @dev
 .parse_date_range <- function(date_range) {
-  bad <- function() cli::cli_abort("No valid dates in {.arg date_range}.")
+  bad <- function() {
+    return(cli::cli_abort("No valid dates in {.arg date_range}."))
+  }
   dates <- tryCatch({
     if (length(date_range) == 2L && !inherits(date_range, "Date")) {
       seq(
@@ -268,7 +270,7 @@ collect_tern_data <- function(
     }
   }, error = function(e) bad())
   if (length(dates) == 0L || any(is.na(dates))) bad()
-  dates
+  return(dates)
 }
 
 #' Resolve the `datasets` argument to a clean alias vector
@@ -305,7 +307,7 @@ collect_tern_data <- function(
   if (length(datasets) == 0L) {
     cli::cli_abort("No supported datasets remained after filtering.")
   }
-  datasets
+  return(datasets)
 }
 
 
@@ -416,7 +418,7 @@ collect_tern_data <- function(
     }
   }
 
-  items
+  return(items)
 }
 
 
@@ -490,7 +492,7 @@ collect_tern_data <- function(
     out[seq.int(row_start, row_end), (wi$cols[1L]) := v]
   }
 
-  invisible(NULL)
+  return(invisible(NULL))
 }
 
 
@@ -606,5 +608,5 @@ collect_tern_data <- function(
   print(tbl, nrows = Inf)
   cat("\n")
 
-  invisible(NULL)
+  return(invisible(NULL))
 }

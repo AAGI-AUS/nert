@@ -190,14 +190,14 @@ read_slga <- function(
   attribute <- toupper(attribute)
   attribute <- rlang::arg_match(attribute, approved_attrs)
 
-  read_tern(
+  return(read_tern(
     attribute,
     depth = depth,
     collection = collection,
     api_key = api_key,
     max_tries = max_tries,
     initial_delay = initial_delay
-  )
+  ))
 }
 
 
@@ -280,5 +280,5 @@ read_slga <- function(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/%s/%s/%s",
     api_key, cfg$dir, cfg$version, fname
   )
-  .read_cog(full_url, max_tries, initial_delay)
+  return(.read_cog(full_url, max_tries, initial_delay))
 }

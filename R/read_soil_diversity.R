@@ -57,14 +57,14 @@ read_soil_diversity <- function(
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  read_tern(
+  return(read_tern(
     "SOILDIV",
     collection = collection,
     axis = axis,
     api_key = api_key,
     max_tries = max_tries,
     initial_delay = initial_delay
-  )
+  ))
 }
 
 
@@ -99,5 +99,5 @@ read_soil_diversity <- function(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/Other/SoilBetaDiversity/%s",
     api_key, fname
   )
-  .read_cog(full_url, max_tries, initial_delay)
+  return(.read_cog(full_url, max_tries, initial_delay))
 }

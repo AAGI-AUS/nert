@@ -67,13 +67,13 @@ read_asc <- function(
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  read_tern(
+  return(read_tern(
     "ASC",
     collection = collection,
     api_key = api_key,
     max_tries = max_tries,
     initial_delay = initial_delay
-  )
+  ))
 }
 
 
@@ -100,5 +100,5 @@ read_asc <- function(
     api_key,
     dl_file
   )
-  .read_cog(full_url, max_tries, initial_delay)
+  return(.read_cog(full_url, max_tries, initial_delay))
 }

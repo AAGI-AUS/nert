@@ -48,12 +48,12 @@ read_canopy_height <- function(
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  read_tern(
+  return(read_tern(
     "CANOPY",
     api_key = api_key,
     max_tries = max_tries,
     initial_delay = initial_delay
-  )
+  ))
 }
 
 
@@ -68,5 +68,5 @@ read_canopy_height <- function(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif",
     api_key
   )
-  .read_cog(full_url, max_tries, initial_delay)
+  return(.read_cog(full_url, max_tries, initial_delay))
 }
