@@ -16,11 +16,6 @@ call:
 .init_nert_options()
 ```
 
-## Value
-
-`NULL`, invisibly. Called for its side effect on
-[`base::options()`](https://rdrr.io/r/base/options.html).
-
 ## Details
 
 Existing user-set values (e.g. set in `.Rprofile` or via
