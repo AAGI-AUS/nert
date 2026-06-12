@@ -72,5 +72,5 @@
 #'  necessary.
 #' @dev
 .check_api_key <- function(api_key) {
-  gsub("/", "%2f", api_key, fixed = TRUE)
+  return(gsub("/", "%2f", api_key, fixed = TRUE))
 }

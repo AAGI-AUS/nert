@@ -68,14 +68,14 @@ read_aet <- function(
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  read_tern(
+  return(read_tern(
     "AET",
     date = date,
     collection = collection,
     api_key = api_key,
     max_tries = max_tries,
     initial_delay = initial_delay
-  )
+  ))
 }
 
 
@@ -111,7 +111,7 @@ read_aet <- function(
     .month = month,
     .api_key = api_key
   )
-  .read_cog(full_url, max_tries, initial_delay)
+  return(.read_cog(full_url, max_tries, initial_delay))
 }
 
 
@@ -156,12 +156,12 @@ read_aet <- function(
   year <- lubridate::year(.month)
   date_str <- format(.month, "%Y_%m_%d")
 
-  sprintf(
+  return(sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
     .api_key,
     year,
     date_str,
     date_str,
     collection
-  )
+  ))
 }

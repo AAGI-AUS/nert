@@ -8,6 +8,7 @@
 # nocov start
 .onLoad <- function(libname, pkgname) {
   .init_nert_options()
+  return(invisible(NULL))
 }
 # nocov end
 
@@ -26,8 +27,6 @@
 #' [base::options()] before `library(nert)`) are preserved; only
 #' unset options are populated with defaults.
 #'
-#' @returns `NULL`, invisibly.  Called for its side effect on
-#'   [base::options()].
 #' @autoglobal
 #' @dev
 .init_nert_options <- function() {
@@ -40,5 +39,4 @@
   if (any(toset)) {
     options(op_nert[toset])
   }
-  invisible(NULL)
 }

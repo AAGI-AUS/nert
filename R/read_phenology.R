@@ -101,7 +101,7 @@ read_phenology <- function(
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  read_tern(
+  return(read_tern(
     "PHENOLOGY",
     year = year,
     season = season,
@@ -109,7 +109,7 @@ read_phenology <- function(
     api_key = api_key,
     max_tries = max_tries,
     initial_delay = initial_delay
-  )
+  ))
 }
 
 
@@ -177,5 +177,5 @@ read_phenology <- function(
     "/vsicurl/https://apikey:%s@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/%s/%s",
     api_key, metric_dir, fname
   )
-  .read_cog(full_url, max_tries, initial_delay)
+  return(.read_cog(full_url, max_tries, initial_delay))
 }

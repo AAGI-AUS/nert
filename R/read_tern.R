@@ -369,7 +369,7 @@ read_tern <- function(
   api_key <- .check_api_key(api_key %||% get_key())
 
   # Dispatch to specific dataset helpers
-  switch(
+  return(switch(
     did,
     "d1995ee8" = .read_tern_smips(dots, api_key, max_tries, initial_delay),
     "15728dba" = .read_tern_asc(dots, api_key, max_tries, initial_delay),
@@ -391,7 +391,7 @@ read_tern <- function(
     "4a428d52" = .read_tern_soil_diversity(dots, api_key, max_tries, initial_delay),
     "36c98155" = .read_tern_canopy_height(api_key, max_tries, initial_delay),
     "2bb0c81a" = .read_tern_phenology(dots, api_key, max_tries, initial_delay)
-  )
+  ))
 }
 
 
@@ -463,7 +463,7 @@ read_tern <- function(
     ignore.case = TRUE,
     perl = TRUE
   )
-  tolower(id)
+  return(tolower(id))
 }
 
 
@@ -594,5 +594,5 @@ read_tern <- function(
     # Fail-safe
     .tern_not_implemented(dataset_id)
   )
-  invisible(NULL)
+  return(invisible(NULL))
 }
