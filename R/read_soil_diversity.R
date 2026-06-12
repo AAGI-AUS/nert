@@ -70,12 +70,19 @@ read_soil_diversity <- function(
 
 #' Internal handler for retrieving Soil Beta Diversity datasets
 #'
+#' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
-.read_tern_soil_diversity <- function(dots, api_key, max_tries, initial_delay) {
+.read_tern_soil_diversity <- function(
+  did,
+  dots,
+  api_key,
+  max_tries,
+  initial_delay
+) {
   collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {

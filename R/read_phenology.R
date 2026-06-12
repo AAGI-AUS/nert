@@ -138,12 +138,13 @@ read_phenology <- function(
 
 #' Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})
 #'
+#' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
-.read_tern_phenology <- function(dots, api_key, max_tries, initial_delay) {
+.read_tern_phenology <- function(did, dots, api_key, max_tries, initial_delay) {
   year <- as.integer(dots[["year"]])
   season <- if (!is.null(dots[["season"]])) {
     as.integer(dots[["season"]])

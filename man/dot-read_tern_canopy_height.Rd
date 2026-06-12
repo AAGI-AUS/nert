@@ -4,9 +4,13 @@
 \alias{.read_tern_canopy_height}
 \title{Internal handler for retrieving Canopy Height data}
 \usage{
-.read_tern_canopy_height(api_key, max_tries, initial_delay)
+.read_tern_canopy_height(did, dots, api_key, max_tries, initial_delay)
 }
 \arguments{
+\item{did}{Normalised 8-char dataset ID (unused; uniform handler signature).}
+
+\item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}} (unused).}
+
 \item{api_key}{URL-encoded API key.}
 
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}

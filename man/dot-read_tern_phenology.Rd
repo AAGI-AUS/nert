@@ -4,9 +4,11 @@
 \alias{.read_tern_phenology}
 \title{Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})}
 \usage{
-.read_tern_phenology(dots, api_key, max_tries, initial_delay)
+.read_tern_phenology(did, dots, api_key, max_tries, initial_delay)
 }
 \arguments{
+\item{did}{Normalised 8-char dataset ID (unused; uniform handler signature).}
+
 \item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}
 
 \item{api_key}{URL-encoded API key.}
