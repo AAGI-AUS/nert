@@ -59,11 +59,19 @@ read_canopy_height <- function(
 
 #' Internal handler for retrieving Canopy Height data
 #'
+#' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
+#' @param dots Named list of \code{...} args from [read_tern()] (unused).
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
 #' @dev
-.read_tern_canopy_height <- function(api_key, max_tries, initial_delay) {
+.read_tern_canopy_height <- function(
+  did,
+  dots,
+  api_key,
+  max_tries,
+  initial_delay
+) {
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif",
     api_key

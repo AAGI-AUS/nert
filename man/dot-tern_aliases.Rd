@@ -5,13 +5,14 @@
 \alias{.tern_aliases}
 \title{Alias mapping for short dataset names}
 \format{
-An object of class \code{list} of length 20.
+An object of class \code{character} of length 20.
 }
 \usage{
 .tern_aliases
 }
 \description{
-Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
+Named \code{character} vector mapping user-friendly short names (e.g.
+\code{"SMIPS"}, \code{"AWC"}) to dispatch IDs. Derived from \link{.tern_datasets}.
 }
 \keyword{datasets}
 \keyword{internal}

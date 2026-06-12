@@ -4,9 +4,11 @@
 \alias{.read_tern_soil_diversity}
 \title{Internal handler for retrieving Soil Beta Diversity datasets}
 \usage{
-.read_tern_soil_diversity(dots, api_key, max_tries, initial_delay)
+.read_tern_soil_diversity(did, dots, api_key, max_tries, initial_delay)
 }
 \arguments{
+\item{did}{Normalised 8-char dataset ID (unused; uniform handler signature).}
+
 \item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}
 
 \item{api_key}{URL-encoded API key.}

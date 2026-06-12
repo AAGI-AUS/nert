@@ -368,60 +368,46 @@ read_tern <- function(
   .tern_validate_args(did, dots, dataset_id)
   api_key <- .check_api_key(api_key %||% get_key())
 
-  # Dispatch to specific dataset helpers
-  return(switch(
-    did,
-    "d1995ee8" = .read_tern_smips(dots, api_key, max_tries, initial_delay),
-    "15728dba" = .read_tern_asc(dots, api_key, max_tries, initial_delay),
-    "9fefa68b" = .read_tern_aet(dots, api_key, max_tries, initial_delay),
-    "482301c2" = ,  # AWC -- Switch fall-through for SLGA datasets
-    "f95dc442" = ,  # CLY
-    "4224ddff" = ,  # SND
-    "11375f04" = ,  # SLT
-    "95978aec" = ,  # BDW
-    "258afc98" = ,  # PHC
-    "c37439a5" = ,  # PHW
-    "e9484508" = ,  # NTO
-    "c6ef289b" = ,  # AVP
-    "be382e63" = ,  # PTO
-    "5b4b2991" = ,  # CEC
-    "0d27cf8b" = ,  # ECE
-    "de9ddc12" = ,  # DUL
-    "4443f5df" = .read_tern_slga(did, dots, api_key, max_tries, initial_delay),  # L15
-    "4a428d52" = .read_tern_soil_diversity(dots, api_key, max_tries, initial_delay),
-    "36c98155" = .read_tern_canopy_height(api_key, max_tries, initial_delay),
-    "2bb0c81a" = .read_tern_phenology(dots, api_key, max_tries, initial_delay)
-  ))
+  handler <- .tern_datasets[[did]]$read
+  return(handler(did, dots, api_key, max_tries, initial_delay))
 }
+
+
+#' Dataset registry
+#'
+#' Single source of truth mapping each dataset's normalised 8-char dispatch ID
+#' to its short alias and read handler. Both the dispatch path in [read_tern()]
+#' and the [.tern_aliases] lookup are derived from this list, so a dataset is
+#' defined in one place. The SLGA entries are generated from [.slga_config].
+#'
+#' Each entry is a \code{list} with an \code{alias} (upper-case short name) and
+#' a \code{read} handler invoked as
+#' \code{read(did, dots, api_key, max_tries, initial_delay)}.
+#' @autoglobal
+#' @dev
+.tern_datasets <- c(
+  list(
+    "d1995ee8" = list(alias = "SMIPS", read = .read_tern_smips),
+    "15728dba" = list(alias = "ASC", read = .read_tern_asc),
+    "9fefa68b" = list(alias = "AET", read = .read_tern_aet),
+    "4a428d52" = list(alias = "SOILDIV", read = .read_tern_soil_diversity),
+    "36c98155" = list(alias = "CANOPY", read = .read_tern_canopy_height),
+    "2bb0c81a" = list(alias = "PHENOLOGY", read = .read_tern_phenology)
+  ),
+  # SLGA from .slga_config.
+  lapply(.slga_config, function(cfg) {
+    list(alias = cfg$prefix, read = .read_tern_slga)
+  })
+)
 
 
 #' Alias mapping for short dataset names
 #'
-#' Maps user-friendly short names (e.g. "SMIPS", "AWC") to dispatch IDs
+#' Named \code{character} vector mapping user-friendly short names (e.g.
+#' \code{"SMIPS"}, \code{"AWC"}) to dispatch IDs. Derived from [.tern_datasets].
 #' @autoglobal
 #' @dev
-.tern_aliases <- list(
-  SMIPS = "d1995ee8",
-  ASC = "15728dba",
-  AET = "9fefa68b",
-  AWC = "482301c2",
-  CLY = "f95dc442",
-  SND = "4224ddff",
-  SLT = "11375f04",
-  BDW = "95978aec",
-  PHC = "258afc98",
-  PHW = "c37439a5",
-  NTO = "e9484508",
-  AVP = "c6ef289b",
-  PTO = "be382e63",
-  CEC = "5b4b2991",
-  ECE = "0d27cf8b",
-  DUL = "de9ddc12",
-  L15 = "4443f5df",
-  SOILDIV = "4a428d52",
-  CANOPY = "36c98155",
-  PHENOLOGY = "2bb0c81a"
-)
+.tern_aliases <- setNames(names(.tern_datasets), vapply(.tern_datasets, \(d) d$alias, character(1L)))
 
 
 #' Normalise a TERN dataset key for switch() dispatch

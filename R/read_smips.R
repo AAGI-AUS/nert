@@ -100,13 +100,14 @@ read_smips <- function(
 
 #' Internal handler for retrieving SMIPS datasets
 #'
+#' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #'
 #' @autoglobal
 #' @dev
-.read_tern_smips <- function(dots, api_key, max_tries, initial_delay) {
+.read_tern_smips <- function(did, dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'day' parameter name
   date <- if (!is.null(dots[["date"]])) {
     dots[["date"]]
