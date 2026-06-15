@@ -362,37 +362,62 @@ read_tern <- function(
     cli::cli_abort("You must provide a {.arg dataset_id}.")
   }
 
-  # Validate dataset ID and specific arguments *before* checking API key
+  # Validate dataset ID and dataset-specific arguments *before* checking the
+  # API key, so input-validation errors surface in CI/tests where
+  # `TERN_API_KEY` is unset. The per-dataset validator (if any) lives in that
+  # dataset's own `R/read_<name>.R` file and is wired in via `.tern_datasets`.
   dots <- list(...)
   did <- .tern_dispatch_id(dataset_id)
-  .tern_validate_args(did, dots, dataset_id)
+  entry <- .tern_datasets[[did]]
+  if (is.null(entry)) {
+    .tern_not_implemented(dataset_id)
+  }
+  if (!is.null(entry$validate)) {
+    entry$validate(dots, dataset_id)
+  }
   api_key <- .check_api_key(api_key %||% get_key())
 
-  handler <- .tern_datasets[[did]]$read
-  return(handler(did, dots, api_key, max_tries, initial_delay))
+  return(entry$read(did, dots, api_key, max_tries, initial_delay))
 }
 
 
 #' Dataset registry
 #'
 #' Single source of truth mapping each dataset's normalised 8-char dispatch ID
-#' to its short alias and read handler. Both the dispatch path in [read_tern()]
-#' and the [.tern_aliases] lookup are derived from this list, so a dataset is
-#' defined in one place. The SLGA entries are generated from [.slga_config].
+#' to its short alias, optional argument validator, and read handler. The
+#' dispatch path in [read_tern()] and the [.tern_aliases] lookup are derived
+#' from this list, so a dataset is defined in one place. The SLGA entries are
+#' generated from [.slga_config].
 #'
-#' Each entry is a \code{list} with an \code{alias} (upper-case short name) and
-#' a \code{read} handler invoked as
-#' \code{read(did, dots, api_key, max_tries, initial_delay)}.
+#' Each entry is a \code{list} with an \code{alias} (upper-case short name), a
+#' \code{read} handler invoked as
+#' \code{read(did, dots, api_key, max_tries, initial_delay)}, and an optional
+#' \code{validate} function invoked as \code{validate(dots, dataset_id)} before
+#' the API key is checked. Both the validator (where present) and the handler
+#' live in the dataset's own \code{R/read_<name>.R} file. Datasets with no
+#' pre-key argument validation simply omit \code{validate}.
 #' @autoglobal
 #' @dev
 .tern_datasets <- c(
   list(
-    "d1995ee8" = list(alias = "SMIPS", read = .read_tern_smips),
+    "d1995ee8" = list(
+      alias = "SMIPS",
+      validate = .validate_smips,
+      read = .read_tern_smips
+    ),
     "15728dba" = list(alias = "ASC", read = .read_tern_asc),
-    "9fefa68b" = list(alias = "AET", read = .read_tern_aet),
+    "9fefa68b" = list(
+      alias = "AET",
+      validate = .validate_aet,
+      read = .read_tern_aet
+    ),
     "4a428d52" = list(alias = "SOILDIV", read = .read_tern_soil_diversity),
     "36c98155" = list(alias = "CANOPY", read = .read_tern_canopy_height),
-    "2bb0c81a" = list(alias = "PHENOLOGY", read = .read_tern_phenology)
+    "2bb0c81a" = list(
+      alias = "PHENOLOGY",
+      validate = .validate_phenology,
+      read = .read_tern_phenology
+    )
   ),
   # SLGA from .slga_config.
   lapply(.slga_config, function(cfg) {
@@ -407,7 +432,8 @@ read_tern <- function(
 #' \code{"SMIPS"}, \code{"AWC"}) to dispatch IDs. Derived from [.tern_datasets].
 #' @autoglobal
 #' @dev
-.tern_aliases <- setNames(names(.tern_datasets), vapply(.tern_datasets, \(d) d$alias, character(1L)))
+.tern_aliases <- names(.tern_datasets)
+names(.tern_aliases) <- vapply(.tern_datasets, \(d) d$alias, character(1L))
 
 
 #' Normalise a TERN dataset key for switch() dispatch
@@ -467,118 +493,4 @@ read_tern <- function(
     "i" = "Datasets with L2+ integration levels (OPeNDAP, GEE, REST API,
            site-specific) are outside the current {.pkg nert} scope."
   ))
-}
-
-
-#' Validate dataset-specific arguments before the API key is checked
-#'
-#' Runs the same guards as the individual handlers but without requiring an
-#' API key, so that input-validation errors surface in CI and tests even when
-#' `TERN_API_KEY` is not set.
-#'
-#' @param did Normalised 8-char dataset ID from [.tern_dispatch_id()].
-#' @param dots Named list of `...` arguments from the caller.
-#' @param dataset_id The raw `dataset_id` for error messages.
-#' @returns `NULL` (invisibly); called for its side effects (errors).
-#' @autoglobal
-#' @dev
-.tern_validate_args <- function(did, dots, dataset_id) {
-  #FIXME: Russell (05/06) as mentioned in Issue #36 discussion, surely
-  #  at some point we move these argument validation bits to their own
-  #  specific dataset file (e.g., SMIPS validation in read_smips.R) to
-  #  improve the SoC. As it is, a lot of this validation ends up
-  #  duplicated in the respective read_* functions too.
-  switch(
-    did,
-    # SMIPS (d1995ee8) -- requires date, must be >= 2015-01-01
-    "d1995ee8" = {
-      date <- if (!is.null(dots[["date"]])) {
-        dots[["date"]]
-      } else {
-        dots[["day"]]
-      }
-      if (is.null(date)) {
-        cli::cli_abort(
-          "SMIPS requires a {.arg date} argument (daily resolution),
-           e.g.  {.code date = \"2024-01-15\"}."
-        )
-      }
-    },
-
-    # ASC (15728dba) -- no required arguments
-    "15728dba" = {
-      # Collection defaults to "EV"; no validation needed
-    },
-
-    # AET (9fefa68b) -- requires date, must be >= 1987-05-01
-    "9fefa68b" = {
-      date <- if (!is.null(dots[["date"]])) dots[["date"]] else dots[["month"]]
-      if (is.null(date)) {
-        cli::cli_abort(
-          "AET requires a {.arg date} argument (monthly resolution),
-           e.g.  {.code date = \"2023-06-01\"}."
-        )
-      }
-      .check_aet_date(date)
-    },
-
-    # SLGA datasets -- no required arguments
-    "482301c2" = ,  # AWC
-    "f95dc442" = ,  # CLY
-    "4224ddff" = ,  # SND
-    "11375f04" = ,  # SLT
-    "95978aec" = ,  # BDW
-    "258afc98" = ,  # PHC
-    "c37439a5" = ,  # PHW
-    "e9484508" = ,  # NTO
-    "c6ef289b" = ,  # AVP
-    "be382e63" = ,  # PTO
-    "5b4b2991" = ,  # CEC
-    "0d27cf8b" = ,  # ECE
-    "de9ddc12" = ,  # DUL
-    "4443f5df" = {  # L15
-      # Defaults to "EV" collection at "000_005" cm depth.
-    },
-
-    # Soil Beta Diversity -- optional collection/axis with defaults
-    "4a428d52" = {
-      # Defaults to Bacteria, NMDS axis 1
-    },
-
-    # Best-pick canopy height -- no required arguments.
-    "36c98155" = {  },
-
-    # Phenology -- requires year. The season and collection are optional.
-    "2bb0c81a" = {
-      year <- dots[["year"]]
-      if (is.null(year)) {
-        cli::cli_abort(
-          "Phenology requires a {.arg year} argument (2003--2018),
-           e.g.  {.code year = 2018}."
-        )
-      }
-      if (length(year) != 1L) {
-        cli::cli_abort(
-          "Phenology {.arg year} must be a single value; got length \\
-           {.val {length(year)}}."
-        )
-      }
-      year_int <- suppressWarnings(as.integer(year))
-      if (is.na(year_int) || year_int != year) {
-        cli::cli_abort(
-          "Phenology {.arg year} must be an integer; got {.val {year}}."
-        )
-      }
-      if (year_int < 2003L || year_int > 2018L) {
-        cli::cli_abort(
-          "Phenology data are available for years 2003--2018.
-           You requested {year_int}."
-        )
-      }
-    },
-
-    # Fail-safe
-    .tern_not_implemented(dataset_id)
-  )
-  return(invisible(NULL))
 }

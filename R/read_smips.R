@@ -98,6 +98,28 @@ read_smips <- function(
 }
 
 
+#' Validate SMIPS arguments before the API key is checked
+#'
+#' SMIPS requires a daily \code{date} (the legacy \code{day} name is also
+#' accepted). Invoked by [read_tern()] via the [.tern_datasets] registry.
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
+#' @returns \code{NULL} (invisibly); called for its side effects (errors).
+#' @autoglobal
+#' @dev
+.validate_smips <- function(dots, dataset_id) {
+  date <- dots[["date"]] %||% dots[["day"]]
+  if (is.null(date)) {
+    cli::cli_abort(
+      "SMIPS requires a {.arg date} argument (daily resolution),
+       e.g. {.code date = \"2024-01-15\"}."
+    )
+  }
+  return(invisible(NULL))
+}
+
+
 #' Internal handler for retrieving SMIPS datasets
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
@@ -108,18 +130,9 @@ read_smips <- function(
 #' @autoglobal
 #' @dev
 .read_tern_smips <- function(did, dots, api_key, max_tries, initial_delay) {
-  # Accept both 'date' and the legacy 'day' parameter name
-  date <- if (!is.null(dots[["date"]])) {
-    dots[["date"]]
-  } else {
-    dots[["day"]]
-  }
-  if (is.null(date)) {
-    cli::cli_abort(
-      "SMIPS requires a {.arg date} argument (daily resolution),
-       e.g. {.code date = \"2024-01-15\"}."
-    )
-  }
+  # Accept both 'date' and the legacy 'day' parameter name; presence is
+  # guaranteed by .validate_smips() before this handler runs.
+  date <- dots[["date"]] %||% dots[["day"]]
   collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {

@@ -12,14 +12,19 @@ An object of class \code{list} of length 20.
 }
 \description{
 Single source of truth mapping each dataset's normalised 8-char dispatch ID
-to its short alias and read handler. Both the dispatch path in \code{\link[=read_tern]{read_tern()}}
-and the \link{.tern_aliases} lookup are derived from this list, so a dataset is
-defined in one place. The SLGA entries are generated from \link{.slga_config}.
+to its short alias, optional argument validator, and read handler. The
+dispatch path in \code{\link[=read_tern]{read_tern()}} and the \link{.tern_aliases} lookup are derived
+from this list, so a dataset is defined in one place. The SLGA entries are
+generated from \link{.slga_config}.
 }
 \details{
-Each entry is a \code{list} with an \code{alias} (upper-case short name) and
-a \code{read} handler invoked as
-\code{read(did, dots, api_key, max_tries, initial_delay)}.
+Each entry is a \code{list} with an \code{alias} (upper-case short name), a
+\code{read} handler invoked as
+\code{read(did, dots, api_key, max_tries, initial_delay)}, and an optional
+\code{validate} function invoked as \code{validate(dots, dataset_id)} before
+the API key is checked. Both the validator (where present) and the handler
+live in the dataset's own \code{R/read_<name>.R} file. Datasets with no
+pre-key argument validation simply omit \code{validate}.
 }
 \keyword{datasets}
 \keyword{internal}

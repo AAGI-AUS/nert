@@ -136,6 +136,47 @@ read_phenology <- function(
 )
 
 
+#' Validate phenology arguments before the API key is checked
+#'
+#' Phenology requires an integer \code{year} in 2003--2018. The \code{season}
+#' and \code{collection} arguments are optional and validated downstream in the
+#' handler. Invoked by [read_tern()] via the [.tern_datasets] registry.
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
+#' @returns \code{NULL} (invisibly); called for its side effects (errors).
+#' @autoglobal
+#' @dev
+.validate_phenology <- function(dots, dataset_id) {
+  year <- dots[["year"]]
+  if (is.null(year)) {
+    cli::cli_abort(
+      "Phenology requires a {.arg year} argument (2003--2018),
+       e.g.  {.code year = 2018}."
+    )
+  }
+  if (length(year) != 1L) {
+    cli::cli_abort(
+      "Phenology {.arg year} must be a single value; got length \\
+       {.val {length(year)}}."
+    )
+  }
+  year_int <- suppressWarnings(as.integer(year))
+  if (is.na(year_int) || year_int != year) {
+    cli::cli_abort(
+      "Phenology {.arg year} must be an integer; got {.val {year}}."
+    )
+  }
+  if (year_int < 2003L || year_int > 2018L) {
+    cli::cli_abort(
+      "Phenology data are available for years 2003--2018.
+       You requested {year_int}."
+    )
+  }
+  return(invisible(NULL))
+}
+
+
 #' Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).

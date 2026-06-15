@@ -79,6 +79,30 @@ read_aet <- function(
 }
 
 
+#' Validate AET arguments before the API key is checked
+#'
+#' AET requires a monthly \code{date} (the legacy \code{month} name is also
+#' accepted) within the data-availability window (from 1987-05-01). Invoked by
+#' [read_tern()] via the [.tern_datasets] registry.
+#'
+#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
+#' @returns \code{NULL} (invisibly); called for its side effects (errors).
+#' @autoglobal
+#' @dev
+.validate_aet <- function(dots, dataset_id) {
+  date <- dots[["date"]] %||% dots[["month"]]
+  if (is.null(date)) {
+    cli::cli_abort(
+      "AET requires a {.arg date} argument (monthly resolution),
+       e.g.  {.code date = \"2023-06-01\"}."
+    )
+  }
+  .check_aet_date(date)
+  return(invisible(NULL))
+}
+
+
 #' Internal handler for retrieving the AET data
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
@@ -88,18 +112,9 @@ read_aet <- function(
 #' @autoglobal
 #' @dev
 .read_tern_aet <- function(did, dots, api_key, max_tries, initial_delay) {
-  # Accept both 'date' and the legacy 'month' parameter name
-  date <- if (!is.null(dots[["date"]])) {
-    dots[["date"]]
-  } else {
-    dots[["month"]]
-  }
-  if (is.null(date)) {
-    cli::cli_abort(
-      "AET requires a {.arg date} argument (monthly resolution),
-       e.g.  {.code date = \"2023-06-01\"}."
-    )
-  }
+  # Accept both 'date' and the legacy 'month' parameter name; presence and the
+  # availability window are guaranteed by .validate_aet() before this runs.
+  date <- dots[["date"]] %||% dots[["month"]]
   collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {
