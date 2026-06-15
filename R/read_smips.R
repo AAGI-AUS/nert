@@ -116,7 +116,6 @@ read_smips <- function(
        e.g. {.code date = \"2024-01-15\"}."
     )
   }
-  return(invisible(NULL))
 }
 
 

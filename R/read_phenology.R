@@ -173,7 +173,6 @@ read_phenology <- function(
        You requested {year_int}."
     )
   }
-  return(invisible(NULL))
 }
 
 

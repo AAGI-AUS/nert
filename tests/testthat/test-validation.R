@@ -45,8 +45,6 @@ test_that("read_tern rejects vector dataset_id", {
   )
 })
 
-# read_phenology / .tern_validate_args -- year ------------------------------
-
 test_that("read_phenology errors cleanly when year is omitted", {
   expect_error(read_phenology(), "Phenology requires")
 })
