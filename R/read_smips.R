@@ -105,7 +105,6 @@ read_smips <- function(
 #'
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
-#' @returns \code{NULL} (invisibly); called for its side effects (errors).
 #' @autoglobal
 #' @dev
 .validate_smips <- function(dots, dataset_id) {

@@ -432,8 +432,10 @@ read_tern <- function(
 #' \code{"SMIPS"}, \code{"AWC"}) to dispatch IDs. Derived from [.tern_datasets].
 #' @autoglobal
 #' @dev
-.tern_aliases <- names(.tern_datasets)
-names(.tern_aliases) <- vapply(.tern_datasets, \(d) d$alias, character(1L))
+.tern_aliases <- stats::setNames(
+  names(.tern_datasets),
+  vapply(.tern_datasets, \(d) d$alias, character(1L))
+)
 
 
 #' Normalise a TERN dataset key for switch() dispatch
