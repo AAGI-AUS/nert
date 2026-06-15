@@ -9,7 +9,3 @@ Named `character` vector mapping user-friendly short names (e.g.
 ``` r
 .tern_aliases
 ```
-
-## Format
-
-An object of class `character` of length 20.

@@ -20,6 +20,9 @@ Useful links:
 
 Authors:
 
+- Sam Rogers <sam.rogers@adelaide.edu.au>
+  ([ORCID](https://orcid.org/0000-0002-8147-1239))
+
 - Adam H. Sparks <adamhsparks@gmail.com>
   ([ORCID](https://orcid.org/0000-0002-0061-8359))
 

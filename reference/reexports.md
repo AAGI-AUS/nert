@@ -5,4 +5,4 @@ to see their documentation.
 
 - tidyterra:
 
-  [`autoplot`](https://dieghernan.github.io/tidyterra/reference/reexports.html)
+  [`autoplot`](https://ggplot2.tidyverse.org/reference/autoplot.html)
