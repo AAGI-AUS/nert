@@ -42,7 +42,7 @@ resolved from the option \code{nert.initial_delay} if that option exists.
 not been set.)}
 }
 \value{
-A \link[terra:SpatRaster-class]{terra::SpatRaster} object containing the soil order classes (or the
+A \link[terra:SpatRaster]{terra::SpatRaster} object containing the soil order classes (or the
 values of the confusion index).
 }
 \description{
