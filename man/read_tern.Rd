@@ -39,14 +39,14 @@ resolved from the option \code{nert.initial_delay} if that option exists.
 not been set.)}
 }
 \value{
-A \link[terra:SpatRaster-class]{terra::SpatRaster} object for the requested dataset.
+A \link[terra:SpatRaster]{terra::SpatRaster} object for the requested dataset.
 }
 \description{
 A unified interface for reading Cloud Optimised GeoTIFF (\acronym{COG})
 data from the \acronym{TERN} Data Portal. This function effectively
 dispatches to dataset-specific handlers based on the dataset requested
 (e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
-through \code{...}.  The returned object is a \link[terra:SpatRaster-class]{terra::SpatRaster} that
+through \code{...}.  The returned object is a \link[terra:SpatRaster]{terra::SpatRaster} that
 can be plotted, cropped, or extracted with standard \pkg{terra} or
 \pkg{tidyterra} workflows.
 }

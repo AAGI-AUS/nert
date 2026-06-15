@@ -43,7 +43,7 @@ resolved from the option \code{nert.initial_delay} if that option exists.
 not been set.)}
 }
 \value{
-A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested SLGA soil attribute.
+A \link[terra:SpatRaster]{terra::SpatRaster} object of the requested SLGA soil attribute.
 }
 \description{
 Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving various Soil and Landscape

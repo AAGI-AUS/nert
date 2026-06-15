@@ -39,7 +39,7 @@ resolved from the option \code{nert.initial_delay} if that option exists.
 not been set.)}
 }
 \value{
-A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested phenology metric.
+A \link[terra:SpatRaster]{terra::SpatRaster} object of the requested phenology metric.
 }
 \description{
 Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the Australian land surface

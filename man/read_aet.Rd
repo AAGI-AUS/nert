@@ -36,7 +36,7 @@ resolved from the option \code{nert.initial_delay} if that option exists.
 not been set.)}
 }
 \value{
-A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested Evapotranspiration collection.
+A \link[terra:SpatRaster]{terra::SpatRaster} object of the requested Evapotranspiration collection.
 }
 \description{
 Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the CMRSET actual

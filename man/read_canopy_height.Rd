@@ -23,7 +23,7 @@ resolved from the option \code{nert.initial_delay} if that option exists.
 not been set.)}
 }
 \value{
-A \link[terra:SpatRaster-class]{terra::SpatRaster} object of the requested vegetation canopy height.
+A \link[terra:SpatRaster]{terra::SpatRaster} object of the requested vegetation canopy height.
 Note that the raster returned by this function uses the Australian Albers
 (EPSG:3577) coordinate reference system, not WGS84 (EPSG:4326).
 }
