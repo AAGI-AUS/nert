@@ -386,51 +386,51 @@ test_that(".normalise_soildiv_collection errors when no valid variants remain", 
   )
 })
 
-# .normalise_phenology_collection ----------------------------------------------
+# .normalise_phen_collection ----------------------------------------------
 
-test_that(".normalise_phenology_collection returns the full SOILDIV set for NULL/'all'", {
+test_that(".normalise_phen_collection returns the full SOILDIV set for NULL/'all'", {
   valid_phenology <- c(
     "SGS", "PGS", "EGS", "LGS", "EVI1", "EVI2", "EVIP", "EVII", "SGS_month",
     "PGS_month", "EGS_month"
   )
-  expect_identical(length(.normalise_phenology_collection(NULL)), length(valid_phenology))
-  expect_identical(sort(.normalise_phenology_collection(NULL)), sort(valid_phenology))
-  expect_identical(.normalise_phenology_collection("all"), .normalise_phenology_collection(NULL))
+  expect_identical(length(.normalise_phen_collection(NULL)), length(valid_phenology))
+  expect_identical(sort(.normalise_phen_collection(NULL)), sort(valid_phenology))
+  expect_identical(.normalise_phen_collection("all"), .normalise_phen_collection(NULL))
 })
 
-test_that(".normalise_phenology_collection deduplicates", {
+test_that(".normalise_phen_collection deduplicates", {
   expect_identical(
-    .normalise_phenology_collection(c("SGS", "PGS", "SGS", "SGS_month", "SGS")),
+    .normalise_phen_collection(c("SGS", "PGS", "SGS", "SGS_month", "SGS")),
     c("SGS", "PGS", "SGS_month")
   )
 })
 
-test_that(".normalise_phenology_collection preserves order", {
+test_that(".normalise_phen_collection preserves order", {
   expect_identical(
-    .normalise_phenology_collection(c("EGS", "EGS_month", "SGS", "EVII")),
+    .normalise_phen_collection(c("EGS", "EGS_month", "SGS", "EVII")),
     c("EGS", "EGS_month", "SGS", "EVII")
   )
   expect_false(isTRUE(all.equal(
-    .normalise_phenology_collection(c("EGS", "EGS_month", "SGS", "EVII")),
+    .normalise_phen_collection(c("EGS", "EGS_month", "SGS", "EVII")),
     c("SGS", "EGS", "EVII", "EGS_month")
   )))
   expect_false(isTRUE(all.equal(
-    .normalise_phenology_collection(c("EGS", "EGS_month", "SGS", "EVII")),
+    .normalise_phen_collection(c("EGS", "EGS_month", "SGS", "EVII")),
     sort(c("EGS", "EGS_month", "SGS", "EVII"))
   )))
 })
 
-test_that(".normalise_phenology_collection warns and filters invalid variants", {
+test_that(".normalise_phen_collection warns and filters invalid variants", {
   expect_warning(
-    out <- .normalise_phenology_collection(c("SGS", "Minimum_EVI_1", "LGS")),
+    out <- .normalise_phen_collection(c("SGS", "Minimum_EVI_1", "LGS")),
     "Invalid"
   )
   expect_identical(out, c("SGS", "LGS"))
 })
 
-test_that(".normalise_phenology_collection errors when no valid variants remain", {
+test_that(".normalise_phen_collection errors when no valid variants remain", {
   suppressWarnings(
-    expect_error(.normalise_phenology_collection(c("Minimum_EVI_2", "Integral_EVI")), "No valid")
+    expect_error(.normalise_phen_collection(c("Minimum_EVI_2", "Integral_EVI")), "No valid")
   )
 })
 
@@ -518,7 +518,7 @@ test_that("work-item planner emits one item per SOILDIV variant", {
 
 test_that("work-item planner emits one item per PHENOLOGY (year,variant)", {
   items <- .build_work_items("PHENOLOGY", as.Date("2018-09-01"),
-                             phenology_collection = .normalise_phenology_collection(NULL))
+                             phenology_collection = .normalise_phen_collection(NULL))
   # 6 variants = 6 items
   expect_identical(length(items), 22L)
   for (i in 1:22) {
@@ -532,7 +532,7 @@ test_that("work-item planner emits one item per PHENOLOGY (year,variant)", {
 test_that("SMIPS work items have numeric-type", {
   items <- .build_work_items("SMIPS", as.Date("2024-01-01"),
                              smips_collection = .normalise_smips_collection(NULL))
-  for (i in 1:length(items)) {
+  for (i in seq_along(items)) {
     expect_identical(items[[i]]$type, "numeric")
   }
 })
@@ -559,7 +559,7 @@ test_that("SLGA dataset work items have numeric-type for all depths, variants", 
   items <- .build_work_items(slga_aliases, as.Date("2020-01-01"),
                              depth = .normalise_depth(NULL),
                              stat = .normalise_stat(NULL))
-  for (i in 1:length(items)) {
+  for (i in seq_along(items)) {
     expect_identical(items[[i]]$type, "numeric")
   }
 })
@@ -572,15 +572,15 @@ test_that("CANOPY work items have numeric-type", {
 test_that("SOILDIV work items have numeric-type for all variants", {
   items <- .build_work_items("SOILDIV", as.Date("2011-01-01"),
                              soildiv_collection = .normalise_soildiv_collection(NULL))
-  for (i in 1:length(items)) {
+  for (i in seq_along(items)) {
     expect_identical(items[[i]]$type, "numeric")
   }
 })
 
 test_that("PHENOLOGY work items have numeric-type for all variants", {
   items <- .build_work_items("PHENOLOGY", as.Date("2011-01-01"),
-                             phenology_collection = .normalise_phenology_collection(NULL))
-  for (i in 1:length(items)) {
+                             phenology_collection = .normalise_phen_collection(NULL))
+  for (i in seq_along(items)) {
     expect_identical(items[[i]]$type, "numeric")
   }
 })
@@ -591,13 +591,13 @@ test_that("PHENOLOGY work items have numeric-type for all variants", {
 #   these tests.
 test_that("PHENOLOGY clamps year to 2003-2018 window", {
   items <- .build_work_items("PHENOLOGY", as.Date("2024-06-01"),
-                             phenology_collection = .normalise_phenology_collection(NULL))
-  for (i in 1:length(items)) {
+                             phenology_collection = .normalise_phen_collection(NULL))
+  for (i in seq_along(items)) {
     expect_identical(items[[i]]$args$year, 2018)
   }
   items2 <- .build_work_items("PHENOLOGY", as.Date("1990-06-01"),
-                              phenology_collection = .normalise_phenology_collection(NULL))
-  for (i in 1:length(items)) {
+                              phenology_collection = .normalise_phen_collection(NULL))
+  for (i in seq_along(items)) {
     expect_identical(items2[[i]]$args$year, 2003)
   }
 })

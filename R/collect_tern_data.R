@@ -157,7 +157,7 @@ collect_tern_data <- function(
   }
 
   # The dates argument takes precedence over date_range if both supplied
-  if(missing(dates)) {
+  if (missing(dates)) {
     dates <- .parse_date_range(date_range)
   } else {
     dates <- as.Date(dates)
@@ -186,7 +186,7 @@ collect_tern_data <- function(
   asc_collection <- .normalise_asc_collection(asc_collection)
   aet_collection <- .normalise_aet_collection(aet_collection)
   soildiv_collection <- .normalise_soildiv_collection(soildiv_collection)
-  phenology_collection <- .normalise_phenology_collection(phenology_collection)
+  phenology_collection <- .normalise_phen_collection(phenology_collection)
 
   if (verbose) {
     .print_datasets_table(
@@ -499,7 +499,7 @@ collect_tern_data <- function(
 #'   order preserved).
 #' @autoglobal
 #' @dev
-.normalise_phenology_collection <- function(phenology_collection) {
+.normalise_phen_collection <- function(phenology_collection) {
   valid_phenology <- c(
     "SGS", "PGS", "EGS", "LGS", "EVI1", "EVI2", "EVIP", "EVII", "SGS_month",
     "PGS_month", "EGS_month"
@@ -920,21 +920,29 @@ collect_tern_data <- function(
     Alias = datasets,
     ID = vapply(
       datasets,
-      function(x) { return(dataset_info[[x]]$id) }, character(1L)),
+      function(x) {
+        return(dataset_info[[x]]$id)
+      }, character(1L)),
     Layer = layers_info,
     Temporal = vapply(
       datasets,
-      function(x) { return(dataset_info[[x]]$temporal) },
+      function(x) {
+        return(dataset_info[[x]]$temporal)
+      },
       character(1L)
     ),
     Resolution = vapply(
       datasets,
-      function(x) { return(dataset_info[[x]]$resolution) },
+      function(x) {
+        return(dataset_info[[x]]$resolution)
+      },
       character(1L)
     ),
     Description = vapply(
       datasets,
-      function(x) { return(dataset_info[[x]]$description) },
+      function(x) {
+        return(dataset_info[[x]]$description)
+      },
       character(1L)
     )
   )

@@ -38,7 +38,7 @@
 ^man/dot-normalise_asc_collection\.Rd$
 ^man/dot-normalise_aet_collection\.Rd$
 ^man/dot-normalise_soildiv_collection\.Rd$
-^man/dot-normalise_phenology_collection\.Rd$
+^man/dot-normalise_phen_collection\.Rd$
 ^man/dot-build_work_items\.Rd$
 ^man/dot-fill_work_item\.Rd$
 ^man/dot-print_datasets_table\.Rd$
