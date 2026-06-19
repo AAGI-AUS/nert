@@ -125,8 +125,8 @@ The {nert} package also provides a convenient function
 `collect_tern_data()` which allows you to easily grab multiple TERN
 datasets across multiple times and multiple spatial locations. For
 example, the below code grabs the SMIPS “totalbucket” and SLGA “CLY”
-clay content estimates at 0-5cm across the first week of 2024 at
-Merriden, WA and Tamworth, NSW:
+clay content estimates at 0-5cm and 5-15cm depths, across the first week
+of 2024 at Merriden, WA and Tamworth, NSW:
 
 ``` r
 dat <- collect_tern_data(
@@ -134,18 +134,19 @@ dat <- collect_tern_data(
   date_range = c("2024-01-01", "2024-01-07"),
   datasets = c("SMIPS", "CLY"),
   smips_collection = "totalbucket",
-  depth = "000_005",
+  depth = c("000_005", "005_015"),
+  stat = "EV",
   verbose = FALSE
 )
 head(dat)
-#>          date    lon    lat SMIPS_totalbucket   CLY
-#>        <Date>  <num>  <num>             <num> <num>
-#> 1: 2024-01-01 118.28 -31.48         0.2271653    11
-#> 2: 2024-01-01 150.84 -31.07        93.4498901    28
-#> 3: 2024-01-02 118.28 -31.48         0.2135102    11
-#> 4: 2024-01-02 150.84 -31.07        90.6175690    28
-#> 5: 2024-01-03 118.28 -31.48         0.2344290    11
-#> 6: 2024-01-03 150.84 -31.07        88.5260391    28
+#>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015
+#>        <Date>  <num>  <num>             <num>          <num>          <num>
+#> 1: 2024-01-01 118.28 -31.48         0.2271653             11             15
+#> 2: 2024-01-01 150.84 -31.07        93.4498901             28             31
+#> 3: 2024-01-02 118.28 -31.48         0.2135102             11             15
+#> 4: 2024-01-02 150.84 -31.07        90.6175690             28             31
+#> 5: 2024-01-03 118.28 -31.48         0.2344290             11             15
+#> 6: 2024-01-03 150.84 -31.07        88.5260391             28             31
 ```
 
 ## Keeping {nert} Updated

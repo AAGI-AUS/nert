@@ -97,7 +97,7 @@ autoplot(r)
 
 ## Extract Values in Bulk Given Lat/Lon Values
 
-The {nert} package also provides a convenient function `collect_tern_data()` which allows you to easily grab multiple TERN datasets across multiple times and multiple spatial locations. For example, the below code grabs the SMIPS "totalbucket" and SLGA "CLY" clay content estimates at 0-5cm across the first week of 2024 at Merriden, WA and Tamworth, NSW:
+The {nert} package also provides a convenient function `collect_tern_data()` which allows you to easily grab multiple TERN datasets across multiple times and multiple spatial locations. For example, the below code grabs the SMIPS "totalbucket" and SLGA "CLY" clay content estimates at 0-5cm and 5-15cm depths, across the first week of 2024 at Merriden, WA and Tamworth, NSW:
 
 ```{r, eval=TRUE}
 dat <- collect_tern_data(
@@ -105,7 +105,8 @@ dat <- collect_tern_data(
   date_range = c("2024-01-01", "2024-01-07"),
   datasets = c("SMIPS", "CLY"),
   smips_collection = "totalbucket",
-  depth = "000_005",
+  depth = c("000_005", "005_015"),
+  stat = "EV",
   verbose = FALSE
 )
 head(dat)
