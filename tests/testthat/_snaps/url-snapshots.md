@@ -95,10 +95,10 @@
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/2_Peak_of_the_growing_season/PGS_2018_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/3_End_of_the_growing_season/EGS_2018_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/4_Length_of_the_growing_season/LGS_2018_Season1.tif
-      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/5_Minimum_EVI_value_before_PGS/EVI1_2018_Season1.tif
-      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/6_Minimum_EVI_value_after_PGS/EVI2_2018_Season1.tif
-      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/7_Peak_EVI_value_of_the_growing_season/EVIP_2018_Season1.tif
-      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/8_Integral_EVI_value_of_the_growing_season/EVII_2018_Season1.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/5_Minimum_EVI_value_before_PGS/Minimum_EVI_1_2018_Season1.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/6_Minimum_EVI_value_after_PGS/Minimum_EVI_2_2018_Season1.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/7_Peak_EVI_value_of_the_growing_season/Peak_EVI_2018_Season1.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/8_Integral_EVI_value_of_the_growing_season/Integral_EVI_2018_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/9_Start_of_the_growing_season_by_month/SGS_2018_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/10_Peak_of_the_growing_season_by_month/PGS_2018_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/11_End_of_the_growing_season_by_month/EGS_2018_Season1.tif
