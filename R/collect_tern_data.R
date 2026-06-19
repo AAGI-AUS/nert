@@ -600,12 +600,17 @@ collect_tern_data <- function(
       }
     } else if (ds == "SOILDIV") {
       for (v in soildiv_collection) {
+        # Split collection into bacteria/fungi and axis
+        v_split <- regmatches(v, regexec("(\\w+)_NMDS(\\d+)", v))[[1]]
+        v_col <- v_split[2]
+        v_axis <- v_split[3]
+
         items[[length(items) + 1]] <- list(
           ds = ds,
           type = "numeric",
           cols = paste(ds, v, sep = "_"),
           date_idx = NA_integer_,
-          args = list(collection = v),
+          args = list(collection = v_col, axis = v_axis),
           label = sprintf("%s %s (static)", ds, v)
         )
       }
