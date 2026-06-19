@@ -32,10 +32,26 @@ test_that("every phenology metric maps to its documented subdirectory", {
     read_phenology(year = 2018L, collection = m, api_key = KEY)
   }
   expect_length(sink$urls, length(METRIC_DIR))
+
+  # Map the dataset variant names to the filenames in the TERN
+  # server directory
+  filename_prefix <- c(
+    "SGS" = "SGS",
+    "PGS" = "PGS",
+    "EGS" = "EGS",
+    "LGS" = "LGS",
+    "EVI1" = "Minimum_EVI_1",
+    "EVI2" = "Minimum_EVI_2",
+    "EVIP" = "Peak_EVI",
+    "EVII" = "Integral_EVI",
+    "SGS_month" = "SGS",
+    "PGS_month" = "PGS",
+    "EGS_month" = "EGS"
+  )
   for (i in seq_along(METRIC_DIR)) {
     m <- names(METRIC_DIR)[[i]]
     dir <- METRIC_DIR[[m]]
-    m <- sub("_month", "", m, fixed = TRUE)
+    m <- unname(filename_prefix[m])
     expect_match(
       sink$urls[[i]],
       sprintf("/phenology_myd13a1/%s/%s_2018_Season1.tif", dir, m),

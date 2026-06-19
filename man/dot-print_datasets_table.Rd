@@ -4,19 +4,36 @@
 \alias{.print_datasets_table}
 \title{Print the user-facing datasets-table summarising what will be fetched.}
 \usage{
-.print_datasets_table(datasets, depth, smips_collection, stat)
+.print_datasets_table(
+  datasets,
+  depth,
+  stat,
+  smips_collection,
+  asc_collection,
+  aet_collection,
+  soildiv_collection,
+  phenology_collection
+)
 }
 \arguments{
 \item{datasets}{Normalised alias vector.}
 
-\item{depth}{SLGA depth selector.}
+\item{depth}{Normalised SLGA depth selector.}
 
-\item{smips_collection}{SMIPS collection selector.}
+\item{stat}{Normalised SLGA statistic selector.}
 
-\item{stat}{SLGA stat selector.}
+\item{smips_collection}{Normalised SMIPS collection selector.}
+
+\item{asc_collection}{Normalised ASC collection selector.}
+
+\item{aet_collection}{Normalised AET collection selector.}
+
+\item{soildiv_collection}{Normalised SOILDIV collection selector.}
+
+\item{phenology_collection}{Normalised PHENOLOGY collection selector.}
 }
 \value{
-\code{invisible(NULL)} — called for side effects.
+\code{invisible(NULL)}. This function is called for its side effects.
 }
 \description{
 Print the user-facing datasets-table summarising what will be fetched.

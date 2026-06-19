@@ -7,13 +7,15 @@
 .parse_date_range(date_range)
 }
 \arguments{
-\item{date_range}{User-supplied date range.}
+\item{date_range}{A \code{Date} vector or \code{character} vector containing the
+date range supplied by the user.}
 }
 \value{
 A \code{Date} vector.
 }
 \description{
-Accepts a length-2 character/Date vector as a \verb{[start, end]} range and any
-longer vector as the explicit set of dates.
+If a \code{Date} vector or \code{character} vector of length 2 is given, parses
+into a contiguous range of dates. If a vector of length greater than 2
+is given, this function does nothing (besides the date conversion).
 }
 \keyword{internal}

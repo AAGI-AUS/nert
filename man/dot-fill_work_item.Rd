@@ -4,7 +4,7 @@
 \alias{.fill_work_item}
 \title{Fetch one work item and write its values into the output table by reference.}
 \usage{
-.fill_work_item(out, wi, pts, n_dt, n_loc, api_key)
+.fill_work_item(out, wi, pts, n_dt, n_loc, api_key, max_tries, initial_delay)
 }
 \arguments{
 \item{out}{The output \code{data.table} (modified in place).}
@@ -18,6 +18,10 @@
 \item{n_loc}{Number of locations.}
 
 \item{api_key}{TERN API key.}
+
+\item{max_tries}{Total number of download retries.}
+
+\item{initial_delay}{Initial retry delay (in seconds).}
 }
 \description{
 For a time-series work item, exactly one row block (\code{length(coords)}

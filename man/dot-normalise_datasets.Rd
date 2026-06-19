@@ -10,8 +10,8 @@
 \item{datasets}{User-supplied aliases (or \code{NULL}/\code{"all"}).}
 }
 \value{
-A character vector of recognised aliases (deduplicated, order
-preserved).
+A \code{character} vector of recognised aliases (de-duplicated,
+order preserved).
 }
 \description{
 Resolve the \code{datasets} argument to a clean alias vector

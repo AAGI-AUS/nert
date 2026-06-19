@@ -4,7 +4,17 @@
 \alias{.build_work_items}
 \title{Plan the list of COG fetches}
 \usage{
-.build_work_items(datasets, dates, depth, stat, smips_collection)
+.build_work_items(
+  datasets,
+  dates,
+  depth,
+  stat,
+  smips_collection,
+  asc_collection,
+  aet_collection,
+  soildiv_collection,
+  phenology_collection
+)
 }
 \arguments{
 \item{datasets}{Normalised alias vector.}
@@ -13,9 +23,17 @@
 
 \item{depth}{SLGA depth selector.}
 
-\item{stat}{SLGA stat selector (\code{"EV"}, \code{"05"} or \code{"95"}).}
+\item{stat}{SLGA stat selector.}
 
 \item{smips_collection}{SMIPS collection selector.}
+
+\item{asc_collection}{ASC collection selector.}
+
+\item{aet_collection}{AET collection selector.}
+
+\item{soildiv_collection}{SOILDIV collection selector.}
+
+\item{phenology_collection}{PHENOLOGY collection selector.}
 }
 \value{
 A list of work-item lists.
@@ -28,8 +46,9 @@ columns in the output table.
 }
 \details{
 For time-series datasets (SMIPS, AET) we emit one work item per
-(date, variant); for SLGA \code{depth = "all"} we emit one work item per
-depth interval; for static datasets we emit a single work item whose
-value is replicated across the date axis (\code{date_idx = NA_integer_}).
+(date, variant); for PHENOLOGY datasets we emit two work items per
+(date, variant), one for each season; for SLGA datasets we emit one work
+item per (depth, variant) combination. For temporally-static datasets,
+the item values are replicated across the date axis (\code{date_idx = NA_integer_}).
 }
 \keyword{internal}
