@@ -166,12 +166,6 @@ collect_tern_data <- function(
 
   coords_df <- .parse_coordinates(lon, lat, xy)
   n_loc <- nrow(coords_df)
-  #FIXME: Russell (08/06): Note that the canopy height data is returned
-  #  in the Australian Albers EPSG:3577 coordinate reference system,
-  #  rather than WGS84/EPSG:4326. This aggregation might not work when
-  #  the user includes the canopy height data for retrieval. We might
-  #  have to add some specific logic to .parse_coordinates() to handle
-  #  this case for us.
   pts <- terra::vect(
     as.matrix(coords_df[, c("lon", "lat")]),
     type = "points",
@@ -296,8 +290,7 @@ collect_tern_data <- function(
   #FIXME: Russell (08/06): Surely we can be more specific than this. They
   #  are strictly Australian datasets in decimal degrees Northing, so really
   #  anything outside of -44 < lat < -10 ish, and 112 < lon < 154 ish is
-  #  going to be out-of-bounds (in WGS84 at least--not sure if/how that
-  #  changes for the canopy height dataset in Aust Albers coordinates).
+  #  going to be out-of-bounds.
   if (any(coords$lon < -180 | coords$lon > 180 |
             coords$lat < -90  | coords$lat > 90)) {
     cli::cli_abort(
