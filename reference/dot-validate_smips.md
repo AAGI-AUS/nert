@@ -23,7 +23,3 @@ registry.
 - dataset_id:
 
   Raw `dataset_id` (unused; uniform validator signature).
-
-## Value
-
-`NULL` (invisibly); called for its side effects (errors).

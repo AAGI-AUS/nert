@@ -178,17 +178,16 @@ To cite nert:
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026).
-#>   _nert: An API Client for TERN Data_. R package version 0.0.3.9000,
-#>   <https://aagi-aus.github.io/nert/>.
+#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: An API Client for TERN Data.
+#>   R package version 1.1.0. https://aagi-aus.github.io/nert/
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {nert: An API Client for TERN Data},
+#>     title = {{nert}: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
 #>     year = {2026},
-#>     note = {R package version 0.0.3.9000},
+#>     note = {R package version 1.1.0},
 #>     url = {https://aagi-aus.github.io/nert/},
 #>   }
 ```
