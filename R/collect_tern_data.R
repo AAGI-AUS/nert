@@ -96,7 +96,7 @@
 #'   datasets = "CLY"
 #' )
 #'
-#' @autoglobal
+#'
 #' @export
 collect_tern_data <- function(
   date_range,
@@ -134,11 +134,15 @@ collect_tern_data <- function(
   pts <- terra::vect(
     as.matrix(coords_df[, c("lon", "lat")]),
     type = "points",
-    crs  = "EPSG:4326"
+    crs = "EPSG:4326"
   )
 
   work_items <- .build_work_items(
-    datasets, dates, depth, stat, smips_collection
+    datasets,
+    dates,
+    depth,
+    stat,
+    smips_collection
   )
 
   out <- data.table::data.table(
@@ -149,11 +153,13 @@ collect_tern_data <- function(
 
   for (wi in work_items) {
     for (col in wi$cols) {
-      out[, (col) := if (identical(wi$type, "character")) {
-        NA_character_
-      } else {
-        NA_real_
-      }]
+      out[,
+        (col) := if (identical(wi$type, "character")) {
+          NA_character_
+        } else {
+          NA_real_
+        }
+      ]
     }
   }
 
@@ -167,9 +173,13 @@ collect_tern_data <- function(
   data_cols <- setdiff(names(out), c("date", "lon", "lat"))
 
   if (na.rm && length(data_cols) > 0L) {
-    keep <- vapply(seq_len(nrow(out)), function(i) {
-      !all(is.na(unlist(out[i, data_cols, with = FALSE])))
-    }, logical(1L))
+    keep <- vapply(
+      seq_len(nrow(out)),
+      function(i) {
+        !all(is.na(unlist(out[i, data_cols, with = FALSE])))
+      },
+      logical(1L)
+    )
     out <- out[keep]
   }
 
@@ -189,7 +199,7 @@ collect_tern_data <- function(
 #' @param lat Latitude(s).
 #' @param xy Optional data.frame/matrix with lon/lat or x/y columns.
 #' @returns A 2-column `data.table` with columns `lon`, `lat`.
-#' @autoglobal
+#'
 #' @dev
 .parse_coordinates <- function(lon, lat, xy) {
   if (!is.null(xy)) {
@@ -235,8 +245,11 @@ collect_tern_data <- function(
   #  anything outside of -44 < lat < -10 ish, and 112 < lon < 154 ish is
   #  going to be out-of-bounds (in WGS84 at least--not sure if/how that
   #  changes for the canopy height dataset in Aust Albers coordinates).
-  if (any(coords$lon < -180 | coords$lon > 180 |
-            coords$lat < -90  | coords$lat > 90)) {
+  if (
+    any(
+      coords$lon < -180 | coords$lon > 180 | coords$lat < -90 | coords$lat > 90
+    )
+  ) {
     cli::cli_abort(
       "Coordinate out of bounds: lon in [-180, 180], lat in [-90, 90]."
     )
@@ -252,24 +265,29 @@ collect_tern_data <- function(
 #'
 #' @param date_range User-supplied date range.
 #' @returns A `Date` vector.
-#' @autoglobal
+#'
 #' @dev
 .parse_date_range <- function(date_range) {
   bad <- function() {
     return(cli::cli_abort("No valid dates in {.arg date_range}."))
   }
-  dates <- tryCatch({
-    if (length(date_range) == 2L && !inherits(date_range, "Date")) {
-      seq(
-        as.Date(date_range[1L]),
-        as.Date(date_range[2L]),
-        by = "day"
-      )
-    } else {
-      as.Date(date_range)
-    }
-  }, error = function(e) bad())
-  if (length(dates) == 0L || anyNA(dates)) bad()
+  dates <- tryCatch(
+    {
+      if (length(date_range) == 2L && !inherits(date_range, "Date")) {
+        seq(
+          as.Date(date_range[1L]),
+          as.Date(date_range[2L]),
+          by = "day"
+        )
+      } else {
+        as.Date(date_range)
+      }
+    },
+    error = function(e) bad()
+  )
+  if (length(dates) == 0L || anyNA(dates)) {
+    bad()
+  }
   return(dates)
 }
 
@@ -278,16 +296,35 @@ collect_tern_data <- function(
 #' @param datasets User-supplied aliases (or `NULL`/`"all"`).
 #' @returns A character vector of recognised aliases (deduplicated, order
 #'   preserved).
-#' @autoglobal
+#'
 #' @dev
 .normalise_datasets <- function(datasets) {
   all_aliases <- c(
-    "SMIPS", "ASC", "AET",
-    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
-    "CEC", "ECE", "DUL", "L15", "SOILDIV", "CANOPY", "PHENOLOGY"
+    "SMIPS",
+    "ASC",
+    "AET",
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "AVP",
+    "PTO",
+    "CEC",
+    "ECE",
+    "DUL",
+    "L15",
+    "SOILDIV",
+    "CANOPY",
+    "PHENOLOGY"
   )
-  if (is.null(datasets) ||
-        (length(datasets) == 1L && identical(datasets, "all"))) {
+  if (
+    is.null(datasets) ||
+      (length(datasets) == 1L && identical(datasets, "all"))
+  ) {
     return(all_aliases)
   }
   datasets <- unique(toupper(trimws(as.character(datasets))))
@@ -329,17 +366,41 @@ collect_tern_data <- function(
 #' @param stat SLGA stat selector (`"EV"`, `"05"` or `"95"`).
 #' @param smips_collection SMIPS collection selector.
 #' @returns A list of work-item lists.
-#' @autoglobal
+#'
 #' @dev
 .build_work_items <- function(datasets, dates, depth, stat, smips_collection) {
   slga_aliases <- c(
-    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
-    "CEC", "ECE", "DUL", "L15"
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "AVP",
+    "PTO",
+    "CEC",
+    "ECE",
+    "DUL",
+    "L15"
   )
-  slga_depths  <- c("000_005", "005_015", "015_030",
-                    "030_060", "060_100", "100_200")
-  smips_variants <- c("totalbucket", "SMindex", "bucket1",
-                      "bucket2", "deepD", "runoff")
+  slga_depths <- c(
+    "000_005",
+    "005_015",
+    "015_030",
+    "030_060",
+    "060_100",
+    "100_200"
+  )
+  smips_variants <- c(
+    "totalbucket",
+    "SMindex",
+    "bucket1",
+    "bucket2",
+    "deepD",
+    "runoff"
+  )
 
   items <- list()
   for (ds in datasets) {
@@ -435,7 +496,7 @@ collect_tern_data <- function(
 #' @param n_dt Number of dates.
 #' @param n_loc Number of locations.
 #' @param api_key TERN API key.
-#' @autoglobal
+#'
 #' @dev
 .fill_work_item <- function(out, wi, pts, n_dt, n_loc, api_key) {
   r <- tryCatch(
@@ -470,7 +531,7 @@ collect_tern_data <- function(
   }
 
   vals <- ext[, -1L, drop = FALSE]
-  v    <- vals[[1L]]
+  v <- vals[[1L]]
   if (length(v) != n_loc) {
     cli::cli_warn(
       "Layer length mismatch for {.field {wi$label}}: expected {n_loc} \\
@@ -503,104 +564,189 @@ collect_tern_data <- function(
 #' @param smips_collection SMIPS collection selector.
 #' @param stat SLGA stat selector.
 #' @returns `invisible(NULL)` — called for side effects.
-#' @autoglobal
+#'
 #' @dev
 .print_datasets_table <- function(datasets, depth, smips_collection, stat) {
   dataset_info <- list(
-    SMIPS = list(id = "TERN/d1995ee8", temporal = "Daily",
-                 resolution = "1 km",
-                 description = "Soil Moisture Integration & Prediction System"),
-    ASC = list(id = "TERN/15728dba", temporal = "Static",
-               resolution = "90 m",
-               description = "Australian Soil Classification (soil order)"),
-    AET = list(id = "TERN/9fefa68b", temporal = "Monthly",
-               resolution = "30 m",
-               description = "Actual Evapotranspiration via CMRSET"),
-    AWC = list(id = "TERN/482301c2", temporal = "Static",
-               resolution = "90 m",
-               description = "Available Water Capacity % (SLGA)"),
-    CLY = list(id = "TERN/f95dc442", temporal = "Static",
-               resolution = "90 m",
-               description = "Clay content % (SLGA)"),
-    SND = list(id = "TERN/4224ddff", temporal = "Static",
-               resolution = "90 m",
-               description = "Sand content % (SLGA)"),
-    SLT = list(id = "TERN/11375f04", temporal = "Static",
-               resolution = "90 m",
-               description = "Silt content % (SLGA)"),
-    BDW = list(id = "TERN/95978aec", temporal = "Static",
-               resolution = "90 m",
-               description = "Bulk Density whole earth (g/cm3) (SLGA)"),
-    PHC = list(id = "TERN/258afc98", temporal = "Static",
-               resolution = "90 m",
-               description = "pH (CaCl2) (SLGA)"),
-    PHW = list(id = "TERN/c37439a5", temporal = "Static",
-               resolution = "90 m",
-               description = "pH (water) (SLGA)"),
-    NTO = list(id = "TERN/e9484508", temporal = "Static",
-               resolution = "90 m",
-               description = "Total Nitrogen % (SLGA)"),
-    AVP = list(id = "TERN/c6ef289b", temporal = "Static",
-               resolution = "90 m",
-               description = "Available Phosphorus (mg/kg) (SLGA)"),
-    PTO = list(id = "TERN/be382e63", temporal = "Static",
-               resolution = "90 m",
-               description = "Total Phosphorus % (SLGA)"),
-    CEC = list(id = "TERN/5b4b2991", temporal = "Static",
-               resolution = "90 m",
-               description = "Cation Exchange Capacity (meq/100g) (SLGA)"),
-    ECE = list(id = "TERN/0d27cf8b", temporal = "Static",
-               resolution = "90 m",
-               description = "Effective Cation Exchange Capacity (meq/100g) (SLGA)"),
-    DUL = list(id = "TERN/de9ddc12", temporal = "Static",
-               resolution = "90 m",
-               description = "Drained upper limit water content % (SLGA)"),
-    L15 = list(id = "TERN/4443f5df", temporal = "Static",
-               resolution = "90 m",
-               description = "15 bar lower limit water content % (SLGA)"),
-    SOILDIV   = list(id = "TERN/4a428d52", temporal = "Static",
-                     resolution = "90 m",
-                     description = "Soil Beta Diversity (NMDS components)"),
-    CANOPY    = list(id = "TERN/36c98155", temporal = "Static",
-                     resolution = "30 m",
-                     description = "Canopy Height Best-pick composite (OzTreeMap)"),
-    PHENOLOGY = list(id = "TERN/2bb0c81a", temporal = "Annual",
-                     resolution = "500 m",
-                     description = "Land Surface Phenology")
+    SMIPS = list(
+      id = "TERN/d1995ee8",
+      temporal = "Daily",
+      resolution = "1 km",
+      description = "Soil Moisture Integration & Prediction System"
+    ),
+    ASC = list(
+      id = "TERN/15728dba",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Australian Soil Classification (soil order)"
+    ),
+    AET = list(
+      id = "TERN/9fefa68b",
+      temporal = "Monthly",
+      resolution = "30 m",
+      description = "Actual Evapotranspiration via CMRSET"
+    ),
+    AWC = list(
+      id = "TERN/482301c2",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Available Water Capacity % (SLGA)"
+    ),
+    CLY = list(
+      id = "TERN/f95dc442",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Clay content % (SLGA)"
+    ),
+    SND = list(
+      id = "TERN/4224ddff",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Sand content % (SLGA)"
+    ),
+    SLT = list(
+      id = "TERN/11375f04",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Silt content % (SLGA)"
+    ),
+    BDW = list(
+      id = "TERN/95978aec",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Bulk Density whole earth (g/cm3) (SLGA)"
+    ),
+    PHC = list(
+      id = "TERN/258afc98",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "pH (CaCl2) (SLGA)"
+    ),
+    PHW = list(
+      id = "TERN/c37439a5",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "pH (water) (SLGA)"
+    ),
+    NTO = list(
+      id = "TERN/e9484508",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Total Nitrogen % (SLGA)"
+    ),
+    AVP = list(
+      id = "TERN/c6ef289b",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Available Phosphorus (mg/kg) (SLGA)"
+    ),
+    PTO = list(
+      id = "TERN/be382e63",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Total Phosphorus % (SLGA)"
+    ),
+    CEC = list(
+      id = "TERN/5b4b2991",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Cation Exchange Capacity (meq/100g) (SLGA)"
+    ),
+    ECE = list(
+      id = "TERN/0d27cf8b",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Effective Cation Exchange Capacity (meq/100g) (SLGA)"
+    ),
+    DUL = list(
+      id = "TERN/de9ddc12",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Drained upper limit water content % (SLGA)"
+    ),
+    L15 = list(
+      id = "TERN/4443f5df",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "15 bar lower limit water content % (SLGA)"
+    ),
+    SOILDIV = list(
+      id = "TERN/4a428d52",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Soil Beta Diversity (NMDS components)"
+    ),
+    CANOPY = list(
+      id = "TERN/36c98155",
+      temporal = "Static",
+      resolution = "30 m",
+      description = "Canopy Height Best-pick composite (OzTreeMap)"
+    ),
+    PHENOLOGY = list(
+      id = "TERN/2bb0c81a",
+      temporal = "Annual",
+      resolution = "500 m",
+      description = "Land Surface Phenology"
+    )
   )
 
-  layers_info <- vapply(datasets, function(ds) {
-    slga_datasets <- c(
-      "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
-      "CEC", "ECE", "DUL", "L15"
-    )
-    if (ds %in% slga_datasets) {
-      if (depth == "all") {
-        "6 depths"
+  layers_info <- vapply(
+    datasets,
+    function(ds) {
+      slga_datasets <- c(
+        "AWC",
+        "CLY",
+        "SND",
+        "SLT",
+        "BDW",
+        "PHC",
+        "PHW",
+        "NTO",
+        "AVP",
+        "PTO",
+        "CEC",
+        "ECE",
+        "DUL",
+        "L15"
+      )
+      if (ds %in% slga_datasets) {
+        if (depth == "all") {
+          "6 depths"
+        } else {
+          paste0("Depth ", depth)
+        }
+      } else if (ds == "SMIPS") {
+        if (smips_collection == "all") {
+          "6 variants"
+        } else {
+          smips_collection
+        }
       } else {
-        paste0("Depth ", depth)
+        "Single"
       }
-    } else if (ds == "SMIPS") {
-      if (smips_collection == "all") {
-        "6 variants"
-      } else {
-        smips_collection
-      }
-    } else {
-      "Single"
-    }
-  }, character(1L))
+    },
+    character(1L)
+  )
 
   tbl <- data.table::data.table(
     Alias = datasets,
     ID = vapply(datasets, function(x) dataset_info[[x]]$id, character(1L)),
     Layer = layers_info,
-    Temporal = vapply(datasets, function(x) dataset_info[[x]]$temporal,
-                      character(1L)),
-    Resolution = vapply(datasets, function(x) dataset_info[[x]]$resolution,
-                        character(1L)),
-    Description = vapply(datasets, function(x) dataset_info[[x]]$description,
-                         character(1L))
+    Temporal = vapply(
+      datasets,
+      function(x) dataset_info[[x]]$temporal,
+      character(1L)
+    ),
+    Resolution = vapply(
+      datasets,
+      function(x) dataset_info[[x]]$resolution,
+      character(1L)
+    ),
+    Description = vapply(
+      datasets,
+      function(x) dataset_info[[x]]$description,
+      character(1L)
+    )
   )
 
   cat("\n")

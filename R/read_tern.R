@@ -350,7 +350,7 @@
 #'   }
 #' }
 #'
-#' @autoglobal
+#' 
 #' @export
 read_tern <- function(
   dataset_id = NULL,
@@ -401,7 +401,7 @@ read_tern <- function(
 #' before the API key is checked. Both the validator (where present) and the
 #' handler live in the dataset's own `R/read_<name>.R` file. Datasets with no
 #' pre-key argument validation simply omit `validate`.
-#' @autoglobal
+#' 
 #' @dev
 .tern_datasets <- c(
   list(
@@ -435,7 +435,7 @@ read_tern <- function(
 #'
 #' Named `character` vector mapping user-friendly short names (e.g.
 #' `"SMIPS"`, `"AWC"`) to dispatch IDs. Derived from [.tern_datasets].
-#' @autoglobal
+#' 
 #' @dev
 .tern_aliases <- stats::setNames(
   names(.tern_datasets),
@@ -452,7 +452,7 @@ read_tern <- function(
 #'
 #' @param id The raw `dataset_id` string supplied by the user.
 #' @returns A normalised `character` string for use in `switch()`.
-#' @autoglobal
+#' 
 #' @dev
 .tern_dispatch_id <- function(id) {
   if (length(id) != 1L) {

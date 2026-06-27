@@ -48,7 +48,7 @@
 #'   TERN Soil Beta Diversity Point-of-truth metadata URL:
 #'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-dda6-4097-8dd9-d3ec63973029>
 #'
-#' @autoglobal
+#' 
 #' @export
 read_soil_diversity <- function(
   collection = "Bacteria",
@@ -74,7 +74,7 @@ read_soil_diversity <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
+#' 
 #' @dev
 .read_tern_soil_diversity <- function(
   did,

@@ -59,7 +59,6 @@
 #'   TERM CMRSET Actual Evapotranspiration Point-of-truth metadata URL:
 #'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/9fefa68b-dbed-4c20-88db-a9429fb4ba97>
 #'
-#' @autoglobal
 #' @export
 read_aet <- function(
   date,
@@ -88,7 +87,7 @@ read_aet <- function(
 #' @param dots Named list of `...` args from [read_tern()].
 #' @param dataset_id Raw `dataset_id` (unused; uniform validator signature).
 #' @returns `NULL` (invisibly); called for its side effects (errors).
-#' @autoglobal
+#' 
 #' @dev
 .validate_aet <- function(dots, dataset_id) {
   date <- dots[["date"]] %||% dots[["month"]]
@@ -109,7 +108,7 @@ read_aet <- function(
 #' @param dots Named list of `...` args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
+#' 
 #' @dev
 .read_tern_aet <- function(did, dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'month' parameter name; presence and the
@@ -140,7 +139,7 @@ read_aet <- function(
 #' @param x User-entered date value (any format accepted by [.check_date()]).
 #' @returns A `POSIXct` object snapped to the first of the requested
 #'   month.
-#' @autoglobal
+#' 
 #' @dev
 .check_aet_date <- function(x) {
   x <- .check_date(x)
@@ -163,7 +162,7 @@ read_aet <- function(
 #'   the month.
 #' @param .api_key The \acronym{URL}-encoded \acronym{API} key.
 #' @returns A `character` GDAL vsicurl URL string.
-#' @autoglobal
+#' 
 #' @dev
 .make_aet_url <- function(.collection, .month, .api_key) {
   approved_collections <- c("ETa", "pixel_qa")

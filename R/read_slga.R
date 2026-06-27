@@ -173,7 +173,7 @@
 #'   }
 #' }
 #'
-#' @autoglobal
+#' 
 #' @export
 read_slga <- function(
   attribute,
@@ -208,7 +208,7 @@ read_slga <- function(
 #' filename suffix.
 #'
 #' @format A named \code{list} of \code{list}s.
-#' @autoglobal
+#' 
 #' @dev
 .slga_config <- list(
   "482301c2" = list(dir = "AWC", prefix = "AWC", version = "v2",
@@ -251,7 +251,7 @@ read_slga <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
+#' 
 #' @dev
 .read_tern_slga <- function(did, dots, api_key, max_tries, initial_delay) {
   cfg <- .slga_config[[did]]

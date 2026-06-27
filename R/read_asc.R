@@ -59,7 +59,7 @@
 #'   TERN ASC Point-of-truth metadata URL:
 #'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/15728dba-b49c-4da5-9073-13d8abe67d7c>
 #'
-#' @autoglobal
+#' 
 #' @export
 read_asc <- function(
   collection = "EV",
@@ -83,7 +83,7 @@ read_asc <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
+#' 
 #' @dev
 .read_tern_asc <- function(did, dots, api_key, max_tries, initial_delay) {
   collection <- if (!is.null(dots[["collection"]])) {

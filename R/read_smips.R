@@ -78,7 +78,7 @@
 #'   TERN SMIPS Point-of-truth metadata URL:
 #'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0>
 #'
-#' @autoglobal
+#' 
 #' @export
 read_smips <- function(
   date,
@@ -105,7 +105,7 @@ read_smips <- function(
 #'
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
-#' @autoglobal
+#' 
 #' @dev
 .validate_smips <- function(dots, dataset_id) {
   date <- dots[["date"]] %||% dots[["day"]]
@@ -125,7 +125,7 @@ read_smips <- function(
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #'
-#' @autoglobal
+#' 
 #' @dev
 .read_tern_smips <- function(did, dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'day' parameter name; presence is
@@ -165,7 +165,7 @@ read_smips <- function(
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
 #'
-#' @autoglobal
+#' 
 #' @dev
 .check_collection_agreement <- function(.collection, .day) {
   # Convert everything to Date objects to enable simple and sane comparison
@@ -199,7 +199,7 @@ read_smips <- function(
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
 #'
-#' @autoglobal
+#' 
 #' @dev
 .make_smips_url <- function(.collection, .day) {
   url_date <- gsub("-", "", .day, fixed = TRUE)

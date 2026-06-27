@@ -27,7 +27,7 @@
 #' [base::options()] before `library(nert)`) are preserved; only
 #' unset options are populated with defaults.
 #'
-#' @autoglobal
+#' 
 #' @dev
 .init_nert_options <- function() {
   op <- options()
