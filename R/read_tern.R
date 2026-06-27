@@ -353,13 +353,13 @@
 #' @autoglobal
 #' @export
 read_tern <- function(
-  dataset_id,
+  dataset_id = NULL,
   ...,
   api_key = NULL,
   max_tries = NULL,
   initial_delay = NULL
 ) {
-  if (missing(dataset_id)) {
+  if (is.null(dataset_id)) {
     cli::cli_abort("You must provide a {.arg dataset_id}.")
   }
 
