@@ -64,7 +64,7 @@ can be plotted, cropped, or extracted with standard <span class="pkg">terra</spa
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_tern</span><span class="op">(</span></span>
-<span>  <span class="va">dataset_id</span>,</span>
+<span>  dataset_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  max_tries <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -292,7 +292,7 @@ current scope of <span class="pkg">nert</span>.</p>
 
 <p><span class="pkg">nert</span> reads two package-level options on every call.  Both are
 set to package defaults at load time and may be overridden globally
-(e.g.\ in <code>.Rprofile</code>) without changing any individual call:</p><dl><dt><code>nert.max_tries</code></dt>
+(e.g. in <code>.Rprofile</code>) without changing any individual call:</p><dl><dt><code>nert.max_tries</code></dt>
 <dd><p>Default maximum number of download
 retries.  Default <code>3L</code>.</p></dd>
 
@@ -451,7 +451,8 @@ Terrestrial Ecosystem Research Network. (Dataset).
 <a href="https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4443f5df-a0b2-4352-b44b-83f7feb1e27d" class="external-link">https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4443f5df-a0b2-4352-b44b-83f7feb1e27d</a></p></dd>
 
 <dt><strong>SOILDIV: Soil Bacteria and Soil Fungi Beta Diversity</strong></dt>
-<dd><p>Dobarco, M., Wadoux, A. &amp; Xue, P. (2024). Soil and Landscape Grid National
+<dd><p>Dobarco, M., Wadoux, A. &amp; Xue, P. (2024). Soil and Landscape Grid
+National
 Soil Attribute Maps - Soil Bacteria and Fungi Beta Diversity (3"
 resolution) - Release 1. Version 1.0. Terrestrial Ecosystem Research
 Network. (Dataset). <a href="https://doi.org/10.25919/4x7n-y874" class="external-link">doi:10.25919/4x7n-y874</a>

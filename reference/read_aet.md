@@ -5,7 +5,7 @@ Wrapper around
 for retrieving the CMRSET actual evapotranspiration data (v2.2) from the
 TERN Data Portal. This dataset provides monthly estimates of actual ET
 (mm/month) at 30 m resolution from May 1987 onwards, using the CSIRO
-MODIS Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm
+MODIS Reflectance-based Scaling Evapotranspiration (CMRSET) algorithm
 that combines potential evapotranspiration data from the Bureau of
 Meteorology together with satellite image data provided by MODIS, VIIRS,
 Landsat and Sentinel-2.
@@ -60,7 +60,7 @@ read_aet(
 
 A
 [terra::SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
-object of the requested Evapotranspiration collection.
+object of the requested evapotranspiration collection.
 
 ## References
 

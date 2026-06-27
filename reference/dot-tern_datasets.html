@@ -62,12 +62,11 @@ generated from <a href="dot-slga_config.html">.slga_config</a>.</p>
 
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Each entry is a <code>list</code> with an <code>alias</code> (upper-case short name), a
-<code>read</code> handler invoked as
-<code>read(did, dots, api_key, max_tries, initial_delay)</code>, and an optional
-<code>validate</code> function invoked as <code>validate(dots, dataset_id)</code> before
-the API key is checked. Both the validator (where present) and the handler
-live in the dataset's own <code>R/read_&lt;name&gt;.R</code> file. Datasets with no
+    <p>Each entry is a <code>list</code> with an <code>alias</code> (upper-case short name), a <code>read</code>
+handler invoked as <code>read(did, dots, api_key, max_tries, initial_delay)</code>, and
+an optional <code>validate</code> function invoked as <code>validate(dots, dataset_id)</code>
+before the API key is checked. Both the validator (where present) and the
+handler live in the dataset's own <code>R/read_&lt;name&gt;.R</code> file. Datasets with no
 pre-key argument validation simply omit <code>validate</code>.</p>
     </div>
 

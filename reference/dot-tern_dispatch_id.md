@@ -2,8 +2,8 @@
 
 Checks alias table first (case-insensitive), then strips any `TERN/`,
 `CSIRO/`, `AEKOS/`, or `NCI/` prefix and extracts the first 8 lower-case
-characters of the UUID. Non-UUID identifiers (e.g.\\ `"AusEFlux_v2"`)
-are returned as-is after prefix removal.
+characters of the UUID. Non-UUID identifiers (e.g. `AusEFlux_v2`) are
+returned as-is after prefix removal.
 
 ## Usage
 

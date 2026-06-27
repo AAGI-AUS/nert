@@ -13,7 +13,7 @@ tidyterra workflows.
 
 ``` r
 read_tern(
-  dataset_id,
+  dataset_id = NULL,
   ...,
   api_key = NULL,
   max_tries = NULL,
@@ -268,7 +268,7 @@ scope of nert.
 ## Package options
 
 nert reads two package-level options on every call. Both are set to
-package defaults at load time and may be overridden globally (e.g.\\ in
+package defaults at load time and may be overridden globally (e.g. in
 `.Rprofile`) without changing any individual call:
 
 - `nert.max_tries`:
