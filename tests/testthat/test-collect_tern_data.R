@@ -6,7 +6,7 @@
 test_that(".parse_coordinates accepts scalar lon/lat", {
   c1 <- .parse_coordinates(138.6, -34.9, NULL)
   expect_identical(nrow(c1), 1L)
-  expect_identical(names(c1), c("lon", "lat"))
+  expect_named(c1, c("lon", "lat"))
 })
 
 test_that(".parse_coordinates accepts vector lon/lat of equal length", {
@@ -15,23 +15,30 @@ test_that(".parse_coordinates accepts vector lon/lat of equal length", {
 })
 
 test_that(".parse_coordinates accepts xy data.frame with lon/lat columns", {
-  c1 <- .parse_coordinates(NULL, NULL,
-                           data.frame(lon = c(138.6, 139.5),
-                                      lat = c(-34.9, -35.5)))
+  c1 <- .parse_coordinates(
+    NULL,
+    NULL,
+    data.frame(lon = c(138.6, 139.5), lat = c(-34.9, -35.5))
+  )
   expect_identical(nrow(c1), 2L)
 })
 
 test_that(".parse_coordinates accepts xy data.frame with x/y columns", {
-  c1 <- .parse_coordinates(NULL, NULL,
-                           data.frame(x = c(138.6, 139.5),
-                                      y = c(-34.9, -35.5)))
+  c1 <- .parse_coordinates(
+    NULL,
+    NULL,
+    data.frame(x = c(138.6, 139.5), y = c(-34.9, -35.5))
+  )
   expect_identical(nrow(c1), 2L)
   expect_identical(c1$lon, c(138.6, 139.5))
 })
 
 test_that(".parse_coordinates accepts xy matrix", {
-  m <- matrix(c(138.6, 139.5, -34.9, -35.5), ncol = 2L,
-              dimnames = list(NULL, c("lon", "lat")))
+  m <- matrix(
+    c(138.6, 139.5, -34.9, -35.5),
+    ncol = 2L,
+    dimnames = list(NULL, c("lon", "lat"))
+  )
   c1 <- .parse_coordinates(NULL, NULL, m)
   expect_identical(nrow(c1), 2L)
 })
@@ -55,8 +62,7 @@ test_that(".parse_coordinates rejects NA coordinates", {
 
 test_that(".parse_coordinates rejects xy without recognised columns", {
   expect_error(
-    .parse_coordinates(NULL, NULL,
-                       data.frame(a = 1, b = 2)),
+    .parse_coordinates(NULL, NULL, data.frame(a = 1, b = 2)),
     "must have columns"
   )
 })
@@ -69,7 +75,7 @@ test_that(".parse_coordinates rejects when both lon/lat and xy missing", {
 
 test_that(".parse_date_range expands a length-2 character range to daily", {
   d <- .parse_date_range(c("2024-01-01", "2024-01-05"))
-  expect_identical(length(d), 5L)
+  expect_length(d, 5L)
   expect_equal(d[1L], as.Date("2024-01-01"))
 })
 
@@ -80,14 +86,13 @@ test_that(".parse_date_range preserves an explicit Date vector", {
 })
 
 test_that(".parse_date_range rejects unparseable dates", {
-  expect_error(.parse_date_range(c("nope", "also-nope")),
-               "No valid dates")
+  expect_error(.parse_date_range(c("nope", "also-nope")), "No valid dates")
 })
 
 # .normalise_datasets -------------------------------------------------------
 
 test_that(".normalise_datasets returns the full alias set for NULL/'all'", {
-  expect_identical(length(.normalise_datasets(NULL)), 20L)
+  expect_length(.normalise_datasets(NULL), 20L)
   expect_identical(.normalise_datasets("all"), .normalise_datasets(NULL))
 })
 
@@ -118,62 +123,91 @@ test_that("work-item planner emits one item per SMIPS (date, variant)", {
   dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-03"), by = "day")
   items <- .build_work_items("SMIPS", dates, "all", "EV", "all")
   # 6 variants x 3 dates = 18 items
-  expect_identical(length(items), 18L)
+  expect_length(items, 18L)
   expect_true(all(vapply(items, function(x) x$ds == "SMIPS", logical(1L))))
 })
 
 test_that("work-item planner emits one item per AET date", {
   dates <- seq(as.Date("2023-06-01"), as.Date("2023-08-01"), by = "month")
   items <- .build_work_items("AET", dates, "all", "EV", "all")
-  expect_identical(length(items), 3L)
+  expect_length(items, 3L)
 })
 
 test_that("work-item planner emits six items for SLGA depth='all'", {
-  items <- .build_work_items("AWC", as.Date("2024-01-01"),
-                             "all", "EV", "all")
-  expect_identical(length(items), 6L)
-  expect_true(all(grepl("^AWC_", vapply(items, function(x) x$cols[1L],
-                                        character(1L)))))
+  items <- .build_work_items("AWC", as.Date("2024-01-01"), "all", "EV", "all")
+  expect_length(items, 6L)
+  expect_true(all(grepl(
+    "^AWC_",
+    vapply(items, function(x) x$cols[1L], character(1L))
+  )))
 })
 
 test_that("work-item planner emits one item for SLGA single depth", {
-  items <- .build_work_items("CLY", as.Date("2024-01-01"),
-                             "000_005", "EV", "all")
-  expect_identical(length(items), 1L)
+  items <- .build_work_items(
+    "CLY",
+    as.Date("2024-01-01"),
+    "000_005",
+    "EV",
+    "all"
+  )
+  expect_length(items, 1L)
   expect_identical(items[[1L]]$cols, "CLY")
 })
 
 test_that("work-item planner emits one item each for static non-SLGA", {
   for (ds in c("ASC", "CANOPY", "SOILDIV", "PHENOLOGY")) {
-    items <- .build_work_items(ds, as.Date("2010-06-01"),
-                               "all", "EV", "all")
-    expect_identical(length(items), 1L)
+    items <- .build_work_items(ds, as.Date("2010-06-01"), "all", "EV", "all")
+    expect_length(items, 1L)
     expect_true(is.na(items[[1L]]$date_idx))
   }
 })
 
 test_that("ASC work item is flagged character-typed", {
-  items <- .build_work_items("ASC", as.Date("2024-01-01"),
-                             "all", "EV", "all")
+  items <- .build_work_items("ASC", as.Date("2024-01-01"), "all", "EV", "all")
   expect_identical(items[[1L]]$type, "character")
 })
 
 test_that("All other datasets are flagged numeric-typed", {
-  for (ds in c("SMIPS", "AET", "AWC", "CLY", "CANOPY",
-               "SOILDIV", "PHENOLOGY")) {
-    items <- .build_work_items(ds, as.Date("2010-06-01"),
-                               "000_005", "EV", "totalbucket")
-    expect_true(all(vapply(items, function(x) x$type == "numeric",
-                           logical(1L))))
+  for (ds in c(
+    "SMIPS",
+    "AET",
+    "AWC",
+    "CLY",
+    "CANOPY",
+    "SOILDIV",
+    "PHENOLOGY"
+  )) {
+    items <- .build_work_items(
+      ds,
+      as.Date("2010-06-01"),
+      "000_005",
+      "EV",
+      "totalbucket"
+    )
+    expect_true(all(vapply(
+      items,
+      function(x) x$type == "numeric",
+      logical(1L)
+    )))
   }
 })
 
 test_that("PHENOLOGY clamps year to 2003-2018 window", {
-  items <- .build_work_items("PHENOLOGY", as.Date("2024-06-01"),
-                             "all", "EV", "all")
+  items <- .build_work_items(
+    "PHENOLOGY",
+    as.Date("2024-06-01"),
+    "all",
+    "EV",
+    "all"
+  )
   expect_identical(items[[1L]]$args$year, 2018L)
-  items2 <- .build_work_items("PHENOLOGY", as.Date("1990-06-01"),
-                              "all", "EV", "all")
+  items2 <- .build_work_items(
+    "PHENOLOGY",
+    as.Date("1990-06-01"),
+    "all",
+    "EV",
+    "all"
+  )
   expect_identical(items2[[1L]]$args$year, 2003L)
 })
 
@@ -184,14 +218,28 @@ test_that("collect_tern_data plans schema independently of fetch success", {
   items <- .build_work_items(
     c("SMIPS", "AWC", "ASC", "CANOPY"),
     seq(as.Date("2024-01-01"), as.Date("2024-01-02"), by = "day"),
-    "all", "EV", "all"
+    "all",
+    "EV",
+    "all"
   )
   cols <- unique(unlist(lapply(items, function(x) x$cols)))
-  expect_setequal(cols, c(
-    "SMIPS_totalbucket", "SMIPS_SMindex", "SMIPS_bucket1",
-    "SMIPS_bucket2", "SMIPS_deepD", "SMIPS_runoff",
-    "AWC_000_005", "AWC_005_015", "AWC_015_030",
-    "AWC_030_060", "AWC_060_100", "AWC_100_200",
-    "ASC", "CANOPY"
-  ))
+  expect_setequal(
+    cols,
+    c(
+      "SMIPS_totalbucket",
+      "SMIPS_SMindex",
+      "SMIPS_bucket1",
+      "SMIPS_bucket2",
+      "SMIPS_deepD",
+      "SMIPS_runoff",
+      "AWC_000_005",
+      "AWC_005_015",
+      "AWC_015_030",
+      "AWC_030_060",
+      "AWC_060_100",
+      "AWC_100_200",
+      "ASC",
+      "CANOPY"
+    )
+  )
 })
