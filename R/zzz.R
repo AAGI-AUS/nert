@@ -12,7 +12,6 @@
 }
 # nocov end
 
-
 #' Initialise \pkg{nert} package options (internal)
 #'
 #' Extracted from `.onLoad()` to allow direct unit testing.  Sets
@@ -27,12 +26,12 @@
 #' [base::options()] before `library(nert)`) are preserved; only
 #' unset options are populated with defaults.
 #'
-#' 
+#'
 #' @dev
 .init_nert_options <- function() {
   op <- options()
   op_nert <- list(
-    nert.max_tries     = 3L,
+    nert.max_tries = 3L,
     nert.initial_delay = 1L
   )
   toset <- !(names(op_nert) %in% names(op))

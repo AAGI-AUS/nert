@@ -173,7 +173,7 @@
 #'   }
 #' }
 #'
-#' 
+#'
 #' @export
 read_slga <- function(
   attribute,
@@ -184,8 +184,20 @@ read_slga <- function(
   initial_delay = NULL
 ) {
   approved_attrs <- c(
-    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
-    "CEC", "ECE", "DUL", "L15"
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "AVP",
+    "PTO",
+    "CEC",
+    "ECE",
+    "DUL",
+    "L15"
   )
   attribute <- toupper(attribute)
   attribute <- rlang::arg_match(attribute, approved_attrs)
@@ -208,37 +220,107 @@ read_slga <- function(
 #' filename suffix.
 #'
 #' @format A named \code{list} of \code{list}s.
-#' 
+#'
 #' @dev
 .slga_config <- list(
-  "482301c2" = list(dir = "AWC", prefix = "AWC", version = "v2",
-                    date = "20210614", suffix = "AU_TRN_N"),
-  "f95dc442" = list(dir = "CLY", prefix = "CLY", version = "v2",
-                    date = "20210902", suffix = "AU_TRN_N"),
-  "4224ddff" = list(dir = "SND", prefix = "SND", version = "v2",
-                    date = "20210902", suffix = "AU_TRN_N"),
-  "11375f04" = list(dir = "SLT", prefix = "SLT", version = "v2",
-                    date = "20210902", suffix = "AU_TRN_N"),
-  "95978aec" = list(dir = "BDW", prefix = "BDW", version = "v2",
-                    date = "20230607", suffix = "AU_TRN_N"),
-  "258afc98" = list(dir = "pHc", prefix = "PHC", version = "v2",
-                    date = "20210913", suffix = "AU_NAT_C"),
-  "c37439a5" = list(dir = "PHW", prefix = "PHW", version = "v1",
-                    date = "20220520", suffix = "AU_TRN_N"),
-  "e9484508" = list(dir = "NTO", prefix = "NTO", version = "v2",
-                    date = "20231101", suffix = "AU_NAT_C"),
-  "c6ef289b" = list(dir = "AVP", prefix = "AVP", version = "v1",
-                    date = "20220826", suffix = "AU_TRN_N"),
-  "be382e63" = list(dir = "PTO", prefix = "PTO", version = "v2",
-                    date = "20231101", suffix = "AU_NAT_C"),
-  "5b4b2991" = list(dir = "CEC", prefix = "CEC", version = "v1",
-                    date = "20220826", suffix = "AU_TRN_N"),
-  "0d27cf8b" = list(dir = "ECE", prefix = "ECE", version = "v1",
-                    date = "20140801", suffix = "AU_NAT_C"),
-  "de9ddc12" = list(dir = "DUL", prefix = "DUL", version = "v1",
-                    date = "20210614", suffix = "AU_TRN_N"),
-  "4443f5df" = list(dir = "L15", prefix = "L15", version = "v1",
-                    date = "20210614", suffix = "AU_TRN_N")
+  "482301c2" = list(
+    dir = "AWC",
+    prefix = "AWC",
+    version = "v2",
+    date = "20210614",
+    suffix = "AU_TRN_N"
+  ),
+  "f95dc442" = list(
+    dir = "CLY",
+    prefix = "CLY",
+    version = "v2",
+    date = "20210902",
+    suffix = "AU_TRN_N"
+  ),
+  "4224ddff" = list(
+    dir = "SND",
+    prefix = "SND",
+    version = "v2",
+    date = "20210902",
+    suffix = "AU_TRN_N"
+  ),
+  "11375f04" = list(
+    dir = "SLT",
+    prefix = "SLT",
+    version = "v2",
+    date = "20210902",
+    suffix = "AU_TRN_N"
+  ),
+  "95978aec" = list(
+    dir = "BDW",
+    prefix = "BDW",
+    version = "v2",
+    date = "20230607",
+    suffix = "AU_TRN_N"
+  ),
+  "258afc98" = list(
+    dir = "pHc",
+    prefix = "PHC",
+    version = "v2",
+    date = "20210913",
+    suffix = "AU_NAT_C"
+  ),
+  "c37439a5" = list(
+    dir = "PHW",
+    prefix = "PHW",
+    version = "v1",
+    date = "20220520",
+    suffix = "AU_TRN_N"
+  ),
+  "e9484508" = list(
+    dir = "NTO",
+    prefix = "NTO",
+    version = "v2",
+    date = "20231101",
+    suffix = "AU_NAT_C"
+  ),
+  "c6ef289b" = list(
+    dir = "AVP",
+    prefix = "AVP",
+    version = "v1",
+    date = "20220826",
+    suffix = "AU_TRN_N"
+  ),
+  "be382e63" = list(
+    dir = "PTO",
+    prefix = "PTO",
+    version = "v2",
+    date = "20231101",
+    suffix = "AU_NAT_C"
+  ),
+  "5b4b2991" = list(
+    dir = "CEC",
+    prefix = "CEC",
+    version = "v1",
+    date = "20220826",
+    suffix = "AU_TRN_N"
+  ),
+  "0d27cf8b" = list(
+    dir = "ECE",
+    prefix = "ECE",
+    version = "v1",
+    date = "20140801",
+    suffix = "AU_NAT_C"
+  ),
+  "de9ddc12" = list(
+    dir = "DUL",
+    prefix = "DUL",
+    version = "v1",
+    date = "20210614",
+    suffix = "AU_TRN_N"
+  ),
+  "4443f5df" = list(
+    dir = "L15",
+    prefix = "L15",
+    version = "v1",
+    date = "20210614",
+    suffix = "AU_TRN_N"
+  )
 )
 
 
@@ -251,7 +333,7 @@ read_slga <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
-#' 
+#'
 #' @dev
 .read_tern_slga <- function(did, dots, api_key, max_tries, initial_delay) {
   cfg <- .slga_config[[did]]
@@ -267,18 +349,33 @@ read_slga <- function(
     "EV"
   }
 
-  approved_depths <- c("000_005", "005_015", "015_030", "030_060", "060_100",
-                       "100_200")
+  approved_depths <- c(
+    "000_005",
+    "005_015",
+    "015_030",
+    "030_060",
+    "060_100",
+    "100_200"
+  )
   depth <- rlang::arg_match(depth, approved_depths)
 
   approved_stats <- c("EV", "05", "95")
   collection <- rlang::arg_match(collection, approved_stats)
 
-  fname <- sprintf("%s_%s_%s_N_P_%s_%s.tif",
-                   cfg$prefix, depth, collection, cfg$suffix, cfg$date)
+  fname <- sprintf(
+    "%s_%s_%s_N_P_%s_%s.tif",
+    cfg$prefix,
+    depth,
+    collection,
+    cfg$suffix,
+    cfg$date
+  )
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/%s/%s/%s",
-    api_key, cfg$dir, cfg$version, fname
+    api_key,
+    cfg$dir,
+    cfg$version,
+    fname
   )
   return(.read_cog(full_url, max_tries, initial_delay))
 }

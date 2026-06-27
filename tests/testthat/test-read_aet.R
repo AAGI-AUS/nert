@@ -84,14 +84,13 @@ test_that("read_aet propagates max_tries and initial_delay overrides", {
   captured <- new.env(parent = emptyenv())
   testthat::local_mocked_bindings(
     .read_cog = function(full_url, max_tries = NULL, initial_delay = NULL) {
-      captured$max_tries     <- max_tries
+      captured$max_tries <- max_tries
       captured$initial_delay <- initial_delay
       .fixture_numeric_raster()
     },
     .package = "nert"
   )
-  read_aet("2023-06-01", api_key = KEY,
-           max_tries = 7L, initial_delay = 4L)
+  read_aet("2023-06-01", api_key = KEY, max_tries = 7L, initial_delay = 4L)
   expect_identical(captured$max_tries, 7L)
   expect_identical(captured$initial_delay, 4L)
 })

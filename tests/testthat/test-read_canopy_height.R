@@ -9,9 +9,12 @@ test_that("read_canopy_height resolves to the documented static URL", {
   expect_length(sink$urls, 1L)
   expect_match(
     sink$urls,
-    paste0("/vsicurl/https://apikey:", KEY,
-           "@data.tern.org.au/model-derived/OzTreeMap/",
-           "CanopyHeightComposite/best_pick_files_bhLNnun.tif"),
+    paste0(
+      "/vsicurl/https://apikey:",
+      KEY,
+      "@data.tern.org.au/model-derived/OzTreeMap/",
+      "CanopyHeightComposite/best_pick_files_bhLNnun.tif"
+    ),
     fixed = TRUE
   )
 })
@@ -33,7 +36,7 @@ test_that("read_canopy_height propagates max_tries / initial_delay", {
   captured <- new.env(parent = emptyenv())
   testthat::local_mocked_bindings(
     .read_cog = function(full_url, max_tries = NULL, initial_delay = NULL) {
-      captured$max_tries     <- max_tries
+      captured$max_tries <- max_tries
       captured$initial_delay <- initial_delay
       .fixture_numeric_raster()
     },

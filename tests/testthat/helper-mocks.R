@@ -14,10 +14,13 @@
 #' @noRd
 .fixture_numeric_raster <- function(value = 42) {
   r <- terra::rast(
-    nrows = 10L, ncols = 10L,
-    xmin = 112, xmax = 155,
-    ymin = -45, ymax = -9,
-    crs  = "EPSG:4326"
+    nrows = 10L,
+    ncols = 10L,
+    xmin = 112,
+    xmax = 155,
+    ymin = -45,
+    ymax = -9,
+    crs = "EPSG:4326"
   )
   terra::values(r) <- rep(value, terra::ncell(r))
   names(r) <- "test_layer"
@@ -33,10 +36,13 @@
 #' @noRd
 .fixture_character_raster <- function() {
   r <- terra::rast(
-    nrows = 10L, ncols = 10L,
-    xmin = 112, xmax = 155,
-    ymin = -45, ymax = -9,
-    crs  = "EPSG:4326"
+    nrows = 10L,
+    ncols = 10L,
+    xmin = 112,
+    xmax = 155,
+    ymin = -45,
+    ymax = -9,
+    crs = "EPSG:4326"
   )
   terra::values(r) <- rep(1L, terra::ncell(r))
   levels(r) <- data.frame(ID = 1L, Class = "2 - Sodosol")
@@ -62,9 +68,11 @@
 #' @return A URL-sink environment with field `$urls` (character vector,
 #'   appended in call order).
 #' @noRd
-.use_mocked_cog <- function(raster    = .fixture_numeric_raster(),
-                            error_msg = NULL,
-                            .env      = parent.frame()) {
+.use_mocked_cog <- function(
+  raster = .fixture_numeric_raster(),
+  error_msg = NULL,
+  .env = parent.frame()
+) {
   sink <- new.env(parent = emptyenv())
   sink$urls <- character()
 
@@ -84,8 +92,8 @@
 
   testthat::local_mocked_bindings(
     .read_cog = mock_fn,
-    .package  = "nert",
-    .env      = .env
+    .package = "nert",
+    .env = .env
   )
   sink
 }
