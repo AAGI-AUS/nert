@@ -307,7 +307,7 @@
       ],
       "name": "{nert}: An API Client for TERN Data",
       "url": "https://aagi-aus.github.io/nert/",
-      "description": "R package version 0.0.3.9000"
+      "description": "R package version 1.1.0"
     }
   ],
   "releaseNotes": "https://github.com/AAGI-AUS/nert/blob/main/NEWS.md",
