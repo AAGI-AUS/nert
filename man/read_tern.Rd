@@ -57,25 +57,25 @@ In addition to full \acronym{TERN} portal keys and 8-character prefixes,
 \tabular{lll}{
 \strong{Alias} \tab \strong{Dataset ID} \tab \strong{Description} \cr
 \code{"SMIPS"} \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
-\code{"ASC"} \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
-\code{"AET"} \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration via CMRSET (30 m) \cr
-\code{"AWC"} \tab \code{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
+\code{"ASC"} \tab \verb{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
+\code{"AET"} \tab \verb{TERN/9fefa68b} \tab Monthly evapotranspiration via CMRSET (30 m) \cr
+\code{"AWC"} \tab \verb{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
 \code{"CLY"} \tab \code{TERN/f95dc442} \tab Clay content (90 m) \cr
-\code{"SND"} \tab \code{TERN/4224ddff} \tab Sand content (90 m) \cr
-\code{"SLT"} \tab \code{TERN/11375f04} \tab Silt content (90 m) \cr
-\code{"BDW"} \tab \code{TERN/95978aec} \tab Bulk density whole earth (90 m) \cr
-\code{"PHC"} \tab \code{TERN/258afc98} \tab pH CaCl2 (90 m) \cr
+\code{"SND"} \tab \verb{TERN/4224ddff} \tab Sand content (90 m) \cr
+\code{"SLT"} \tab \verb{TERN/11375f04} \tab Silt content (90 m) \cr
+\code{"BDW"} \tab \verb{TERN/95978aec} \tab Bulk density whole earth (90 m) \cr
+\code{"PHC"} \tab \verb{TERN/258afc98} \tab pH CaCl2 (90 m) \cr
 \code{"PHW"} \tab \code{TERN/c37439a5} \tab pH water (90 m) \cr
 \code{"NTO"} \tab \code{TERN/e9484508} \tab Total Nitrogen (90 m) \cr
 \code{"AVP"} \tab \code{TERN/c6ef289b} \tab Available Phosphorus (90 m) \cr
 \code{"PTO"} \tab \code{TERN/be382e63} \tab Total Phosphorus (90 m) \cr
-\code{"CEC"} \tab \code{TERN/5b4b2991} \tab Cation Exchange Capacity (90 m) \cr
-\code{"ECE"} \tab \code{TERN/0d27cf8b} \tab Effective Cation Exchange Capacity (90 m) \cr
+\code{"CEC"} \tab \verb{TERN/5b4b2991} \tab Cation Exchange Capacity (90 m) \cr
+\code{"ECE"} \tab \verb{TERN/0d27cf8b} \tab Effective Cation Exchange Capacity (90 m) \cr
 \code{"DUL"} \tab \code{TERN/de9ddc12} \tab Drained Upper Limit water content (90 m) \cr
-\code{"L15"} \tab \code{TERN/4443f5df} \tab 15 Bar Lower Limit water content (90 m) \cr
-\code{"SOILDIV"} \tab \code{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
-\code{"CANOPY"} \tab \code{TERN/36c98155} \tab Canopy Height (30 m) \cr
-\code{"PHENOLOGY"} \tab \code{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
+\code{"L15"} \tab \verb{TERN/4443f5df} \tab 15 Bar Lower Limit water content (90 m) \cr
+\code{"SOILDIV"} \tab \verb{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
+\code{"CANOPY"} \tab \verb{TERN/36c98155} \tab Canopy Height (30 m) \cr
+\code{"PHENOLOGY"} \tab \verb{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
 }
 Convenience wrappers \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}, \code{\link[=read_aet]{read_aet()}},
 \code{\link[=read_slga]{read_slga()}}, \code{\link[=read_soil_diversity]{read_soil_diversity()}}, \code{\link[=read_canopy_height]{read_canopy_height()}}, and
@@ -187,7 +187,7 @@ from the OzTreeMap project. No function arguments required.
 The following datasets are tracked in the \acronym{TERN} catalogue but
 cannot be accessed via COG HTTP range requests:
 \itemize{
-\item \code{TERN/0997cb3c} — Seasonal Fractional Cover (Landsat)
+\item \verb{TERN/0997cb3c} — Seasonal Fractional Cover (Landsat)
 \item \code{TERN/fe9d86e1} — Seasonal Ground Cover (Landsat)
 }
 Datasets with integration level L2 or higher (e.g.\ AusEFlux via
@@ -200,7 +200,7 @@ current scope of \pkg{nert}.
 
 \pkg{nert} reads two package-level options on every call.  Both are
 set to package defaults at load time and may be overridden globally
-(e.g.\ in \code{.Rprofile}) without changing any individual call:
+(e.g. in \code{.Rprofile}) without changing any individual call:
 \describe{
 \item{\code{nert.max_tries}}{Default maximum number of download
 retries.  Default \code{3L}.}
@@ -366,7 +366,8 @@ Terrestrial Ecosystem Research Network. (Dataset).
 \url{https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4443f5df-a0b2-4352-b44b-83f7feb1e27d}
 }
 \item{\strong{SOILDIV: Soil Bacteria and Soil Fungi Beta Diversity}}{
-Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid National
+Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid
+National
 Soil Attribute Maps - Soil Bacteria and Fungi Beta Diversity (3"
 resolution) - Release 1. Version 1.0. Terrestrial Ecosystem Research
 Network. (Dataset). \doi{10.25919/4x7n-y874}.\cr\cr

@@ -4,157 +4,157 @@
 #' data from the \acronym{TERN} Data Portal. This function effectively
 #' dispatches to dataset-specific handlers based on the dataset requested
 #' (e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
-#' through \code{...}.  The returned object is a [terra::SpatRaster] that
+#' through `...`.  The returned object is a [terra::SpatRaster] that
 #' can be plotted, cropped, or extracted with standard \pkg{terra} or
 #' \pkg{tidyterra} workflows.
 #'
 #' @section Dataset aliases:
 #' In addition to full \acronym{TERN} portal keys and 8-character prefixes,
-#' \code{read_tern()} accepts short human-readable aliases (case-insensitive):
+#' `read_tern()` accepts short human-readable aliases (case-insensitive):
 #' \tabular{lll}{
 #'   \strong{Alias} \tab \strong{Dataset ID} \tab \strong{Description} \cr
-#'   \code{"SMIPS"} \tab \code{TERN/d1995ee8} \tab Daily soil moisture (~1 km) \cr
-#'   \code{"ASC"} \tab \code{TERN/15728dba} \tab Australian Soil Classification (90 m) \cr
-#'   \code{"AET"} \tab \code{TERN/9fefa68b} \tab Monthly evapotranspiration via CMRSET (30 m) \cr
-#'   \code{"AWC"} \tab \code{TERN/482301c2} \tab Available Water Capacity (90 m) \cr
-#'   \code{"CLY"} \tab \code{TERN/f95dc442} \tab Clay content (90 m) \cr
-#'   \code{"SND"} \tab \code{TERN/4224ddff} \tab Sand content (90 m) \cr
-#'   \code{"SLT"} \tab \code{TERN/11375f04} \tab Silt content (90 m) \cr
-#'   \code{"BDW"} \tab \code{TERN/95978aec} \tab Bulk density whole earth (90 m) \cr
-#'   \code{"PHC"} \tab \code{TERN/258afc98} \tab pH CaCl2 (90 m) \cr
-#'   \code{"PHW"} \tab \code{TERN/c37439a5} \tab pH water (90 m) \cr
-#'   \code{"NTO"} \tab \code{TERN/e9484508} \tab Total Nitrogen (90 m) \cr
-#'   \code{"AVP"} \tab \code{TERN/c6ef289b} \tab Available Phosphorus (90 m) \cr
-#'   \code{"PTO"} \tab \code{TERN/be382e63} \tab Total Phosphorus (90 m) \cr
-#'   \code{"CEC"} \tab \code{TERN/5b4b2991} \tab Cation Exchange Capacity (90 m) \cr
-#'   \code{"ECE"} \tab \code{TERN/0d27cf8b} \tab Effective Cation Exchange Capacity (90 m) \cr
-#'   \code{"DUL"} \tab \code{TERN/de9ddc12} \tab Drained Upper Limit water content (90 m) \cr
-#'   \code{"L15"} \tab \code{TERN/4443f5df} \tab 15 Bar Lower Limit water content (90 m) \cr
-#'   \code{"SOILDIV"} \tab \code{TERN/4a428d52} \tab Soil Beta Diversity (90 m) \cr
-#'   \code{"CANOPY"} \tab \code{TERN/36c98155} \tab Canopy Height (30 m) \cr
-#'   \code{"PHENOLOGY"} \tab \code{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
+#'   `"SMIPS"` \tab `TERN/d1995ee8` \tab Daily soil moisture (~1 km) \cr
+#'   `"ASC"` \tab `TERN/15728dba` \tab Australian Soil Classification (90 m) \cr
+#'   `"AET"` \tab `TERN/9fefa68b` \tab Monthly evapotranspiration via CMRSET (30 m) \cr
+#'   `"AWC"` \tab `TERN/482301c2` \tab Available Water Capacity (90 m) \cr
+#'   `"CLY"` \tab `TERN/f95dc442` \tab Clay content (90 m) \cr
+#'   `"SND"` \tab `TERN/4224ddff` \tab Sand content (90 m) \cr
+#'   `"SLT"` \tab `TERN/11375f04` \tab Silt content (90 m) \cr
+#'   `"BDW"` \tab `TERN/95978aec` \tab Bulk density whole earth (90 m) \cr
+#'   `"PHC"` \tab `TERN/258afc98` \tab pH CaCl2 (90 m) \cr
+#'   `"PHW"` \tab `TERN/c37439a5` \tab pH water (90 m) \cr
+#'   `"NTO"` \tab `TERN/e9484508` \tab Total Nitrogen (90 m) \cr
+#'   `"AVP"` \tab `TERN/c6ef289b` \tab Available Phosphorus (90 m) \cr
+#'   `"PTO"` \tab `TERN/be382e63` \tab Total Phosphorus (90 m) \cr
+#'   `"CEC"` \tab `TERN/5b4b2991` \tab Cation Exchange Capacity (90 m) \cr
+#'   `"ECE"` \tab `TERN/0d27cf8b` \tab Effective Cation Exchange Capacity (90 m) \cr
+#'   `"DUL"` \tab `TERN/de9ddc12` \tab Drained Upper Limit water content (90 m) \cr
+#'   `"L15"` \tab `TERN/4443f5df` \tab 15 Bar Lower Limit water content (90 m) \cr
+#'   `"SOILDIV"` \tab `TERN/4a428d52` \tab Soil Beta Diversity (90 m) \cr
+#'   `"CANOPY"` \tab `TERN/36c98155` \tab Canopy Height (30 m) \cr
+#'   `"PHENOLOGY"` \tab `TERN/2bb0c81a` \tab Land Surface Phenology (500 m) \cr
 #' }
 #' Convenience wrappers [read_smips()], [read_asc()], [read_aet()],
 #' [read_slga()], [read_soil_diversity()], [read_canopy_height()], and
 #' [read_phenology()] are also provided for simplified access to each dataset.
 #'
-#' @section SMIPS — daily soil moisture (\code{"SMIPS"}):
+#' @section SMIPS — daily soil moisture (`"SMIPS"`):
 #' \describe{
-#'   \item{\code{date}}{Required. A single day to query, _e.g._
-#'     \code{"2024-01-15"} or \code{as.Date("2024-01-15")}.  Both
-#'     \code{character} and \code{Date} classes are accepted.}
-#'   \item{\code{collection}}{One of \code{"totalbucket"} (default),
-#'     \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"},
-#'     \code{"deepD"}, or \code{"runoff"}.}
+#'   \item{`date`}{Required. A single day to query, _e.g._
+#'     `"2024-01-15"` or `as.Date("2024-01-15")`.  Both
+#'     `character` and `Date` classes are accepted.}
+#'   \item{`collection`}{One of `"totalbucket"` (default),
+#'     `"SMindex"`, `"bucket1"`, `"bucket2"`,
+#'     `"deepD"`, or `"runoff"`.}
 #' }
 #' Data availability: from 2005-01-01 to today. (Updated regularly.)
 #'
-#' @section ASC -- Australian Soil Classification (\code{"ASC"}):
+#' @section ASC -- Australian Soil Classification (`"ASC"`):
 #' \describe{
-#'   \item{\code{collection}}{One of \code{"EV"} (estimated soil order
-#'     class, default) or \code{"CI"} (confusion index -- a measure of the
+#'   \item{`collection`}{One of `"EV"` (estimated soil order
+#'     class, default) or `"CI"` (confusion index -- a measure of the
 #'     classification uncertainty).}
 #' }
 #'
-#' @section AET -- Actual Evapotranspiration/CMRSET (\code{"AET"}):
+#' @section AET -- Actual Evapotranspiration/CMRSET (`"AET"`):
 #' \describe{
-#'   \item{\code{date}}{Required. A month to query, _e.g._
-#'     \code{"2023-06-01"} or \code{as.Date("2023-06-01")}.  Both
-#'     \code{character} and \code{Date} classes are accepted.  The value is
+#'   \item{`date`}{Required. A month to query, _e.g._
+#'     `"2023-06-01"` or `as.Date("2023-06-01")`.  Both
+#'     `character` and `Date` classes are accepted.  The value is
 #'     snapped to the first of the month.}
-#'   \item{\code{collection}}{One of \code{"ETa"} (primary AET band in
-#'     mm/month, default) or \code{"pixel_qa"} (quality assurance attributes).}
+#'   \item{`collection`}{One of `"ETa"` (primary AET band in
+#'     mm/month, default) or `"pixel_qa"` (quality assurance attributes).}
 #' }
 #' Data availability: 1987-05-01 onward, monthly.
 #'
-#' @section SLGA soil attributes (\code{"AWC"}, \code{"CLY"}, etc.):
+#' @section SLGA soil attributes (`"AWC"`, `"CLY"`, etc.):
 #' 14 \acronym{SLGA} (Soil and Landscape Grid of Australia) soil
 #' attributes are available as static 90 m products, each with six standard
 #' depth layers and three statistics:
 #' \describe{
-#'   \item{\code{depth}}{One of \code{"000_005"} (default), \code{"005_015"},
-#'     \code{"015_030"}, \code{"030_060"}, \code{"060_100"}, or
-#'     \code{"100_200"} (cm).}
-#'   \item{\code{collection}}{One of \code{"EV"} (estimated value, default),
-#'     \code{"05"} (lower percentile limit for the 95% confidence interval)
-#'     or \code{"95"} (upper percentile limit for the confidence interval).}
+#'   \item{`depth`}{One of `"000_005"` (default), `"005_015"`,
+#'     `"015_030"`, `"030_060"`, `"060_100"`, or
+#'     `"100_200"` (cm).}
+#'   \item{`collection`}{One of `"EV"` (estimated value, default),
+#'     `"05"` (lower percentile limit for the 95% confidence interval)
+#'     or `"95"` (upper percentile limit for the confidence interval).}
 #' }
-#' Supported attributes (use as the \code{dataset_id} alias):
+#' Supported attributes (use as the `dataset_id` alias):
 #' \describe{
-#'   \item{\code{"AWC"}}{Available Water Capacity (percent)}
-#'   \item{\code{"CLY"}}{Clay content (percent)}
-#'   \item{\code{"SND"}}{Sand content (percent)}
-#'   \item{\code{"SLT"}}{Silt content (percent)}
-#'   \item{\code{"BDW"}}{Bulk Density whole earth (g/cm3)}
-#'   \item{\code{"PHC"}}{pH (CaCl2)}
-#'   \item{\code{"PHW"}}{pH (water)}
-#'   \item{\code{"NTO"}}{Total Nitrogen (percent)}
-#'   \item{\code{"AVP"}}{Available Phosphorus (mg/kg)}
-#'   \item{\code{"PTO"}}{Total Phosphorus (percent)}
-#'   \item{\code{"CEC"}}{Cation Exchange Capacity (meq/100g)}
-#'   \item{\code{"ECE"}}{Effective Cation Exchange Capacity (meq/100g)}
-#'   \item{\code{"DUL"}}{Drained Upper Limit volumetric water content (percent)}
-#'   \item{\code{"L15"}}{15 Bar Lower Limit volumetric water content (percent)}
+#'   \item{`"AWC"`}{Available Water Capacity (percent)}
+#'   \item{`"CLY"`}{Clay content (percent)}
+#'   \item{`"SND"`}{Sand content (percent)}
+#'   \item{`"SLT"`}{Silt content (percent)}
+#'   \item{`"BDW"`}{Bulk Density whole earth (g/cm3)}
+#'   \item{`"PHC"`}{pH (CaCl2)}
+#'   \item{`"PHW"`}{pH (water)}
+#'   \item{`"NTO"`}{Total Nitrogen (percent)}
+#'   \item{`"AVP"`}{Available Phosphorus (mg/kg)}
+#'   \item{`"PTO"`}{Total Phosphorus (percent)}
+#'   \item{`"CEC"`}{Cation Exchange Capacity (meq/100g)}
+#'   \item{`"ECE"`}{Effective Cation Exchange Capacity (meq/100g)}
+#'   \item{`"DUL"`}{Drained Upper Limit volumetric water content (percent)}
+#'   \item{`"L15"`}{15 Bar Lower Limit volumetric water content (percent)}
 #' }
 #'
-#' @section Soil Beta Diversity (\code{"SOILDIV"}):
+#' @section Soil Beta Diversity (`"SOILDIV"`):
 #' \describe{
-#'   \item{\code{collection}}{One of \code{"Bacteria"} (default) or
-#'     \code{"Fungi"}.}
-#'   \item{\code{axis}}{NMDS axis: \code{1} (default), \code{2}, or
-#'     \code{3}.}
+#'   \item{`collection`}{One of `"Bacteria"` (default) or
+#'     `"Fungi"`.}
+#'   \item{`axis`}{NMDS axis: `1` (default), `2`, or
+#'     `3`.}
 #' }
 #'
-#' @section Canopy Height (\code{"CANOPY"}):
+#' @section Canopy Height (`"CANOPY"`):
 #' Single static 30 m X 30 m best-pick canopy height model composite,
 #' from the OzTreeMap project. No function arguments required.
 #'
-#' @section Land Surface Phenology (\code{"PHENOLOGY"}):
+#' @section Land Surface Phenology (`"PHENOLOGY"`):
 #' \describe{
-#'   \item{\code{year}}{Required. An integer year (2003--2018).}
-#'   \item{\code{season}}{Season number: \code{1} (default) or \code{2}.}
-#'   \item{\code{collection}}{Phenology metric — one of \code{"SGS"}
-#'     (Start of Growing Season, default), \code{"PGS"} (Peak of Growing Season),
-#'     \code{"EGS"} (End of Growing Season), \code{"LGS"} (Length of Growing Season),
-#'     \code{"EVI1"} (Minimum EVI before peak), \code{"EVI2"} (Minimum EVI after peak),
-#'     \code{"EVIP"} (EVI at Peak of Growing Season),
-#'     \code{"EVII"} (Integral of EVI under growing season curve),
-#'     \code{"SGS_month"} (Start of Growing Season, monthly resolution),
-#'     \code{"PGS_month"} (Peak of the Growing Season, monthly resolution),
-#'     \code{"EGS_month"} (End of Growing Season, monthly resolution).}
+#'   \item{`year`}{Required. An integer year (2003--2018).}
+#'   \item{`season`}{Season number: `1` (default) or `2`.}
+#'   \item{`collection`}{Phenology metric — one of `"SGS"`
+#'     (Start of Growing Season, default), `"PGS"` (Peak of Growing Season),
+#'     `"EGS"` (End of Growing Season), `"LGS"` (Length of Growing Season),
+#'     `"EVI1"` (Minimum EVI before peak), `"EVI2"` (Minimum EVI after peak),
+#'     `"EVIP"` (EVI at Peak of Growing Season),
+#'     `"EVII"` (Integral of EVI under growing season curve),
+#'     `"SGS_month"` (Start of Growing Season, monthly resolution),
+#'     `"PGS_month"` (Peak of the Growing Season, monthly resolution),
+#'     `"EGS_month"` (End of Growing Season, monthly resolution).}
 #' }
 #'
 #' @section Datasets not accessible:
 #' The following datasets are tracked in the \acronym{TERN} catalogue but
 #' cannot be accessed via COG HTTP range requests:
 #' \itemize{
-#'   \item \code{TERN/0997cb3c} — Seasonal Fractional Cover (Landsat)
-#'   \item \code{TERN/fe9d86e1} — Seasonal Ground Cover (Landsat)
+#'   \item `TERN/0997cb3c` — Seasonal Fractional Cover (Landsat)
+#'   \item `TERN/fe9d86e1` — Seasonal Ground Cover (Landsat)
 #' }
 #' Datasets with integration level L2 or higher (e.g.\ AusEFlux via
 #' \acronym{THREDDS}/OPeNDAP, GEE-based products, site-level API streams)
 #' cannot be read via simple COG HTTP range requests and are outside the
 #' current scope of \pkg{nert}.
 #'
-#' @param dataset_id A \code{character} string identifying the dataset.
+#' @param dataset_id A `character` string identifying the dataset.
 #'   Accepts a short alias, the full \acronym{TERN} portal key (e.g.\
-#'   \code{"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"}), or the
-#'   8-character key prefix (e.g.\ \code{"TERN/d1995ee8"}).  See the
+#'   `"TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"`), or the
+#'   8-character key prefix (e.g.\ `"TERN/d1995ee8"`).  See the
 #'   \strong{Dataset aliases} section for the complete table of supported
 #'   aliases.
-#' @param ... Dataset-specific arguments — \code{date}, \code{collection},
+#' @param ... Dataset-specific arguments — `date`, `collection`,
 #'   etc.  See the relevant section above for each dataset.
-#' @param api_key A \code{character} string containing your \acronym{TERN}
+#' @param api_key A `character` string containing your \acronym{TERN}
 #'   \acronym{API} key. Defaults to automatic detection from your
-#'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
+#'   `.Renviron` or `.Rprofile`.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised. Default=\code{NULL}, in which case the maximum retry number is
-#'   resolved from the option \code{nert.max_tries} if that option exists.
-#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
+#'   raised. Default=`NULL`, in which case the maximum retry number is
+#'   resolved from the option `nert.max_tries` if that option exists.
+#'   (Defaults to 3 retries if `nert.max_tries` has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt). Default=\code{NULL}, in which case the initial delay is
-#'   resolved from the option \code{nert.initial_delay} if that option exists.
-#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   attempt). Default=`NULL`, in which case the initial delay is
+#'   resolved from the option `nert.initial_delay` if that option exists.
+#'   (Defaults to a 1 second initial delay if `nert.initial_delay` has
 #'   not been set.)
 #'
 #' @returns A [terra::SpatRaster] object for the requested dataset.
@@ -162,15 +162,15 @@
 #' @section Package options:
 #' \pkg{nert} reads two package-level options on every call.  Both are
 #' set to package defaults at load time and may be overridden globally
-#' (e.g.\ in \code{.Rprofile}) without changing any individual call:
+#' (e.g. in `.Rprofile`) without changing any individual call:
 #' \describe{
-#'   \item{\code{nert.max_tries}}{Default maximum number of download
-#'     retries.  Default \code{3L}.}
-#'   \item{\code{nert.initial_delay}}{Default initial retry delay in
-#'     seconds (doubles each attempt).  Default \code{1L}.}
+#'   \item{`nert.max_tries`}{Default maximum number of download
+#'     retries.  Default `3L`.}
+#'   \item{`nert.initial_delay`}{Default initial retry delay in
+#'     seconds (doubles each attempt).  Default `1L`.}
 #' }
-#' Per-call values supplied via the \code{max_tries} or
-#' \code{initial_delay} arguments always override the option.  Example:
+#' Per-call values supplied via the `max_tries` or
+#' `initial_delay` arguments always override the option.  Example:
 #' \preformatted{
 #'   options(nert.max_tries = 5L, nert.initial_delay = 2L)
 #' }
@@ -325,7 +325,8 @@
 #'     <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4443f5df-a0b2-4352-b44b-83f7feb1e27d>
 #'   }
 #'   \item{**SOILDIV: Soil Bacteria and Soil Fungi Beta Diversity**}{
-#'     Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid National
+#'     Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid
+#'     National
 #'     Soil Attribute Maps - Soil Bacteria and Fungi Beta Diversity (3"
 #'     resolution) - Release 1. Version 1.0. Terrestrial Ecosystem Research
 #'     Network. (Dataset). \doi{10.25919/4x7n-y874}.\cr\cr
@@ -370,7 +371,12 @@ read_tern <- function(
   did <- .tern_dispatch_id(dataset_id)
   entry <- .tern_datasets[[did]]
   if (is.null(entry)) {
-    .tern_not_implemented(dataset_id)
+    cli::cli_abort(c(
+      "Dataset {.val {dataset_id}} is not implemented in {.fn read_tern}.",
+      "i" = "Supported aliases: {.and {names(.tern_aliases)}}.",
+      "i" = "Datasets with L2+ integration (OPeNDAP, GEE, REST API,
+             site-specific) are outside {.pkg nert} scope."
+    ))
   }
   if (!is.null(entry$validate)) {
     entry$validate(dots, dataset_id)
@@ -389,13 +395,12 @@ read_tern <- function(
 #' from this list, so a dataset is defined in one place. The SLGA entries are
 #' generated from [.slga_config].
 #'
-#' Each entry is a \code{list} with an \code{alias} (upper-case short name), a
-#' \code{read} handler invoked as
-#' \code{read(did, dots, api_key, max_tries, initial_delay)}, and an optional
-#' \code{validate} function invoked as \code{validate(dots, dataset_id)} before
-#' the API key is checked. Both the validator (where present) and the handler
-#' live in the dataset's own \code{R/read_<name>.R} file. Datasets with no
-#' pre-key argument validation simply omit \code{validate}.
+#' Each entry is a `list` with an `alias` (upper-case short name), a `read`
+#' handler invoked as `read(did, dots, api_key, max_tries, initial_delay)`, and
+#' an optional `validate` function invoked as `validate(dots, dataset_id)`
+#' before the API key is checked. Both the validator (where present) and the
+#' handler live in the dataset's own `R/read_<name>.R` file. Datasets with no
+#' pre-key argument validation simply omit `validate`.
 #' @autoglobal
 #' @dev
 .tern_datasets <- c(
@@ -428,8 +433,8 @@ read_tern <- function(
 
 #' Alias mapping for short dataset names
 #'
-#' Named \code{character} vector mapping user-friendly short names (e.g.
-#' \code{"SMIPS"}, \code{"AWC"}) to dispatch IDs. Derived from [.tern_datasets].
+#' Named `character` vector mapping user-friendly short names (e.g.
+#' `"SMIPS"`, `"AWC"`) to dispatch IDs. Derived from [.tern_datasets].
 #' @autoglobal
 #' @dev
 .tern_aliases <- stats::setNames(
@@ -441,21 +446,20 @@ read_tern <- function(
 #' Normalise a TERN dataset key for switch() dispatch
 #'
 #' Checks alias table first (case-insensitive), then strips any
-#' \code{TERN/}, \code{CSIRO/}, \code{AEKOS/}, or \code{NCI/} prefix
-#' and extracts the first 8 lower-case characters of the UUID.
-#' Non-UUID identifiers (e.g.\ \code{"AusEFlux_v2"}) are returned as-is
-#' after prefix removal.
+#' `TERN/`, `CSIRO/`, `AEKOS/`, or `NCI/` prefix and extracts the first 8
+#' lower-case characters of the UUID.  Non-UUID identifiers (e.g. `AusEFlux_v2`)
+#' are returned as-is after prefix removal.
 #'
-#' @param id The raw \code{dataset_id} string supplied by the user.
-#' @returns A normalised \code{character} string for use in \code{switch()}.
+#' @param id The raw `dataset_id` string supplied by the user.
+#' @returns A normalised `character` string for use in `switch()`.
 #' @autoglobal
 #' @dev
 .tern_dispatch_id <- function(id) {
   if (length(id) != 1L) {
     cli::cli_abort(
-      "{.arg dataset_id} must be a single character string; \\
-       got length {.val {length(id)}}. To collect multiple datasets in one \\
-       call use {.fn collect_tern_data}."
+      "{.arg dataset_id} must be a single character string;
+       got length {.val {length(id)}}.
+       To collect multiple datasets in one call use {.fn collect_tern_data}."
     )
   }
   id <- trimws(as.character(id))
@@ -478,21 +482,4 @@ read_tern <- function(
     perl = TRUE
   )
   return(tolower(id))
-}
-
-
-#' Emit an informative error for unsupported dataset IDs
-#'
-#' @param dataset_id The raw dataset ID supplied by the user.
-#' @autoglobal
-#' @dev
-.tern_not_implemented <- function(dataset_id) {
-  aliases <- paste0(names(.tern_aliases), collapse = ", ") # nolint: object_usage_linter.
-  cli::cli_abort(c(
-    "Dataset {.val {dataset_id}} is not currently implemented in
-     {.fn read_tern}.",
-    "i" = "Supported aliases: {aliases}.",
-    "i" = "Datasets with L2+ integration levels (OPeNDAP, GEE, REST API,
-           site-specific) are outside the current {.pkg nert} scope."
-  ))
 }
