@@ -5,30 +5,30 @@
 #' evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
 #' provides monthly estimates of actual ET (mm/month) at 30 m resolution
 #' from May 1987 onwards, using the CSIRO MODIS Reflectance-based Scaling
-#' EvapoTranspiration (CMRSET) algorithm that combines potential
+#' Evapotranspiration (CMRSET) algorithm that combines potential
 #' evapotranspiration data from the Bureau of Meteorology together with
 #' satellite image data provided by MODIS, VIIRS, Landsat and Sentinel-2.
 #'
 #' @param date A month to download (Date or character, e.g.
-#'   \code{"2023-06-01"} or \code{as.Date("2023-06-01")}).  The value
+#'   `"2023-06-01"` or `as.Date("2023-06-01")`).  The value
 #'   is snapped to the first of the month internally.  Required.
-#' @param collection One of \code{"ETa"} (actual evapotranspiration in
-#'   mm/month, default) or \code{"pixel_qa"} (quality assurance attributes).
-#' @param api_key A \code{character} string containing your \acronym{TERN}
+#' @param collection One of `"ETa"` (actual evapotranspiration in
+#'   mm/month, default) or `"pixel_qa"` (quality assurance attributes).
+#' @param api_key A `character` string containing your \acronym{TERN}
 #'   \acronym{API} key. Defaults to automatic detection from your
-#'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
+#'   `.Renviron` or `.Rprofile`.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised. Default=\code{NULL}, in which case the maximum retry number is
-#'   resolved from the option \code{nert.max_tries} if that option exists.
-#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
+#'   raised. Default=`NULL`, in which case the maximum retry number is
+#'   resolved from the option `nert.max_tries` if that option exists.
+#'   (Defaults to 3 retries if `nert.max_tries` has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt). Default=\code{NULL}, in which case the initial delay is
-#'   resolved from the option \code{nert.initial_delay} if that option exists.
-#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   attempt). Default=`NULL`, in which case the initial delay is
+#'   resolved from the option `nert.initial_delay` if that option exists.
+#'   (Defaults to a 1 second initial delay if `nert.initial_delay` has
 #'   not been set.)
 #'
 #' @returns
-#' A [terra::SpatRaster] object of the requested Evapotranspiration collection.
+#' A [terra::SpatRaster] object of the requested evapotranspiration collection.
 #'
 #' @seealso
 #' [read_tern()]
@@ -81,13 +81,13 @@ read_aet <- function(
 
 #' Validate AET arguments before the API key is checked
 #'
-#' AET requires a monthly \code{date} (the legacy \code{month} name is also
+#' AET requires a monthly `date` (the legacy `month` name is also
 #' accepted) within the data-availability window (from 1987-05-01). Invoked by
 #' [read_tern()] via the [.tern_datasets] registry.
 #'
-#' @param dots Named list of \code{...} args from [read_tern()].
-#' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
-#' @returns \code{NULL} (invisibly); called for its side effects (errors).
+#' @param dots Named list of `...` args from [read_tern()].
+#' @param dataset_id Raw `dataset_id` (unused; uniform validator signature).
+#' @returns `NULL` (invisibly); called for its side effects (errors).
 #' @autoglobal
 #' @dev
 .validate_aet <- function(dots, dataset_id) {
@@ -95,7 +95,7 @@ read_aet <- function(
   if (is.null(date)) {
     cli::cli_abort(
       "AET requires a {.arg date} argument (monthly resolution),
-       e.g.  {.code date = \"2023-06-01\"}."
+       e.g., {.code date = \"2023-06-01\"}."
     )
   }
   .check_aet_date(date)
@@ -106,7 +106,7 @@ read_aet <- function(
 #' Internal handler for retrieving the AET data
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
-#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param dots Named list of `...` args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @autoglobal
@@ -138,7 +138,7 @@ read_aet <- function(
 #' (from 1987-05-01 onwards).
 #'
 #' @param x User-entered date value (any format accepted by [.check_date()]).
-#' @returns A \code{POSIXct} object snapped to the first of the requested
+#' @returns A `POSIXct` object snapped to the first of the requested
 #'   month.
 #' @autoglobal
 #' @dev
@@ -158,11 +158,11 @@ read_aet <- function(
 #' Build a GDAL vsicurl URL to retrieve AET data
 #'
 #' @param .collection The user-supplied \acronym{AET} collection
-#'   (\code{"ETa"} or \code{"pixel_qa"}).
-#' @param .month The validated \code{POSIXct} date snapped to the first of
+#'   (`"ETa"` or `"pixel_qa"`).
+#' @param .month The validated `POSIXct` date snapped to the first of
 #'   the month.
 #' @param .api_key The \acronym{URL}-encoded \acronym{API} key.
-#' @returns A \code{character} GDAL vsicurl URL string.
+#' @returns A `character` GDAL vsicurl URL string.
 #' @autoglobal
 #' @dev
 .make_aet_url <- function(.collection, .month, .api_key) {
