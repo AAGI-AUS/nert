@@ -51,7 +51,15 @@ o <- options() # store original options
 options(pkg.build_vignettes = TRUE)
 
 if (!require("pak")) {
-  install.packages("pak")
+  install.packages(
+    "pak",
+    repos = sprintf(
+      "https://r-lib.github.io/p/pak/stable/%s/%s/%s",
+      .Platform$pkgType,
+      R.Version()$os,
+      R.Version()$arch
+    )
+  )
 }
 
 pak::pak("AAGI-AUS/nert")
@@ -83,7 +91,7 @@ given latitude and longitude values for each.
 ``` r
 
 library(terra)
-#> terra 1.9.11
+#> terra 1.9.34
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
@@ -170,9 +178,9 @@ To cite nert:
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). _nert: An
-#>   API Client for TERN Data_. R package version 0.0.1.9000, commit
-#>   05d08aa660d47856bd897faa2d2d4c2dbdbbaa53, <https://github.com/AAGI-AUS/nert>.
+#>   Sparks A, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026).
+#>   _nert: An API Client for TERN Data_. R package version 0.0.3.9000,
+#>   <https://aagi-aus.github.io/nert/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -180,7 +188,7 @@ citation("nert")
 #>     title = {nert: An API Client for TERN Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
 #>     year = {2026},
-#>     note = {R package version 0.0.1.9000, commit 05d08aa660d47856bd897faa2d2d4c2dbdbbaa53},
-#>     url = {https://github.com/AAGI-AUS/nert},
+#>     note = {R package version 0.0.3.9000},
+#>     url = {https://aagi-aus.github.io/nert/},
 #>   }
 ```
