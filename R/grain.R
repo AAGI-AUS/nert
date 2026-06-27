@@ -1,7 +1,7 @@
 #' Synthetic dataset for a grain production experiment in South Australia
 #'
 #' Data from a fabricated experiment investigating the effects of nitrogen
-#' application and seeding rate on wheat grain production for a crop, conducted
+#' application and seeding rate on wheat grain production for a crop conducted
 #' across 10 fictional sites in South Australia.
 #'
 #' The variables are as follows:
