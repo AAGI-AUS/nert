@@ -123,18 +123,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "roxyglobals",
-      "name": "roxyglobals",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=roxyglobals"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
       "version": ">= 3.2.0",
@@ -273,7 +261,7 @@
   "applicationCategory": "Tools",
   "isPartOf": "https://grdc.com.au/research/partnerships-and-initiatives/strategic-partnerships/aagi",
   "keywords": ["TERN", "soil-data", "Australia", "earth-science", "data-access"],
-  "fileSize": "1401.794KB",
+  "fileSize": "1401.267KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
