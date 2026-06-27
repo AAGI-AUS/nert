@@ -5,16 +5,15 @@
 \alias{grain}
 \title{Synthetic dataset for a grain production experiment in South Australia}
 \format{
-A data frame with 2880 rows and 10 variables
+A \code{data.frame} with 2880 rows and 10 variables.
 }
 \usage{
 data(grain)
 }
 \description{
-A \code{data.frame} object containing data from a fabricated experiment
-investigating the effects of nitrogen application and seeding rate on wheat
-grain production for a crop, conducted across 10 fictional sites in South
-Australia.
+Data from a fabricated experiment investigating the effects of nitrogen
+application and seeding rate on wheat grain production for a crop, conducted
+across 10 fictional sites in South Australia.
 }
 \details{
 The variables are as follows:
