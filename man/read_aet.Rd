@@ -36,14 +36,14 @@ resolved from the option \code{nert.initial_delay} if that option exists.
 not been set.)}
 }
 \value{
-A \link[terra:SpatRaster]{terra::SpatRaster} object of the requested Evapotranspiration collection.
+A \link[terra:SpatRaster]{terra::SpatRaster} object of the requested evapotranspiration collection.
 }
 \description{
 Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the CMRSET actual
 evapotranspiration data (v2.2) from the TERN Data Portal. This dataset
 provides monthly estimates of actual ET (mm/month) at 30 m resolution
 from May 1987 onwards, using the CSIRO MODIS Reflectance-based Scaling
-EvapoTranspiration (CMRSET) algorithm that combines potential
+Evapotranspiration (CMRSET) algorithm that combines potential
 evapotranspiration data from the Bureau of Meteorology together with
 satellite image data provided by MODIS, VIIRS, Landsat and Sentinel-2.
 }
