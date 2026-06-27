@@ -5,7 +5,7 @@ This outlines how to propose a change to {nert}.
 ## Fixing typos
 
 You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the _source_ file.
-This generally means you'll need to edit [roxygen2 comments](https://roxygen2.r-lib.org/articles/roxygen2.html) in an `.R`, not a `.Rd` file.
+This generally means you'll need to edit {[roxygen2 comments](https://roxygen2.r-lib.org/articles/roxygen2.html)} in an `.R`, not a `.Rd` file.
 You can find the `.R` file that generates the `.Rd` by reading the comment in the first line.
 
 ## Bigger changes
@@ -33,14 +33,14 @@ See the {tidyverse} guide on [how to create a great issue](https://code-review.t
 
 - We use [Air](https://posit-dev.github.io/air/formatter.html) to format our code.
 
-- We use [roxygen2](https://cran.r-project.org/package=roxygen2), with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.
+- We use {[roxygen2](https://cran.r-project.org/package=roxygen2)}, with [Markdown syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html), for documentation.
 
-- We use [`moodymudskipper/devtag`](https://github.com/moodymudskipper/devtag) to document internal functions, you'll want to install this package using `pak::pak("moodymudskipper/devtag)` or some other method for installing from GitHub to redocument this package.
+- We use {[`moodymudskipper/devtag`](https://github.com/moodymudskipper/devtag)} to document internal functions, you'll want to install this package using `pak::pak("moodymudskipper/devtag)` or some other method for installing from GitHub to redocument this package.
 
-- We use [testthat](https://cran.r-project.org/package=testthat) for unit tests.
+- We use {[testthat](https://cran.r-project.org/package=testthat)} for unit tests.
   Contributions with test cases included are easier to accept.
 
 ## Code of Conduct
 
-Please note that the {ner} project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+Please note that the {nert} project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
 By contributing to this project you agree to abide by its terms.
