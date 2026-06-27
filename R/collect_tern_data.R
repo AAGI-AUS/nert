@@ -168,7 +168,7 @@ collect_tern_data <- function(
 
   if (na.rm && length(data_cols) > 0L) {
     keep <- vapply(seq_len(nrow(out)), function(i) {
-      any(!is.na(unlist(out[i, data_cols, with = FALSE])))
+      !all(is.na(unlist(out[i, data_cols, with = FALSE])))
     }, logical(1L))
     out <- out[keep]
   }
@@ -269,7 +269,7 @@ collect_tern_data <- function(
       as.Date(date_range)
     }
   }, error = function(e) bad())
-  if (length(dates) == 0L || any(is.na(dates))) bad()
+  if (length(dates) == 0L || anyNA(dates)) bad()
   return(dates)
 }
 

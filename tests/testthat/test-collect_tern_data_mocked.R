@@ -70,7 +70,7 @@ test_that("ASC populates a character column", {
     verbose = FALSE
   )
   expect_type(out$ASC, "character")
-  expect_true(all(!is.na(out$ASC)))
+  expect_true(!anyNA(out$ASC))
 })
 
 test_that("CANOPY (static) value is replicated across the date axis", {
