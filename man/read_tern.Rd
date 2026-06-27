@@ -5,7 +5,7 @@
 \title{Read TERN COG Datasets}
 \usage{
 read_tern(
-  dataset_id,
+  dataset_id = NULL,
   ...,
   api_key = NULL,
   max_tries = NULL,

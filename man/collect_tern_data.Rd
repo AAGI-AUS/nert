@@ -130,5 +130,6 @@ d_t_xy <- collect_tern_data(
   date_range = dates,
   datasets = "CLY"
 )
+
 \dontshow{\}) # examplesIf}
 }
