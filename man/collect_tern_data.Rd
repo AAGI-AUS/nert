@@ -76,7 +76,7 @@ specify retrieval of all SMIPS datasets. This parameter is ignored for
 non-SMIPS datasets.}
 
 \item{asc_collection}{\emph{For ASC datasets.} A \code{character} vector specifying
-the Australian Soil Classication Map datasets to be retrieved.
+the Australian Soil Classification Map datasets to be retrieved.
 (Default=All ASC datasets.) Options: \code{"EV"} (estimated soil order),
 \code{"CI"} (confusion index). Use \code{NULL} (default) or \code{"all"} to specify
 retrieval of all ASC datasets.}

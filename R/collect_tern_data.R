@@ -46,7 +46,7 @@
 #'   specify retrieval of all SMIPS datasets. This parameter is ignored for
 #'   non-SMIPS datasets.
 #' @param asc_collection *For ASC datasets.* A `character` vector specifying
-#'   the Australian Soil Classication Map datasets to be retrieved.
+#'   the Australian Soil Classification Map datasets to be retrieved.
 #'   (Default=All ASC datasets.) Options: `"EV"` (estimated soil order),
 #'   `"CI"` (confusion index). Use `NULL` (default) or `"all"` to specify
 #'   retrieval of all ASC datasets.
