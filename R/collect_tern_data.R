@@ -349,7 +349,7 @@ collect_tern_data <- function(
       )
     )
   }
-  if (length(date_range) == 0 || any(is.na(date_range))) {
+  if (length(date_range) == 0 || anyNA(date_range)) {
     return(cli::cli_abort("{.arg date_range} must contain valid dates."))
   }
 
