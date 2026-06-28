@@ -601,7 +601,8 @@ test_that("work-item planner emits 14 items for all SLGA datasets at one depth, 
   expect_identical(length(items), 14L)
   expect_true(all(grepl(
     "_EV_000_005",
-    vapply(items, function(x) x$cols[1L], character(1L))
+    vapply(items, function(x) x$cols[1L], character(1L)),
+    fixed = TRUE
   )))
 })
 
