@@ -5,7 +5,10 @@
 # ── dispatch / ID normalisation ───────────────────────────────────────────────
 
 test_that(".tern_dispatch_id normalises full UUID key", {
-  expect_identical(.tern_dispatch_id("TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"), "d1995ee8")
+  expect_identical(
+    .tern_dispatch_id("TERN/d1995ee8-53f0-4a7d-91c2-ad5e4a23e5e0"),
+    "d1995ee8"
+  )
 })
 
 test_that(".tern_dispatch_id normalises short prefix key", {
@@ -28,10 +31,7 @@ test_that("read_tern errors when dataset_id is missing", {
 # ── error: unsupported dataset ────────────────────────────────────────────────
 
 test_that("read_tern errors informatively for unsupported dataset", {
-  expect_error(
-    read_tern("TERN/unknown123"),
-    "not currently implemented"
-  )
+  expect_error(read_tern("TERN/unknown123"), "not implemented")
 })
 
 test_that("read_tern error for unsupported dataset mentions supported keys", {
@@ -86,8 +86,14 @@ test_that("read_tern AET errors for date before 1987-05-01", {
 
 test_that("read_tern SMIPS builds correct URL filename via internal helper", {
   day <- .check_date("2024-01-15")
-  expect_identical(.make_smips_url("totalbucket", day), "smips_totalbucket_mm_20240115.tif")
-  expect_identical(.make_smips_url("SMindex", day), "smips_smi_perc_20240115.tif")
+  expect_identical(
+    .make_smips_url("totalbucket", day),
+    "smips_totalbucket_mm_20240115.tif"
+  )
+  expect_identical(
+    .make_smips_url("SMindex", day),
+    "smips_smi_perc_20240115.tif"
+  )
 })
 
 # ── AET: URL construction ─────────────────────────────────────────────────────

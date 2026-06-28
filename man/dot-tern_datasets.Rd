@@ -14,12 +14,11 @@ from this list, so a dataset is defined in one place. The SLGA entries are
 generated from \link{.slga_config}.
 }
 \details{
-Each entry is a \code{list} with an \code{alias} (upper-case short name), a
-\code{read} handler invoked as
-\code{read(did, dots, api_key, max_tries, initial_delay)}, and an optional
-\code{validate} function invoked as \code{validate(dots, dataset_id)} before
-the API key is checked. Both the validator (where present) and the handler
-live in the dataset's own \code{R/read_<name>.R} file. Datasets with no
+Each entry is a \code{list} with an \code{alias} (upper-case short name), a \code{read}
+handler invoked as \code{read(did, dots, api_key, max_tries, initial_delay)}, and
+an optional \code{validate} function invoked as \code{validate(dots, dataset_id)}
+before the API key is checked. Both the validator (where present) and the
+handler live in the dataset's own \verb{R/read_<name>.R} file. Datasets with no
 pre-key argument validation simply omit \code{validate}.
 }
 \keyword{internal}

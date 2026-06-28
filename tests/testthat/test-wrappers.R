@@ -33,11 +33,11 @@ test_that(".tern_dispatch_id is case-insensitive on aliases", {
 
 test_that(".tern_dispatch_id is consistent with the .tern_aliases table", {
   # Every key in .tern_aliases must round-trip via dispatcher
-  ks <- names(nert:::.tern_aliases)
+  ks <- names(.tern_aliases)
   for (k in ks) {
     expect_identical(
       .tern_dispatch_id(k),
-      nert:::.tern_aliases[[k]]
+      .tern_aliases[[k]]
     )
   }
 })

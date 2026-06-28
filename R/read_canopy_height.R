@@ -41,7 +41,7 @@
 #'   TERN Canopy Height model Point-of-truth metadata URL:
 #'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/36c98155-39c8-4eec-9070-a978933f3fa3>
 #'
-#' @autoglobal
+#'
 #' @export
 read_canopy_height <- function(
   api_key = get_key(),
@@ -63,7 +63,7 @@ read_canopy_height <- function(
 #' @param dots Named list of \code{...} args from [read_tern()] (unused).
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
+#'
 #' @dev
 .read_tern_canopy_height <- function(
   did,

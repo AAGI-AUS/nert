@@ -24,15 +24,24 @@ test_that("The .day argument is checked consistently across various types", {
     "You requested 2000-01-01"
   )
   expect_error(
-    .check_collection_agreement("totalbucket", as.POSIXct("2000-01-01", tz = "UTC")),
+    .check_collection_agreement(
+      "totalbucket",
+      as.POSIXct("2000-01-01", tz = "UTC")
+    ),
     "You requested 2000-01-01"
   )
   expect_error(
-    .check_collection_agreement("totalbucket", as.POSIXct("2000-01-01", tz = "ACST")),
+    .check_collection_agreement(
+      "totalbucket",
+      as.POSIXct("2000-01-01", tz = "Australia/Adelaide")
+    ),
     "You requested 2000-01-01"
   )
   expect_error(
-    .check_collection_agreement("totalbucket", as.POSIXct("2000-01-01", tz = "EST")),
+    .check_collection_agreement(
+      "totalbucket",
+      as.POSIXct("2000-01-01", tz = "EST")
+    ),
     "You requested 2000-01-01"
   )
 })
@@ -55,13 +64,15 @@ test_that("The 2015-01-01 date is passed successfully", {
 test_that("Dates beyond today's date are rejected", {
   expect_error(
     .check_collection_agreement(
-      "totalbucket", lubridate::today() + lubridate::days(3)
+      "totalbucket",
+      lubridate::today() + lubridate::days(3)
     ),
     "not yet available"
   )
   expect_error(
     .check_collection_agreement(
-      "totalbucket", lubridate::today() + lubridate::years(2)
+      "totalbucket",
+      lubridate::today() + lubridate::years(2)
     ),
     "not yet available"
   )
