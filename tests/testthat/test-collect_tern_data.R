@@ -117,7 +117,7 @@ test_that(".normalise_datasets returns the full alias set for NULL/'all'", {
     "CANOPY",
     "PHENOLOGY"
   )
-  expect_identical(length(.normalise_datasets(NULL)), length(all_aliases))
+  expect_length(.normalise_datasets(NULL), length(all_aliases))
   expect_identical(sort(.normalise_datasets(NULL)), sort(all_aliases))
   expect_identical(.normalise_datasets("all"), .normalise_datasets(NULL))
 })
@@ -165,7 +165,7 @@ test_that(".normalise_depth returns the full depth set for NULL/'all'", {
     "060_100",
     "100_200"
   )
-  expect_identical(length(.normalise_depth(NULL)), length(valid_depths))
+  expect_length(.normalise_depth(NULL), length(valid_depths))
   expect_identical(sort(.normalise_depth(NULL)), sort(valid_depths))
   expect_identical(.normalise_depth("all"), .normalise_depth(NULL))
 })
@@ -206,7 +206,7 @@ test_that(".normalise_depth errors when no valid depths remain", {
 
 test_that(".normalise_stat returns the full stat set for NULL/'all'", {
   valid_stats <- c("EV", "05", "95")
-  expect_identical(length(.normalise_stat(NULL)), length(valid_stats))
+  expect_length(.normalise_stat(NULL), length(valid_stats))
   expect_identical(sort(.normalise_stat(NULL)), sort(valid_stats))
   expect_identical(.normalise_stat("all"), .normalise_stat(NULL))
 })
@@ -258,10 +258,7 @@ test_that(".normalise_smips_collection returns the full SMIPS set for NULL/'all'
     "deepD",
     "runoff"
   )
-  expect_identical(
-    length(.normalise_smips_collection(NULL)),
-    length(valid_smips)
-  )
+  expect_length(.normalise_smips_collection(NULL), length(valid_smips))
   expect_identical(sort(.normalise_smips_collection(NULL)), sort(valid_smips))
   expect_identical(
     .normalise_smips_collection("all"),
@@ -305,7 +302,7 @@ test_that(".normalise_smips_collection errors when no valid variants remain", {
 
 test_that(".normalise_asc_collection returns the full ASC set for NULL/'all'", {
   valid_asc <- c("EV", "CI")
-  expect_identical(length(.normalise_asc_collection(NULL)), length(valid_asc))
+  expect_length(.normalise_asc_collection(NULL), length(valid_asc))
   expect_identical(sort(.normalise_asc_collection(NULL)), sort(valid_asc))
   expect_identical(
     .normalise_asc_collection("all"),
