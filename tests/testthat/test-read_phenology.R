@@ -23,7 +23,6 @@ METRIC_DIR <- list(
 # listing and double-checks that nothing has changed. (Not run on CRAN,
 # GitHub CI: run this locally with xml2 installed.)
 test_that("METRIC_DIR matches with the actual TERN server directories", {
-  skip_on_cran()
   skip_on_ci()
   skip_if_not_installed("xml2")
 
