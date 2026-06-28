@@ -24,6 +24,7 @@ Anthroposol
 Arancibia
 AusEFlux
 BDW
+Behavior
 Biome
 CBD
 CEC
@@ -37,7 +38,7 @@ CUR2210
 CaCl2
 Calcarasol
 Chromosol
-Classication
+Corrigin
 DUL
 Dermosol
 Dev
@@ -47,8 +48,6 @@ ECE
 EGS
 EPSG
 EVI
-Easting
-EvapoTranspiration
 Evapotranspiration
 Ferrosol
 GDAL
@@ -56,6 +55,7 @@ GRDC
 GeoNetwork
 GeoTIFF
 GeoTIFFs
+Geotiff
 GlobalSoilMap
 Guerschman
 Huete
@@ -75,7 +75,6 @@ NSW
 NTO
 Niel
 Nimalka
-Northing
 OPeNDAP
 ORCID
 Odgers
@@ -124,16 +123,16 @@ Wadoux
 Xie
 Xue
 Zund
-aet
 anonymised
 args
-asc
 bashrc
-center
+bucket1
+bucket2
 cm3
 codecov
 confounder
-de
+deduplicated
+deepD
 erroring
 evapotranspiration
 fifo
@@ -159,11 +158,8 @@ rOpenSci
 redownloading
 roxygen
 runnability
-smips
-soildiv
 spatio
 terra
-tidyterra
 totalbucket
 unitless
 userinfo
@@ -173,4 +169,5 @@ v2
 validator
 volatilisation
 vsicurl
+xy
 zshrc

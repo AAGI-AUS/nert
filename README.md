@@ -115,14 +115,21 @@ The {nert} package also provides a convenient function `collect_tern_data()` whi
 
 
 ``` r
-dat <- collect_tern_data(
-  xy = data.frame(lon = c(118.28, 150.84), lat = c(-31.48, -31.07)),
-  date_range = c("2024-01-01", "2024-01-07"),
-  datasets = c("SMIPS", "CLY"),
-  smips_collection = "totalbucket",
-  depth = c("000_005", "005_015"),
-  stat = "EV",
-  verbose = FALSE
+library(terra)
+#> terra 1.9.34
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
+df <- structure(
+  list(
+    location = c("Corrigin", "Merredin", "Tamworth"),
+    x = c(117.87, 118.28, 150.84),
+    y = c(-32.33, -31.48, -31.07)
+  ),
+  row.names = c(NA, -3L),
+  class = "data.frame"
 )
 #> Error in `if (depth == "all") ...`:
 #> ! the condition has length > 1
