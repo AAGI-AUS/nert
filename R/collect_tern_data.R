@@ -313,17 +313,15 @@ collect_tern_data <- function(
     cli::cli_abort("Coordinates must not be {.code NA}.")
   }
 
-  #FIXME: Russell (08/06): Surely we can be more specific than this. They
-  #  are strictly Australian datasets in decimal degrees Northing, so really
-  #  anything outside of -44 < lat < -10 ish, and 112 < lon < 154 ish is
-  #  going to be out-of-bounds.
+  # Based on measured spatial extent for available TERN dataset rasters
+  # Last measured: 28/06/2026.
   if (
     any(
-      coords$lon < -180 | coords$lon > 180 | coords$lat < -90 | coords$lat > 90
+      coords$lon < 90 | coords$lon > 180 | coords$lat < -51 | coords$lat > -8
     )
   ) {
     cli::cli_abort(
-      "Coordinate out of bounds: lon in [-180, 180], lat in [-90, 90]."
+      "Coordinate out of bounds: for TERN rasters, lon in [90, 180], lat in [-51, -8]."
     )
   }
   return(coords)
@@ -372,7 +370,6 @@ collect_tern_data <- function(
 #'   in `given_vec` (so that errors/warnings are more informative).
 #' @returns A `character` vector of valid elements (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_vector_elements <- function(vec, valid_elements, info) {
   if (is.null(vec) || (length(vec) == 1 && identical(vec, "all"))) {
@@ -405,7 +402,6 @@ collect_tern_data <- function(
 #' @param datasets User-supplied aliases (or `NULL`/`"all"`).
 #' @returns A `character` vector of recognised aliases (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_datasets <- function(datasets) {
   all_aliases <- c(
@@ -440,7 +436,6 @@ collect_tern_data <- function(
 #' @param depth User-supplied soil depths (or `NULL`/`"all"`).
 #' @returns A `character` vector of valid soil depths (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_depth <- function(depth) {
   valid_depths <- c(
@@ -461,7 +456,6 @@ collect_tern_data <- function(
 #' @param stat User-supplied statistics for SLGA datasets (or `NULL`/`"all"`).
 #' @returns A `character` vector of valid statistics (de-duplicated, order
 #'   preserved).
-#' @autoglobal
 #' @dev
 .normalise_stat <- function(stat) {
   valid_stats <- c("EV", "05", "95")
@@ -476,7 +470,6 @@ collect_tern_data <- function(
 #'   collect (or `NULL`/`"all"`).
 #' @returns A `character` vector of valid SMIPS datasets (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_smips_collection <- function(smips_collection) {
   valid_smips <- c(
@@ -498,7 +491,6 @@ collect_tern_data <- function(
 #'   (or `NULL`/`"all"`).
 #' @returns A `character` vector of valid ASC datasets (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_asc_collection <- function(asc_collection) {
   valid_asc <- c("EV", "CI")
@@ -513,7 +505,6 @@ collect_tern_data <- function(
 #'   collect (or `NULL`/`"all"`).
 #' @returns A `character` vector of valid AET datasets (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_aet_collection <- function(aet_collection) {
   valid_aet <- c("ETa", "pixel_qa")
@@ -528,7 +519,6 @@ collect_tern_data <- function(
 #'   to collect (or `NULL`/`"all"`).
 #' @returns A `character` vector of valid SOILDIV datasets (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_soildiv_collection <- function(soildiv_collection) {
   valid_soildiv <- c(
@@ -550,7 +540,6 @@ collect_tern_data <- function(
 #'   to collect (or `NULL`/`"all"`).
 #' @returns A `character` vector of valid PHENOLOGY datasets (de-duplicated,
 #'   order preserved).
-#' @autoglobal
 #' @dev
 .normalise_phen_collection <- function(phenology_collection) {
   valid_phenology <- c(
@@ -748,7 +737,6 @@ collect_tern_data <- function(
 #' @param api_key TERN API key.
 #' @param max_tries Total number of download retries.
 #' @param initial_delay Initial retry delay (in seconds).
-#' @autoglobal
 #' @dev
 .fill_work_item <- function(
   out,
@@ -840,7 +828,6 @@ collect_tern_data <- function(
 #' @param soildiv_collection Normalised SOILDIV collection selector.
 #' @param phenology_collection Normalised PHENOLOGY collection selector.
 #' @returns `invisible(NULL)`. This function is called for its side effects.
-#' @autoglobal
 #' @dev
 .print_datasets_table <- function(
   datasets,

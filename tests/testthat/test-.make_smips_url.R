@@ -51,7 +51,6 @@ test_that("An invalid collection throws an error", {
     '"'
   )
 
-  # TODO: check error message
   error_msg <- paste0(
     "`.collection` must be one of ",
     valid_collections_str,

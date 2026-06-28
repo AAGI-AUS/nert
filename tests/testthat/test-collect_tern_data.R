@@ -52,7 +52,9 @@ test_that(".parse_coordinates rejects mismatched lon/lat lengths", {
 
 test_that(".parse_coordinates rejects out-of-bounds coordinates", {
   expect_error(.parse_coordinates(181, 0, NULL), "out of bounds")
-  expect_error(.parse_coordinates(0, 91, NULL), "out of bounds")
+  expect_error(.parse_coordinates(89, 0, NULL), "out of bounds")
+  expect_error(.parse_coordinates(0, -52, NULL), "out of bounds")
+  expect_error(.parse_coordinates(0, -7, NULL), "out of bounds")
 })
 
 test_that(".parse_coordinates rejects NA coordinates", {
