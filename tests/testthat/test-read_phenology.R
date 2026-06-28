@@ -1,7 +1,5 @@
 # Offline behaviour tests for read_phenology().
-# Mocking via helper-mocks.R; no network I/O.
-
-KEY <- "test-key-0000"
+# Mocking via helper-mocks.R; network I/O only for the sanity check.
 
 # Phenology metric -> directory name registry mirrored from
 # internal_functions.R::.phenology_metrics.  Update both if either changes.
@@ -18,13 +16,32 @@ METRIC_DIR <- list(
   PGS_month = "10_Peak_of_the_growing_season_by_month",
   EGS_month = "11_End_of_the_growing_season_by_month"
 )
-#FIXME: Russell (02/06): This is an inadequate test fixture (and it's why
-#  we didn't catch the hallucinated variables ala Issue #44). We need these
-#  to actually match with what TERN's directories are on their server. As
-#  noble as the idea of "No network I/O" is, I reckon we need at least a
-#  single request here just to verify that the directories are what the
-#  package expects them to be (and so the testing can flag if they are
-#  ever changed on the remote server too).
+
+# Sanity-check test ------------------------------------------------------------
+# We need the above METRIC_DIR test fixture to actually match what
+# TERN has on their servers, so this network test pulls the directory
+# listing and double-checks that nothing has changed. (Not run on CRAN,
+# GitHub CI: run this locally with xml2 installed.)
+test_that("METRIC_DIR matches with the actual TERN server directories", {
+  skip_on_cran()
+  skip_on_ci()
+  skip_if_not_installed("xml2")
+
+  url <- "https://data.tern.org.au/remote-sensing/modis/phenology_myd13a1/"
+  html <- xml2::read_html(url)
+  dir_listing <- xml2::xml_attr(
+    xml2::xml_find_all(html, xpath = "//table//tr//a"),
+    "href"
+  )
+  dir_listing <- gsub("/", "", dir_listing, fixed = TRUE)
+  for (dir in METRIC_DIR) {
+    expect_true(dir %in% dir_listing)
+  }
+})
+
+
+# From here, it's non-network I/O tests using the mocked COGs and test key.
+KEY <- "test-key-0000"
 
 test_that("every phenology metric maps to its documented subdirectory", {
   sink <- .use_mocked_cog()
