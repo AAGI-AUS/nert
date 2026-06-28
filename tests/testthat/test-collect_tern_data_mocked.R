@@ -23,7 +23,7 @@ test_that("collect_tern_data fills SMIPS column at requested locations", {
     verbose = FALSE
   )
   expect_s3_class(out, "data.table")
-  expect_identical(nrow(out), 4L)           # 2 dates x 2 locations
+  expect_identical(nrow(out), 4L) # 2 dates x 2 locations
   expect_true("SMIPS_totalbucket" %in% names(out))
   expect_true(all(out$SMIPS_totalbucket == 42))
 })
@@ -47,7 +47,8 @@ test_that("collect_tern_data emits the right shape for SMIPS x SLGA mix", {
   .use_mocked_cog()
   out <- collect_tern_data(
     date_range = as.Date(c("2024-01-01", "2024-01-01")),
-    lon = 138.6, lat = -34.9,
+    lon = 138.6,
+    lat = -34.9,
     datasets = c("SMIPS", "AWC"),
     smips_collection = "totalbucket",
     depth = "000_005",
@@ -65,21 +66,23 @@ test_that("ASC populates a character column for EV, a double column for CI", {
   .use_mocked_cog(raster = .fixture_character_raster())
   out <- collect_tern_data(
     date_range = as.Date("2024-01-01"),
-    lon = 138.6, lat = -34.9,
+    lon = 138.6,
+    lat = -34.9,
     datasets = "ASC",
     api_key = KEY,
     verbose = FALSE
   )
   expect_type(out$ASC_EV, "character")
   expect_type(out$ASC_CI, "double")
-  expect_true(all(!is.na(out$ASC)))
+  expect_true(!anyNA(out$ASC))
 })
 
 test_that("CANOPY (static) value is replicated across the date axis", {
   .use_mocked_cog(raster = .fixture_numeric_raster(value = 12))
   out <- collect_tern_data(
     date_range = seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day"),
-    lon = 138.6, lat = -34.9,
+    lon = 138.6,
+    lat = -34.9,
     datasets = "CANOPY",
     api_key = KEY,
     verbose = FALSE
@@ -94,7 +97,8 @@ test_that("a per-COG fetch failure leaves the column at NA without dropping it",
   .use_mocked_cog(error_msg = "simulated COG fetch failure")
   out <- suppressWarnings(collect_tern_data(
     date_range = as.Date("2024-01-01"),
-    lon = 138.6, lat = -34.9,
+    lon = 138.6,
+    lat = -34.9,
     datasets = "SMIPS",
     smips_collection = "totalbucket",
     api_key = KEY,
@@ -109,7 +113,8 @@ test_that("fetch failure surfaces a cli_warn carrying the dataset/date label", {
   expect_warning(
     collect_tern_data(
       date_range = as.Date("2024-01-01"),
-      lon = 138.6, lat = -34.9,
+      lon = 138.6,
+      lat = -34.9,
       datasets = "SMIPS",
       smips_collection = "totalbucket",
       api_key = KEY,
@@ -125,7 +130,8 @@ test_that("column set is invariant under partial failure", {
   .use_mocked_cog(error_msg = "boom")
   out <- suppressWarnings(collect_tern_data(
     date_range = as.Date(c("2024-01-01", "2024-01-01")),
-    lon = 138.6, lat = -34.9,
+    lon = 138.6,
+    lat = -34.9,
     datasets = c("SMIPS", "AWC", "CANOPY"),
     smips_collection = "totalbucket",
     depth = "000_005",
@@ -149,7 +155,8 @@ test_that("na.rm=TRUE drops rows where every data column is NA", {
   .use_mocked_cog(error_msg = "boom")
   out <- suppressWarnings(collect_tern_data(
     date_range = as.Date("2024-01-01"),
-    lon = 138.6, lat = -34.9,
+    lon = 138.6,
+    lat = -34.9,
     datasets = "SMIPS",
     smips_collection = "totalbucket",
     api_key = KEY,

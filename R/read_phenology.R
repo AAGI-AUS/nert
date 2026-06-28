@@ -91,7 +91,7 @@
 #'   TERN Land Surface Phenology Point-of-truth metadata URL:
 #'   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/2bb0c81a-41a9-434c-b87a-db0301cb52fb>
 #'
-#' @autoglobal
+#'
 #' @export
 read_phenology <- function(
   year = NULL,
@@ -119,7 +119,7 @@ read_phenology <- function(
 #' the TERN data server.
 #'
 #' @format A named \code{list} of \code{character} strings.
-#' @autoglobal
+#'
 #' @dev
 .phenology_metrics <- list(
   SGS = "1_Start_of_the_growing_season",
@@ -144,7 +144,7 @@ read_phenology <- function(
 #'
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
-#' @autoglobal
+#'
 #' @dev
 .validate_phenology <- function(dots, dataset_id) {
   year <- dots[["year"]]
@@ -181,7 +181,7 @@ read_phenology <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
-#' @autoglobal
+#'
 #' @dev
 .read_tern_phenology <- function(did, dots, api_key, max_tries, initial_delay) {
   year <- as.integer(dots[["year"]])
@@ -228,7 +228,9 @@ read_phenology <- function(
   )
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/%s/%s",
-    api_key, metric_dir, fname
+    api_key,
+    metric_dir,
+    fname
   )
   return(.read_cog(full_url, max_tries, initial_delay))
 }

@@ -69,22 +69,24 @@ test_that("season = 2 lands in the filename", {
 })
 
 test_that("season must be 1 or 2", {
-  expect_error(read_phenology(year = 2018L, season = 0L, api_key = KEY),
-               "must be 1 or 2")
-  expect_error(read_phenology(year = 2018L, season = 3L, api_key = KEY),
-               "must be 1 or 2")
+  expect_error(
+    read_phenology(year = 2018L, season = 0L, api_key = KEY),
+    "must be 1 or 2"
+  )
+  expect_error(
+    read_phenology(year = 2018L, season = 3L, api_key = KEY),
+    "must be 1 or 2"
+  )
 })
 
 # ---- Year validator --------------------------------------------------------
 
 test_that("year < 2003 is rejected", {
-  expect_error(read_phenology(year = 2002L, api_key = KEY),
-               "2003")
+  expect_error(read_phenology(year = 2002L, api_key = KEY), "2003")
 })
 
 test_that("year > 2018 is rejected", {
-  expect_error(read_phenology(year = 2019L, api_key = KEY),
-               "2018")
+  expect_error(read_phenology(year = 2019L, api_key = KEY), "2018")
 })
 
 test_that("year = 2003 (lower bound) is accepted", {

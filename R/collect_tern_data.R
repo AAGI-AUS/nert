@@ -67,17 +67,17 @@
 #'   `"EVI1"`, `"EVI2"`, `"EVIP"`, `"EVII"`, `"SGS_month"`, `"PGS_month"`,
 #'   `"EGS_month"`. Use `NULL` (default) or `"all"` to specify retrieval of
 #'   all PHENOLOGY datasets.
-#' @param api_key A \code{character} string containing your \acronym{TERN}
+#' @param api_key A `character` string containing your \acronym{TERN}
 #'   \acronym{API} key. Defaults to automatic detection from your
-#'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
+#'   `.Renviron` or `.Rprofile`.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised. Default=\code{NULL}, in which case the maximum retry number is
-#'   resolved from the option \code{nert.max_tries} if that option exists.
-#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
+#'   raised. Default=`NULL`, in which case the maximum retry number is
+#'   resolved from the option `nert.max_tries` if that option exists.
+#'   (Defaults to 3 retries if `nert.max_tries` has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt). Default=\code{NULL}, in which case the initial delay is
-#'   resolved from the option \code{nert.initial_delay} if that option exists.
-#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   attempt). Default=`NULL`, in which case the initial delay is
+#'   resolved from the option `nert.initial_delay` if that option exists.
+#'   (Defaults to a 1 second initial delay if `nert.initial_delay` has
 #'   not been set.)
 #' @param verbose Logical.  If `TRUE`, print progress messages. (Default=TRUE.)
 #' @param na.rm Logical.  If `TRUE`, drop rows where all dataset columns
@@ -128,7 +128,7 @@
 #'   datasets = "CLY"
 #' )
 #'
-#' @autoglobal
+#'
 #' @export
 collect_tern_data <- function(
   date_range,
@@ -184,8 +184,14 @@ collect_tern_data <- function(
 
   if (verbose) {
     .print_datasets_table(
-      datasets, depth, stat, smips_collection, asc_collection, aet_collection,
-      soildiv_collection, phenology_collection
+      datasets,
+      depth,
+      stat,
+      smips_collection,
+      asc_collection,
+      aet_collection,
+      soildiv_collection,
+      phenology_collection
     )
     cli::cli_inform(
       "Collecting {length(datasets)} dataset{?s} at {n_loc} \\
@@ -194,8 +200,15 @@ collect_tern_data <- function(
   }
 
   work_items <- .build_work_items(
-    datasets, dates, depth, stat, smips_collection, asc_collection,
-    aet_collection, soildiv_collection, phenology_collection
+    datasets,
+    dates,
+    depth,
+    stat,
+    smips_collection,
+    asc_collection,
+    aet_collection,
+    soildiv_collection,
+    phenology_collection
   )
 
   out <- data.table::data.table(
@@ -206,11 +219,13 @@ collect_tern_data <- function(
 
   for (wi in work_items) {
     for (col in wi$cols) {
-      out[, (col) := if (identical(wi$type, "character")) {
-        NA_character_
-      } else {
-        NA_real_
-      }]
+      out[,
+        (col) := if (identical(wi$type, "character")) {
+          NA_character_
+        } else {
+          NA_real_
+        }
+      ]
     }
   }
 
@@ -219,16 +234,27 @@ collect_tern_data <- function(
       cli::cli_inform("  {.field {wi$label}}")
     }
     .fill_work_item(
-      out, wi, pts, n_dt, n_loc, api_key, max_tries, initial_delay
+      out,
+      wi,
+      pts,
+      n_dt,
+      n_loc,
+      api_key,
+      max_tries,
+      initial_delay
     )
   }
 
   data_cols <- setdiff(names(out), c("date", "lon", "lat"))
 
   if (na.rm && length(data_cols) > 0L) {
-    keep <- vapply(seq_len(nrow(out)), function(i) {
-      any(!is.na(unlist(out[i, data_cols, with = FALSE])))
-    }, logical(1L))
+    keep <- vapply(
+      seq_len(nrow(out)),
+      function(i) {
+        !all(is.na(unlist(out[i, data_cols, with = FALSE])))
+      },
+      logical(1L)
+    )
     out <- out[keep]
   }
 
@@ -246,7 +272,7 @@ collect_tern_data <- function(
 #' @param lat Latitude(s).
 #' @param xy Optional data.frame/matrix with lon/lat or x/y columns.
 #' @returns A 2-column `data.table` with columns `lon`, `lat`.
-#' @autoglobal
+#'
 #' @dev
 .parse_coordinates <- function(lon, lat, xy) {
   if (!is.null(xy)) {
@@ -291,8 +317,11 @@ collect_tern_data <- function(
   #  are strictly Australian datasets in decimal degrees Northing, so really
   #  anything outside of -44 < lat < -10 ish, and 112 < lon < 154 ish is
   #  going to be out-of-bounds.
-  if (any(coords$lon < -180 | coords$lon > 180 |
-            coords$lat < -90  | coords$lat > 90)) {
+  if (
+    any(
+      coords$lon < -180 | coords$lon > 180 | coords$lat < -90 | coords$lat > 90
+    )
+  ) {
     cli::cli_abort(
       "Coordinate out of bounds: lon in [-180, 180], lat in [-90, 90]."
     )
@@ -310,7 +339,7 @@ collect_tern_data <- function(
 #' @param date_range A `Date` vector or `character` vector containing the
 #'   date range supplied by the user.
 #' @returns A `Date` vector.
-#' @autoglobal
+#'
 #' @dev
 .parse_date_range <- function(date_range) {
   if (!inherits(date_range, "character") && !inherits(date_range, "Date")) {
@@ -320,7 +349,7 @@ collect_tern_data <- function(
       )
     )
   }
-  if (length(date_range) == 0 || any(is.na(date_range))) {
+  if (length(date_range) == 0 || anyNA(date_range)) {
     return(cli::cli_abort("{.arg date_range} must contain valid dates."))
   }
 
@@ -380,8 +409,25 @@ collect_tern_data <- function(
 #' @dev
 .normalise_datasets <- function(datasets) {
   all_aliases <- c(
-    "SMIPS", "ASC", "AET", "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW",
-    "NTO", "AVP", "PTO", "CEC", "ECE", "DUL", "L15", "SOILDIV", "CANOPY",
+    "SMIPS",
+    "ASC",
+    "AET",
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "AVP",
+    "PTO",
+    "CEC",
+    "ECE",
+    "DUL",
+    "L15",
+    "SOILDIV",
+    "CANOPY",
     "PHENOLOGY"
   )
   info <- "dataset aliases"
@@ -398,7 +444,12 @@ collect_tern_data <- function(
 #' @dev
 .normalise_depth <- function(depth) {
   valid_depths <- c(
-    "000_005", "005_015", "015_030", "030_060", "060_100", "100_200"
+    "000_005",
+    "005_015",
+    "015_030",
+    "030_060",
+    "060_100",
+    "100_200"
   )
   info <- "SLGA soil depths"
   return(.normalise_vector_elements(depth, valid_depths, info))
@@ -429,7 +480,12 @@ collect_tern_data <- function(
 #' @dev
 .normalise_smips_collection <- function(smips_collection) {
   valid_smips <- c(
-    "totalbucket", "SMindex", "bucket1", "bucket2", "deepD", "runoff"
+    "totalbucket",
+    "SMindex",
+    "bucket1",
+    "bucket2",
+    "deepD",
+    "runoff"
   )
   info <- "SMIPS datasets"
   return(.normalise_vector_elements(smips_collection, valid_smips, info))
@@ -476,8 +532,12 @@ collect_tern_data <- function(
 #' @dev
 .normalise_soildiv_collection <- function(soildiv_collection) {
   valid_soildiv <- c(
-    "Bacteria_NMDS1", "Bacteria_NMDS2", "Bacteria_NMDS3", "Fungi_NMDS1",
-    "Fungi_NMDS2", "Fungi_NMDS3"
+    "Bacteria_NMDS1",
+    "Bacteria_NMDS2",
+    "Bacteria_NMDS3",
+    "Fungi_NMDS1",
+    "Fungi_NMDS2",
+    "Fungi_NMDS3"
   )
   info <- "SOILDIV datasets"
   return(.normalise_vector_elements(soildiv_collection, valid_soildiv, info))
@@ -494,8 +554,17 @@ collect_tern_data <- function(
 #' @dev
 .normalise_phen_collection <- function(phenology_collection) {
   valid_phenology <- c(
-    "SGS", "PGS", "EGS", "LGS", "EVI1", "EVI2", "EVIP", "EVII", "SGS_month",
-    "PGS_month", "EGS_month"
+    "SGS",
+    "PGS",
+    "EGS",
+    "LGS",
+    "EVI1",
+    "EVI2",
+    "EVIP",
+    "EVII",
+    "SGS_month",
+    "PGS_month",
+    "EGS_month"
   )
   info <- "PHENOLOGY datasets"
   return(
@@ -527,16 +596,35 @@ collect_tern_data <- function(
 #' @param soildiv_collection SOILDIV collection selector.
 #' @param phenology_collection PHENOLOGY collection selector.
 #' @returns A list of work-item lists.
-#' @autoglobal
+#'
 #' @dev
 #'
 .build_work_items <- function(
-  datasets, dates, depth, stat, smips_collection, asc_collection,
-  aet_collection, soildiv_collection, phenology_collection
+  datasets,
+  dates,
+  depth,
+  stat,
+  smips_collection,
+  asc_collection,
+  aet_collection,
+  soildiv_collection,
+  phenology_collection
 ) {
   slga_aliases <- c(
-    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
-    "CEC", "ECE", "DUL", "L15"
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "AVP",
+    "PTO",
+    "CEC",
+    "ECE",
+    "DUL",
+    "L15"
   )
 
   items <- list()
@@ -663,7 +751,14 @@ collect_tern_data <- function(
 #' @autoglobal
 #' @dev
 .fill_work_item <- function(
-    out, wi, pts, n_dt, n_loc, api_key, max_tries, initial_delay
+  out,
+  wi,
+  pts,
+  n_dt,
+  n_loc,
+  api_key,
+  max_tries,
+  initial_delay
 ) {
   r <- tryCatch(
     suppressWarnings(
@@ -708,7 +803,7 @@ collect_tern_data <- function(
   }
 
   vals <- ext[, -1L, drop = FALSE]
-  v    <- vals[[1L]]
+  v <- vals[[1L]]
   if (length(v) != n_loc) {
     cli::cli_warn(
       "Layer length mismatch for {.field {wi$label}}: expected {n_loc} \\
@@ -748,8 +843,14 @@ collect_tern_data <- function(
 #' @autoglobal
 #' @dev
 .print_datasets_table <- function(
-  datasets, depth, stat, smips_collection, asc_collection, aet_collection,
-  soildiv_collection, phenology_collection
+  datasets,
+  depth,
+  stat,
+  smips_collection,
+  asc_collection,
+  aet_collection,
+  soildiv_collection,
+  phenology_collection
 ) {
   dataset_info <- list(
     SMIPS = list(
@@ -874,40 +975,59 @@ collect_tern_data <- function(
     )
   )
 
-  layers_info <- vapply(datasets, function(ds) {
-    layer <- "Single layer"  # Catch-all case
+  layers_info <- vapply(
+    datasets,
+    function(ds) {
+      layer <- "Single layer" # Catch-all case
 
-    slga_datasets <- c(
-      "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
-      "CEC", "ECE", "DUL", "L15"
-    )
-    if (ds %in% slga_datasets) {
-      layer <- paste(
-        paste0("Statistic: ", paste(stat, collapse = ", ")),
-        paste0("Depth: ", paste(depth, collapse = ", ")),
-        sep = " | "
+      slga_datasets <- c(
+        "AWC",
+        "CLY",
+        "SND",
+        "SLT",
+        "BDW",
+        "PHC",
+        "PHW",
+        "NTO",
+        "AVP",
+        "PTO",
+        "CEC",
+        "ECE",
+        "DUL",
+        "L15"
       )
-    } else if (ds == "SMIPS") {
-      layer <- paste0("Collection: ", paste(smips_collection, collapse = ", "))
-    } else if (ds == "ASC") {
-      layer <- paste0("Collection: ", paste(asc_collection, collapse = ", "))
-    } else if (ds == "AET") {
-      layer <- paste0("Collection: ", paste(aet_collection, collapse = ", "))
-    } else if (ds == "SOILDIV") {
-      layer <- paste0(
-        "Collection: ",
-        paste(soildiv_collection, collapse = ", ")
-      )
-    } else if (ds == "PHENOLOGY") {
-      layer <- paste0(
-        "Collection: ",
-        paste(phenology_collection, collapse = ", ")
-      )
-    } else if (ds == "CANOPY") {
-      layer <- "Collection: Best-pick Canopy Height"
-    }
-    return(layer)
-  }, character(1L))
+      if (ds %in% slga_datasets) {
+        layer <- paste(
+          paste0("Statistic: ", paste(stat, collapse = ", ")),
+          paste0("Depth: ", paste(depth, collapse = ", ")),
+          sep = " | "
+        )
+      } else if (ds == "SMIPS") {
+        layer <- paste0(
+          "Collection: ",
+          paste(smips_collection, collapse = ", ")
+        )
+      } else if (ds == "ASC") {
+        layer <- paste0("Collection: ", paste(asc_collection, collapse = ", "))
+      } else if (ds == "AET") {
+        layer <- paste0("Collection: ", paste(aet_collection, collapse = ", "))
+      } else if (ds == "SOILDIV") {
+        layer <- paste0(
+          "Collection: ",
+          paste(soildiv_collection, collapse = ", ")
+        )
+      } else if (ds == "PHENOLOGY") {
+        layer <- paste0(
+          "Collection: ",
+          paste(phenology_collection, collapse = ", ")
+        )
+      } else if (ds == "CANOPY") {
+        layer <- "Collection: Best-pick Canopy Height"
+      }
+      return(layer)
+    },
+    character(1L)
+  )
 
   tbl <- data.table::data.table(
     Alias = datasets,
@@ -915,7 +1035,9 @@ collect_tern_data <- function(
       datasets,
       function(x) {
         return(dataset_info[[x]]$id)
-      }, character(1L)),
+      },
+      character(1L)
+    ),
     Layer = layers_info,
     Temporal = vapply(
       datasets,

@@ -14,13 +14,12 @@
 #'
 #' @returns A [terra::rast()] object of the requested data.
 #' @importFrom rlang %||%
-#' @autoglobal
 #' @dev
 .read_cog <- function(full_url, max_tries = NULL, initial_delay = NULL) {
-  max_tries     <- max_tries     %||% getOption("nert.max_tries", 3L)
+  max_tries <- max_tries %||% getOption("nert.max_tries", 3L)
   initial_delay <- initial_delay %||% getOption("nert.initial_delay", 1L)
 
-  max_tries     <- suppressWarnings(as.integer(max_tries))
+  max_tries <- suppressWarnings(as.integer(max_tries))
   initial_delay <- suppressWarnings(as.integer(initial_delay))
   if (is.na(max_tries) || max_tries < 1L) {
     cli::cli_abort(

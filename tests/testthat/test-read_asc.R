@@ -27,8 +27,10 @@ test_that("read_asc() default builds the EV URL", {
   expect_length(sink$urls, 1L)
   expect_match(
     sink$urls,
-    paste0("/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/",
-           "ASC_EV_C_P_AU_TRN_N.cog.tif"),
+    paste0(
+      "/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/",
+      "ASC_EV_C_P_AU_TRN_N.cog.tif"
+    ),
     fixed = TRUE
   )
 })

@@ -17,8 +17,14 @@ KEY <- "test-key-0000"
 
 test_that("SMIPS URLs are stable across all six collections", {
   sink <- .use_mocked_cog()
-  for (col in c("totalbucket", "SMindex", "bucket1", "bucket2",
-                "deepD", "runoff")) {
+  for (col in c(
+    "totalbucket",
+    "SMindex",
+    "bucket1",
+    "bucket2",
+    "deepD",
+    "runoff"
+  )) {
     read_smips("2024-01-15", collection = col, api_key = KEY)
   }
   expect_snapshot(cat(sink$urls, sep = "\n"))
@@ -37,7 +43,7 @@ test_that("ASC URLs are stable for EV and CI", {
 
 test_that("AET URLs are stable for ETa and pixel_qa", {
   sink <- .use_mocked_cog()
-  read_aet("2023-06-01", collection = "ETa",      api_key = KEY)
+  read_aet("2023-06-01", collection = "ETa", api_key = KEY)
   read_aet("2023-06-01", collection = "pixel_qa", api_key = KEY)
   expect_snapshot(cat(sink$urls, sep = "\n"))
 })
@@ -47,8 +53,20 @@ test_that("AET URLs are stable for ETa and pixel_qa", {
 test_that("SLGA URLs are stable across all attributes", {
   sink <- .use_mocked_cog()
   attrs <- c(
-    "AWC", "CLY", "SND", "SLT", "BDW", "PHC", "PHW", "NTO", "AVP", "PTO",
-    "CEC", "ECE", "DUL", "L15"
+    "AWC",
+    "CLY",
+    "SND",
+    "SLT",
+    "BDW",
+    "PHC",
+    "PHW",
+    "NTO",
+    "AVP",
+    "PTO",
+    "CEC",
+    "ECE",
+    "DUL",
+    "L15"
   )
   for (attr in attrs) {
     read_slga(attr, api_key = KEY)
@@ -58,8 +76,14 @@ test_that("SLGA URLs are stable across all attributes", {
 
 test_that("SLGA URLs are stable across all six depth intervals", {
   sink <- .use_mocked_cog()
-  for (d in c("000_005", "005_015", "015_030",
-              "030_060", "060_100", "100_200")) {
+  for (d in c(
+    "000_005",
+    "005_015",
+    "015_030",
+    "030_060",
+    "060_100",
+    "100_200"
+  )) {
     read_slga("AWC", depth = d, api_key = KEY)
   }
   expect_snapshot(cat(sink$urls, sep = "\n"))
@@ -97,7 +121,19 @@ test_that("Canopy Height URL is stable", {
 
 test_that("Phenology URLs are stable across all eleven metrics", {
   sink <- .use_mocked_cog()
-  for (m in c("SGS", "PGS", "EGS", "LGS", "EVI1", "EVI2", "EVIP", "EVII", "SGS_month", "PGS_month", "EGS_month")) {
+  for (m in c(
+    "SGS",
+    "PGS",
+    "EGS",
+    "LGS",
+    "EVI1",
+    "EVI2",
+    "EVIP",
+    "EVII",
+    "SGS_month",
+    "PGS_month",
+    "EGS_month"
+  )) {
     read_phenology(year = 2018L, season = 1L, collection = m, api_key = KEY)
   }
   expect_snapshot(cat(sink$urls, sep = "\n"))
