@@ -136,6 +136,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "xml2",
+      "name": "xml2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=xml2"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "usethis",
       "name": "usethis",
       "provider": {
@@ -261,7 +273,7 @@
   "applicationCategory": "Tools",
   "isPartOf": "https://grdc.com.au/research/partnerships-and-initiatives/strategic-partnerships/aagi",
   "keywords": ["TERN", "soil-data", "Australia", "earth-science", "data-access"],
-  "fileSize": "1708.765KB",
+  "fileSize": "1717.969KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
@@ -295,7 +307,7 @@
       ],
       "name": "{nert}: An API Client for TERN Data",
       "url": "https://aagi-aus.github.io/nert/",
-      "description": "R package version 1.1.0"
+      "description": "R package version 1.0.0"
     }
   ],
   "releaseNotes": "https://github.com/AAGI-AUS/nert/blob/main/NEWS.md",
