@@ -16,5 +16,5 @@ Resolve the `datasets` argument to a clean alias vector
 
 ## Value
 
-A character vector of recognised aliases (deduplicated, order
+A `character` vector of recognised aliases (de-duplicated, order
 preserved).

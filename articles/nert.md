@@ -1,46 +1,58 @@
 # nert
 
-The Australian Terrestrial Ecosystem Research Network (TERN) offers
-several data sets as Cloud Optimised Geotiff (COG) files. The Soil
-Moisture Integration and Prediction System (SMIPS) generates useful
-measurements of soil moisture at 1km resolution across all of Australia
-and the Australian Soil Classification map (ASC) provides modelled soil
-class data at a resolution of 90m. TERN provides these data as packaged
-daily datasets [via their TERN Data
-Portal](https://portal.tern.org.au/results). The {nert} package provides
-ease of access to these datasets for use and inclusion in R data
-analytics workflows. This can be obtained by registering at
-<https://portal.tern.org.au>, or by more simply using
-[`nert::get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
-in your R session. This document introduces you to the {nert} package,
-including setup and how to use the package to download data from TERN.
+The Australian Terrestrial Ecosystem Research Network (TERN) offers many
+datasets as Cloud Optimised GeoTIFF (COG) files via the [TERN Data
+Portal](https://portal.tern.org.au). The {nert} package provides an easy
+and straightforward way to retrieve these datasets for use in R data
+analytics workflows. Datasets currently available using {nert} are:
+
+- Daily volumetric soil moisture measurements, from the TERN Soil
+  Moisture Integration and Prediction System (SMIPS),
+- the Australian Soil Classification Map,
+- Actual Evapotranspiration measurements, estimated using the CSIRO
+  MODIS Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm,
+- canopy height data from the OzTreeMap best-pick Canopy Height
+  composite model,
+- Australian land surface phenology data,
+- digital soil attributes from the *Soil and Landscape Grid of
+  Australia* (SLGA), including available volumetric water capacity,
+  clay/sand/silt content, Bulk Density (whole earth) measurements, soil
+  pH (CaCl2 and water), nitrogen and phosphorus content, cation exchange
+  capacity, and the drained upper limit and 15-bar lower limit water
+  content readings,
+- soil bacteria and soil fungi beta diversity.
+
+The {nert} package uses your registered TERN API Key to authenticate
+with the TERN Data Portal. This vignette introduces you to the {nert}
+package, including how to obtain an API key and how to use {nert} to
+download TERN COG datasets.
 
 ## Acquiring Your TERN API Key
 
-An API key is required to access TERN datasets (including SMIPS) through
-their online data portal. The {nert} package streamlines the data
-process, but still requires authorisation using an API key. However, it
-is straightforward to sign up to the TERN Data Portal and acquire an API
-key that you can use, and by setting it in your R environment (via
-`.Renviron`) you can provide the {nert} package with that credential to
-allow convenient access.
+An API key is required to authenticate and access TERN datasets through
+the TERN Data Portal. It is straightforward to sign up to TERN and
+acquire an API key, and by setting the key in your R environment (via
+`.Renviron` or {keyring}) you can provide the {nert} package with that
+credential to allow convenient access whenever you use the package to
+download TERN datasets.
 
 The following steps detail the process for signing in to your TERN
 account, generating an API key, and storing it in your R environment.
 
-1.  Either directly navigate to the TERN Data Discovery Portal
-    (<https://portal.tern.org.au/>) in a web browser OR use
+1.  Navigate to the TERN Data Discovery Portal
+    (<https://portal.tern.org.au/>) in a web browser. (Alternatively,
+    use
     [`nert::get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
-    to launch a web browser at the TERN website and click the “Sign In”
+    to open the TERN website in a web browser.) Click the “Sign In”
     button that appears in the top-right of the browser window.
 
-``` r
+    ``` r
 
-library(nert)
-get_key()
-```
+    library(nert)
+    get_key()
+    ```
 
-![](01-get-started.jpg)
+    ![](01-get-started.jpg)
 
 2.  Click the Australian Access Federation button to sign in to the TERN
     Data Portal via your University ID (or alternatively, sign in via
@@ -75,33 +87,38 @@ get_key()
 
 ## Saving Your API Key Locally
 
+There are a couple of options for saving your key locally so that it is
+available for the {nert} package to use. The most straightforward way is
+to save it directly into your `.Renviron` file so that it is available
+in your R session upon each load. Alternatively, the API key can be
+stored in your operating system’s keychain credential store using the
+[{keyring}](https://keyring.r-lib.org/index.html) package for extra
+security. Both methods are explained below.
+
 ### Using Your .Renviron File
 
-There are a few options for saving your key locally. The most
-straightforward way is to save it directly into your `.Renviron` file.
-The most secure way is to store it in your system’s keychain using the
-[{keyring}](https://keyring.r-lib.org/index.html) package.
+You can store the TERN API Key in your `.Renviron` file as follows:
 
-Following, I will demonstrate how to save your API key in your
-`.Renviron` file and also, optionally, your operating system’s
-credentials store for more security.
+1.  Open your `.Renviron` file. (An easy way to open this file is to use
+    the {usethis} package in your R session, *e.g.*,
+    [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html).)
+    In your `.Renviron` file, add a new line to set a variable called
+    `TERN_API_KEY`, and paste in the API key you copied earlier as the
+    value for the variable. Note that this is the variable that the
+    {nert} package automatically looks for during the authentication, so
+    be sure to double-check that the spelling and case are correct for
+    the variable name.
 
-1.  Open your `.Renviron` file. An easy way to open the right file is to
-    use the {usethis} package in your R session, *e.g.*,
-    [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html).
-    Add a new line to the file to store your API key in the variable
-    `TERN_API_KEY`, ensuring to use that name as that is what {nert}
-    will automatically look for:
-
-``` bash
+    ``` bash
     TERN_API_KEY='<paste your key here>'
-```
+    ```
 
-    ![](07-get-started.jpg){width=80%}
+    ![](07-get-started.jpg)
 
 2.  Save your `.Renviron` file, and restart your R session so that the
-    change is applied. You can then test that the {nert} package is
-    reading your API key properly by entering
+    change is applied. Once you have restarted your R session, you can
+    then test that the {nert} package is reading your API key properly
+    by running
     [`nert::get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
     at the R command console. If the API key was successfully read by
     {nert}, then you should see your API key appear verbatim as output.
@@ -109,92 +126,117 @@ credentials store for more security.
     ![](08-get-started.jpg)
 
 3.  Finally, you can quickly test that the data download from the TERN
-    portal is working as intended by downloading a test data raster. The
-    below code downloads the SMIPS “totalbucket” soil moisture data
-    raster for January 1st, 2024, and uses the {terra} package’s
+    Data Portal is working correctly by downloading a data raster. The
+    below R code retrieves the SMIPS “totalbucket” soil moisture data
+    raster for January 1st, 2024 using the
+    [`nert::read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
+    function, and then uses the {terra} package’s
     [`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
     function to get a point value for the soil moisture measurement at
-    the Adelaide CBD (at approximately -34.9285 decimal degrees
-    latitude, 138.6007 longitude):
+    the Adelaide CBD (at approximately 138.6007 decimal degrees Easting
+    for the longitude, and -34.9285 decimal degrees Northing for the
+    latitude):
 
-``` r
+    ``` r
 
-library(nert)
-library(terra)
-#> terra 1.8.54
-#>
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#>
-#>     spin
+    library(nert)
+    library(terra)
 
-r <- read_smips(date = "2024-01-01")
+    r <- read_smips(date = "2024-01-01")
 
-extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#>   ID smips_totalbucket_mm_20240101        x         y
-#> 1  1                      46.07692 138.6037 -34.93254
-```
+    extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+    #>   ID smips_totalbucket_mm_20240101        x         y
+    #> 1  1                      46.07692 138.6037 -34.93254
+    ```
 
 At this stage your {nert} package is now working, and you can use it to
-easily download SMIPS datasets from the TERN Data Portal.
+easily download COG data from the TERN Data Portal.
 
 ### Using the {keyring} Package for Secure Storage
 
 If you prefer a more secure method, you can use the
 [{keyring}](https://keyring.r-lib.org/index.html) package to store your
-API key in your system’s credential store. If you don’t have the
-{keyring} package installed, you can install it with:
+TERN API Key in your system’s credential store.
 
-``` r
+1.  If you don’t have the {keyring} package installed, you can install
+    it with:
 
-install.packages("keyring")
-```
+    ``` r
 
-Once it’s installed, you can store your API key with:
+    install.packages("keyring")
+    ```
 
-``` r
+2.  Once {keyring} is installed, you can store your API key using the
+    [`keyring::keyring_create()`](https://keyring.r-lib.org/reference/has_keyring_support.html)
+    and
+    [`keyring::key_set()`](https://keyring.r-lib.org/reference/key_get.html)
+    functions as follows:
 
-library(keyring)
+    ``` r
 
-keyring_create("nert")
+    library(keyring)
 
-# add the key to your OS's credential store
-key_set("NERT_API_KEY", keyring = "nert")
+    keyring_create("nert")
+    key_set("NERT_API_KEY", keyring = "nert")
+    ```
 
-# verify that the key was stored properly
-key_get("NERT_API_KEY", keyring = "nert")
-```
+    This will create a new keyring called `nert`, with a new key called
+    `NERT_API_KEY`. The function will then prompt you for the actual key
+    value, which you can paste from the TERN website where you copied it
+    earlier. You can then verify that the key was stored as expected by
+    using the
+    [`keyring::key_get()`](https://keyring.r-lib.org/reference/key_get.html)
+    function:
 
-Where `NERT_API_KEY` is the name of the key you want to store in the
-keyring. You will enter the actual key value you copied from the TERN
-website when {keyring} prompts you to do so.
+    ``` r
 
-``` r
+    key_get("NERT_API_KEY", keyring = "nert")
+    ```
 
-library(nert)
-library(keyring)
+3.  Finally, you can quickly check that the TERN API key is working with
+    the {nert} package correctly by trying to download a raster. The
+    below R code retrieves the SMIPS “totalbucket” soil moisture data
+    raster for January 1st, 2024 using the
+    [`nert::read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
+    function, and then uses the {terra} package’s
+    [`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
+    function to get a point value for the soil moisture measurement at
+    the Adelaide CBD (at approximately 138.6007 decimal degrees Easting
+    for the longitude, and -34.9285 decimal degrees Northing for the
+    latitude). Note that we explicitly specify to use the `NERT_API_KEY`
+    we stored in the `nert` keyring by setting the `api_key` argument:
 
-r <- read_smips(
-  date = "2024-01-01",
-  api_key = key_get("NERT_API_KEY", keyring = "nert")
-)
-```
+    ``` r
 
-Note that here we specified a value for the API key.
+    library(nert)
+    library(keyring)
+
+    r <- read_smips(
+      date = "2024-01-01",
+      api_key = key_get("NERT_API_KEY", keyring = "nert")
+    )
+
+    extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+    ```
 
 ### Reading TERN Data
 
-Using the example from above, you can get the SMIPS data for all of
-Australia on Jan 1, 2024 like so:
+You can use the
+[`nert::read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
+function to retrieve rasters for the SMIPS datasets available on the
+TERN Data Portal, using the `date` argument to specify the date for the
+raster to be retrieved, and the `collection` argument to specify which
+specific SMIPS dataset to download. For instance, the following R code
+retrieves the “SMindex” raster for June 30, 2025:
 
 ``` r
 
 library(nert)
-r <- read_smips(date = "2024-01-01")
+r <- read_smips(date = "2025-06-30", collection = "SMindex")
 ```
 
 Note that {nert} re-exports
-[`tidyterra::autoplot`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+[`tidyterra::autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
 for ease of visualising the TERN data.
 
 ``` r
@@ -203,29 +245,37 @@ autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 
-![A plot of SMIPS data for all of Australia on
-2024-01-01.](test-plot-1.png)
+![A plot of SMIPS SMindex data for all of Australia on
+2025-06-30.](test-plot-smips-1.png)
 
-A plot of SMIPS data for all of Australia on 2024-01-01.
+A plot of SMIPS SMindex data for all of Australia on 2025-06-30.
 
-Repeating an example from above where we tested if the API key works, if
-you wish to fetch only data for a single point or points, you can
-specify them like this using the data object, `r`, from above, which is
-much quicker than fetching the entire dataset:
+However, if you wish to fetch only data for a single point or points,
+you can use the
+[`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
+function. Since the rasters are stored on the TERN Data Portal as
+Cloud-Optimised GeoTIFFs (COGs),
+[`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
+is very time- and space-efficient, streaming only the bytes needed for
+the spatial extent that you ask for. The below R code downloads only the
+data at the coordinates specified, rather than fetching the entire
+dataset:
 
 ``` r
 
 library(terra)
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#>   ID smips_totalbucket_mm_20240101        x         y
-#> 1  1                      46.07692 138.6037 -34.93254
+#>   ID smips_smi_perc_20250630        x         y
+#> 1  1               0.1554503 138.6037 -34.93254
 ```
 
-Reading the Australian Soils Classification data works in the same way.
-To get the classification data you do not need to specify any arguments
-for
-[`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md).
+Reading rasters for the other available datasets works mostly the same
+way. For example, the below R code retrieves the raster for the
+Australian Soil Classification Map using the
+[`nert::read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
+function. Since this is a static dataset, you do not need to specify a
+date. By default, the soil classifications are retrieved:
 
 ``` r
 
@@ -239,14 +289,31 @@ autoplot(asc)
 
 A plot of Australian Soils Classification data.
 
-If you would like to work with the Confusion Index, which supplies an
-estimate of the level of certainty in the model predictions where 1 is
-high confusion and 0 is low confusion, you can specify the
-`confusion_index = TRUE` argument like so.
+If you wanted to see the confusion index instead (which provides a
+measure of the uncertainty associated with each classification), you can
+specify that dataset using the `collection` argument:
 
 ``` r
 
-asc_ci <- read_asc(confusion_index = TRUE)
+asc_ci <- read_asc(collection = "CI")
 ```
+
+The SLGA soil attribute rasters work similarly, but have an additional
+depth parameter that you can specify. For instance, the following R code
+fetches and views the raster for the soil clay content at a depth of
+30-60cm by specifying the `depth` argument:
+
+``` r
+
+cly <- read_slga("CLY", depth = "030_060")
+
+autoplot(cly)
+#> <SpatRaster> resampled to 500388 cells.
+```
+
+![A plot of the soil clay content (%) at a 30-60cm soil
+depth.](slga-1.png)
+
+A plot of the soil clay content (%) at a 30-60cm soil depth.
 
 That’s it, you’re all set!

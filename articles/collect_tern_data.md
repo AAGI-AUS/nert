@@ -1,97 +1,154 @@
-# collect_tern_data() — Vectorized Data Collection
-
-## Collecting TERN Data Over Time and Space
+# collect_tern_data() for bulk TERN dataset collection
 
 The
 [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
-function provides a vectorized interface to extract values from one or
-more TERN datasets at given location(s) over a date range. Unlike
-individual wrapper functions
+function provides a simple way to extract values from one or more TERN
+datasets over multiple locations and dates. And unlike the individual
+dataset functions
 ([`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
 [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
-etc.) which return raster objects,
+etc) which return `SpatRaster` objects, this function returns an
+analysis-ready `data.table` object with the extracted point data values.
+
+## Basic usage of collect_tern_data()
+
+As an example, we can use
 [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
-returns a **data table** with extracted point values — ideal for
-analysis workflows.
-
-### Basic Usage
-
-Extract SMIPS soil moisture for a single location over multiple dates:
+to extract all of the SMIPS soil moisture datasets for a single location
+across multiple dates:
 
 ``` r
 
 library(nert)
 
-dates <- seq(as.Date("2024-01-01"), as.Date("2024-01-10"), by = "day")
-
 dt <- collect_tern_data(
+  date_range = seq(as.Date("2024-01-01"), as.Date("2024-01-04"), by = "day"),
   lon = 138.6,
   lat = -34.9,
-  date_range = dates,
   datasets = "SMIPS",
   verbose = TRUE
 )
-
+#> ── Datasets to Collect ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+#>     Alias            ID                                                             Layer Temporal Resolution
+#>    <char>        <char>                                                            <char>   <char>     <char>
+#> 1:  SMIPS TERN/d1995ee8 Collection: totalbucket, SMindex, bucket1, bucket2, deepD, runoff    Daily       1 km
+#>                                      Description
+#>                                           <char>
+#> 1: Soil Moisture Integration & Prediction System
+#> Collecting 1 dataset at 1 location over 4 dates
+#> SMIPS totalbucket 2024-01-01
+#> SMIPS totalbucket 2024-01-02
+#> SMIPS totalbucket 2024-01-03
+#> ...
+#> ...
+#> SMIPS runoff 2024-01-02
+#> SMIPS runoff 2024-01-03
+#> SMIPS runoff 2024-01-04
+#> Collected 4 rows x 9 columns
 head(dt)
+#>          date   lon   lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1 SMIPS_bucket2 SMIPS_deepD SMIPS_runoff
+#>        <Date> <num> <num>             <num>         <num>         <num>         <num>       <num>        <num>
+#> 1: 2024-01-01 138.6 -34.9          18.54933     0.1870453      3.394019      15.15531   0.9680446            0
+#> 2: 2024-01-02 138.6 -34.9          18.46742     0.1862194      4.307706      14.15972   0.9044515            0
+#> 3: 2024-01-03 138.6 -34.9          15.73218     0.1586381      2.443130      13.28905   0.8488376            0
+#> 4: 2024-01-04 138.6 -34.9          14.46397     0.1458499      2.101511      12.36246   0.7896519            0
 ```
 
-When `verbose = TRUE`, you’ll see: 1. **Dataset information table**
-showing what will be collected (name, ID, layers, temporal resolution,
-spatial resolution, description) 2. **Progress messages** as data is
-downloaded 3. **Summary** of rows and columns collected
-
-### Default Behavior
+When `verbose = TRUE` (default), a list of the datasets that will be
+collected is generated in the output, together with progress messages as
+the data points are downloaded.
 
 By default,
 [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
-extracts **all available variants/depths**:
-
-- **SMIPS**: All 6 soil moisture variants (totalbucket, SMindex,
-  bucket1, bucket2, deepD, runoff)
-- **SLGA datasets** (AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO): All 6 soil
-  depths (0–5 cm through 100–200 cm)
-
-This ensures you get comprehensive data without specifying each option:
+extracts *all available dataset variants* unless you specify a smaller
+subset. For instance, in the above code, we collect all of the available
+SMIPS datasets: `"totalbucket"`, `"SMindex"`, `"bucket1"`, `"bucket2"`,
+`"deepD"`, and `"runoff"`. Extracting the other datasets works
+similarly. If we use
+[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+to download data for the SLGA available water capacity dataset `"AWC"`,
+by default it will download the data for all available depths, as well
+as all three statistics (the estimated value `EV`, as well as the 95%
+confidence interval limits `05` and `95`):
 
 ``` r
 
-# Gets all 6 SMIPS variants + all 6 AWC depths in one call
 dt <- collect_tern_data(
+  dates = c("2020-01-01"),
   lon = 138.6,
   lat = -34.9,
-  date_range = "2024-01-15",
-  datasets = c("SMIPS", "AWC"),
-  verbose = FALSE  # Hide table for brevity
+  datasets = "AWC",
+  verbose = FALSE
 )
-
 names(dt)
-# [1] "date"              "SMIPS_totalbucket" "SMIPS_SMindex"
-# [4] "SMIPS_bucket1"     "SMIPS_bucket2"     "SMIPS_deepD"
-# [7] "SMIPS_runoff"      "AWC_000_005"       "AWC_005_015"
-# [10] "AWC_015_030"      "AWC_030_060"       "AWC_060_100"
-# [13] "AWC_100_200"
+#>  [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060"
+#>  [8] "AWC_EV_060_100" "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030" "AWC_05_030_060" "AWC_05_060_100"
+#> [15] "AWC_05_100_200" "AWC_95_000_005" "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100" "AWC_95_100_200"
 ```
 
-### Multiple Locations
-
-Extract data for multiple coordinates (returns one row per location per
-date):
+This ensures that, by default, you get the most comprehensive data for
+each dataset. The arguments for
+[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+can always be used to specify variants where desired. For example, if we
+only wanted the estimated value `EV` at 0-5cm and 5-15cm (i.e., depths
+`000_005` and `005_015`), we can specify those with the `stat` and
+`depth` arguments:
 
 ``` r
 
-# Vector notation
+dt <- collect_tern_data(
+  dates = c("2020-01-01"),
+  lon = 138.6,
+  lat = -34.9,
+  datasets = "AWC",
+  stat = "EV",
+  depth = c("000_005", "005_015"),
+  verbose = FALSE
+)
+names(dt)
+#> [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015"
+```
+
+## Efficiently download data points at multiple spatial locations
+
+You can use
+[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+to extract point values for multiple spatial locations, each provided by
+a longitude/latitude pair. The function will perform the bulk download
+across spatial locations efficiently, making streaming data from the
+fetched COGs *only once*, regardless of the number of locations you have
+requested.
+
+For example, the below R code extracts SMIPS `"SMindex"` data and canopy
+height information across three locations and a range of dates. The
+output `data.table` will contain one row per location/date combination.
+
+``` r
+
 dt_multi <- collect_tern_data(
   lon = c(138.6, 139.5, 140.1),
   lat = c(-34.9, -35.2, -34.5),
   date_range = c("2024-01-01", "2024-01-05"),
-  datasets = c("SMIPS", "CANOPY")
+  datasets = c("SMIPS", "CANOPY"),
+  smips_collection = "SMindex",
+  verbose = FALSE
 )
-
-nrow(dt_multi)  # 3 locations × 5 dates = 15 rows
-ncol(dt_multi)  # date + lon + lat + SMIPS_variants(6) + CANOPY(1) = 11 cols
+head(dt_multi)
+#>          date   lon   lat SMIPS_SMindex CANOPY
+#>        <Date> <num> <num>         <num>  <num>
+#> 1: 2024-01-01 138.6 -34.9    0.18704529      9
+#> 2: 2024-01-01 139.5 -35.2    0.18135567      0
+#> 3: 2024-01-01 140.1 -34.5    0.02390325      6
+#> 4: 2024-01-02 138.6 -34.9    0.18621944      9
+#> 5: 2024-01-02 139.5 -35.2    0.16365331      0
+#> 6: 2024-01-02 140.1 -34.5    0.02078163      6
 ```
 
-Or use **xy notation** with a data.frame:
+For convenience, you can also provide the longitude and latitude
+coordinates as columns `lon`, `lat` inside a `data.frame`. You can then
+pass this to the `xy` argument in the
+[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+call:
 
 ``` r
 
@@ -103,163 +160,26 @@ locations <- data.frame(
 dt_xy <- collect_tern_data(
   xy = locations,
   date_range = "2024-01-15",
-  datasets = c("ASC", "PHENOLOGY")
+  datasets = c("ASC"),
+  asc_collection = "EV",
+  verbose = FALSE
 )
+dt_xy
+#>          date   lon   lat          ASC_EV
+#>        <Date> <num> <num>          <char>
+#> 1: 2024-01-15 138.6 -34.9     2 - Sodosol
+#> 2: 2024-01-15 139.5 -35.2     7 - Tenosol
+#> 3: 2024-01-15 140.1 -34.5 12 - Calcarasol
 ```
 
-### Selective Extraction
+## Graceful handling of failed dataset fetches
 
-Extract specific variants or depths instead of all:
+If the download for one of the datasets fails (e.g., due to a network
+error), that column will simply contain `NA` for the affected rows. The
+function will then continue downloading the other datasets as normal.
+That is, download failures are handled gracefully: a download error for
+one of the datasets does not stop the entire call.
 
-``` r
-
-# Only specific SMIPS collection
-dt_smi <- collect_tern_data(
-  lon = 138.6,
-  lat = -34.9,
-  date_range = "2024-01-15",
-  datasets = "SMIPS",
-  smips_collection = "SMindex"  # Just soil moisture index (0-100%)
-)
-# Returns: date, SMIPS_SMindex
-
-# Only specific depth for SLGA
-dt_surface <- collect_tern_data(
-  lon = 138.6,
-  lat = -34.9,
-  date_range = "2024-01-15",
-  datasets = "CLY",
-  depth = "000_005"  # Top 5 cm only
-)
-# Returns: date, CLY
-```
-
-### All 14 Available Datasets
-
-By default,
+You can specify `na.rm = TRUE` in the
 [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
-collects all 14 datasets when called without specifying `datasets`:
-
-``` r
-
-# Collect everything
-dt_all <- collect_tern_data(
-  lon = 138.6,
-  lat = -34.9,
-  date_range = "2024-01-15"
-  # datasets = NULL (or omitted — defaults to all)
-)
-```
-
-This returns:
-
-| Category | Datasets | Columns |
-|----|----|----|
-| **Time-series** | SMIPS (6 variants), AET | 7 |
-| **Soil** | ASC, AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO (6 depths each) | 1 + 54 |
-| **Vegetation/Canopy** | CANOPY, PHENOLOGY, SOILDIV | 3 |
-| **Total** | 14 datasets | ~65 columns |
-
-### Understanding Column Names
-
-Output columns follow a naming pattern for clarity:
-
-- **Time-series**: `{DATASET}_{VARIANT}` or `{DATASET}_{LAYER}`
-  - `SMIPS_totalbucket`, `SMIPS_SMindex`, `SMIPS_bucket1`, …
-  - `AET` (single layer)
-- **SLGA (soil)**: `{COLLECTION}_{DEPTH}`
-  - `AWC_000_005`, `AWC_005_015`, …, `AWC_100_200`
-  - `CLY_000_005`, `CLY_005_015`, …, etc.
-- **Static (single-layer)**: Dataset name
-  - `ASC` (character soil order, e.g., “2 - Sodosol”)
-  - `CANOPY` (height in metres)
-  - `PHENOLOGY` (day-of-year)
-  - `SOILDIV` (NMDS ordination score)
-
-### Handling Missing Data
-
-If a request fails (network error, API unavailable, etc.), that column
-will contain `NA` for affected rows. Use `na.rm = TRUE` to remove rows
-where all dataset columns are NA:
-
-``` r
-
-dt <- collect_tern_data(
-  lon = 138.6,
-  lat = -34.9,
-  date_range = dates,
-  datasets = c("SMIPS", "AET"),
-  na.rm = TRUE  # Remove dates with no successful extractions
-)
-```
-
-### Data Types
-
-- **Numeric columns** (default): SMIPS, AET, SLGA, CANOPY, PHENOLOGY,
-  SOILDIV
-- **Character column**: ASC returns soil order descriptions (e.g., “2 -
-  Sodosol”, “15 - Vertosol”)
-
-Use [`as.numeric()`](https://rdrr.io/r/base/numeric.html) on ASC column
-if you need just the numeric code.
-
-### Performance Tips
-
-1.  **Request only needed datasets** to reduce download time
-2.  **Use specific variants/depths** (e.g., `depth = "000_005"`) if all
-    6 depths aren’t needed
-3.  **Batch multiple locations** instead of looping — vectorized
-    operations are faster
-4.  **Set `verbose = FALSE`** after testing to suppress messages
-
-### Examples
-
-#### Agricultural Analysis: Soil Properties at a Field
-
-``` r
-
-# Extract soil properties at one location for a growing season
-field <- list(lon = 138.6, lat = -34.9)
-
-dt_soil <- collect_tern_data(
-  lon = field$lon,
-  lat = field$lat,
-  date_range = "2024-01-01",  # Static datasets, so date doesn't matter
-  datasets = c("AWC", "CLY", "PHC"),  # Water capacity, clay %, pH
-  depth = "all"  # All 6 soil depths
-)
-
-# Wide format for each soil attribute across depths
-head(dt_soil)
-```
-
-#### Climate Monitoring: Multiple Sites
-
-``` r
-
-# Monitor evapotranspiration and canopy height at 5 monitoring stations
-stations <- data.frame(
-  name = c("Adelaide", "Murray Bridge", "Naracoorte", "Coonalpyn", "Kingoonya"),
-  lon = c(138.6, 139.3, 140.8, 140.7, 137.2),
-  lat = c(-34.9, -35.3, -37.3, -35.5, -30.5)
-)
-
-et_data <- collect_tern_data(
-  xy = stations,
-  date_range = c("2023-01-01", "2023-12-31"),
-  datasets = "AET",
-  verbose = TRUE
-)
-
-# Pivot to wide format for comparison
-pivot_wider(et_data,
-            names_from = name,
-            values_from = AET,
-            id_cols = date)
-```
-
-### See Also
-
-- `?read_smips()` — Direct raster access to SMIPS data
-- `?read_slga()` — Direct raster access to SLGA soil attributes
-- `?read_tern()` — Low-level interface to any TERN dataset by ID
+call, which will remove rows where all of the dataset columns were `NA`.

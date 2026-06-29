@@ -1,23 +1,30 @@
 # Collect TERN Data Over Time and Space
 
 Extract values from one or more TERN datasets at given location(s) over
-a date range. Returns a `data.table` with one row per (date, location)
-and one column per dataset layer. Static datasets are repeated across
-all dates.
+a given set or range of dates. Returns a `data.table` with one row per
+date/location, and one column per dataset requested. (Note that static
+datasets are repeated across all dates for consistency.)
 
 ## Usage
 
 ``` r
 collect_tern_data(
   date_range,
+  dates,
   lon = NULL,
   lat = NULL,
   xy = NULL,
   datasets = NULL,
-  depth = "all",
-  stat = "EV",
-  smips_collection = "all",
+  depth = NULL,
+  stat = NULL,
+  smips_collection = NULL,
+  asc_collection = NULL,
+  aet_collection = NULL,
+  soildiv_collection = NULL,
+  phenology_collection = NULL,
   api_key = NULL,
+  max_tries = NULL,
+  initial_delay = NULL,
   verbose = TRUE,
   na.rm = FALSE
 )
@@ -27,10 +34,18 @@ collect_tern_data(
 
 - date_range:
 
-  A `Date` vector or character vector of dates (e.g.\\
-  `seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")`) OR a
-  length-2 vector giving start and end dates (e.g.\\
-  `c("2024-01-01", "2024-01-31")`).
+  A `Date` vector or `character` vector of length 2,
+  `[start_date, end_date]`, indicating the start and end date which
+  should be used for the TERN dataset retrieval. (If a vector of length
+  greater than 2 is given, this parameter works exactly as `dates`
+  does.) Omit if specifying exact dates via the `dates` argument
+  instead.
+
+- dates:
+
+  A `Date` vector or `character` vector, indicating the exact set of
+  dates for which TERN datasets should be retrieved. Takes precedence
+  over `date_range` if supplied.
 
 - lon:
 
@@ -50,90 +65,127 @@ collect_tern_data(
 
 - datasets:
 
-  `character` vector of dataset aliases to collect. Default: all 20
-  datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW, PHC, PHW, NTO,
-  AVP, PTO, CEC, ECE, DUL, L15, SOILDIV, CANOPY, PHENOLOGY). Use `NULL`
-  or `"all"` for all datasets.
+  A `character` vector of dataset aliases to collect. (Default=All
+  datasets.) Options: `"SMIPS"`, `"ASC"`, `"AET"`, `"AWC"`, `"CLY"`,
+  `"SND"`, `"SLT"`, `"BDW"`, `"PHC"`, `"PHW"`, `"NTO"`, `"AVP"`,
+  `"PTO"`, `"CEC"`, `"ECE"`, `"DUL"`, `"L15"`, `"SOILDIV"`, `"CANOPY"`,
+  `"PHENOLOGY"`. Use `NULL` (default) or `"all"` to specify retrieval of
+  all available datasets.
 
 - depth:
 
-  For SLGA datasets: depth interval (default `"all"`). Options:
-  `"000_005"`, `"005_015"`, `"015_030"`, `"030_060"`, `"060_100"`,
-  `"100_200"`, or `"all"` for all six GlobalSoilMap depths. Ignored for
+  *For SLGA datasets.* A `character` vector containing the depth
+  interval(s) for the SLGA soil attributes to collect. (Default=All
+  depths.) Options: `"000_005"`, `"005_015"`, `"015_030"`, `"030_060"`,
+  `"060_100"`, `"100_200"`. Use `NULL` (default) or `"all"` to specify
+  retrieval of all available depths. This parameter is ignored for
   non-SLGA datasets.
 
 - stat:
 
-  For SLGA datasets: `"EV"` (estimate, default) or `"CI"` (confidence
-  interval). Ignored for non-SLGA datasets.
+  *For SLGA datasets.* A `character` vector containing the statistic to
+  retrieve for the SLGA datasets. (Default=All statistics.) Options:
+  `"EV"` (estimated value), `"05"` (lower percentile limit for the 95%
+  confidence interval), `"95"` (upper percentile limit for the 95%
+  confidence interval). Use `NULL` (default) or `"all"` to specify
+  retrieval of all statistics. This parameter is ignored for non-SLGA
+  datasets.
 
 - smips_collection:
 
-  For SMIPS: `"all"` (default, all six variants), `"totalbucket"`,
-  `"SMindex"`, `"bucket1"`, `"bucket2"`, `"deepD"`, or `"runoff"`.
-  Ignored for non-SMIPS datasets.
+  *For SMIPS datasets.* A `character` vector containing the SMIPS
+  datasets to be retrieved. (Default=All SMIPS datasets.) Options:
+  `"totalbucket"`, `"SMindex"`, `"bucket1"`, `"bucket2"`, `"deepD"`,
+  `"runoff"`. Use `NULL` (default) or `"all"` to specify retrieval of
+  all SMIPS datasets. This parameter is ignored for non-SMIPS datasets.
+
+- asc_collection:
+
+  *For ASC datasets.* A `character` vector specifying the Australian
+  Soil Classification Map datasets to be retrieved. (Default=All ASC
+  datasets.) Options: `"EV"` (estimated soil order), `"CI"` (confusion
+  index). Use `NULL` (default) or `"all"` to specify retrieval of all
+  ASC datasets.
+
+- aet_collection:
+
+  *For AET datasets.* A `character` vector specifying the Actual
+  Evapotranspiration datasets to be retrieved. (Default=All AET
+  datasets.) Options: `"ETa"`, `"pixel_qa"` (quality assurance flags).
+  Use `NULL` (default) or `"all"` to specify retrieval of all AET
+  datasets. This parameter is ignored for non-AET datasets.
+
+- soildiv_collection:
+
+  *For SOILDIV datasets.* A `character` vector specifying the beta soil
+  diversity NMDS axes to be retrieved. (Default=All axes/datasets.)
+  Options: `"Bacteria_NMDS1"`, `"Bacteria_NMDS2"`, `"Bacteria_NMDS3"`,
+  `"Fungi_NMDS1"`, `"Fungi_NMDS2"`, `"Fungi_NMDS3"`. Use `NULL`
+  (default) or `"all"` to specify retrieval of all SOILDIV
+  axes/datasets.
+
+- phenology_collection:
+
+  *For PHENOLOGY datasets.* A `character` vector specifying the
+  phenology datasets to be retrieved. (Default=All PHENOLOGY datasets.)
+  Options: `"SGS"`, `"PGS"`, `"EGS"`, `"LGS"`, `"EVI1"`, `"EVI2"`,
+  `"EVIP"`, `"EVII"`, `"SGS_month"`, `"PGS_month"`, `"EGS_month"`. Use
+  `NULL` (default) or `"all"` to specify retrieval of all PHENOLOGY
+  datasets.
 
 - api_key:
 
-  TERN API key. Default:
-  [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md).
+  A `character` string containing your TERN API key. Defaults to
+  automatic detection from your `.Renviron` or `.Rprofile`. See
+  [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
+  for setup.
+
+- max_tries:
+
+  Maximum number of download retries before an error is raised.
+  Default=`NULL`, in which case the maximum retry number is resolved
+  from the option `nert.max_tries` if that option exists. (Defaults to 3
+  retries if `nert.max_tries` has not been set.)
+
+- initial_delay:
+
+  Initial retry delay in seconds (doubles with each attempt).
+  Default=`NULL`, in which case the initial delay is resolved from the
+  option `nert.initial_delay` if that option exists. (Defaults to a 1
+  second initial delay if `nert.initial_delay` has not been set.)
 
 - verbose:
 
-  Logical. If `TRUE`, print progress messages.
+  Logical. If `TRUE`, print progress messages. (Default=TRUE.)
 
 - na.rm:
 
   Logical. If `TRUE`, drop rows where all dataset columns are `NA`.
+  (Default=FALSE).
 
 ## Value
 
-A `data.table` with columns:
+A `data.table` with the following columns:
 
 - `date`: `Date`.
 
-- `lon`, `lat`: coordinates (always included; constant when a single
-  location is requested).
+- `lon`, `lat`: spatial coordinates (always included; constant when a
+  single location is requested).
 
-- One column per dataset layer. See **Details** for naming.
+- One column per dataset requested. These dataset columns are named with
+  their alias as the prefix (e.g., `SMIPS`, `AWC`, `SOILDIV`), followed
+  by any variant information (e.g., depth, statistic, dataset name)
+  after an underscore. For example, `SMIPS_totalbucket` for the SMIPS
+  "totalbucket" dataset, `CLY_05_000_005` for the lower (05) percentile
+  limit of the soil clay at 0-5cm depth, and so on.
 
 ## Details
 
-**Vectorised extraction.** For each unique COG required (a (dataset,
-date, variant, depth) tuple), the function opens the COG **once** and
-calls
-[`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
-**once** with all requested coordinates as a single `SpatVector`.
-Returning M locations × N dates across K work items therefore costs K
-COG opens and K extract calls, not M × K. Time-series datasets
-contribute one work item per date; static datasets contribute one work
-item total (the value is replicated across the date axis at output
-assembly time).
-
-**Column naming.**
-
-- SMIPS with `smips_collection = "all"`: six columns named
-  `SMIPS_totalbucket`, `SMIPS_SMindex`, `SMIPS_bucket1`,
-  `SMIPS_bucket2`, `SMIPS_deepD`, `SMIPS_runoff`.
-
-- SMIPS with a single collection: one column `SMIPS_<collection>`.
-
-- SLGA with `depth = "all"`: six columns per dataset (e.g.\\
-  `AWC_000_005` ... `AWC_100_200`).
-
-- SLGA with a single depth: one column named for the dataset alias.
-
-- AET: one column `AET`.
-
-- ASC: one column `ASC` (character soil-order class).
-
-- CANOPY, SOILDIV, PHENOLOGY: one column each named for the alias.
-
-**Failure handling.** If a work item's COG fetch or extract fails, the
-corresponding column(s) remain `NA` for the affected rows and a
+**Failure handling.** Note that if a COG fetch fails (i.e., no
+successful download after `max_tries`), the corresponding column(s) will
+be set as `NA` for the affected rows, and a
 [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html)
-identifies the dataset/date/error. The output schema (column count and
-names) is fixed at planning time and is invariant under per-COG failure.
+warning is emitted.
 
 ## Examples
 

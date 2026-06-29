@@ -1,36 +1,40 @@
 # Using nert to augment agricultural analytics with SMIPS data
 
-The **nert** package provides straightforward and seamless access to the
-TERN Soil Moisture Integration and Prediction System (SMIPS) datasets,
-which include soil moisture estimates that can be used in your data
-analytics pipelines. This document showcases this process with the
-example of a synthesised multi-site grain production experiment. The
-**nert** package is loaded and used to download soil moisture time
-series data at various locations across South Australia. Recognising
-soil moisture as a classical confounder—affecting crop yield (via
-root-zone water availability) and nitrogen treatment (via increased
-volatilisation in moist soils)—we will augment our modelling of the
-grain production to use soil moisture estimates over the treatment
-period for estimating the nitrogen treatment effect.
+The {nert} package provides straightforward and seamless access to
+various datasets available on the TERN Data Portal. Included among these
+are the Soil Moisture Integration and Prediction System (SMIPS)
+datasets, which include soil moisture estimates that can be used in your
+data analytics pipelines.
+
+This document showcases this process with the example of a synthesised
+multi-site grain production experiment. The {nert} package is loaded and
+used to download soil moisture time series data at various locations
+across South Australia. Recognising soil moisture as a classical
+confounder—affecting crop yield (via root-zone water availability) and
+nitrogen treatment (via increased volatilisation in moist soils)—we will
+augment our modelling of the grain production to use soil moisture
+estimates over the treatment period for estimating the nitrogen
+treatment effect.
 
 ## A synthetic dataset for a grain production experiment
 
 A simulated dataset containing yield data for a fictitious grain
-production experiment has been included with the **nert** package. The
+production experiment has been included with the {nert} package. The
 dataset is called `grain`, and you can load the package and this dataset
 with:
 
 ``` r
 
 library(nert)
+
 data(grain)
 str(grain)
 #> 'data.frame':    2880 obs. of  10 variables:
 #>  $ Site             : Factor w/ 10 levels "Adelaide","Barossa Valley",..: 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Latitude         : num  -34.9 -34.9 -34.9 -34.9 -34.9 ...
 #>  $ Longitude        : num  139 139 139 139 139 ...
-#>  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" ...
-#>  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" ...
+#>  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" "2022-05-20" "2022-05-20" ...
+#>  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" "2022-06-04" "2022-06-04" ...
 #>  $ Rep              : Factor w/ 3 levels "1","2","3": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Variety          : Factor w/ 8 levels "Variety_A","Variety_B",..: 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Nitrogen_kgNha   : Factor w/ 4 levels "0","30","60",..: 1 1 1 2 2 2 3 3 3 4 ...
@@ -53,22 +57,21 @@ SMIPS.
 
 ## Download SMIPS data for the sites across times
 
-Here we use the **nert** package to download SMIPS soil moisture
-datasets from the TERN Data Portal, which we can use to augment our
-analysis of the `grain` experiment data. The two key SMIPS datasets of
-interest are:
+Here we use the {nert} package to download SMIPS soil moisture datasets
+from the TERN Data Portal, which we can use to augment our analysis of
+the `grain` experiment data. Two key SMIPS datasets of interest are:
 
 1.  `totalbucket`: an estimate of the *volumetric soil moisture* (in
-    units of mm) from the SMIPS bucket moisture store,
+    units of mm) from the entire SMIPS 0-90cm soil moisture store,
 
-2.  `SMindex`: the SMIPS *soil moisture index* (i.e., a percentage
-    between 0 and 100 that indicates how full the SMIPS bucket moisture
-    store is relative to its 90cm capacity).
+2.  `SMindex`: the SMIPS *soil moisture index* (i.e., a unitless index
+    between 0 and 1 that approximates how full the SMIPS bucket moisture
+    store is relative to its full 90cm capacity).
 
 For simplicity, suppose we are interested in the SMIPS soil moisture
 index (`SMindex`) data, for all days falling between the earliest
 nitrogen application date up to 30 days after the last application date,
-and we want the soil moisture index at each site (by latitude/longitude
+and we want the soil moisture index at each site (by longitude/latitude
 coordinates). We can generate this date range in a straightforward way
 using the `NitrogenDate` column of the `grain` dataset as follows:
 
@@ -82,76 +85,79 @@ c(date_range[1], date_range[length(date_range)])
 #> [1] "2022-05-07" "2022-07-15"
 ```
 
-We also need the latitude and longitude for the sites, which we can
-readily retrieve from the `grain` dataset columns `Latitude` and
-`Longitude`:
+We also need the longitude and latitude for the sites, which we can
+readily retrieve from the `grain` dataset columns `Longitude` and
+`Latitude`:
 
 ``` r
 
-sites <- unique(grain[, c("Site", "Latitude", "Longitude")])
+sites <- unique(grain[, c("Site", "Longitude", "Latitude")])
 sites
-#>                    Site  Latitude Longitude
-#> 1              Adelaide -34.94773  138.6244
-#> 289      Barossa Valley -34.54843  138.9580
-#> 577        Clare Valley -33.83754  138.6012
-#> 865      Eyre Peninsula -34.37378  135.7967
-#> 1153 Fleurieu Peninsula -35.52307  138.4608
-#> 1441    Kangaroo Island -35.71041  137.0736
-#> 1729    Limestone Coast -37.88957  140.6388
-#> 2017         Sturt Vale -33.34666  140.0723
-#> 2305        Murraylands -35.12425  139.3014
-#> 2593    Yorke Peninsula -35.05124  137.2090
+#>                    Site Longitude  Latitude
+#> 1              Adelaide  138.6244 -34.94773
+#> 289      Barossa Valley  138.9580 -34.54843
+#> 577        Clare Valley  138.6012 -33.83754
+#> 865      Eyre Peninsula  135.7967 -34.37378
+#> 1153 Fleurieu Peninsula  138.4608 -35.52307
+#> 1441    Kangaroo Island  137.0736 -35.71041
+#> 1729    Limestone Coast  140.6388 -37.88957
+#> 2017         Sturt Vale  140.0723 -33.34666
+#> 2305        Murraylands  139.3014 -35.12425
+#> 2593    Yorke Peninsula  137.2090 -35.05124
 ```
 
 Now TERN supplies the SMIPS daily data rasters as cloud-optimised
 GeoTIFFs (or COGs), which contain the soil moisture point predictions
-across the entirety of Australia. However, because they are
-cloud-optimised, we can be clever in our downloading to make sure that
-we only download data for the locations of interest, rather than the
-entire raster. The **nert** package works in tandem with the **terra**
-package to achieve this efficiency:
+across the entirety of Australia. As these are cloud-optimised, only
+spatial location data that is actually used in our analysis will be
+downloaded, which gives us great efficiency in space/time cost. The
+{nert} package works in tandem with the {terra} package to achieve this
+efficiency:
 
-- First, we download the *information* for a daily SMIPS raster using
-  [`nert::read_smips`](https://aagi-aus.github.io/nert/reference/read_smips.md),
+- First, we download the *information* for the daily SMIPS raster using
+  [`nert::read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
 - Then we *extract only the point values we need*, using
-  [`terra::extract`](https://rspatial.github.io/terra/reference/extract.html).
+  [`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html).
 
-This leads to a quicker and tighter data download. The below code shows
-this process. (Note that
-[`terra::extract`](https://rspatial.github.io/terra/reference/extract.html)
-is particular about the order of the latitude/longitude coordinates:
-longitude should be specified first, followed by latitude.)
+This gives us a quicker and tighter data download, as we only stream
+those bytes from the TERN server that are actually necessary for our
+analysis. The below code shows this process. (Note that
+[`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
+is particular about the order of the longitude/latitude coordinates:
+longitude should always be specified first, followed by latitude.)
 
 ``` r
 
 smips_data <- data.frame()
+
 for (i in seq_along(date_range)) {
-  r <- read_smips(date = date_range[i], collection = "SMindex")
+  r <- read_smips(collection = "SMindex", date = date_range[i])
   smips_points <- terra::extract(
     x = r,
     y = data.frame(lon = sites$Longitude, lat = sites$Latitude),
     xy = TRUE
   )
-  names(smips_points)[2] <- "smips_smi_perc"
+  names(smips_points)[2] <- "smips_smi"
 
   smips_data <- rbind(
     smips_data,
     data.frame(
       Date = date_range[i],
-      Latitude = smips_points$y,
-      Longitude = smips_points$x,
-      smips_smi_perc = smips_points$smips_smi_perc
+      Longitude = sites$Longitude,
+      Latitude = sites$Latitude,
+      smips_smi = smips_points$smips_smi
     )
   )
 }
+
 head(smips_data)
-#>         Date  Latitude Longitude smips_smi_perc
-#> 1 2022-05-07 -34.95253  138.6237     0.25906488
-#> 2 2022-05-07 -34.55264  138.9537     0.17677850
-#> 3 2022-05-07 -33.83285  138.6037     0.07674548
-#> 4 2022-05-07 -34.37270  135.7944     0.53408158
-#> 5 2022-05-07 -35.52237  138.4638     0.37496096
-#> 6 2022-05-07 -35.71231  137.0741     0.30223876
+#>         Date Longitude  Latitude  smips_smi
+#> 1 2022-05-07  138.6244 -34.94773 0.25906488
+#> 2 2022-05-07  138.9580 -34.54843 0.17677850
+#> 3 2022-05-07  138.6012 -33.83754 0.07674548
+#> 4 2022-05-07  135.7967 -34.37378 0.53408158
+#> 5 2022-05-07  138.4608 -35.52307 0.37496096
+#> 6 2022-05-07  137.0736 -35.71041 0.30223876
 ```
 
 We can add the `Site` column to the `smips_data` to make it easier to
@@ -161,13 +167,13 @@ use it in conjunction with the `grain` dataset during the analysis:
 
 smips_data$Site <- sites$Site
 head(smips_data)
-#>         Date  Latitude Longitude smips_smi_perc               Site
-#> 1 2022-05-07 -34.95253  138.6237     0.25906488           Adelaide
-#> 2 2022-05-07 -34.55264  138.9537     0.17677850     Barossa Valley
-#> 3 2022-05-07 -33.83285  138.6037     0.07674548       Clare Valley
-#> 4 2022-05-07 -34.37270  135.7944     0.53408158     Eyre Peninsula
-#> 5 2022-05-07 -35.52237  138.4638     0.37496096 Fleurieu Peninsula
-#> 6 2022-05-07 -35.71231  137.0741     0.30223876    Kangaroo Island
+#>         Date Longitude  Latitude  smips_smi               Site
+#> 1 2022-05-07  138.6244 -34.94773 0.25906488           Adelaide
+#> 2 2022-05-07  138.9580 -34.54843 0.17677850     Barossa Valley
+#> 3 2022-05-07  138.6012 -33.83754 0.07674548       Clare Valley
+#> 4 2022-05-07  135.7967 -34.37378 0.53408158     Eyre Peninsula
+#> 5 2022-05-07  138.4608 -35.52307 0.37496096 Fleurieu Peninsula
+#> 6 2022-05-07  137.0736 -35.71041 0.30223876    Kangaroo Island
 ```
 
 We are now ready to proceed with the analytics.
@@ -180,15 +186,16 @@ SMIPS data that we have just downloaded. We will later incorporate the
 SMIPS data to see how including the soil moisture as a covariate
 improves the nitrogen treatment effect size estimates.
 
-Here we will use the **nlme** package to fit a linear mixed-effect
-model. The grain yield `Yield_Tha` will be modelled taking the
-`Variety`, nitrogen application rate `Nitrogen_kgNha` and seeding rate
+Here we will use the {nlme} package to fit a linear mixed-effect model.
+The grain yield `Yield_Tha` will be modelled taking the `Variety`,
+nitrogen application rate `Nitrogen_kgNha` and seeding rate
 `SeedRate_plantsm2` as fixed terms, and incorporating the `Site` and
 replicate (`Rep`) structure of the experiment in a random effect term.
 
 ``` r
 
 library(nlme)
+
 simple_model <- lme(
   fixed = Yield_Tha ~ Variety * Nitrogen_kgNha * SeedRate_plantsm2,
   random = ~ 1 | Site / Rep,
@@ -227,7 +234,7 @@ for (site in sites$Site) {
   start_date <- unique(grain[which(grain$Site == site), "NitrogenDate"])[1]
   dates <- seq(start_date, start_date + 30, by = "1 day")
   smips <- smips_data[which(smips_data$Site == site & smips_data$Date %in% dates), ]
-  smips_avg <- mean(smips[["smips_smi_perc"]])
+  smips_avg <- mean(smips[["smips_smi"]])
   grain[which(grain$Site == site), "SoilMoisture_avg"] <- smips_avg
 }
 ```
@@ -259,10 +266,10 @@ augmented_model.Neffects
 #> Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058
 ```
 
-We can use **ggplot2** plotting to graph the confidence intervals for
-the simple model versus the augmented model, and illuminate the
-difference attained when we include the soil moisture as a confounding
-term in our modelling:
+We can use {ggplot2} plotting to graph the confidence intervals for the
+simple model versus the augmented model, and illuminate the difference
+attained when we include the soil moisture as a confounding term in our
+modelling:
 
 ``` r
 
@@ -297,30 +304,30 @@ conditions.
 
 ## Simplified collection with `collect_tern_data()`
 
-The hand-written `for` loop above is shown for didactic purposes — it
-makes the per-date COG read and per-site point extraction explicit. For
-routine use,
+Note that we have previously used loops to collect the SMIPS data across
+a range of dates and spatial locations. However as of {nert} version
+0.0.3.9000, the
 [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
-performs the same operation vectorised across locations, with one COG
-open per (dataset, date, variant) regardless of the number of points.
-The same `SMindex` time series can be produced with a single call:
+function has been made available, which streamlines this typical data
+aggregation task. Collecting the same `SMindex` time series across the
+different trial locations can now be achieved with a single call:
 
 ``` r
 
 smips_dt <- collect_tern_data(
   xy = data.frame(lon = sites$Longitude, lat = sites$Latitude),
-  date_range = c(start_date, end_date),
+  date_range = c(min(grain$NitrogenDate), max(grain$NitrogenDate) + 30),
   datasets = "SMIPS",
   smips_collection = "SMindex",
   verbose = FALSE
 )
 head(smips_dt)
+#>          date      lon       lat SMIPS_SMindex
+#>        <Date>    <num>     <num>         <num>
+#> 1: 2022-05-07 138.6244 -34.94773    0.25906488
+#> 2: 2022-05-07 138.9580 -34.54843    0.17677850
+#> 3: 2022-05-07 138.6012 -33.83754    0.07674548
+#> 4: 2022-05-07 135.7967 -34.37378    0.53408158
+#> 5: 2022-05-07 138.4608 -35.52307    0.37496096
+#> 6: 2022-05-07 137.0736 -35.71041    0.30223876
 ```
-
-`smips_dt` is a `data.table` with one row per (date, location); a single
-extraction call replaces the inner
-[`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
-of the loop. The example above is shown with `eval=FALSE` to avoid
-duplicating the network traffic already performed by the loop; the
-output schema is identical to `smips_data` apart from the column name
-(`SMIPS_SMindex` rather than `smips_smi_perc`).

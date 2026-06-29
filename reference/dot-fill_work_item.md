@@ -10,7 +10,7 @@ the underlying error.
 ## Usage
 
 ``` r
-.fill_work_item(out, wi, pts, n_dt, n_loc, api_key)
+.fill_work_item(out, wi, pts, n_dt, n_loc, api_key, max_tries, initial_delay)
 ```
 
 ## Arguments
@@ -39,3 +39,11 @@ the underlying error.
 - api_key:
 
   TERN API key.
+
+- max_tries:
+
+  Total number of download retries.
+
+- initial_delay:
+
+  Initial retry delay (in seconds).

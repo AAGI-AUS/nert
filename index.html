@@ -36,7 +36,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/collect_tern_data.html">collect_tern_data() — Vectorized Data Collection</a></li>
+<li><a class="dropdown-item" href="articles/collect_tern_data.html">collect_tern_data() for bulk TERN dataset collection</a></li>
     <li><a class="dropdown-item" href="articles/nert_for_agricultural_analytics.html">Using nert to augment agricultural analytics with SMIPS data</a></li>
   </ul>
 </li>
@@ -59,7 +59,16 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The goal of {nert} is to provide access to Australian TERN (Terrestrial Ecosystem Research Network) data in your R session.</p>
+<p>The {nert} package streamlines access to various Cloud-Optimised GeoTIFF (COG) datasets provided by the Australian Terrestrial Ecosystem Research Network (TERN), allowing you to easily incorporate these environmental datasets into your R analytics. Currently supported datasets in the {nert} package include:</p>
+<ul>
+<li>Daily volumetric soil moisture estimates from the Soil Moisture Integration and Prediction System (SMIPS),</li>
+<li>Actual evapotranspiration estimates using the CSIRO MODIS Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm,</li>
+<li>Soil orders from the Australian Soil Classification Map,</li>
+<li>Canopy height estimates from the OzTreeMap best-pick canopy height model,</li>
+<li>Australian land surface phenology based on thresholded MODIS Enhanced Vegetation Index (EVI) data,</li>
+<li>Soil and Landscape Grid of Australia (SLGA) datasets, including available volumetric water capacity, clay/sand/silt content, Bulk Density (whole earth) measurements, soil pH (CaCl2 and water), nitrogen and phosphorus content, cation exchange capacity, and the drained upper limit and 15-bar lower limit water content readings,</li>
+<li>Soil bacteria and soil fungi Beta Diversity datasets.</li>
+</ul>
 <div class="section level2">
 <h2 id="installation-instructions">Installation instructions<a class="anchor" aria-label="anchor" href="#installation-instructions"></a>
 </h2>
@@ -109,55 +118,53 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="example-reading-a-cog-as-a-spatial-object">Example: reading a COG as a spatial object<a class="anchor" aria-label="anchor" href="#example-reading-a-cog-as-a-spatial-object"></a>
+<h2 id="example-reading-a-smips-cog-as-a-spatial-object">Example: reading a SMIPS COG as a spatial object<a class="anchor" aria-label="anchor" href="#example-reading-a-smips-cog-as-a-spatial-object"></a>
 </h2>
-<p>This is a basic example which shows you how you can fetch one day’s data from the SMIPS data and visualise it:</p>
+<p>The {nert} package provides a number of convenient functions such as <code><a href="reference/read_smips.html">read_smips()</a></code> which allow you to fetch COGs from the TERN Data Portal for use in your R session. The below code fetches the SMIPS soil moisture raster for the 1st of January 2024, and then uses the {terra} package’s <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> function to get a soil moisture estimate for the Adelaide CBD. Note that since these are cloud-optimised COGs, they employ Just-In-Time data streaming: that is, <em>only the bytes necessary for the spatial extent we actually need are downloaded</em>, resulting in significant time and disk-space savings.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.9.34</span></span>
 <span></span>
-<span><span class="co"># `autoplot` is re-exported from {tidyterra}</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   ID smips_totalbucket_mm_20240101        x         y</span></span>
+<span><span class="co">#&gt; 1  1                      46.07692 138.6037 -34.93254</span></span></code></pre></div>
+<p>The {nert} package also re-exports {tidyterra}’s <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> function, which can be used to create a visualisation of the Australia-wide data rasters.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span></code></pre></div>
 <p><img src="reference/figures/README-example_cog-1.png" alt="" width="100%"></p>
 </div>
 <div class="section level2">
-<h2 id="extract-values-given-latlon-values">Extract Values Given Lat/Lon Values<a class="anchor" aria-label="anchor" href="#extract-values-given-latlon-values"></a>
+<h2 id="extract-values-in-bulk-given-latlon-values">Extract Values in Bulk Given Lat/Lon Values<a class="anchor" aria-label="anchor" href="#extract-values-in-bulk-given-latlon-values"></a>
 </h2>
-<p>Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW given latitude and longitude values for each.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.9.34</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     spin</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Corrigin"</span>, <span class="st">"Merredin"</span>, <span class="st">"Tamworth"</span><span class="op">)</span>,</span>
-<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">117.87</span>, <span class="fl">118.28</span>, <span class="fl">150.84</span><span class="op">)</span>,</span>
-<span>    y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">32.33</span>, <span class="op">-</span><span class="fl">31.48</span>, <span class="op">-</span><span class="fl">31.07</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  row.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="op">-</span><span class="fl">3L</span><span class="op">)</span>,</span>
-<span>  class <span class="op">=</span> <span class="st">"data.frame"</span></span>
+<p>The {nert} package also provides a convenient function <code><a href="reference/collect_tern_data.html">collect_tern_data()</a></code> which allows you to easily grab multiple TERN datasets across multiple times and multiple spatial locations. For example, the below code grabs the SMIPS “totalbucket” and SLGA “CLY” clay content estimates at 0-5cm and 5-15cm depths, across the first week of 2024 at Merriden, WA and Tamworth, NSW:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/collect_tern_data.html">collect_tern_data</a></span><span class="op">(</span></span>
+<span>  xy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">118.28</span>, <span class="fl">150.84</span><span class="op">)</span>, lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">31.48</span>, <span class="op">-</span><span class="fl">31.07</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  date_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2024-01-01"</span>, <span class="st">"2024-01-07"</span><span class="op">)</span>,</span>
+<span>  datasets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SMIPS"</span>, <span class="st">"CLY"</span><span class="op">)</span>,</span>
+<span>  smips_collection <span class="op">=</span> <span class="st">"totalbucket"</span>,</span>
+<span>  depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"000_005"</span>, <span class="st">"005_015"</span><span class="op">)</span>,</span>
+<span>  stat <span class="op">=</span> <span class="st">"EV"</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">cog_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">r</span>, y <span class="op">=</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">cog_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">location</span>, <span class="va">cog_df</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cog_df</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"location"</span>, <span class="st">"ID"</span>, <span class="st">"smips_totalbucket_mm_20240101"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span></span>
-<span><span class="va">cog_df</span></span>
-<span><span class="co">#&gt;   location ID smips_totalbucket_mm_20240101        x         y</span></span>
-<span><span class="co">#&gt; 1 Corrigin  1                    0.06715473 117.8688 -32.33328</span></span>
-<span><span class="co">#&gt; 2 Merredin  2                    0.22716530 118.2787 -31.48353</span></span>
-<span><span class="co">#&gt; 3 Tamworth  3                   93.44989014 150.8408 -31.07365</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015</span></span>
+<span><span class="co">#&gt;        &lt;Date&gt;  &lt;num&gt;  &lt;num&gt;             &lt;num&gt;          &lt;num&gt;          &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: 2024-01-01 118.28 -31.48         0.2271653             11             15</span></span>
+<span><span class="co">#&gt; 2: 2024-01-01 150.84 -31.07        93.4498901             28             31</span></span>
+<span><span class="co">#&gt; 3: 2024-01-02 118.28 -31.48         0.2135102             11             15</span></span>
+<span><span class="co">#&gt; 4: 2024-01-02 150.84 -31.07        90.6175690             28             31</span></span>
+<span><span class="co">#&gt; 5: 2024-01-03 118.28 -31.48         0.2344290             11             15</span></span>
+<span><span class="co">#&gt; 6: 2024-01-03 150.84 -31.07        88.5260391             28             31</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="keeping-nert-updated">Keeping {nert} Updated<a class="anchor" aria-label="anchor" href="#keeping-nert-updated"></a>
 </h2>
 <p>{nert} is undergoing active development and is not yet on CRAN. If you installed {nert} using the R-Universe (the preferred method), you can keep {nert} up-to-date locally like so:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/update.packages.html" class="external-link">update.packages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>and answering <code>yes</code> or <code>y</code> when asked if you would like to upgrade {nert}.</p>
 </div>
@@ -165,7 +172,7 @@
 <h2 id="note-for-linux-installers">Note for Linux Installers<a class="anchor" aria-label="anchor" href="#note-for-linux-installers"></a>
 </h2>
 <p>If you are using Linux, you will likely need to install several system-level libraries, {pak} will do it’s best to install most of them but some may not be installable this way. For <a href="https://ardc.edu.au/services/ardc-nectar-research-cloud/" class="external-link">Nectar</a> with a fresh Ubuntu image, you can use the following command to install system libraries to install {pak} and then install {fifo}. In your Linux terminal (not your R console, the “terminal” tab in RStudio should do here in most cases) type:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install libcurl4-openssl-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libudunits2-dev libxml2-dev</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install libcurl4-openssl-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libudunits2-dev libxml2-dev</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a>
@@ -174,23 +181,24 @@
 <h3 id="dev-container">Dev Container<a class="anchor" aria-label="anchor" href="#dev-container"></a>
 </h3>
 <p>Set up the container.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> .</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="ex">devcontainer</span> up <span class="at">--workspace-folder</span> .</span></code></pre></div>
 <p>Run tests and check stuff.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::check()"</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::check()"</span></span></code></pre></div>
 <p>Render this file.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::build_readme()"</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="ex">devcontainer</span> exec <span class="at">--workspace-folder</span> . R <span class="at">-e</span> <span class="st">"devtools::build_readme()"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="citing-nert">Citing {nert}<a class="anchor" aria-label="anchor" href="#citing-nert"></a>
 </h2>
 <p>To cite nert:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'nert' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: An API Client for TERN Data.</span></span>
-<span><span class="co">#&gt;   R package version 1.1.0. https://aagi-aus.github.io/nert/</span></span>
+<span><span class="co">#&gt;   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026).</span></span>
+<span><span class="co">#&gt;   nert: An API Client for TERN Data. R package version 1.1.0.</span></span>
+<span><span class="co">#&gt;   https://aagi-aus.github.io/nert/</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
 <span><span class="co">#&gt; </span></span>

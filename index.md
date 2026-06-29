@@ -1,7 +1,26 @@
 # nert
 
-The goal of {nert} is to provide access to Australian TERN (Terrestrial
-Ecosystem Research Network) data in your R session.
+The {nert} package streamlines access to various Cloud-Optimised GeoTIFF
+(COG) datasets provided by the Australian Terrestrial Ecosystem Research
+Network (TERN), allowing you to easily incorporate these environmental
+datasets into your R analytics. Currently supported datasets in the
+{nert} package include:
+
+- Daily volumetric soil moisture estimates from the Soil Moisture
+  Integration and Prediction System (SMIPS),
+- Actual evapotranspiration estimates using the CSIRO MODIS
+  Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm,
+- Soil orders from the Australian Soil Classification Map,
+- Canopy height estimates from the OzTreeMap best-pick canopy height
+  model,
+- Australian land surface phenology based on thresholded MODIS Enhanced
+  Vegetation Index (EVI) data,
+- Soil and Landscape Grid of Australia (SLGA) datasets, including
+  available volumetric water capacity, clay/sand/silt content, Bulk
+  Density (whole earth) measurements, soil pH (CaCl2 and water),
+  nitrogen and phosphorus content, cation exchange capacity, and the
+  drained upper limit and 15-bar lower limit water content readings,
+- Soil bacteria and soil fungi Beta Diversity datasets.
 
 ## Installation instructions
 
@@ -66,56 +85,75 @@ pak::pak("AAGI-AUS/nert")
 options(o) # reset options
 ```
 
-## Example: reading a COG as a spatial object
+## Example: reading a SMIPS COG as a spatial object
 
-This is a basic example which shows you how you can fetch one day’s data
-from the SMIPS data and visualise it:
+The {nert} package provides a number of convenient functions such as
+[`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
+which allow you to fetch COGs from the TERN Data Portal for use in your
+R session. The below code fetches the SMIPS soil moisture raster for the
+1st of January 2024, and then uses the {terra} package’s
+[`extract()`](https://rspatial.github.io/terra/reference/extract.html)
+function to get a soil moisture estimate for the Adelaide CBD. Note that
+since these are cloud-optimised COGs, they employ Just-In-Time data
+streaming: that is, *only the bytes necessary for the spatial extent we
+actually need are downloaded*, resulting in significant time and
+disk-space savings.
 
 ``` r
 
 library(nert)
-r <- read_smips(date = "2024-01-01")
+library(terra)
+#> terra 1.9.34
 
-# `autoplot` is re-exported from {tidyterra}
+r <- read_smips(date = "2024-01-01")
+extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
+#>   ID smips_totalbucket_mm_20240101        x         y
+#> 1  1                      46.07692 138.6037 -34.93254
+```
+
+The {nert} package also re-exports {tidyterra}’s
+[`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+function, which can be used to create a visualisation of the
+Australia-wide data rasters.
+
+``` r
+
 autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 
 ![](reference/figures/README-example_cog-1.png)
 
-## Extract Values Given Lat/Lon Values
+## Extract Values in Bulk Given Lat/Lon Values
 
-Extract Soil Moisture for Corrigin and Merriden, WA and Tamworth, NSW
-given latitude and longitude values for each.
+The {nert} package also provides a convenient function
+[`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+which allows you to easily grab multiple TERN datasets across multiple
+times and multiple spatial locations. For example, the below code grabs
+the SMIPS “totalbucket” and SLGA “CLY” clay content estimates at 0-5cm
+and 5-15cm depths, across the first week of 2024 at Merriden, WA and
+Tamworth, NSW:
 
 ``` r
 
-library(terra)
-#> terra 1.9.34
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
-df <- structure(
-  list(
-    location = c("Corrigin", "Merredin", "Tamworth"),
-    x = c(117.87, 118.28, 150.84),
-    y = c(-32.33, -31.48, -31.07)
-  ),
-  row.names = c(NA, -3L),
-  class = "data.frame"
+dat <- collect_tern_data(
+  xy = data.frame(lon = c(118.28, 150.84), lat = c(-31.48, -31.07)),
+  date_range = c("2024-01-01", "2024-01-07"),
+  datasets = c("SMIPS", "CLY"),
+  smips_collection = "totalbucket",
+  depth = c("000_005", "005_015"),
+  stat = "EV",
+  verbose = FALSE
 )
-
-cog_df <- extract(x = r, y = df[, c("x", "y")], xy = TRUE)
-
-cog_df <- cbind(df$location, cog_df)
-names(cog_df) <- c("location", "ID", "smips_totalbucket_mm_20240101", "x", "y")
-cog_df
-#>   location ID smips_totalbucket_mm_20240101        x         y
-#> 1 Corrigin  1                    0.06715473 117.8688 -32.33328
-#> 2 Merredin  2                    0.22716530 118.2787 -31.48353
-#> 3 Tamworth  3                   93.44989014 150.8408 -31.07365
+head(dat)
+#>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015
+#>        <Date>  <num>  <num>             <num>          <num>          <num>
+#> 1: 2024-01-01 118.28 -31.48         0.2271653             11             15
+#> 2: 2024-01-01 150.84 -31.07        93.4498901             28             31
+#> 3: 2024-01-02 118.28 -31.48         0.2135102             11             15
+#> 4: 2024-01-02 150.84 -31.07        90.6175690             28             31
+#> 5: 2024-01-03 118.28 -31.48         0.2344290             11             15
+#> 6: 2024-01-03 150.84 -31.07        88.5260391             28             31
 ```
 
 ## Keeping {nert} Updated
@@ -178,8 +216,9 @@ To cite nert:
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: An API Client for TERN Data.
-#>   R package version 1.1.0. https://aagi-aus.github.io/nert/
+#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026).
+#>   nert: An API Client for TERN Data. R package version 1.1.0.
+#>   https://aagi-aus.github.io/nert/
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 

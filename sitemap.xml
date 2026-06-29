@@ -22,7 +22,15 @@
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-init_nert_options.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-make_aet_url.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-make_smips_url.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_aet_collection.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_asc_collection.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_datasets.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_depth.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_phen_collection.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_smips_collection.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_soildiv_collection.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_stat.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_vector_elements.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-parse_coordinates.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-parse_date_range.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-phenology_metrics.html</loc></url>
