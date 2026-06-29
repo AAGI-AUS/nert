@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2024
-    COPYRIGHT HOLDER: Grains Research and Development Corporation
+    YEAR: 2026
+    COPYRIGHT HOLDER: Grains Research and Development Corporation (GRDC)
