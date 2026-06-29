@@ -36,6 +36,7 @@ Suggests:
     nlme,
     rmarkdown,
     testthat (>= 3.2.0),
+    xml2,
     usethis,
     withr
 VignetteBuilder: 

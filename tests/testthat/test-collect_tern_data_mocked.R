@@ -52,16 +52,17 @@ test_that("collect_tern_data emits the right shape for SMIPS x SLGA mix", {
     datasets = c("SMIPS", "AWC"),
     smips_collection = "totalbucket",
     depth = "000_005",
+    stat = "EV",
     api_key = KEY,
     verbose = FALSE
   )
   expect_setequal(
     names(out),
-    c("date", "lon", "lat", "SMIPS_totalbucket", "AWC")
+    c("date", "lon", "lat", "SMIPS_totalbucket", "AWC_EV_000_005")
   )
 })
 
-test_that("ASC populates a character column", {
+test_that("ASC populates a character column for EV, a double column for CI", {
   .use_mocked_cog(raster = .fixture_character_raster())
   out <- collect_tern_data(
     date_range = as.Date("2024-01-01"),
@@ -71,8 +72,9 @@ test_that("ASC populates a character column", {
     api_key = KEY,
     verbose = FALSE
   )
-  expect_type(out$ASC, "character")
-  expect_false(anyNA(out$ASC))
+  expect_type(out$ASC_EV, "character")
+  expect_type(out$ASC_CI, "double")
+  expect_true(!anyNA(out$ASC))
 })
 
 test_that("CANOPY (static) value is replicated across the date axis", {
@@ -133,15 +135,16 @@ test_that("column set is invariant under partial failure", {
     datasets = c("SMIPS", "AWC", "CANOPY"),
     smips_collection = "totalbucket",
     depth = "000_005",
+    stat = "05",
     api_key = KEY,
     verbose = FALSE
   ))
   # Every requested dataset still has its column, all NA on failure.
   expect_setequal(
     names(out),
-    c("date", "lon", "lat", "SMIPS_totalbucket", "AWC", "CANOPY")
+    c("date", "lon", "lat", "SMIPS_totalbucket", "AWC_05_000_005", "CANOPY")
   )
-  for (col in c("SMIPS_totalbucket", "AWC", "CANOPY")) {
+  for (col in c("SMIPS_totalbucket", "AWC_05_000_005", "CANOPY")) {
     expect_true(all(is.na(out[[col]])))
   }
 })

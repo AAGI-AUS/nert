@@ -6,23 +6,35 @@
 \usage{
 collect_tern_data(
   date_range,
+  dates,
   lon = NULL,
   lat = NULL,
   xy = NULL,
   datasets = NULL,
-  depth = "all",
-  stat = "EV",
-  smips_collection = "all",
+  depth = NULL,
+  stat = NULL,
+  smips_collection = NULL,
+  asc_collection = NULL,
+  aet_collection = NULL,
+  soildiv_collection = NULL,
+  phenology_collection = NULL,
   api_key = NULL,
+  max_tries = NULL,
+  initial_delay = NULL,
   verbose = TRUE,
   na.rm = FALSE
 )
 }
 \arguments{
-\item{date_range}{A \code{Date} vector or character vector of dates
-(e.g.\ \code{seq(as.Date("2024-01-01"), as.Date("2024-01-31"), by = "day")})
-OR a length-2 vector giving start and end dates
-(e.g.\ \code{c("2024-01-01", "2024-01-31")}).}
+\item{date_range}{A \code{Date} vector or \code{character} vector of length 2,
+\verb{[start_date, end_date]}, indicating the start and end date which
+should be used for the TERN dataset retrieval. (If a vector of length
+greater than 2 is given, this parameter works exactly as \code{dates} does.)
+Omit if specifying exact dates via the \code{dates} argument instead.}
+
+\item{dates}{A \code{Date} vector or \code{character} vector, indicating the
+exact set of dates for which TERN datasets should be retrieved. Takes
+precedence over \code{date_range} if supplied.}
 
 \item{lon}{Longitude(s) (WGS84, EPSG:4326).  Numeric scalar or vector
 (same length as \code{lat}).  Omit if using \code{xy} notation.}
@@ -34,74 +46,106 @@ OR a length-2 vector giving start and end dates
 coordinate columns named \code{lon}/\code{lat} or \code{x}/\code{y}.  Takes precedence
 over \code{lon}/\code{lat} when supplied.}
 
-\item{datasets}{\code{character} vector of dataset aliases to collect.
-Default: all 20 datasets (SMIPS, ASC, AET, AWC, CLY, SND, SLT, BDW,
-PHC, PHW, NTO, AVP, PTO, CEC, ECE, DUL, L15, SOILDIV, CANOPY, PHENOLOGY).
-Use \code{NULL} or \code{"all"} for all datasets.}
+\item{datasets}{A \code{character} vector of dataset aliases to collect.
+(Default=All datasets.) Options: \code{"SMIPS"}, \code{"ASC"}, \code{"AET"}, \code{"AWC"},
+\code{"CLY"}, \code{"SND"}, \code{"SLT"}, \code{"BDW"}, \code{"PHC"}, \code{"PHW"}, \code{"NTO"}, \code{"AVP"},
+\code{"PTO"}, \code{"CEC"}, \code{"ECE"}, \code{"DUL"}, \code{"L15"}, \code{"SOILDIV"}, \code{"CANOPY"},
+\code{"PHENOLOGY"}. Use \code{NULL} (default) or \code{"all"} to specify retrieval
+of all available datasets.}
 
-\item{depth}{For SLGA datasets: depth interval (default \code{"all"}).
-Options: \code{"000_005"}, \code{"005_015"}, \code{"015_030"}, \code{"030_060"},
-\code{"060_100"}, \code{"100_200"}, or \code{"all"} for all six GlobalSoilMap depths.
-Ignored for non-SLGA datasets.}
+\item{depth}{\emph{For SLGA datasets.} A \code{character} vector containing the
+depth interval(s) for the SLGA soil attributes to collect.
+(Default=All depths.) Options: \code{"000_005"}, \code{"005_015"}, \code{"015_030"},
+\code{"030_060"}, \code{"060_100"}, \code{"100_200"}. Use \code{NULL} (default) or \code{"all"}
+to specify retrieval of all available depths. This parameter is ignored
+for non-SLGA datasets.}
 
-\item{stat}{For SLGA datasets: \code{"EV"} (estimate, default) or \code{"CI"}
-(confidence interval).  Ignored for non-SLGA datasets.}
+\item{stat}{\emph{For SLGA datasets.} A \code{character} vector containing the
+statistic to retrieve for the SLGA datasets. (Default=All statistics.)
+Options: \code{"EV"} (estimated value), \code{"05"} (lower percentile limit
+for the 95\% confidence interval), \code{"95"} (upper percentile limit for the
+95\% confidence interval). Use \code{NULL} (default) or \code{"all"} to specify
+retrieval of all statistics. This parameter is ignored for non-SLGA
+datasets.}
 
-\item{smips_collection}{For SMIPS: \code{"all"} (default, all six variants),
-\code{"totalbucket"}, \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"}, \code{"deepD"},
-or \code{"runoff"}.  Ignored for non-SMIPS datasets.}
+\item{smips_collection}{\emph{For SMIPS datasets.} A \code{character} vector
+containing the SMIPS datasets to be retrieved. (Default=All SMIPS
+datasets.) Options: \code{"totalbucket"}, \code{"SMindex"}, \code{"bucket1"},
+\code{"bucket2"}, \code{"deepD"}, \code{"runoff"}. Use \code{NULL} (default) or \code{"all"} to
+specify retrieval of all SMIPS datasets. This parameter is ignored for
+non-SMIPS datasets.}
 
-\item{api_key}{TERN API key.  Default: \code{get_key()}.}
+\item{asc_collection}{\emph{For ASC datasets.} A \code{character} vector specifying
+the Australian Soil Classification Map datasets to be retrieved.
+(Default=All ASC datasets.) Options: \code{"EV"} (estimated soil order),
+\code{"CI"} (confusion index). Use \code{NULL} (default) or \code{"all"} to specify
+retrieval of all ASC datasets.}
 
-\item{verbose}{Logical.  If \code{TRUE}, print progress messages.}
+\item{aet_collection}{\emph{For AET datasets.} A \code{character} vector specifying
+the Actual Evapotranspiration datasets to be retrieved. (Default=All
+AET datasets.) Options: \code{"ETa"}, \code{"pixel_qa"} (quality assurance flags).
+Use \code{NULL} (default) or \code{"all"} to specify retrieval of all AET datasets.
+This parameter is ignored for non-AET datasets.}
+
+\item{soildiv_collection}{\emph{For SOILDIV datasets.} A \code{character} vector
+specifying the beta soil diversity NMDS axes to be retrieved.
+(Default=All axes/datasets.) Options: \code{"Bacteria_NMDS1"},
+\code{"Bacteria_NMDS2"}, \code{"Bacteria_NMDS3"}, \code{"Fungi_NMDS1"}, \code{"Fungi_NMDS2"},
+\code{"Fungi_NMDS3"}. Use \code{NULL} (default) or \code{"all"} to specify retrieval
+of all SOILDIV axes/datasets.}
+
+\item{phenology_collection}{\emph{For PHENOLOGY datasets.} A \code{character} vector
+specifying the phenology datasets to be retrieved. (Default=All
+PHENOLOGY datasets.) Options: \code{"SGS"}, \code{"PGS"}, \code{"EGS"}, \code{"LGS"},
+\code{"EVI1"}, \code{"EVI2"}, \code{"EVIP"}, \code{"EVII"}, \code{"SGS_month"}, \code{"PGS_month"},
+\code{"EGS_month"}. Use \code{NULL} (default) or \code{"all"} to specify retrieval of
+all PHENOLOGY datasets.}
+
+\item{api_key}{A \code{character} string containing your \acronym{TERN}
+\acronym{API} key. Defaults to automatic detection from your
+\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
+
+\item{max_tries}{Maximum number of download retries before an error is
+raised. Default=\code{NULL}, in which case the maximum retry number is
+resolved from the option \code{nert.max_tries} if that option exists.
+(Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
+
+\item{initial_delay}{Initial retry delay in seconds (doubles with each
+attempt). Default=\code{NULL}, in which case the initial delay is
+resolved from the option \code{nert.initial_delay} if that option exists.
+(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+not been set.)}
+
+\item{verbose}{Logical.  If \code{TRUE}, print progress messages. (Default=TRUE.)}
 
 \item{na.rm}{Logical.  If \code{TRUE}, drop rows where all dataset columns
-are \code{NA}.}
+are \code{NA}. (Default=FALSE).}
 }
 \value{
-A \code{data.table} with columns:
+A \code{data.table} with the following columns:
 \itemize{
 \item \code{date}: \code{Date}.
-\item \code{lon}, \code{lat}: coordinates (always included; constant when a single
+\item \code{lon}, \code{lat}: spatial coordinates (always included; constant when a single
 location is requested).
-\item One column per dataset layer.  See \strong{Details} for naming.
+\item One column per dataset requested. These dataset columns are named
+with their alias as the prefix (e.g., \code{SMIPS}, \code{AWC}, \code{SOILDIV}),
+followed by any variant information (e.g., depth, statistic, dataset
+name) after an underscore. For example, \code{SMIPS_totalbucket} for
+the SMIPS "totalbucket" dataset, \code{CLY_05_000_005} for the lower (05)
+percentile limit of the soil clay at 0-5cm depth, and so on.
 }
 }
 \description{
 Extract values from one or more TERN datasets at given location(s) over a
-date range. Returns a \code{data.table} with one row per (date, location) and
-one column per dataset layer.  Static datasets are repeated across all
-dates.
+given set or range of dates. Returns a \code{data.table} with one row per
+date/location, and one column per dataset requested. (Note that static
+datasets are repeated across all dates for consistency.)
 }
 \details{
-\strong{Vectorised extraction.}  For each unique COG required (a
-(dataset, date, variant, depth) tuple), the function opens the COG
-\strong{once} and calls \code{\link[terra:extract]{terra::extract()}} \strong{once} with all requested
-coordinates as a single \code{SpatVector}.  Returning M locations × N dates
-across K work items therefore costs K COG opens and K extract calls,
-not M × K.  Time-series datasets contribute one work item per date;
-static datasets contribute one work item total (the value is replicated
-across the date axis at output assembly time).
-
-\strong{Column naming.}
-\itemize{
-\item SMIPS with \code{smips_collection = "all"}: six columns named
-\code{SMIPS_totalbucket}, \code{SMIPS_SMindex}, \code{SMIPS_bucket1}, \code{SMIPS_bucket2},
-\code{SMIPS_deepD}, \code{SMIPS_runoff}.
-\item SMIPS with a single collection: one column \verb{SMIPS_<collection>}.
-\item SLGA with \code{depth = "all"}: six columns per dataset (e.g.\
-\code{AWC_000_005} ... \code{AWC_100_200}).
-\item SLGA with a single depth: one column named for the dataset alias.
-\item AET: one column \code{AET}.
-\item ASC: one column \code{ASC} (character soil-order class).
-\item CANOPY, SOILDIV, PHENOLOGY: one column each named for the alias.
-}
-
-\strong{Failure handling.}  If a work item's COG fetch or extract fails, the
-corresponding column(s) remain \code{NA} for the affected rows and a
-\code{cli::cli_warn()} identifies the dataset/date/error.  The output schema
-(column count and names) is fixed at planning time and is invariant
-under per-COG failure.
+\strong{Failure handling.} Note that if a COG fetch fails (i.e., no
+successful download after \code{max_tries}), the corresponding column(s)
+will be set as \code{NA} for the affected rows, and a \code{cli::cli_warn()}
+warning is emitted.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}

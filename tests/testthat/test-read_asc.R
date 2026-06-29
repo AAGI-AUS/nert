@@ -3,7 +3,6 @@ KEY <- "test-key-0000"
 # ---- Network integration tests (skipped without API key) -------------------
 
 test_that("read_asc returns the soil classification data", {
-  skip_on_cran()
   skip_on_ci()
   skip_if(!nzchar(Sys.getenv("TERN_API_KEY")), "TERN API key not available")
   asc <- read_asc()
@@ -12,7 +11,6 @@ test_that("read_asc returns the soil classification data", {
 
 
 test_that("read_asc returns the confusion index for soil class", {
-  skip_on_cran()
   skip_on_ci()
   skip_if(!nzchar(Sys.getenv("TERN_API_KEY")), "TERN API key not available")
   asc <- read_asc(collection = "CI")

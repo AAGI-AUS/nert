@@ -439,7 +439,7 @@ read_tern <- function(
 #' @dev
 .tern_aliases <- stats::setNames(
   names(.tern_datasets),
-  vapply(.tern_datasets, \(d) d$alias, character(1L))
+  vapply(.tern_datasets, function(d) d$alias, character(1L))
 )
 
 

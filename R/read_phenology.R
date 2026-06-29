@@ -205,11 +205,24 @@ read_phenology <- function(
 
   metric_dir <- .phenology_metrics[[collection]]
 
-  # For the monthly rasters, strip the "_month" bit off the end
-  # to match to the raster filenames in the TERN server directory
+  # Map the dataset variant names to the filenames in the TERN
+  # server directory
+  filename_prefix <- c(
+    "SGS" = "SGS",
+    "PGS" = "PGS",
+    "EGS" = "EGS",
+    "LGS" = "LGS",
+    "EVI1" = "Minimum_EVI_1",
+    "EVI2" = "Minimum_EVI_2",
+    "EVIP" = "Peak_EVI",
+    "EVII" = "Integral_EVI",
+    "SGS_month" = "SGS",
+    "PGS_month" = "PGS",
+    "EGS_month" = "EGS"
+  )
   fname <- sprintf(
     "%s_%d_Season%d.tif",
-    sub("_month", "", collection, fixed = TRUE),
+    unname(filename_prefix[collection]),
     year,
     season
   )
