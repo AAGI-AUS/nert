@@ -372,7 +372,7 @@ collect_tern_data <- function(
 #'   order preserved).
 #' @dev
 .normalise_vector_elements <- function(vec, valid_elements, info) {
-  if (is.null(vec) || (length(vec) == 1 && identical(vec, "all"))) {
+  if (is.null(vec) || (length(vec) == 1 && identical(tolower(vec), "all"))) {
     return(valid_elements)
   }
 

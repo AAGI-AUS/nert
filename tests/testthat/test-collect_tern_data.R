@@ -124,6 +124,14 @@ test_that(".normalise_datasets returns the full alias set for NULL/'all'", {
   expect_identical(.normalise_datasets("all"), .normalise_datasets(NULL))
 })
 
+test_that(".normalise_vector_elements matches 'all' case-insensitively", {
+  valid <- c("a", "b", "c")
+  expect_identical(.normalise_vector_elements("all", valid, "x"), valid)
+  expect_identical(.normalise_vector_elements("ALL", valid, "x"), valid)
+  expect_identical(.normalise_vector_elements("All", valid, "x"), valid)
+  expect_identical(.normalise_datasets("ALL"), .normalise_datasets(NULL))
+})
+
 test_that(".normalise_datasets deduplicates", {
   expect_identical(
     .normalise_datasets(c("SMIPS", "SMIPS", "ASC")),
