@@ -172,16 +172,7 @@ read_smips <- function(
 #'
 #' @dev
 .check_collection_agreement <- function(.collection, .day) {
-  # Per-collection earliest published daily raster on the TERN Data Portal:
-  # totalbucket / SMindex are archived back to 2005, while the bucket-level
-  # collections (bucket1 / bucket2 / deepD / runoff) begin in 2015. Confirmed
-  # by live resolution against data.tern.org.au (totalbucket and SMindex
-  # resolve at 2005-01-01; bucket1 returns HTTP 404 at 2005).
-  # A local copy without the leading dot is used for cli interpolation: cli
-  # reads `{.collection}` as inline markup rather than the variable, so the
-  # collection is interpolated as `{coll}`.
-  coll <- .collection
-  smips_start <- if (coll %in% c("totalbucket", "SMindex")) {
+  smips_start <- if (.collection %in% c("totalbucket", "SMindex")) {
     as.Date("2005-01-01")
   } else {
     as.Date("2015-01-01")
@@ -191,7 +182,7 @@ read_smips <- function(
 
   if (.day < smips_start) {
     cli::cli_abort(
-      "SMIPS {.val {coll}} data are not generally available before
+      "SMIPS {.val {(.collection)}} data are not generally available before
       {format(smips_start, '%Y-%m-%d')}. \\
       You requested {format(.day, '%Y-%m-%d')}."
     )
