@@ -122,16 +122,16 @@ If you prefer a more secure method, you can use the [{keyring}](https://keyring.
     library(keyring)
 
     keyring_create("nert")
-    key_set("NERT_API_KEY", keyring = "nert")
+    key_set("TERN_API_KEY", keyring = "nert")
     ```
 
-    This will create a new keyring called `nert`, with a new key called `NERT_API_KEY`. The function will then prompt you for the actual key value, which you can paste from the TERN website where you copied it earlier. You can then verify that the key was stored as expected by using the `keyring::key_get()` function:
+    This will create a new keyring called `nert`, with a new key called `TERN_API_KEY`. The function will then prompt you for the actual key value, which you can paste from the TERN website where you copied it earlier. You can then verify that the key was stored as expected by using the `keyring::key_get()` function:
 
     ```{r, verify-key, eval=FALSE}
-    key_get("NERT_API_KEY", keyring = "nert")
+    key_get("TERN_API_KEY", keyring = "nert")
     ```
 
-3.  Finally, you can quickly check that the TERN API key is working with the {nert} package correctly by trying to download a raster. The below R code retrieves the SMIPS "totalbucket" soil moisture data raster for January 1st, 2024 using the `nert::read_smips()` function, and then uses the {terra} package's `terra::extract()` function to get a point value for the soil moisture measurement at the Adelaide CBD (at approximately 138.6007 decimal degrees Easting for the longitude, and -34.9285 decimal degrees Northing for the latitude). Note that we explicitly specify to use the `NERT_API_KEY` we stored in the `nert` keyring by setting the `api_key` argument:
+3.  Finally, you can quickly check that the TERN API key is working with the {nert} package correctly by trying to download a raster. The below R code retrieves the SMIPS "totalbucket" soil moisture data raster for January 1st, 2024 using the `nert::read_smips()` function, and then uses the {terra} package's `terra::extract()` function to get a point value for the soil moisture measurement at the Adelaide CBD (at approximately 138.6007 decimal degrees Easting for the longitude, and -34.9285 decimal degrees Northing for the latitude). Note that we explicitly specify to use the `TERN_API_KEY` we stored in the `nert` keyring by setting the `api_key` argument:
 
     ```{r, using-keyring, eval=FALSE}
     library(nert)
@@ -139,7 +139,7 @@ If you prefer a more secure method, you can use the [{keyring}](https://keyring.
 
     r <- read_smips(
       date = "2024-01-01",
-      api_key = key_get("NERT_API_KEY", keyring = "nert")
+      api_key = key_get("TERN_API_KEY", keyring = "nert")
     )
 
     extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
