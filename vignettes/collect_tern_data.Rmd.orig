@@ -44,7 +44,7 @@ head(dt)
 
 When `verbose = TRUE` (default), a list of the datasets that will be collected is generated in the output, together with progress messages as the data points are downloaded.
 
-By default, `collect_tern_data()` extracts _all available dataset variants_ unless you specify a smaller subset. For instance, in the above code, we collect all of the available SMIPS datasets: `"totalbucket"`, `"SMindex"`, `"bucket1"`, `"bucket2"`, `"deepD"`, and `"runoff"`. Extracting the other datasets works similarly. If we use `collect_tern_data()` to download data for the SLGA available water capacity dataset `"AWC"`, by default it will download the data for all available depths, as well as all three statistics (the estimated value `EV`, as well as the 95% confidence interval limits `05` and `95`):
+By default, `collect_tern_data()` extracts _all available dataset variants_ unless you specify a smaller subset. For instance, in the above code, we collect all of the available SMIPS datasets: `"totalbucket"`, `"SMindex"`, `"bucket1"`, `"bucket2"`, `"deepD"`, and `"runoff"`. Extracting the other datasets works similarly. If we use `collect_tern_data()` to download data for the SLGA available water capacity dataset `"AWC"`, by default it will download the data for all available depths, as well as all three statistics (the estimated value `EV`, plus the `05` and `95` percentile bounds, which together span a 90% interval):
 
 ```{r collect-awc}
 dt <- collect_tern_data(

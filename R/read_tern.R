@@ -76,8 +76,9 @@
 #'     `"015_030"`, `"030_060"`, `"060_100"`, or
 #'     `"100_200"` (cm).}
 #'   \item{`collection`}{One of `"EV"` (estimated value, default),
-#'     `"05"` (lower percentile limit for the 95% confidence interval)
-#'     or `"95"` (upper percentile limit for the confidence interval).}
+#'     `"05"` (lower, 5th-percentile bound) or `"95"` (upper,
+#'     95th-percentile bound). The `05` and `95` layers together span a
+#'     90% interval, per the SLGA product definition.}
 #' }
 #' Supported attributes (use as the `dataset_id` alias):
 #' \describe{
