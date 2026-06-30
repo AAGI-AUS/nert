@@ -352,7 +352,15 @@ collect_tern_data <- function(
   }
 
   if (length(date_range) == 2) {
-    dates <- seq(as.Date(date_range[1]), as.Date(date_range[2]), by = "day")
+    start <- as.Date(date_range[1])
+    end <- as.Date(date_range[2])
+    if (start > end) {
+      cli::cli_abort(
+        "{.arg date_range} start {.val {start}} must not be after its end \\
+         {.val {end}}."
+      )
+    }
+    dates <- seq(start, end, by = "day")
   } else {
     dates <- as.Date(date_range)
   }
