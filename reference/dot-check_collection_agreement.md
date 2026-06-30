@@ -1,16 +1,16 @@
 # Validate date requested aligns with SMIPS collection extent
 
-SMIPS daily COGs are published from 2015-01-01 (the earliest archived
-complete set of soil moisture GeoTIFFs available on the TERN Data
-Portal), up to today. Requests outside that window will definitely
-return HTTP 404 from the GDAL vsicurl driver, resulting in a "file does
-not exist" error from
+SMIPS daily COGs are published up to today, with a per-collection
+earliest date on the TERN Data Portal: `"totalbucket"` and `"SMindex"`
+are archived from 2005-01-01, while `"bucket1"`, `"bucket2"`, `"deepD"`,
+and `"runoff"` are available from 2015-01-01. Requests outside the
+collection's window will return HTTP 404 from the GDAL vsicurl driver,
+resulting in a "file does not exist" error from
 [`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html).
-This helper function catches this case before any network I/O. (Note:
-the requested rasters may still be unavailable even if this check
-passes, e.g., if the user has requested a very recent raster that has
-not been added to the TERN server yet. This validation function simply
-checks for the obviously impossible cases.)
+This helper catches that case before any network I/O. (Note: the
+requested raster may still be unavailable even if this check passes,
+e.g., a very recent raster not yet added to the TERN server. This
+function only rejects the obviously impossible cases.)
 
 ## Usage
 

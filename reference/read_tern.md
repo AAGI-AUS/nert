@@ -116,7 +116,9 @@ are also provided for simplified access to each dataset.
   One of `"totalbucket"` (default), `"SMindex"`, `"bucket1"`,
   `"bucket2"`, `"deepD"`, or `"runoff"`.
 
-Data availability: from 2005-01-01 to today. (Updated regularly.)
+Data availability: `totalbucket` and `SMindex` from 2005-01-01;
+`bucket1`, `bucket2`, `deepD`, and `runoff` from 2015-01-01; to today.
+(Updated regularly.)
 
 ## ASC – Australian Soil Classification (`"ASC"`)
 

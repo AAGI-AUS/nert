@@ -4,8 +4,11 @@ Wrapper around
 [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
 for retrieving the SMIPS v1.0 daily soil moisture data from the TERN
 Data Portal. SMIPS provides soil moisture estimates at roughly 1km X 1km
-spatial resolution across Australia, from 1st January 2015 onward
-(updated approximately daily on the TERN server).
+spatial resolution across Australia, updated approximately daily on the
+TERN server. The earliest available raster depends on the collection:
+the `"totalbucket"` and `"SMindex"` collections are archived from 2005,
+while the four bucket-level collections (`"bucket1"`, `"bucket2"`,
+`"deepD"`, `"runoff"`) are available from 1st January 2015.
 
 ## Usage
 
