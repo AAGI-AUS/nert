@@ -58,6 +58,14 @@ test_that("Date validation works with valid dates", {
   expect_identical(toString(date_checked), reference_date)
 })
 
+test_that("a character date and the equivalent Date resolve to the same instant", {
+  # guards the documented character/Date equivalence (both parsed in UTC)
+  expect_identical(
+    .check_date("2024-01-15"),
+    .check_date(as.Date("2024-01-15"))
+  )
+})
+
 test_that("Date validation throws error with invalid dates", {
   # multiple dates
   expect_error(
