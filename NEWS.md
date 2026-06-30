@@ -8,7 +8,7 @@ Updated version, fixing a number of issues with the TERN dataset retrieval.
   available on the TERN Data Portal, including the monthly SGS/PGS/EGS.
 - `read_slga()` provides access to an additional six datasets (CEC,ECE,
   AVP,PTO,DUL,L15), and also allows the user to pull the 05 and 95
-  percentile limits for the 95% confidence interval.
+  percentile bounds, which together span a 90% interval.
 - `read_asc()` now provides access to its data and confusion index rasters
   using a consistent interface with the rest of the `read_*()` functions.
 - Documentation for the functions and their TERN datasets has been

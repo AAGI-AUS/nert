@@ -24,8 +24,9 @@ read_slga(
 \code{"100_200"}.}
 
 \item{collection}{One of \code{"EV"} (estimated value, default),
-\code{"05"} (lower percentile limit for the 95\% confidence interval) or
-\code{"95"} (upper percentile limit for the confidence interval).}
+\code{"05"} (lower, 5th-percentile bound) or \code{"95"} (upper,
+95th-percentile bound). The 05 and 95 layers together span a 90\%
+interval.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
 \acronym{API} key. Defaults to automatic detection from your
@@ -51,7 +52,8 @@ Grid of Australia (SLGA) datasets from the TERN Data Portal. 14 soil
 attributes are available at 90m X 90m spatial resolution across Australia,
 each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
 60-100cm, 100-200cm) and three statistics (estimated value, and the lower
-(05) and upper (95) percentile limits for the confidence interval).
+(05, 5th) and upper (95, 95th) percentile bounds, which together span a
+90\% interval).
 }
 \section{Supported soil attributes}{
 
@@ -82,7 +84,7 @@ autoplot(r)
 # Read available water capacity at 15-30 cm
 r_awc <- read_slga("AWC", depth = "015_030")
 
-# Read pH (CaCl2) confidence interval at 30-60 cm
+# Read the pH (CaCl2) 5th- and 95th-percentile bounds at 30-60 cm
 r_phc_low <- read_slga("PHC", depth = "030_060", collection = "05")
 r_phc_up <- read_slga("PHC", depth = "030_060", collection = "95")
 \dontshow{\}) # examplesIf}

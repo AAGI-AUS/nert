@@ -127,8 +127,9 @@ depth layers and three statistics:
 \code{"015_030"}, \code{"030_060"}, \code{"060_100"}, or
 \code{"100_200"} (cm).}
 \item{\code{collection}}{One of \code{"EV"} (estimated value, default),
-\code{"05"} (lower percentile limit for the 95\% confidence interval)
-or \code{"95"} (upper percentile limit for the confidence interval).}
+\code{"05"} (lower, 5th-percentile bound) or \code{"95"} (upper,
+95th-percentile bound). The \code{05} and \code{95} layers together span a
+90\% interval, per the SLGA product definition.}
 }
 Supported attributes (use as the \code{dataset_id} alias):
 \describe{
