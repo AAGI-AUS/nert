@@ -18,7 +18,10 @@ read_asc(
 estimated ASC soil order class. Each pixel of the raster maps to one
 of 14 soil order classes: Vertosol, Sodosol, Dermosol, Chromosol,
 Ferrosol, Kurosol, Tenosol, Kandosol, Hydrosol, Podosol, Rudosol,
-Calcarasol, Organosol, Anthroposol.}
+Calcarasol, Organosol, Anthroposol. The class listed here as
+\code{"Calcarasol"} reproduces the spelling carried in the TERN
+raster's own category labels; the canonical Australian Soil
+Classification spelling of this soil order is \code{"Calcarosol"}.}
 \item{\code{"CI"}}{\strong{Confusion Index} (0-1). A unitless index between
 0.0 and 1.0, approximating the uncertainty of the Random Forest
 classification for the soil order at each pixel. (A higher value of the
