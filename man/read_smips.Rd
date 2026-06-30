@@ -31,7 +31,7 @@ soil bucket.}
 An estimate of the volumetric soil moisture of the lower 10-90cm
 soil bucket.}
 \item{\code{"deepD"}}{\strong{Drainage between two buckets} (mm).
-An estimate of the drainage from the top 0-1cm soil bucket through
+An estimate of the drainage from the upper 0-10cm soil bucket through
 to the lower 10-90cm bucket.}
 \item{\code{"runoff"}}{\strong{Runoff/overtopping moisture loss} (mm).
 An estimate of the moisture lost from the top 0-10cm bucket due to
