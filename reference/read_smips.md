@@ -55,7 +55,7 @@ read_smips(
   `"deepD"`
 
   :   **Drainage between two buckets** (mm). An estimate of the drainage
-      from the top 0-1cm soil bucket through to the lower 10-90cm
+      from the upper 0-10cm soil bucket through to the lower 10-90cm
       bucket.
 
   `"runoff"`
