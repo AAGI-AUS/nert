@@ -4,12 +4,14 @@ Grid of Australia (SLGA) datasets from the TERN Data Portal. 14 soil
 attributes are available at 90m X 90m spatial resolution across Australia,
 each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
 60-100cm, 100-200cm) and three statistics (estimated value, and the lower
-(05) and upper (95) percentile limits for the confidence interval)."><meta property="og:description" content="Wrapper around read_tern() for retrieving various Soil and Landscape
+(05, 5th) and upper (95, 95th) percentile bounds, which together span a
+90% interval)."><meta property="og:description" content="Wrapper around read_tern() for retrieving various Soil and Landscape
 Grid of Australia (SLGA) datasets from the TERN Data Portal. 14 soil
 attributes are available at 90m X 90m spatial resolution across Australia,
 each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
 60-100cm, 100-200cm) and three statistics (estimated value, and the lower
-(05) and upper (95) percentile limits for the confidence interval)."></head><body>
+(05, 5th) and upper (95, 95th) percentile bounds, which together span a
+90% interval)."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -55,7 +57,8 @@ Grid of Australia (SLGA) datasets from the TERN Data Portal. 14 soil
 attributes are available at 90m X 90m spatial resolution across Australia,
 each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
 60-100cm, 100-200cm) and three statistics (estimated value, and the lower
-(05) and upper (95) percentile limits for the confidence interval).</p>
+(05, 5th) and upper (95, 95th) percentile bounds, which together span a
+90% interval).</p>
     </div>
 
     <div class="section level2">
@@ -89,8 +92,9 @@ each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
 
 <dt id="arg-collection">collection<a class="anchor" aria-label="anchor" href="#arg-collection"></a></dt>
 <dd><p>One of <code>"EV"</code> (estimated value, default),
-<code>"05"</code> (lower percentile limit for the 95% confidence interval) or
-<code>"95"</code> (upper percentile limit for the confidence interval).</p></dd>
+<code>"05"</code> (lower, 5th-percentile bound) or <code>"95"</code> (upper,
+95th-percentile bound). The 05 and 95 layers together span a 90%
+interval.</p></dd>
 
 
 <dt id="arg-api-key">api_key<a class="anchor" aria-label="anchor" href="#arg-api-key"></a></dt>
@@ -303,7 +307,7 @@ Terrestrial Ecosystem Research Network. (Dataset).
 <span class="r-in"><span><span class="co"># Read available water capacity at 15-30 cm</span></span></span>
 <span class="r-in"><span><span class="va">r_awc</span> <span class="op">&lt;-</span> <span class="fu">read_slga</span><span class="op">(</span><span class="st">"AWC"</span>, depth <span class="op">=</span> <span class="st">"015_030"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Read pH (CaCl2) confidence interval at 30-60 cm</span></span></span>
+<span class="r-in"><span><span class="co"># Read the pH (CaCl2) 5th- and 95th-percentile bounds at 30-60 cm</span></span></span>
 <span class="r-in"><span><span class="va">r_phc_low</span> <span class="op">&lt;-</span> <span class="fu">read_slga</span><span class="op">(</span><span class="st">"PHC"</span>, depth <span class="op">=</span> <span class="st">"030_060"</span>, collection <span class="op">=</span> <span class="st">"05"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">r_phc_up</span> <span class="op">&lt;-</span> <span class="fu">read_slga</span><span class="op">(</span><span class="st">"PHC"</span>, depth <span class="op">=</span> <span class="st">"030_060"</span>, collection <span class="op">=</span> <span class="st">"95"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

@@ -85,11 +85,10 @@ collect_tern_data(
 
   *For SLGA datasets.* A `character` vector containing the statistic to
   retrieve for the SLGA datasets. (Default=All statistics.) Options:
-  `"EV"` (estimated value), `"05"` (lower percentile limit for the 95%
-  confidence interval), `"95"` (upper percentile limit for the 95%
-  confidence interval). Use `NULL` (default) or `"all"` to specify
-  retrieval of all statistics. This parameter is ignored for non-SLGA
-  datasets.
+  `"EV"` (estimated value), `"05"` (lower, 5th-percentile bound), `"95"`
+  (upper, 95th-percentile bound); the `05` and `95` layers together span
+  a 90% interval. Use `NULL` (default) or `"all"` to specify retrieval
+  of all statistics. This parameter is ignored for non-SLGA datasets.
 
 - smips_collection:
 

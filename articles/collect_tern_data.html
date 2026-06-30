@@ -128,9 +128,9 @@ and <code>"runoff"</code>. Extracting the other datasets works
 similarly. If we use <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> to download data
 for the SLGA available water capacity dataset <code>"AWC"</code>, by
 default it will download the data for all available depths, as well as
-all three statistics (the estimated value <code>EV</code>, as well as
-the 95% confidence interval limits <code>05</code> and
-<code>95</code>):</p>
+all three statistics (the estimated value <code>EV</code>, plus the
+<code>05</code> and <code>95</code> percentile bounds, which together
+span a 90% interval):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/collect_tern_data.html">collect_tern_data</a></span><span class="op">(</span></span>
 <span>  dates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>,</span>

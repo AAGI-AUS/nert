@@ -182,8 +182,9 @@ depth layers and three statistics:</p><dl><dt><code>depth</code></dt>
 
 <dt><code>collection</code></dt>
 <dd><p>One of <code>"EV"</code> (estimated value, default),
-<code>"05"</code> (lower percentile limit for the 95% confidence interval)
-or <code>"95"</code> (upper percentile limit for the confidence interval).</p></dd>
+<code>"05"</code> (lower, 5th-percentile bound) or <code>"95"</code> (upper,
+95th-percentile bound). The <code>05</code> and <code>95</code> layers together span a
+90% interval, per the SLGA product definition.</p></dd>
 
 
 </dl><p>Supported attributes (use as the <code>dataset_id</code> alias):</p><dl><dt><code>"AWC"</code></dt>

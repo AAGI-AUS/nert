@@ -131,9 +131,9 @@ for non-SLGA datasets.</p></dd>
 <dt id="arg-stat">stat<a class="anchor" aria-label="anchor" href="#arg-stat"></a></dt>
 <dd><p><em>For SLGA datasets.</em> A <code>character</code> vector containing the
 statistic to retrieve for the SLGA datasets. (Default=All statistics.)
-Options: <code>"EV"</code> (estimated value), <code>"05"</code> (lower percentile limit
-for the 95% confidence interval), <code>"95"</code> (upper percentile limit for the
-95% confidence interval). Use <code>NULL</code> (default) or <code>"all"</code> to specify
+Options: <code>"EV"</code> (estimated value), <code>"05"</code> (lower, 5th-percentile
+bound), <code>"95"</code> (upper, 95th-percentile bound); the <code>05</code> and <code>95</code>
+layers together span a 90% interval. Use <code>NULL</code> (default) or <code>"all"</code> to specify
 retrieval of all statistics. This parameter is ignored for non-SLGA
 datasets.</p></dd>
 

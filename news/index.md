@@ -14,7 +14,7 @@ retrieval.
 - [`read_slga()`](https://aagi-aus.github.io/nert/reference/read_slga.md)
   provides access to an additional six datasets (CEC,ECE,
   AVP,PTO,DUL,L15), and also allows the user to pull the 05 and 95
-  percentile limits for the 95% confidence interval.
+  percentile bounds, which together span a 90% interval.
 - [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md)
   now provides access to its data and confusion index rasters using a
   consistent interface with the rest of the `read_*()` functions.

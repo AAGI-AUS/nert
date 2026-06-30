@@ -68,8 +68,8 @@ similarly. If we use
 [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
 to download data for the SLGA available water capacity dataset `"AWC"`,
 by default it will download the data for all available depths, as well
-as all three statistics (the estimated value `EV`, as well as the 95%
-confidence interval limits `05` and `95`):
+as all three statistics (the estimated value `EV`, plus the `05` and
+`95` percentile bounds, which together span a 90% interval):
 
 ``` r
 
