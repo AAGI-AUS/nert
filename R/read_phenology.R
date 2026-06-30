@@ -199,6 +199,12 @@ read_phenology <- function(
   approved_metrics <- names(.phenology_metrics)
   collection <- rlang::arg_match(collection, approved_metrics)
 
+  if (length(season) != 1L) {
+    cli::cli_abort(
+      "Phenology {.arg season} must be a single value; got length \\
+       {.val {length(season)}}."
+    )
+  }
   if (!season %in% 1L:2L) {
     cli::cli_abort("Phenology {.arg season} must be 1 or 2.")
   }

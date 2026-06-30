@@ -50,6 +50,13 @@ test_that("axis must be 1, 2, or 3", {
   )
 })
 
+test_that("a non-scalar axis is rejected with a clear message", {
+  expect_error(
+    read_soil_diversity(axis = c(1L, 2L), api_key = KEY),
+    "must be a single value"
+  )
+})
+
 test_that("collection must be Bacteria or Fungi", {
   expect_error(
     read_soil_diversity(collection = "Archaea", api_key = KEY),

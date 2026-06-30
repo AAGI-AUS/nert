@@ -95,6 +95,13 @@ test_that("season must be 1 or 2", {
   )
 })
 
+test_that("a non-scalar season is rejected with a clear message", {
+  expect_error(
+    read_phenology(year = 2018L, season = c(1L, 2L), api_key = KEY),
+    "must be a single value"
+  )
+})
+
 # ---- Year validator --------------------------------------------------------
 
 test_that("year < 2003 is rejected", {

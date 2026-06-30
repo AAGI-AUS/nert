@@ -97,6 +97,12 @@ read_soil_diversity <- function(
   approved_collections <- c("Bacteria", "Fungi")
   collection <- rlang::arg_match(collection, approved_collections)
 
+  if (length(axis) != 1L) {
+    cli::cli_abort(
+      "Soil Beta Diversity {.arg axis} must be a single value; got length \\
+       {.val {length(axis)}}."
+    )
+  }
   if (!axis %in% 1L:3L) {
     cli::cli_abort("Soil Beta Diversity {.arg axis} must be 1, 2, or 3.")
   }
