@@ -4,8 +4,11 @@
 #' Wrapper around [read_tern()] for retrieving the SMIPS v1.0 daily soil
 #' moisture data from the TERN Data Portal. SMIPS provides soil moisture
 #' estimates at roughly 1km X 1km spatial resolution across Australia,
-#' from 1st January 2015 onward (updated approximately daily on the TERN
-#' server).
+#' updated approximately daily on the TERN server. The earliest available
+#' raster depends on the collection: the \code{"totalbucket"} and
+#' \code{"SMindex"} collections are archived from 2005, while the four
+#' bucket-level collections (\code{"bucket1"}, \code{"bucket2"},
+#' \code{"deepD"}, \code{"runoff"}) are available from 1st January 2015.
 #'
 #' @param date A day to download (Date or character, e.g.
 #'   \code{"2024-01-15"} or \code{as.Date("2024-01-15")}).
@@ -152,15 +155,16 @@ read_smips <- function(
 
 #' Validate date requested aligns with SMIPS collection extent
 #'
-#' SMIPS daily COGs are published from 2015-01-01 (the earliest archived
-#' complete set of soil moisture GeoTIFFs available on the TERN Data Portal),
-#' up to today. Requests outside that window will definitely return HTTP 404
-#' from the GDAL vsicurl driver, resulting in a "file does not exist" error
-#' from [terra::rast()].  This helper function catches this case before
-#' any network I/O. (Note: the requested rasters may still be unavailable
-#' even if this check passes, e.g., if the user has requested a very recent
-#' raster that has not been added to the TERN server yet. This validation
-#' function simply checks for the obviously impossible cases.)
+#' SMIPS daily COGs are published up to today, with a per-collection earliest
+#' date on the TERN Data Portal: \code{"totalbucket"} and \code{"SMindex"} are
+#' archived from 2005-01-01, while \code{"bucket1"}, \code{"bucket2"},
+#' \code{"deepD"}, and \code{"runoff"} are available from 2015-01-01. Requests
+#' outside the collection's window will return HTTP 404 from the GDAL vsicurl
+#' driver, resulting in a "file does not exist" error from [terra::rast()].
+#' This helper catches that case before any network I/O. (Note: the requested
+#' raster may still be unavailable even if this check passes, e.g., a very
+#' recent raster not yet added to the TERN server. This function only rejects
+#' the obviously impossible cases.)
 #'
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
@@ -168,14 +172,17 @@ read_smips <- function(
 #'
 #' @dev
 .check_collection_agreement <- function(.collection, .day) {
-  # Convert everything to Date objects to enable simple and sane comparison
-  smips_start <- as.Date("2015-01-01")
+  smips_start <- if (.collection %in% c("totalbucket", "SMindex")) {
+    as.Date("2005-01-01")
+  } else {
+    as.Date("2015-01-01")
+  }
   .day <- as.Date(as.character(.day))
   smips_end <- Sys.Date()
 
   if (.day < smips_start) {
     cli::cli_abort(
-      "SMIPS data are not generally available before
+      "SMIPS {.val {(.collection)}} data are not generally available before
       {format(smips_start, '%Y-%m-%d')}. \\
       You requested {format(.day, '%Y-%m-%d')}."
     )

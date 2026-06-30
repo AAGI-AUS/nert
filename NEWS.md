@@ -1,3 +1,14 @@
+# nert (development version)
+
+- The SMIPS date validator now uses a per-collection earliest date. Requests
+  for the `totalbucket` and `SMindex` collections are accepted back to
+  2005-01-01 (these are archived earlier than the four bucket-level
+  collections `bucket1`, `bucket2`, `deepD`, and `runoff`, which start
+  2015-01-01). Previously every SMIPS request before 2015-01-01 was rejected,
+  so valid 2005--2014 `totalbucket` / `SMindex` requests were turned away. The
+  out-of-range error message now also names the requested collection.
+
+
 # nert 1.1.0
 
 Updated version, fixing a number of issues with the TERN dataset retrieval.

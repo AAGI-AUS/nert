@@ -92,7 +92,9 @@ Convenience wrappers \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_
 \code{"SMindex"}, \code{"bucket1"}, \code{"bucket2"},
 \code{"deepD"}, or \code{"runoff"}.}
 }
-Data availability: from 2005-01-01 to today. (Updated regularly.)
+Data availability: \code{totalbucket} and \code{SMindex} from 2005-01-01;
+\code{bucket1}, \code{bucket2}, \code{deepD}, and \code{runoff} from 2015-01-01; to today.
+(Updated regularly.)
 }
 
 \section{ASC -- Australian Soil Classification (\code{"ASC"})}{

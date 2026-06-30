@@ -60,8 +60,11 @@ A \link[terra:SpatRaster]{terra::SpatRaster} object of the requested SMIPS colle
 Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the SMIPS v1.0 daily soil
 moisture data from the TERN Data Portal. SMIPS provides soil moisture
 estimates at roughly 1km X 1km spatial resolution across Australia,
-from 1st January 2015 onward (updated approximately daily on the TERN
-server).
+updated approximately daily on the TERN server. The earliest available
+raster depends on the collection: the \code{"totalbucket"} and
+\code{"SMindex"} collections are archived from 2005, while the four
+bucket-level collections (\code{"bucket1"}, \code{"bucket2"},
+\code{"deepD"}, \code{"runoff"}) are available from 1st January 2015.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
