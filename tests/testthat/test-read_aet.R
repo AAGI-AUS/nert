@@ -94,3 +94,37 @@ test_that("read_aet propagates max_tries and initial_delay overrides", {
   expect_identical(captured$max_tries, 7L)
   expect_identical(captured$initial_delay, 4L)
 })
+
+# ---- Direct handler/validator unit tests -----------------------------------
+# read_aet() dispatches through the `.tern_datasets` registry, which holds the
+# validator and handler by reference; exercise them directly to unit-test the
+# date contract and URL construction.
+
+test_that(".validate_aet enforces the date contract directly", {
+  expect_error(.validate_aet(list(), "9fefa68b"), "requires a")
+  expect_error(
+    .validate_aet(list(date = "1980-01-01"), "9fefa68b"),
+    "not available before 1987"
+  )
+  expect_null(.validate_aet(list(date = "2023-06-01"), "9fefa68b"))
+})
+
+test_that(".read_tern_aet floors the date and builds the URL directly", {
+  sink <- .use_mocked_cog()
+  r <- .read_tern_aet("9fefa68b", list(date = "2023-06-15"), KEY, 1L, 0L)
+  # legacy 'month' parameter + pixel_qa collection
+  .read_tern_aet(
+    "9fefa68b", list(month = "2020-01-10", collection = "pixel_qa"), KEY, 1L, 0L
+  )
+  expect_s4_class(r, "SpatRaster")
+  expect_match(
+    sink$urls[[1L]],
+    "/aet/v2_2/2023/2023_06_01/CMRSET_LANDSAT_V2_2_2023_06_01_ETa.vrt",
+    fixed = TRUE
+  )
+  expect_match(
+    sink$urls[[2L]],
+    "CMRSET_LANDSAT_V2_2_2020_01_01_pixel_qa.vrt",
+    fixed = TRUE
+  )
+})
