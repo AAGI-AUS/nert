@@ -1,10 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "nert: An API Client for TERN Data"
+title: "nert: Curated Access to TERN Environmental Raster Data"
 abstract: >-
-  Provides access to Australia's TERN (Terrestrial Ecosystem Research
-  Network) data through the API.
+  Provides curated access to gridded environmental data published by
+  Australia's Terrestrial Ecosystem Research Network (TERN): national
+  soil, soil-moisture, evapotranspiration, canopy-height and phenology
+  products, read directly from the TERN data server as cloud-optimised
+  GeoTIFF and virtual raster files via GDAL /vsicurl range requests.
 authors:
   - family-names: Sparks
     given-names: Adam H.

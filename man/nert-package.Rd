@@ -4,9 +4,9 @@
 \name{nert-package}
 \alias{nert}
 \alias{nert-package}
-\title{nert: An API Client for TERN Data}
+\title{nert: Curated Access to TERN Environmental Raster Data}
 \description{
-Provides access to Australia's TERN (Terrestrial Ecosystem Research Network) data through the API, \url{https://www.tern.org.au/}.
+Provides curated access to gridded environmental data published by Australia's Terrestrial Ecosystem Research Network (TERN; \url{https://www.tern.org.au/}), spanning national soil attribute, soil classification, soil biodiversity, soil moisture, actual evapotranspiration, vegetation canopy height and phenology products. Rather than querying a catalogue or web service, the package reads cloud-optimised 'GeoTIFF' and virtual raster files directly from the TERN data server via 'GDAL' virtual file system ('/vsicurl') range requests, transferring only the requested spatial and temporal subset. Products are reached through a single dispatcher with per-product reader functions and a vectorised helper that extracts values at supplied coordinates across a date range, returning 'terra' raster objects and 'data.table' outputs. Access requires a TERN API key.
 }
 \seealso{
 Useful links:
