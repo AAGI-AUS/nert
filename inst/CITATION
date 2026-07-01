@@ -1,3 +1,8 @@
+if (!exists("meta") || is.null(meta)) {
+  meta <- packageDescription("nert")
+}
+vers <- meta$Version
+
 bibentry(
   bibtype = "Manual",
   title = "{nert}: An API Client for TERN Data",
@@ -9,13 +14,13 @@ bibentry(
     person("Max", "Moldovan")
   ),
   year = format(Sys.Date(), "%Y"),
-  note = sprintf("R package version %s", utils::packageVersion("nert")),
+  note = paste("R package version", vers),
   url = "https://aagi-aus.github.io/nert/",
   textVersion = paste0(
     "Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (",
     format(Sys.Date(), "%Y"),
     "). nert: An API Client for TERN Data. R package version ",
-    utils::packageVersion("nert"),
+    vers,
     ". https://aagi-aus.github.io/nert/"
   )
 )
