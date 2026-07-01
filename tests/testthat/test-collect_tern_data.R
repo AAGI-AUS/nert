@@ -844,3 +844,118 @@ test_that("collect_tern_data plans schema independently of fetch success", {
     )
   )
 })
+
+# ---- collect_tern_data() top-level branches --------------------------------
+
+KEY <- "test-key-0000"
+
+test_that("collect_tern_data requires at least one of dates / date_range", {
+  expect_error(
+    collect_tern_data(lon = 138.6, lat = -34.9, datasets = "SMIPS"),
+    "must be supplied"
+  )
+})
+
+test_that("collect_tern_data accepts an explicit dates vector (precedence)", {
+  .use_mocked_cog()
+  out <- collect_tern_data(
+    dates = as.Date(c("2024-01-01", "2024-01-02")),
+    lon = 138.6,
+    lat = -34.9,
+    datasets = "SMIPS",
+    smips_collection = "totalbucket",
+    api_key = KEY,
+    verbose = FALSE
+  )
+  expect_identical(nrow(out), 2L)
+})
+
+test_that("collect_tern_data(verbose = TRUE) prints the dataset table", {
+  .use_mocked_cog()
+  expect_no_error(capture.output(suppressMessages(
+    collect_tern_data(
+      date_range = as.Date("2024-01-01"),
+      lon = 138.6,
+      lat = -34.9,
+      datasets = c(
+        "SMIPS", "AWC", "CANOPY", "ASC", "AET", "SOILDIV", "PHENOLOGY"
+      ),
+      smips_collection = "totalbucket",
+      depth = "000_005",
+      stat = "EV",
+      api_key = KEY,
+      verbose = TRUE
+    )
+  )))
+})
+
+# ---- .parse_coordinates / .parse_date_range remaining branches -------------
+
+test_that(".parse_coordinates rejects a non-tabular xy and non-numeric coords", {
+  expect_error(.parse_coordinates(NULL, NULL, 42), "must be a")
+  expect_error(.parse_coordinates("east", "south", NULL), "must be numeric")
+})
+
+test_that(".parse_date_range rejects a non-date/character type", {
+  expect_error(.parse_date_range(42), "must be a")
+  expect_error(.parse_date_range(list("2024-01-01")), "must be a")
+})
+
+test_that(".parse_date_range rejects empty or NA input", {
+  expect_error(.parse_date_range(character(0L)), "valid dates")
+  expect_error(.parse_date_range(as.Date(NA)), "valid dates")
+})
+
+# ---- .fill_work_item extraction-failure branches ---------------------------
+
+test_that("collect_tern_data leaves NA when extraction returns nothing", {
+  .use_mocked_cog()
+  testthat::local_mocked_bindings(extract = function(...) NULL, .package = "terra")
+  out <- suppressWarnings(collect_tern_data(
+    date_range = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9,
+    datasets = "SMIPS",
+    smips_collection = "totalbucket",
+    api_key = KEY,
+    verbose = FALSE
+  ))
+  expect_true(all(is.na(out$SMIPS_totalbucket)))
+})
+
+test_that("collect_tern_data warns and leaves NA when extraction errors", {
+  .use_mocked_cog()
+  testthat::local_mocked_bindings(
+    extract = function(...) stop("extract boom"),
+    .package = "terra"
+  )
+  out <- suppressWarnings(collect_tern_data(
+    date_range = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9,
+    datasets = "SMIPS",
+    smips_collection = "totalbucket",
+    api_key = KEY,
+    verbose = FALSE
+  ))
+  expect_true(all(is.na(out$SMIPS_totalbucket)))
+})
+
+test_that("collect_tern_data leaves NA on a layer-length mismatch", {
+  .use_mocked_cog()
+  # Return more values than locations -> length(v) != n_loc branch.
+  testthat::local_mocked_bindings(
+    extract = function(x, y, ...) data.frame(ID = 1:3, value = c(1, 2, 3)),
+    .package = "terra"
+  )
+  out <- suppressWarnings(collect_tern_data(
+    date_range = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9,
+    datasets = "SMIPS",
+    smips_collection = "totalbucket",
+    api_key = KEY,
+    verbose = FALSE
+  ))
+  expect_true(all(is.na(out$SMIPS_totalbucket)))
+})
