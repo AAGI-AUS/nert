@@ -94,6 +94,17 @@ test_that(".parse_date_range rejects unparseable dates", {
   )
 })
 
+test_that(".parse_date_range rejects a reversed range with a clear message", {
+  expect_error(
+    .parse_date_range(c("2024-01-05", "2024-01-01")),
+    "must not be after its end"
+  )
+  expect_error(
+    .parse_date_range(c(as.Date("2024-01-05"), as.Date("2024-01-01"))),
+    "must not be after its end"
+  )
+})
+
 # .normalise_datasets -------------------------------------------------------
 
 test_that(".normalise_datasets returns the full alias set for NULL/'all'", {
