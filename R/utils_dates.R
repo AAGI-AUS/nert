@@ -18,7 +18,7 @@
   if (lubridate::is.POSIXct(x) || lubridate::is.Date(x)) {
     tz <- lubridate::tz(x)
   } else {
-    tz <- Sys.timezone()
+    tz <- "UTC"
   }
 
   tryCatch(
