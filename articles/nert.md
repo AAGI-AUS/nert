@@ -177,11 +177,11 @@ TERN API Key in your system’s credential store.
     library(keyring)
 
     keyring_create("nert")
-    key_set("NERT_API_KEY", keyring = "nert")
+    key_set("TERN_API_KEY", keyring = "nert")
     ```
 
     This will create a new keyring called `nert`, with a new key called
-    `NERT_API_KEY`. The function will then prompt you for the actual key
+    `TERN_API_KEY`. The function will then prompt you for the actual key
     value, which you can paste from the TERN website where you copied it
     earlier. You can then verify that the key was stored as expected by
     using the
@@ -190,7 +190,7 @@ TERN API Key in your system’s credential store.
 
     ``` r
 
-    key_get("NERT_API_KEY", keyring = "nert")
+    key_get("TERN_API_KEY", keyring = "nert")
     ```
 
 3.  Finally, you can quickly check that the TERN API key is working with
@@ -203,7 +203,7 @@ TERN API Key in your system’s credential store.
     function to get a point value for the soil moisture measurement at
     the Adelaide CBD (at approximately 138.6007 decimal degrees Easting
     for the longitude, and -34.9285 decimal degrees Northing for the
-    latitude). Note that we explicitly specify to use the `NERT_API_KEY`
+    latitude). Note that we explicitly specify to use the `TERN_API_KEY`
     we stored in the `nert` keyring by setting the `api_key` argument:
 
     ``` r
@@ -213,7 +213,7 @@ TERN API Key in your system’s credential store.
 
     r <- read_smips(
       date = "2024-01-01",
-      api_key = key_get("NERT_API_KEY", keyring = "nert")
+      api_key = key_get("TERN_API_KEY", keyring = "nert")
     )
 
     extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))

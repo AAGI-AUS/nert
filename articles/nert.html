@@ -235,14 +235,14 @@ install it with:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keyring.r-lib.org/" class="external-link">keyring</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://keyring.r-lib.org/reference/has_keyring_support.html" class="external-link">keyring_create</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_set</a></span><span class="op">(</span><span class="st">"NERT_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_set</a></span><span class="op">(</span><span class="st">"TERN_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
 <p>This will create a new keyring called <code>nert</code>, with a new
-key called <code>NERT_API_KEY</code>. The function will then prompt you
+key called <code>TERN_API_KEY</code>. The function will then prompt you
 for the actual key value, which you can paste from the TERN website
 where you copied it earlier. You can then verify that the key was stored
 as expected by using the <code><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">keyring::key_get()</a></code> function:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></span><span class="op">(</span><span class="st">"NERT_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></span><span class="op">(</span><span class="st">"TERN_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
 </li>
 <li>
 <p>Finally, you can quickly check that the TERN API key is working
@@ -254,7 +254,7 @@ function, and then uses the {terra} package’s
 moisture measurement at the Adelaide CBD (at approximately 138.6007
 decimal degrees Easting for the longitude, and -34.9285 decimal degrees
 Northing for the latitude). Note that we explicitly specify to use the
-<code>NERT_API_KEY</code> we stored in the <code>nert</code> keyring by
+<code>TERN_API_KEY</code> we stored in the <code>nert</code> keyring by
 setting the <code>api_key</code> argument:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
@@ -262,7 +262,7 @@ setting the <code>api_key</code> argument:</p>
 <span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span></span>
 <span>  date <span class="op">=</span> <span class="st">"2024-01-01"</span>,</span>
-<span>  api_key <span class="op">=</span> <span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></span><span class="op">(</span><span class="st">"NERT_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span>
+<span>  api_key <span class="op">=</span> <span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></span><span class="op">(</span><span class="st">"TERN_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
