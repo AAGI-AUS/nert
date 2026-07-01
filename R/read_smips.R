@@ -177,7 +177,7 @@ read_smips <- function(
   } else {
     as.Date("2015-01-01")
   }
-  .day <- as.Date(as.character(.day))
+  .day <- as.Date(as.character(.check_date(.day)))
   smips_end <- Sys.Date()
 
   if (.day < smips_start) {

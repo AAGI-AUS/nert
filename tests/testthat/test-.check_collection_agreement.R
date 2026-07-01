@@ -57,6 +57,19 @@ test_that("The .day argument is checked consistently across various types", {
   )
 })
 
+test_that("dates are parsed through .check_date, so its formats are accepted", {
+  # The bounds check now shares .check_date()'s parser, so non-ISO formats
+  # accepted at the read_smips() entry point resolve here too.
+  expect_error(
+    .check_collection_agreement("totalbucket", "01-01-2000"),
+    "You requested 2000-01-01"
+  )
+  expect_error(
+    .check_collection_agreement("totalbucket", "january-01-2000"),
+    "You requested 2000-01-01"
+  )
+})
+
 test_that("each collection rejects dates before its earliest date", {
   # totalbucket / SMindex: rejected before 2005 (message reports 2005)
   expect_error(
