@@ -135,6 +135,28 @@ test_that(".normalise_datasets returns the full alias set for NULL/'all'", {
   expect_identical(.normalise_datasets("all"), .normalise_datasets(NULL))
 })
 
+test_that(".normalise_vector_elements matches 'all' case-insensitively", {
+  valid <- c("a", "b", "c")
+  expect_identical(.normalise_vector_elements("all", valid, "x"), valid)
+  expect_identical(.normalise_vector_elements("ALL", valid, "x"), valid)
+  expect_identical(.normalise_vector_elements("All", valid, "x"), valid)
+  expect_identical(.normalise_datasets("ALL"), .normalise_datasets(NULL))
+})
+
+test_that("element matching is case-insensitive and returns the canonical spelling", {
+  # any case in, canonical spelling out (uppercase aliases)
+  expect_identical(.normalise_datasets(c("smips", "asc")), c("SMIPS", "ASC"))
+  expect_identical(.normalise_datasets("SmIpS"), "SMIPS")
+  # mixed-case canonical forms are returned exactly, not the user's case,
+  # so the downstream URL builders receive the spelling TERN expects
+  expect_identical(.normalise_smips_collection("smindex"), "SMindex")
+  expect_identical(.normalise_aet_collection("eta"), "ETa")
+  # an unknown element is still warned about and dropped
+  suppressWarnings(
+    expect_identical(.normalise_datasets(c("smips", "nope")), "SMIPS")
+  )
+})
+
 test_that(".normalise_datasets deduplicates", {
   expect_identical(
     .normalise_datasets(c("SMIPS", "SMIPS", "ASC")),
@@ -463,7 +485,9 @@ test_that(".normalise_soildiv_collection warns and filters invalid variants", {
     )),
     "Invalid"
   )
-  expect_identical(out, "Fungi_NMDS3")
+  # "bacteria_nmds1" now matches case-insensitively (canonical "Bacteria_NMDS1");
+  # "bac_nmds2" is not a real variant, so it is the one dropped with a warning
+  expect_identical(out, c("Bacteria_NMDS1", "Fungi_NMDS3"))
 })
 
 test_that(".normalise_soildiv_collection errors when no valid variants remain", {

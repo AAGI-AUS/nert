@@ -380,7 +380,7 @@ collect_tern_data <- function(
 #'   order preserved).
 #' @dev
 .normalise_vector_elements <- function(vec, valid_elements, info) {
-  if (is.null(vec) || (length(vec) == 1 && identical(vec, "all"))) {
+  if (is.null(vec) || (length(vec) == 1 && identical(toupper(vec), "ALL"))) {
     return(valid_elements)
   }
 
@@ -388,7 +388,8 @@ collect_tern_data <- function(
   if (length(vec) == 0) {
     cli::cli_abort("No {info} specified.")
   }
-  invalid_elements <- setdiff(vec, valid_elements)
+  canonical <- valid_elements[match(toupper(vec), toupper(valid_elements))]
+  invalid_elements <- vec[is.na(canonical)]
   if (length(invalid_elements) > 0) {
     cli::cli_warn(
       c(
@@ -396,12 +397,12 @@ collect_tern_data <- function(
         "i" = "Valid {info}: {.val {valid_elements}}."
       )
     )
-    vec <- intersect(vec, valid_elements)
   }
-  if (length(vec) == 0) {
+  canonical <- unique(canonical[!is.na(canonical)])
+  if (length(canonical) == 0) {
     cli::cli_abort("No valid {info} remained after filtering.")
   }
-  return(vec)
+  return(canonical)
 }
 
 
