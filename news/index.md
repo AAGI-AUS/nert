@@ -11,6 +11,13 @@
   requests were turned away. The out-of-range error message now also
   names the requested collection.
 
+- The offline test suite now covers every dataset handler and validator
+  directly, in addition to the existing end-to-end mocked tests, and
+  also exercises the download retry/backoff logic and the verbose
+  reporting path. Key-less test coverage (the figure reported by
+  continuous integration, which runs without a TERN API key) is now
+  approximately 99.8%.
+
 ## nert 1.1.0
 
 Updated version, fixing a number of issues with the TERN dataset
