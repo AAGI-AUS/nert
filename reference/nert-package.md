@@ -1,7 +1,19 @@
-# nert: An API Client for TERN Data
+# nert: Curated Access to TERN Environmental Raster Data
 
-Provides access to Australia's TERN (Terrestrial Ecosystem Research
-Network) data through the API, <https://www.tern.org.au/>.
+Provides curated access to gridded environmental data published by
+Australia's Terrestrial Ecosystem Research Network (TERN;
+<https://www.tern.org.au/>), spanning national soil attribute, soil
+classification, soil biodiversity, soil moisture, actual
+evapotranspiration, vegetation canopy height and phenology products. The
+package reads Cloud-Optimised GeoTIFF and virtual raster files directly
+from the TERN data server via GDAL '/vsicurl' range requests, streaming
+only the requested spatial and temporal subset for efficient data
+transfer. The environmental raster data are returned as
+terra::SpatRaster objects. A convenient helper function is also provided
+that provides a batch-download capability given specific locations and
+dates, returning the extracted data values in an analysis-ready
+data.table. Access to the TERN datasets using this package requires a
+TERN API key.
 
 ## See also
 
