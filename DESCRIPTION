@@ -19,15 +19,15 @@ Description: Provides curated access to gridded environmental data
     (TERN; <https://www.tern.org.au/>), spanning national soil
     attribute, soil classification, soil biodiversity, soil moisture,
     actual evapotranspiration, vegetation canopy height and phenology
-    products. Rather than querying a catalogue or web service, the
-    package reads cloud-optimised 'GeoTIFF' and virtual raster files
-    directly from the TERN data server via 'GDAL' virtual file system
-    ('/vsicurl') range requests, transferring only the requested
-    spatial and temporal subset. Products are reached through a single
-    dispatcher with per-product reader functions and a vectorised
-    helper that extracts values at supplied coordinates across a date
-    range, returning 'terra' raster objects and 'data.table' outputs.
-    Access requires a TERN API key.
+    products. The package reads Cloud-Optimised GeoTIFF and virtual
+    raster files directly from the TERN data server via GDAL
+    '/vsicurl' range requests, streaming only the requested spatial and
+    temporal subset for efficient data transfer. The environmental
+    raster data are returned as terra::SpatRaster objects. A convenient
+    helper function is also provided that provides a batch-download
+    capability given specific locations and dates, returning the
+    extracted data values in an analysis-ready data.table. Access to
+    the TERN datasets using this package requires a TERN API key.
 License: MIT + file LICENSE
 URL: https://aagi-aus.github.io/nert/, https://github.com/AAGI-AUS/nert
 BugReports: https://github.com/AAGI-AUS/nert/issues
