@@ -17,3 +17,21 @@ test_that("Key retrieval performs no sanitation on problematic chars", {
   withr::local_envvar(TERN_API_KEY = a_key)
   expect_identical(get_key(), a_key)
 })
+
+test_that("an interactive session opens the key-request page before aborting", {
+  withr::local_envvar(TERN_API_KEY = "")
+  opened <- new.env(parent = emptyenv())
+  testthat::local_mocked_bindings(
+    is_interactive = function() TRUE,
+    .package = "rlang"
+  )
+  testthat::local_mocked_bindings(
+    browseURL = function(url, ...) {
+      opened$url <- url
+      invisible()
+    },
+    .package = "utils"
+  )
+  expect_error(get_key(), "TERN API key")
+  expect_match(opened$url, "account.tern.org.au", fixed = TRUE)
+})

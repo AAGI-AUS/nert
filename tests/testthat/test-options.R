@@ -78,3 +78,13 @@ test_that(".read_cog() falls back to getOption() when args are NULL", {
     }
   )
 })
+
+test_that(".init_nert_options() sets the defaults when the options are unset", {
+  # At a fresh session `.onLoad()` sets these (that hook is nocov-excluded).
+  # Clearing the option *names* (`options(x = NULL)` removes them) makes the
+  # defaults branch run under coverage.
+  withr::local_options(nert.max_tries = NULL, nert.initial_delay = NULL)
+  .init_nert_options()
+  expect_identical(getOption("nert.max_tries"), 3L)
+  expect_identical(getOption("nert.initial_delay"), 1L)
+})
