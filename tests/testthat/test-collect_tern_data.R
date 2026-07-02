@@ -959,3 +959,12 @@ test_that("collect_tern_data leaves NA on a layer-length mismatch", {
   ))
   expect_true(all(is.na(out$SMIPS_totalbucket)))
 })
+
+test_that(".normalise_vector_elements aborts on an empty (non-NULL) selector", {
+  # An explicit empty vector is neither NULL nor "all"; it must error rather
+  # than silently resolve to nothing.
+  expect_error(
+    .normalise_vector_elements(character(0L), c("EV", "CI"), "widgets"),
+    "No widgets specified"
+  )
+})
