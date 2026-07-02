@@ -52,3 +52,18 @@ test_that("read_canopy_height dispatches via the CANOPY alias", {
   read_tern("CANOPY", api_key = KEY)
   expect_match(sink$urls, "best_pick_files_bhLNnun.tif", fixed = TRUE)
 })
+
+# ---- Direct handler unit test ----------------------------------------------
+# read_canopy_height() dispatches through the `.tern_datasets` registry, which
+# holds the handler by reference; exercise the handler directly.
+
+test_that(".read_tern_canopy_height builds the static URL directly", {
+  sink <- .use_mocked_cog()
+  r <- .read_tern_canopy_height("36c98155", list(), KEY, 1L, 0L)
+  expect_s4_class(r, "SpatRaster")
+  expect_match(
+    sink$urls,
+    "CanopyHeightComposite/best_pick_files_bhLNnun.tif",
+    fixed = TRUE
+  )
+})

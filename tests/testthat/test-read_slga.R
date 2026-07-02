@@ -255,3 +255,40 @@ test_that("read_tern dispatches the slga_cly alias through to CLY", {
     fixed = TRUE
   )
 })
+
+# ---- Direct handler unit tests ---------------------------------------------
+# The SLGA handler is dispatched through the `.tern_datasets` registry (built
+# from `.slga_config`), which holds it by reference; exercise it directly to
+# unit-test depth/statistic handling and per-attribute URL construction.
+
+test_that(".read_tern_slga builds URLs from the config directly", {
+  sink <- .use_mocked_cog()
+  # AWC, explicit depth + 95th-percentile statistic
+  r <- .read_tern_slga(
+    "482301c2", list(depth = "005_015", collection = "95"), KEY, 1L, 0L
+  )
+  # PHC uses a distinct dir/suffix/date and default depth/EV
+  .read_tern_slga("258afc98", list(), KEY, 1L, 0L)
+  expect_s4_class(r, "SpatRaster")
+  expect_match(
+    sink$urls[[1L]],
+    "SoilAndLandscapeGrid/AWC/v2/AWC_005_015_95_N_P_AU_TRN_N_20210614.tif",
+    fixed = TRUE
+  )
+  expect_match(
+    sink$urls[[2L]],
+    "SoilAndLandscapeGrid/pHc/v2/PHC_000_005_EV_N_P_AU_NAT_C_20210913.tif",
+    fixed = TRUE
+  )
+})
+
+test_that(".read_tern_slga rejects bad depth/statistic directly", {
+  expect_error(
+    .read_tern_slga("482301c2", list(depth = "999_999"), KEY, 1L, 0L),
+    "must be one of"
+  )
+  expect_error(
+    .read_tern_slga("482301c2", list(collection = "ZZ"), KEY, 1L, 0L),
+    "must be one of"
+  )
+})

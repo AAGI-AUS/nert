@@ -70,3 +70,24 @@ test_that("read_tern ASC rejects unknown collection at arg_match", {
     "must be one of"
   )
 })
+
+# ---- Direct handler unit tests ---------------------------------------------
+# read_asc() dispatches through the `.tern_datasets` registry, which holds the
+# handler by reference; exercise the handler directly to unit-test its argument
+# handling and URL construction.
+
+test_that(".read_tern_asc builds EV/CI URLs and defaults to EV", {
+  sink <- .use_mocked_cog()
+  r <- .read_tern_asc("15728dba", list(collection = "CI"), KEY, 1L, 0L)
+  .read_tern_asc("15728dba", list(), KEY, 1L, 0L)
+  expect_s4_class(r, "SpatRaster")
+  expect_match(sink$urls[[1L]], "ASC_CI_C_P_AU_TRN_N.cog.tif", fixed = TRUE)
+  expect_match(sink$urls[[2L]], "ASC_EV_C_P_AU_TRN_N.cog.tif", fixed = TRUE)
+})
+
+test_that(".read_tern_asc rejects an unknown collection directly", {
+  expect_error(
+    .read_tern_asc("15728dba", list(collection = "ZZ"), KEY, 1L, 0L),
+    "must be one of"
+  )
+})

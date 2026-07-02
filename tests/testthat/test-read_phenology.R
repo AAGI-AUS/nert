@@ -146,3 +146,63 @@ test_that("read_tern dispatches PHENOLOGY alias through to phenology handler", {
   read_tern("PHENOLOGY", year = 2018L, api_key = KEY)
   expect_match(sink$urls, "/phenology_myd13a1/", fixed = TRUE)
 })
+
+# ---- Direct handler/validator unit tests -----------------------------------
+# The dataset handlers and validators are dispatched through the
+# `.tern_datasets` registry, which holds them by reference; exercising them
+# directly (rather than only end-to-end through `read_tern()`) unit-tests the
+# validation and URL-construction logic in isolation.
+
+test_that(".validate_phenology enforces the year contract directly", {
+  expect_error(.validate_phenology(list(), "2bb0c81a"), "requires a")
+  expect_error(.validate_phenology(list(year = 2002L), "2bb0c81a"), "2003")
+  expect_error(.validate_phenology(list(year = 2019L), "2bb0c81a"), "2018")
+  expect_error(
+    .validate_phenology(list(year = c(2018L, 2017L)), "2bb0c81a"),
+    "single value"
+  )
+  expect_error(.validate_phenology(list(year = 2018.5), "2bb0c81a"), "integer")
+  expect_null(.validate_phenology(list(year = 2018L), "2bb0c81a"))
+})
+
+test_that(".read_tern_phenology builds the documented URL for each metric", {
+  sink <- .use_mocked_cog()
+  r <- .read_tern_phenology(
+    did = "2bb0c81a",
+    dots = list(year = 2018L, season = 2L, collection = "EVIP"),
+    api_key = KEY,
+    max_tries = 1L,
+    initial_delay = 0L
+  )
+  expect_s4_class(r, "SpatRaster")
+  expect_match(
+    sink$urls,
+    paste0(
+      "/phenology_myd13a1/7_Peak_EVI_value_of_the_growing_season/",
+      "Peak_EVI_2018_Season2.tif"
+    ),
+    fixed = TRUE
+  )
+})
+
+test_that(".read_tern_phenology defaults season/collection and checks season", {
+  sink <- .use_mocked_cog()
+  .read_tern_phenology("2bb0c81a", list(year = 2018L), KEY, 1L, 0L)
+  expect_match(sink$urls, "SGS_2018_Season1.tif", fixed = TRUE)
+  expect_error(
+    .read_tern_phenology("2bb0c81a", list(year = 2018L, season = 3L), KEY, 1L, 0L),
+    "must be 1 or 2"
+  )
+  expect_error(
+    .read_tern_phenology(
+      "2bb0c81a", list(year = 2018L, season = c(1L, 2L)), KEY, 1L, 0L
+    ),
+    "single value"
+  )
+  expect_error(
+    .read_tern_phenology(
+      "2bb0c81a", list(year = 2018L, collection = "XYZ"), KEY, 1L, 0L
+    ),
+    "must be one of"
+  )
+})
