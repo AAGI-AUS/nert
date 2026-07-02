@@ -1,5 +1,5 @@
 Package: nert
-Title: An API Client for TERN Data
+Title: Curated Access to TERN Environmental Raster Data
 Version: 1.1.0
 Authors@R: c(
     person("Adam H.", "Sparks", , "adamhsparks@gmail.com", role = "aut",
@@ -14,8 +14,20 @@ Authors@R: c(
     person("Grains Research and Development Corporation", role = c("fnd", "cph"),
            comment = c("GRDC Project CUR2210-005OPX (AAGI-CU), UOA2301-005OPX (AAGI-AU)", ROR = "02xwr1996"))
   )
-Description: Provides access to Australia's TERN (Terrestrial Ecosystem
-    Research Network) data through the API, <https://www.tern.org.au/>.
+Description: Provides curated access to gridded environmental data
+    published by Australia's Terrestrial Ecosystem Research Network
+    (TERN; <https://www.tern.org.au/>), spanning national soil
+    attribute, soil classification, soil biodiversity, soil moisture,
+    actual evapotranspiration, vegetation canopy height and phenology
+    products. The package reads Cloud-Optimised GeoTIFF and virtual
+    raster files directly from the TERN data server via GDAL
+    '/vsicurl' range requests, streaming only the requested spatial and
+    temporal subset for efficient data transfer. The environmental
+    raster data are returned as terra::SpatRaster objects. A convenient
+    helper function is also provided that provides a batch-download
+    capability given specific locations and dates, returning the
+    extracted data values in an analysis-ready data.table. Access to
+    the TERN datasets using this package requires a TERN API key.
 License: MIT + file LICENSE
 URL: https://aagi-aus.github.io/nert/, https://github.com/AAGI-AUS/nert
 BugReports: https://github.com/AAGI-AUS/nert/issues

@@ -5,7 +5,7 @@ vers <- meta$Version
 
 bibentry(
   bibtype = "Manual",
-  title = "{nert}: An API Client for TERN Data",
+  title = "{nert}: Curated Access to TERN Environmental Raster Data",
   author = c(
     person("Adam H.", "Sparks"),
     person("Wasin", "Pipattungsakul"),
@@ -19,7 +19,7 @@ bibentry(
   textVersion = paste0(
     "Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (",
     format(Sys.Date(), "%Y"),
-    "). nert: An API Client for TERN Data. R package version ",
+    "). nert: Curated Access to TERN Environmental Raster Data. R package version ",
     vers,
     ". https://aagi-aus.github.io/nert/"
   )
