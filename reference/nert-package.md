@@ -27,13 +27,13 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Sam Rogers <sam.rogers@adelaide.edu.au>
-([ORCID](https://orcid.org/0000-0002-8147-1239))
+**Maintainer**: Max Moldovan <max.moldovan@adelaide.edu.au>
+([ORCID](https://orcid.org/0000-0001-9680-8474))
 
 Authors:
 
-- Sam Rogers <sam.rogers@adelaide.edu.au>
-  ([ORCID](https://orcid.org/0000-0002-8147-1239))
+- Max Moldovan <max.moldovan@adelaide.edu.au>
+  ([ORCID](https://orcid.org/0000-0001-9680-8474))
 
 - Adam H. Sparks <adamhsparks@gmail.com>
   ([ORCID](https://orcid.org/0000-0002-0061-8359))
@@ -43,8 +43,8 @@ Authors:
 - Russell Edson <russell.edson@adelaide.edu.au>
   ([ORCID](https://orcid.org/0000-0002-4607-5396))
 
-- Max Moldovan <max.moldovan@adelaide.edu.au>
-  ([ORCID](https://orcid.org/0000-0001-9680-8474))
+- Sam Rogers <sam.rogers@adelaide.edu.au>
+  ([ORCID](https://orcid.org/0000-0002-8147-1239))
 
 Other contributors:
 

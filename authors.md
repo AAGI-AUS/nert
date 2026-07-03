@@ -8,10 +8,10 @@
 
 - **Russell Edson**. Author. [](https://orcid.org/0000-0002-4607-5396)
 
-- **Sam Rogers**. Maintainer, author.
-  [](https://orcid.org/0000-0002-8147-1239)
+- **Sam Rogers**. Author. [](https://orcid.org/0000-0002-8147-1239)
 
-- **Max Moldovan**. Author. [](https://orcid.org/0000-0001-9680-8474)
+- **Max Moldovan**. Maintainer, author.
+  [](https://orcid.org/0000-0001-9680-8474)
 
 - **Grains Research and Development Corporation**. Funder, copyright
   holder.
