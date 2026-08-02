@@ -71,7 +71,7 @@ build_vignettes()
 
 # move resource files to /doc
 resources <- list.files(
-  file.path("vignettes"),
+  here("vignettes"),
   pattern = ".png$",
   full.names = TRUE
 )

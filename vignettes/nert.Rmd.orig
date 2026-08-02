@@ -1,8 +1,7 @@
 ---
 title: nert
 author: Adam H. Sparks and Russell Edson
-output:
-  rmarkdown::html_document
+output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{nert}
   %\VignetteEngine{knitr::rmarkdown}
@@ -148,10 +147,8 @@ If you prefer a more secure method, you can use the [{keyring}](https://keyring.
 
 ### Reading TERN Data
 
-You can use the `nert::read_smips()` function to retrieve rasters for the
-SMIPS datasets available on the TERN Data Portal, using the `date` argument
-to specify the date for the raster to be retrieved, and the `collection`
-argument to specify which specific SMIPS dataset to download. For instance,
+You can use the `nert::read_smips()` function to retrieve rasters for the SMIPS datasets available on the TERN Data Portal, using the `date` argument
+to specify the date for the raster to be retrieved, and the `collection` argument to specify which specific SMIPS dataset to download. For instance,
 the following R code retrieves the "SMindex" raster for June 30, 2025:
 
 ```{r, working-with-smips}
@@ -165,12 +162,10 @@ Note that {nert} re-exports `tidyterra::autoplot()` for ease of visualising the 
 autoplot(r)
 ```
 
-However, if you wish to fetch only data for a single point or points, you can
-use the `terra::extract()` function. Since the rasters are stored on the TERN Data
-Portal as Cloud-Optimised GeoTIFFs (COGs), `terra::extract()` is very time-
-and space-efficient, streaming only the bytes needed for the spatial extent that
-you ask for. The below R code downloads only the data at the coordinates
-specified, rather than fetching the entire dataset:
+However, if you wish to fetch only data for a single point or points, you can use the `terra::extract()` function.
+Since the rasters are stored on the TERN Data Portal as Cloud-Optimised GeoTIFFs (COGs), `terra::extract()` is very time-
+and space-efficient, **streaming only the bytes needed for the spatial extent that you ask for**.
+The below R code downloads only the data at the coordinates specified, rather than fetching the entire dataset:
 
 ```{r, points}
 library(terra)
@@ -179,10 +174,9 @@ extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 ```
 
 Reading rasters for the other available datasets works mostly the same way.
-For example, the below R code retrieves the raster for the Australian Soil
-Classification Map using the `nert::read_asc()` function. Since this is a
-static dataset, you do not need to specify a date. By default, the soil
-classifications are retrieved:
+For example, the below R code retrieves the raster for the Australian Soil Classification Map using the `nert::read_asc()` function. Since this is a
+static dataset, you do not need to specify a date.
+By default, the soil classifications are retrieved:
 
 ```{r asc, fig.cap = "A plot of Australian Soils Classification data."}
 asc <- read_asc()
@@ -190,18 +184,15 @@ asc <- read_asc()
 autoplot(asc)
 ```
 
-If you wanted to see the confusion index instead (which provides a measure
-of the uncertainty associated with each classification), you can specify that
+If you wanted to see the confusion index instead (which provides a measure of the uncertainty associated with each classification), you can specify that
 dataset using the `collection` argument:
 
 ```{r asc_ci}
 asc_ci <- read_asc(collection = "CI")
 ```
 
-The SLGA soil attribute rasters work similarly, but have an additional
-depth parameter that you can specify. For instance, the following R code
-fetches and views the raster for the soil clay content at a depth of
-30-60cm by specifying the `depth` argument:
+The SLGA soil attribute rasters work similarly, but have an additional depth parameter that you can specify. For instance, the following R code
+fetches and views the raster for the soil clay content at a depth of 30-60cm by specifying the `depth` argument:
 
 ```{r slga, fig.cap = "A plot of the soil clay content (%) at a 30-60cm soil depth."}
 cly <- read_slga("CLY", depth = "030_060")
