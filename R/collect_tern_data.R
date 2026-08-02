@@ -1052,10 +1052,10 @@ collect_tern_data <- function(
     )
   )
 
-  cat("\n")
+  cli::cli_inform("")
   cli::cli_rule("Datasets to Collect")
-  print(tbl, nrows = Inf)
-  cat("\n")
+  cli::cli_verbatim(format(tbl))
+  cli::cli_inform("")
 
   return(invisible(NULL))
 }
