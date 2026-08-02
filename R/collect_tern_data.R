@@ -184,6 +184,10 @@ collect_tern_data <- function(
     )
   }
 
+  # Resolve/check API key once up-front so missing-key setup guidance is shown
+  # at most once (instead of once per work item).
+  api_key <- .check_api_key(if (is.null(api_key)) get_key() else api_key)
+
   work_items <- .build_work_items(
     datasets,
     dates,

@@ -43,6 +43,55 @@ test_that("collect_tern_data emits one COG read per work item (vectorised)", {
   expect_length(sink$urls, 3L)
 })
 
+test_that("collect_tern_data resolves API key once before work-item loop", {
+  .use_mocked_cog()
+  calls <- 0L
+  testthat::local_mocked_bindings(
+    get_key = function() {
+      calls <<- calls + 1L
+      KEY
+    },
+    .package = "nert"
+  )
+
+  out <- collect_tern_data(
+    date_range = seq(as.Date("2024-01-01"), as.Date("2024-01-03"), by = "day"),
+    lon = 138.6,
+    lat = -34.9,
+    datasets = "SMIPS",
+    smips_collection = c("bucket1", "totalbucket"),
+    verbose = FALSE
+  )
+
+  expect_identical(calls, 1L)
+  expect_true(all(out$SMIPS_bucket1 == 42))
+  expect_true(all(out$SMIPS_totalbucket == 42))
+})
+
+test_that("collect_tern_data errors once when API key is missing", {
+  calls <- 0L
+  testthat::local_mocked_bindings(
+    get_key = function() {
+      calls <<- calls + 1L
+      cli::cli_abort("mock missing key")
+    },
+    .package = "nert"
+  )
+
+  expect_error(
+    collect_tern_data(
+      date_range = seq(as.Date("2024-01-01"), as.Date("2024-01-03"), by = "day"),
+      lon = 138.6,
+      lat = -34.9,
+      datasets = "SMIPS",
+      smips_collection = c("bucket1", "totalbucket"),
+      verbose = FALSE
+    ),
+    "mock missing key"
+  )
+  expect_identical(calls, 1L)
+})
+
 test_that("collect_tern_data emits the right shape for SMIPS x SLGA mix", {
   .use_mocked_cog()
   out <- collect_tern_data(
