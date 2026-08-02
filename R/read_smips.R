@@ -108,6 +108,7 @@ read_smips <- function(
 #'
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param dataset_id Raw \code{dataset_id} (unused; uniform validator signature).
+#' @returns `NULL`; called for its side effects (argument validation).
 #'
 #' @dev
 .validate_smips <- function(dots, dataset_id) {
@@ -127,6 +128,7 @@ read_smips <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @returns A [terra::SpatRaster] object for the requested SMIPS layer/date.
 #'
 #'
 #' @dev
@@ -168,6 +170,7 @@ read_smips <- function(
 #'
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
+#' @returns `invisible(NULL)`; called for its side effects (validation).
 #'
 #'
 #' @dev
@@ -205,6 +208,7 @@ read_smips <- function(
 #'
 #' @param .collection The user-supplied SMIPS collection being asked for.
 #' @param .day The user-supplied date being asked for.
+#' @returns A `character` filename for the requested SMIPS collection/date.
 #'
 #'
 #' @dev

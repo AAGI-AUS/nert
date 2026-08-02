@@ -63,6 +63,7 @@ read_canopy_height <- function(
 #' @param dots Named list of \code{...} args from [read_tern()] (unused).
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @returns A [terra::SpatRaster] object for the canopy height dataset.
 #'
 #' @dev
 .read_tern_canopy_height <- function(

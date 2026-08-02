@@ -26,6 +26,8 @@
 #' [base::options()] before `library(nert)`) are preserved; only
 #' unset options are populated with defaults.
 #'
+#' @returns `NULL` when all options are already set; otherwise the value returned
+#'   by [base::options()] when defaults are populated.
 #'
 #' @dev
 .init_nert_options <- function() {

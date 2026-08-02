@@ -746,6 +746,7 @@ collect_tern_data <- function(
 #' @param api_key TERN API key.
 #' @param max_tries Total number of download retries.
 #' @param initial_delay Initial retry delay (in seconds).
+#' @returns `invisible(NULL)`. This function is called for its side effects.
 #' @dev
 .fill_work_item <- function(
   out,

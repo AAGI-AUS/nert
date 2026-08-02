@@ -74,6 +74,7 @@ read_soil_diversity <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @returns A [terra::SpatRaster] object for the requested soil diversity layer.
 #'
 #' @dev
 .read_tern_soil_diversity <- function(
