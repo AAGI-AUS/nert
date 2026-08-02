@@ -8,18 +8,18 @@
 #' periods between 2007 and 2020.
 #'
 #' @param collection The canopy-height composite variant to download:
-#'   \code{"best_pick"} (default) or \code{"median"}.
-#' @param api_key A \code{character} string containing your \acronym{TERN}
+#'   `"best_pick"` (default) or `"median"`.
+#' @param api_key A `character` string containing your \acronym{TERN}
 #'   \acronym{API} key. Defaults to automatic detection from your
-#'   \code{.Renviron} or \code{.Rprofile}.  See [get_key()] for setup.
+#'   `.Renviron` or `.Rprofile`.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
-#'   raised. Default=\code{NULL}, in which case the maximum retry number is
-#'   resolved from the option \code{nert.max_tries} if that option exists.
-#'   (Defaults to 3 retries if \code{nert.max_tries} has not been set.)
+#'   raised. Default=`NULL`, in which case the maximum retry number is
+#'   resolved from the option `nert.max_tries` if that option exists.
+#'   (Defaults to 3 retries if `nert.max_tries` has not been set.)
 #' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt). Default=\code{NULL}, in which case the initial delay is
-#'   resolved from the option \code{nert.initial_delay} if that option exists.
-#'   (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+#'   attempt). Default=`NULL`, in which case the initial delay is
+#'   resolved from the option `nert.initial_delay` if that option exists.
+#'   (Defaults to a 1 second initial delay if `nert.initial_delay` has
 #'   not been set.)
 #'
 #' @returns
