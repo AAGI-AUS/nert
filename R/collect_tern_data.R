@@ -992,30 +992,24 @@ collect_tern_data <- function(
         "DUL",
         "L15"
       )
+      collection_map <- list(
+        SMIPS = smips_collection,
+        ASC = asc_collection,
+        AET = aet_collection,
+        SOILDIV = soildiv_collection,
+        PHENOLOGY = phenology_collection
+      )
+
       if (ds %in% slga_datasets) {
-        layer <- paste(
-          paste0("Statistic: ", paste(stat, collapse = ", ")),
-          paste0("Depth: ", paste(depth, collapse = ", ")),
-          sep = " | "
+        layer <- sprintf(
+          "Statistic: %s | Depth: %s",
+          paste(stat, collapse = ", "),
+          paste(depth, collapse = ", ")
         )
-      } else if (ds == "SMIPS") {
-        layer <- paste0(
-          "Collection: ",
-          paste(smips_collection, collapse = ", ")
-        )
-      } else if (ds == "ASC") {
-        layer <- paste0("Collection: ", paste(asc_collection, collapse = ", "))
-      } else if (ds == "AET") {
-        layer <- paste0("Collection: ", paste(aet_collection, collapse = ", "))
-      } else if (ds == "SOILDIV") {
-        layer <- paste0(
-          "Collection: ",
-          paste(soildiv_collection, collapse = ", ")
-        )
-      } else if (ds == "PHENOLOGY") {
-        layer <- paste0(
-          "Collection: ",
-          paste(phenology_collection, collapse = ", ")
+      } else if (ds %in% names(collection_map)) {
+        layer <- sprintf(
+          "Collection: %s",
+          paste(collection_map[[ds]], collapse = ", ")
         )
       } else if (ds == "CANOPY") {
         layer <- "Collection: Best-pick Canopy Height"
