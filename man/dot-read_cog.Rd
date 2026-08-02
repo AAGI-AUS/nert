@@ -7,20 +7,12 @@
 .read_cog(full_url, max_tries = NULL, initial_delay = NULL)
 }
 \arguments{
-\item{full_url}{The URL providing access to the requested data.}
+\item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}
 
-\item{max_tries}{Maximum number of download attempts before erroring.
-When \code{NULL} (default), resolved at call time from
-\code{getOption("nert.max_tries", 3L)}.  Pass an integer to override
-for a single call.}
-
-\item{initial_delay}{Initial retry delay in seconds (doubles each
-attempt).  When \code{NULL} (default), resolved at call time from
-\code{getOption("nert.initial_delay", 1L)}.  Pass an integer to override
-for a single call.}
+\item{dataset_id}{Raw \code{dataset_id} (unused; uniform validator signature).}
 }
 \value{
-A \code{\link[terra:rast]{terra::rast()}} object of the requested data.
+\code{NULL}; called for its side effects (argument validation).
 }
 \description{
 Read a COG from TERN
