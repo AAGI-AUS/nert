@@ -120,7 +120,7 @@
 <div class="section level2">
 <h2 id="a-note-on-working-with-cogs">A note on working with COGs<a class="anchor" aria-label="anchor" href="#a-note-on-working-with-cogs"></a>
 </h2>
-<p>COGs are not like working with other datasets in R that you might fetch from the web. They only fetch the information about the object for you in your R session and only at the time that you call it, <em>e.g.</em>, <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> or <code><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop()</a></code>, will you actua</p>
+<p>COGs are not like working with other datasets in R that you might fetch from the web. They only fetch the information about the object for you in your R session and only at the time that you call it, <em>e.g.</em>, <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> or <code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster()</a></code>.</p>
 <p>A normal GeoTIFF is like downloading an entire 500-page book because you want one paragraph.</p>
 <p>A COG is like having an index that lets you jump directly to page 347 and read only that page.</p>
 <p>COGs allow you to very quickly create a SpatRaster object locally that represents the entire dataset and then work with a sub-portion from there. Be aware that if you are not careful, you could end up downloading a large GeoTIFF file fully. It is best to create the local object and then <code><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop()</a></code>, <code><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask()</a></code> or <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> the area of interest to save time, bandwidth and free memory. Then once you’ve done that, try plotting or using the object in models or calculations. Now, on to working with {nert} to read COGs from TERN!</p>
@@ -132,6 +132,12 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.9.34</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     spin</span></span>
 <span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
@@ -158,14 +164,22 @@
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015</span></span>
-<span><span class="co">#&gt;        &lt;Date&gt;  &lt;num&gt;  &lt;num&gt;             &lt;num&gt;          &lt;num&gt;          &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: 2024-01-01 118.28 -31.48         0.2271653             11             15</span></span>
-<span><span class="co">#&gt; 2: 2024-01-01 150.84 -31.07        93.4498901             28             31</span></span>
-<span><span class="co">#&gt; 3: 2024-01-02 118.28 -31.48         0.2135102             11             15</span></span>
-<span><span class="co">#&gt; 4: 2024-01-02 150.84 -31.07        90.6175690             28             31</span></span>
-<span><span class="co">#&gt; 5: 2024-01-03 118.28 -31.48         0.2344290             11             15</span></span>
-<span><span class="co">#&gt; 6: 2024-01-03 150.84 -31.07        88.5260391             28             31</span></span></code></pre></div>
+<span><span class="co">#&gt;          date    lon    lat SMIPS_totalbucket CLY_EV_000_005</span></span>
+<span><span class="co">#&gt;        &lt;Date&gt;  &lt;num&gt;  &lt;num&gt;             &lt;num&gt;          &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: 2024-01-01 118.28 -31.48         0.2271653             11</span></span>
+<span><span class="co">#&gt; 2: 2024-01-01 150.84 -31.07        93.4498901             28</span></span>
+<span><span class="co">#&gt; 3: 2024-01-02 118.28 -31.48         0.2135102             11</span></span>
+<span><span class="co">#&gt; 4: 2024-01-02 150.84 -31.07        90.6175690             28</span></span>
+<span><span class="co">#&gt; 5: 2024-01-03 118.28 -31.48         0.2344290             11</span></span>
+<span><span class="co">#&gt; 6: 2024-01-03 150.84 -31.07        88.5260391             28</span></span>
+<span><span class="co">#&gt;    CLY_EV_005_015</span></span>
+<span><span class="co">#&gt;             &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:             15</span></span>
+<span><span class="co">#&gt; 2:             31</span></span>
+<span><span class="co">#&gt; 3:             15</span></span>
+<span><span class="co">#&gt; 4:             31</span></span>
+<span><span class="co">#&gt; 5:             15</span></span>
+<span><span class="co">#&gt; 6:             31</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="keeping-nert-updated">Keeping {nert} updated<a class="anchor" aria-label="anchor" href="#keeping-nert-updated"></a>
@@ -205,8 +219,9 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'nert' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert:</span></span>
-<span><span class="co">#&gt;   Curated Access to TERN Environmental Raster Data. R package version 1.1.0.</span></span>
+<span><span class="co">#&gt;   Sparks AH, Pipattungsakul W, Edson R, Rogers S,</span></span>
+<span><span class="co">#&gt;   Moldovan M (2026). nert: Curated Access to TERN</span></span>
+<span><span class="co">#&gt;   Environmental Raster Data. R package version 1.1.0.</span></span>
 <span><span class="co">#&gt;   https://aagi-aus.github.io/nert/</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
