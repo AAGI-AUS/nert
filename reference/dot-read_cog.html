@@ -52,27 +52,17 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-full-url">full_url<a class="anchor" aria-label="anchor" href="#arg-full-url"></a></dt>
-<dd><p>The URL providing access to the requested data.</p></dd>
+<dl><dt id="arg-dots">dots<a class="anchor" aria-label="anchor" href="#arg-dots"></a></dt>
+<dd><p>Named list of <code>...</code> args from <code><a href="read_tern.html">read_tern()</a></code>.</p></dd>
 
 
-<dt id="arg-max-tries">max_tries<a class="anchor" aria-label="anchor" href="#arg-max-tries"></a></dt>
-<dd><p>Maximum number of download attempts before erroring.
-When <code>NULL</code> (default), resolved at call time from
-<code>getOption("nert.max_tries", 3L)</code>.  Pass an integer to override
-for a single call.</p></dd>
-
-
-<dt id="arg-initial-delay">initial_delay<a class="anchor" aria-label="anchor" href="#arg-initial-delay"></a></dt>
-<dd><p>Initial retry delay in seconds (doubles each
-attempt).  When <code>NULL</code> (default), resolved at call time from
-<code>getOption("nert.initial_delay", 1L)</code>.  Pass an integer to override
-for a single call.</p></dd>
+<dt id="arg-dataset-id">dataset_id<a class="anchor" aria-label="anchor" href="#arg-dataset-id"></a></dt>
+<dd><p>Raw <code>dataset_id</code> (unused; uniform validator signature).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">terra::rast()</a></code> object of the requested data.</p>
+    <p><code>NULL</code>; called for its side effects (argument validation).</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

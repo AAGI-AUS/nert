@@ -16,6 +16,12 @@ call:
 .init_nert_options()
 ```
 
+## Value
+
+`NULL` when all options are already set; otherwise the value returned by
+[`base::options()`](https://rdrr.io/r/base/options.html) when defaults
+are populated.
+
 ## Details
 
 Existing user-set values (e.g. set in `.Rprofile` or via

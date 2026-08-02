@@ -27,3 +27,9 @@ Internal handler for retrieving the AET data
 
   Passed to
   [`.read_cog()`](https://aagi-aus.github.io/nert/reference/dot-read_cog.md).
+
+## Value
+
+A
+[terra::SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
+object for the requested AET collection/date.

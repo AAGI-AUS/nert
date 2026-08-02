@@ -47,3 +47,7 @@ the underlying error.
 - initial_delay:
 
   Initial retry delay (in seconds).
+
+## Value
+
+`invisible(NULL)`. This function is called for its side effects.

@@ -27,3 +27,7 @@ function only rejects the obviously impossible cases.)
 - .day:
 
   The user-supplied date being asked for.
+
+## Value
+
+`invisible(NULL)`; called for its side effects (validation).

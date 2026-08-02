@@ -10,26 +10,15 @@ Read a COG from TERN
 
 ## Arguments
 
-- full_url:
+- dots:
 
-  The URL providing access to the requested data.
+  Named list of `...` args from
+  [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md).
 
-- max_tries:
+- dataset_id:
 
-  Maximum number of download attempts before erroring. When `NULL`
-  (default), resolved at call time from
-  `getOption("nert.max_tries", 3L)`. Pass an integer to override for a
-  single call.
-
-- initial_delay:
-
-  Initial retry delay in seconds (doubles each attempt). When `NULL`
-  (default), resolved at call time from
-  `getOption("nert.initial_delay", 1L)`. Pass an integer to override for
-  a single call.
+  Raw `dataset_id` (unused; uniform validator signature).
 
 ## Value
 
-A
-[`terra::rast()`](https://rspatial.github.io/terra/reference/rast.html)
-object of the requested data.
+`NULL`; called for its side effects (argument validation).

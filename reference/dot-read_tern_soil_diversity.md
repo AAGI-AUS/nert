@@ -27,3 +27,9 @@ Internal handler for retrieving Soil Beta Diversity datasets
 
   Passed to
   [`.read_cog()`](https://aagi-aus.github.io/nert/reference/dot-read_cog.md).
+
+## Value
+
+A
+[terra::SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
+object for the requested soil diversity layer.

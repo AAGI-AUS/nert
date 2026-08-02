@@ -17,3 +17,7 @@ Creates the SMIPS specific portion of a URL to read or fetch a COG.
 - .day:
 
   The user-supplied date being asked for.
+
+## Value
+
+A `character` filename for the requested SMIPS collection/date.
