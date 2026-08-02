@@ -93,7 +93,7 @@ read_canopy_height <- function(
   )
 
   full_url <- sprintf(
-    "/vsicurl/******data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/%s",
+    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/%s",
     api_key,
     dl_file
   )
