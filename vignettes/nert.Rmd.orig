@@ -145,7 +145,7 @@ If you prefer a more secure method, you can use the [{keyring}](https://keyring.
     ```
 
 
-### Reading TERN Data
+## Reading TERN Data
 
 You can use the `nert::read_smips()` function to retrieve rasters for the SMIPS datasets available on the TERN Data Portal, using the `date` argument
 to specify the date for the raster to be retrieved, and the `collection` argument to specify which specific SMIPS dataset to download. For instance,
