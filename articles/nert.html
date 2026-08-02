@@ -204,12 +204,6 @@ Northing for the latitude):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.9.34</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     spin</span></span>
 <span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
 <span></span>
@@ -275,9 +269,10 @@ setting the <code>api_key</code> argument:</p>
 </li>
 </ol>
 </div>
-<div class="section level3">
-<h3 id="reading-tern-data">Reading TERN Data<a class="anchor" aria-label="anchor" href="#reading-tern-data"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="reading-tern-data">Reading TERN Data<a class="anchor" aria-label="anchor" href="#reading-tern-data"></a>
+</h2>
 <p>You can use the <code><a href="../reference/read_smips.html">nert::read_smips()</a></code> function to retrieve
 rasters for the SMIPS datasets available on the TERN Data Portal, using
 the <code>date</code> argument to specify the date for the raster to be
@@ -346,7 +341,6 @@ A plot of the soil clay content (%) at a 30-60cm soil depth.
 </p>
 </div>
 <p>That’s it, you’re all set!</p>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

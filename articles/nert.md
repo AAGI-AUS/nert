@@ -141,12 +141,6 @@ You can store the TERN API Key in your `.Renviron` file as follows:
 
     library(nert)
     library(terra)
-    #> terra 1.9.34
-    #> 
-    #> Attaching package: 'terra'
-    #> The following object is masked from 'package:knitr':
-    #> 
-    #>     spin
 
     r <- read_smips(date = "2024-01-01")
 
@@ -225,7 +219,7 @@ TERN API Key in your system’s credential store.
     extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
     ```
 
-### Reading TERN Data
+## Reading TERN Data
 
 You can use the
 [`nert::read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
