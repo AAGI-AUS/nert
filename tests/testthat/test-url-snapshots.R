@@ -111,9 +111,10 @@ test_that("Soil Beta Diversity URLs are stable across collections and axes", {
 
 # ---- Canopy Height ---------------------------------------------------------
 
-test_that("Canopy Height URL is stable", {
+test_that("Canopy Height URLs are stable for best_pick and median", {
   sink <- .use_mocked_cog()
-  read_canopy_height(api_key = KEY)
+  read_canopy_height(collection = "best_pick", api_key = KEY)
+  read_canopy_height(collection = "median", api_key = KEY)
   expect_snapshot(cat(sink$urls, sep = "\n"))
 })
 

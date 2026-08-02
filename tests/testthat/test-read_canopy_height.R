@@ -3,7 +3,7 @@
 
 KEY <- "test-key-0000"
 
-test_that("read_canopy_height resolves to the documented static URL", {
+test_that("read_canopy_height default resolves to best-pick URL", {
   sink <- .use_mocked_cog()
   read_canopy_height(api_key = KEY)
   expect_length(sink$urls, 1L)
@@ -14,6 +14,22 @@ test_that("read_canopy_height resolves to the documented static URL", {
       KEY,
       "@data.tern.org.au/model-derived/OzTreeMap/",
       "CanopyHeightComposite/best_pick_files_bhLNnun.tif"
+    ),
+    fixed = TRUE
+  )
+})
+
+test_that("read_canopy_height(collection = \"median\") resolves to median URL", {
+  sink <- .use_mocked_cog()
+  read_canopy_height(collection = "median", api_key = KEY)
+  expect_length(sink$urls, 1L)
+  expect_match(
+    sink$urls,
+    paste0(
+      "/vsicurl/https://apikey:",
+      KEY,
+      "@data.tern.org.au/model-derived/OzTreeMap/",
+      "CanopyHeightComposite/median_files_bhLNnun.tif"
     ),
     fixed = TRUE
   )
@@ -53,17 +69,49 @@ test_that("read_canopy_height dispatches via the CANOPY alias", {
   expect_match(sink$urls, "best_pick_files_bhLNnun.tif", fixed = TRUE)
 })
 
+test_that("read_tern CANOPY respects collection = 'median'", {
+  sink <- .use_mocked_cog()
+  read_tern("CANOPY", collection = "median", api_key = KEY)
+  expect_match(sink$urls, "median_files_bhLNnun.tif", fixed = TRUE)
+})
+
+test_that("read_canopy_height rejects unknown collection", {
+  expect_error(
+    read_canopy_height(collection = "unknown", api_key = KEY),
+    "must be one of"
+  )
+})
+
 # ---- Direct handler unit test ----------------------------------------------
 # read_canopy_height() dispatches through the `.tern_datasets` registry, which
 # holds the handler by reference; exercise the handler directly.
 
-test_that(".read_tern_canopy_height builds the static URL directly", {
+test_that(".read_tern_canopy_height builds best-pick and median URLs", {
   sink <- .use_mocked_cog()
-  r <- .read_tern_canopy_height("36c98155", list(), KEY, 1L, 0L)
+  r <- .read_tern_canopy_height(
+    "36c98155",
+    list(collection = "median"),
+    KEY,
+    1L,
+    0L
+  )
+  .read_tern_canopy_height("36c98155", list(), KEY, 1L, 0L)
   expect_s4_class(r, "SpatRaster")
   expect_match(
-    sink$urls,
+    sink$urls[[1L]],
+    "CanopyHeightComposite/median_files_bhLNnun.tif",
+    fixed = TRUE
+  )
+  expect_match(
+    sink$urls[[2L]],
     "CanopyHeightComposite/best_pick_files_bhLNnun.tif",
     fixed = TRUE
+  )
+})
+
+test_that(".read_tern_canopy_height rejects unknown collection directly", {
+  expect_error(
+    .read_tern_canopy_height("36c98155", list(collection = "unknown"), KEY, 1L, 0L),
+    "must be one of"
   )
 })
