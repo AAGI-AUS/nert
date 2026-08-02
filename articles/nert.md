@@ -141,6 +141,12 @@ You can store the TERN API Key in your `.Renviron` file as follows:
 
     library(nert)
     library(terra)
+    #> terra 1.9.34
+    #> 
+    #> Attaching package: 'terra'
+    #> The following object is masked from 'package:knitr':
+    #> 
+    #>     spin
 
     r <- read_smips(date = "2024-01-01")
 
@@ -246,7 +252,7 @@ autoplot(r)
 ```
 
 ![A plot of SMIPS SMindex data for all of Australia on
-2025-06-30.](test-plot-smips-1.png)
+2025-06-30.](articles/test-plot-smips-1.png)
 
 A plot of SMIPS SMindex data for all of Australia on 2025-06-30.
 
@@ -285,7 +291,7 @@ autoplot(asc)
 #> <SpatRaster> resampled to 500388 cells.
 ```
 
-![A plot of Australian Soils Classification data.](asc-1.png)
+![A plot of Australian Soils Classification data.](articles/asc-1.png)
 
 A plot of Australian Soils Classification data.
 
@@ -312,7 +318,7 @@ autoplot(cly)
 ```
 
 ![A plot of the soil clay content (%) at a 30-60cm soil
-depth.](slga-1.png)
+depth.](articles/slga-1.png)
 
 A plot of the soil clay content (%) at a 30-60cm soil depth.
 
