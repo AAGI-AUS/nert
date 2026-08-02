@@ -6,7 +6,7 @@ Australia's Terrestrial Ecosystem Research Network (TERN;
 classification, soil biodiversity, soil moisture, actual
 evapotranspiration, vegetation canopy height and phenology products. The
 package reads Cloud-Optimised GeoTIFF and virtual raster files directly
-from the TERN data server via GDAL '/vsicurl' range requests, streaming
+from the TERN data server via GDAL /vsicurl range requests, streaming
 only the requested spatial and temporal subset for efficient data
 transfer. The environmental raster data are returned as
 terra::SpatRaster objects. A convenient helper function is also provided
