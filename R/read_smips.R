@@ -228,11 +228,11 @@ read_smips <- function(
 
   collection_prefixes <- c(
     totalbucket = "smips_totalbucket_mm_",
-    SMindex     = "smips_smi_perc_",
-    bucket1     = "smips_bucket1_mm_",
-    bucket2     = "smips_bucket2_mm_",
-    deepD       = "smips_deepD_mm_",
-    runoff      = "smips_runoff_mm_"
+    SMindex = "smips_smi_perc_",
+    bucket1 = "smips_bucket1_mm_",
+    bucket2 = "smips_bucket2_mm_",
+    deepD = "smips_deepD_mm_",
+    runoff = "smips_runoff_mm_"
   )
   collection_url <- paste0(collection_prefixes[[collection]], url_date, ".tif")
 

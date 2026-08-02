@@ -9,8 +9,8 @@
   max_tries <- max_tries %||% getOption("nert.max_tries", 3L)
   initial_delay <- initial_delay %||% getOption("nert.initial_delay", 1L)
 
-  params        <- suppressWarnings(as.integer(c(max_tries, initial_delay)))
-  max_tries     <- params[[1L]]
+  params <- suppressWarnings(as.integer(c(max_tries, initial_delay)))
+  max_tries <- params[[1L]]
   initial_delay <- params[[2L]]
   if (is.na(max_tries) || max_tries < 1L) {
     cli::cli_abort(
