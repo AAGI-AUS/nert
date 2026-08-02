@@ -1025,7 +1025,11 @@ test_that(".validate_and_prepare_inputs accepts xy data.frame", {
 # .initialize_output_columns -------------------------------------------------
 
 test_that(".initialize_output_columns adds NA_real_ column for numeric work item", {
-  out <- data.table::data.table(date = as.Date("2024-01-01"), lon = 138.6, lat = -34.9)
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9
+  )
   wi <- list(type = "numeric", cols = "TEST_col")
   .initialize_output_columns(out, list(wi))
   expect_true("TEST_col" %in% names(out))
@@ -1034,7 +1038,11 @@ test_that(".initialize_output_columns adds NA_real_ column for numeric work item
 })
 
 test_that(".initialize_output_columns adds NA_character_ column for character work item", {
-  out <- data.table::data.table(date = as.Date("2024-01-01"), lon = 138.6, lat = -34.9)
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9
+  )
   wi <- list(type = "character", cols = "CHAR_col")
   .initialize_output_columns(out, list(wi))
   expect_true("CHAR_col" %in% names(out))
@@ -1043,7 +1051,11 @@ test_that(".initialize_output_columns adds NA_character_ column for character wo
 })
 
 test_that(".initialize_output_columns handles multiple work items", {
-  out <- data.table::data.table(date = as.Date("2024-01-01"), lon = 138.6, lat = -34.9)
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9
+  )
   work_items <- list(
     list(type = "numeric", cols = "A"),
     list(type = "character", cols = "B"),
