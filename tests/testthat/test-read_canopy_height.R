@@ -29,7 +29,7 @@ test_that("read_canopy_height(collection = \"median\") resolves to median URL", 
       "/vsicurl/https://apikey:",
       KEY,
       "@data.tern.org.au/model-derived/OzTreeMap/",
-      "CanopyHeightComposite/median_files_IREknUX\.tif"
+      "CanopyHeightComposite/median_files_IREknUX.tif"
     ),
     fixed = TRUE
   )
@@ -72,7 +72,7 @@ test_that("read_canopy_height dispatches via the CANOPY alias", {
 test_that("read_tern CANOPY respects collection = 'median'", {
   sink <- .use_mocked_cog()
   read_tern("CANOPY", collection = "median", api_key = KEY)
-  expect_match(sink$urls, "median_files_IREknUX\.tif", fixed = TRUE)
+  expect_match(sink$urls, "median_files_IREknUX.tif", fixed = TRUE)
 })
 
 test_that("read_canopy_height rejects unknown collection", {
@@ -99,7 +99,7 @@ test_that(".read_tern_canopy_height builds best-pick and median URLs", {
   expect_s4_class(r, "SpatRaster")
   expect_match(
     sink$urls[[1L]],
-    "CanopyHeightComposite/median_files_IREknUX\.tif",
+    "CanopyHeightComposite/median_files_IREknUX.tif",
     fixed = TRUE
   )
   expect_match(
