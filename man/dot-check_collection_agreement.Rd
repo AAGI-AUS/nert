@@ -11,6 +11,9 @@
 
 \item{.day}{The user-supplied date being asked for.}
 }
+\value{
+\code{invisible(NULL)}; called for its side effects (validation).
+}
 \description{
 SMIPS daily COGs are published up to today, with a per-collection earliest
 date on the TERN Data Portal: \code{"totalbucket"} and \code{"SMindex"} are

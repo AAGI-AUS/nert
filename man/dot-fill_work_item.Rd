@@ -23,6 +23,9 @@
 
 \item{initial_delay}{Initial retry delay (in seconds).}
 }
+\value{
+\code{invisible(NULL)}. This function is called for its side effects.
+}
 \description{
 For a time-series work item, exactly one row block (\code{length(coords)}
 rows) is filled.  For a static work item, the value is replicated

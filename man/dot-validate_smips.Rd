@@ -11,6 +11,9 @@
 
 \item{dataset_id}{Raw \code{dataset_id} (unused; uniform validator signature).}
 }
+\value{
+\code{NULL}; called for its side effects (argument validation).
+}
 \description{
 SMIPS requires a daily \code{date} (the legacy \code{day} name is also
 accepted). Invoked by \code{\link[=read_tern]{read_tern()}} via the \link{.tern_datasets} registry.

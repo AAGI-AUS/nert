@@ -6,6 +6,10 @@
 \usage{
 .init_nert_options()
 }
+\value{
+\code{NULL} when all options are already set; otherwise the value returned
+by \code{\link[base:options]{base::options()}} when defaults are populated.
+}
 \description{
 Extracted from \code{.onLoad()} to allow direct unit testing.  Sets
 package-level defaults for the retry behaviour shared by every

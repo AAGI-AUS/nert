@@ -15,6 +15,9 @@
 
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
+\value{
+A \link[terra:SpatRaster]{terra::SpatRaster} object for the requested phenology layer.
+}
 \description{
 Internal handler for Land Surface Phenology (\code{TERN/2bb0c81a})
 }

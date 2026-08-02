@@ -11,6 +11,9 @@
 
 \item{.day}{The user-supplied date being asked for.}
 }
+\value{
+A \code{character} filename for the requested SMIPS collection/date.
+}
 \description{
 Creates the SMIPS specific portion of a URL to read or fetch a COG.
 }
