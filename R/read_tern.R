@@ -377,7 +377,7 @@ read_tern <- function(
     cli::cli_abort(c(
       "Dataset {.val {dataset_id}} is not implemented in {.fn read_tern}.",
       "i" = "Supported aliases: {.and {names(.tern_aliases)}}.",
-      "i" = "Datasets with L2+ integration (OPeNDAP, GEE, REST API,
+      "x" = "Datasets with L2+ integration (OPeNDAP, GEE, REST API,
              site-specific) are outside {.pkg nert} scope."
     ))
   }
