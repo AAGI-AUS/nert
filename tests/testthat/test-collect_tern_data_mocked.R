@@ -80,7 +80,11 @@ test_that("collect_tern_data errors once when API key is missing", {
 
   expect_error(
     collect_tern_data(
-      date_range = seq(as.Date("2024-01-01"), as.Date("2024-01-03"), by = "day"),
+      date_range = seq(
+        as.Date("2024-01-01"),
+        as.Date("2024-01-03"),
+        by = "day"
+      ),
       lon = 138.6,
       lat = -34.9,
       datasets = "SMIPS",
