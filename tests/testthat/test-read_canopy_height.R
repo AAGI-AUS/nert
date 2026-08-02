@@ -111,7 +111,13 @@ test_that(".read_tern_canopy_height builds best-pick and median URLs", {
 
 test_that(".read_tern_canopy_height rejects unknown collection directly", {
   expect_error(
-    .read_tern_canopy_height("36c98155", list(collection = "unknown"), KEY, 1L, 0L),
+    .read_tern_canopy_height(
+      "36c98155",
+      list(collection = "unknown"),
+      KEY,
+      1L,
+      0L
+    ),
     "must be one of"
   )
 })

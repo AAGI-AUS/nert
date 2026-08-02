@@ -84,8 +84,8 @@
     Code
       cat(sink$urls, sep = "\n")
     Output
-      /vsicurl/******data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif
-      /vsicurl/******data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/median_file_bhLNnun.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/median_file_bhLNnun.tif
 
 # Phenology URLs are stable across all eleven metrics
 
@@ -111,3 +111,4 @@
     Output
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/1_Start_of_the_growing_season/SGS_2003_Season1.tif
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/1_Start_of_the_growing_season/SGS_2018_Season2.tif
+
