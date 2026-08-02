@@ -352,8 +352,9 @@ collect_tern_data <- function(
   }
 
   if (length(date_range) == 2) {
-    start <- as.Date(date_range[1])
-    end <- as.Date(date_range[2])
+    range_parsed <- as.Date(date_range[1:2])
+    start <- range_parsed[[1L]]
+    end   <- range_parsed[[2L]]
     if (start > end) {
       cli::cli_abort(
         "{.arg date_range} start {.val {start}} must not be after its end \\
