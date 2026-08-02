@@ -150,27 +150,12 @@ collect_tern_data <- function(
   verbose = TRUE,
   na.rm = FALSE
 ) {
-  if (missing(dates) && missing(date_range)) {
-    cli::cli_abort(
-      "At least one of {.arg dates} or {.arg date_range} must be supplied."
-    )
-  }
-
-  # The dates argument takes precedence over date_range if both supplied
-  if (missing(dates)) {
-    dates <- .parse_date_range(date_range)
-  } else {
-    dates <- as.Date(dates)
-  }
-  n_dt <- length(dates)
-
-  coords_df <- .parse_coordinates(lon, lat, xy)
-  n_loc <- nrow(coords_df)
-  pts <- terra::vect(
-    as.matrix(coords_df[, c("lon", "lat")]),
-    type = "points",
-    crs = "EPSG:4326"
-  )
+  inputs <- .validate_and_prepare_inputs(dates, date_range, lon, lat, xy)
+  dates <- inputs$dates
+  n_dt <- inputs$n_dt
+  coords_df <- inputs$coords_df
+  n_loc <- inputs$n_loc
+  pts <- inputs$pts
 
   # Normalise user-supplied datasets and dataset collections
   datasets <- .normalise_datasets(datasets)
@@ -217,17 +202,7 @@ collect_tern_data <- function(
     lat = rep(coords_df$lat, times = n_dt)
   )
 
-  for (wi in work_items) {
-    for (col in wi$cols) {
-      out[,
-        (col) := if (identical(wi$type, "character")) {
-          NA_character_
-        } else {
-          NA_real_
-        }
-      ]
-    }
-  }
+  .initialize_output_columns(out, work_items)
 
   for (wi in work_items) {
     if (verbose) {
@@ -246,7 +221,103 @@ collect_tern_data <- function(
   }
 
   data_cols <- setdiff(names(out), c("date", "lon", "lat"))
+  out <- .filter_na_rows(out, data_cols, na.rm)
 
+  if (verbose) {
+    cli::cli_inform("Collected {nrow(out)} row{?s} x {ncol(out)} column{?s}")
+  }
+
+  return(out[])
+}
+
+
+#' Validate and prepare date and coordinate inputs
+#'
+#' Validates and resolves the `dates`/`date_range` arguments and parses the
+#' coordinate inputs into a `SpatVector` of points.
+#'
+#' @param dates User-supplied exact dates (or missing).
+#' @param date_range User-supplied date range (or missing).
+#' @param lon Longitude(s).
+#' @param lat Latitude(s).
+#' @param xy Optional data.frame/matrix with coordinate columns.
+#' @returns A named list with elements `dates`, `n_dt`, `coords_df`, `n_loc`,
+#'   and `pts`.
+#'
+#' @dev
+.validate_and_prepare_inputs <- function(dates, date_range, lon, lat, xy) {
+  if (missing(dates) && missing(date_range)) {
+    cli::cli_abort(
+      "At least one of {.arg dates} or {.arg date_range} must be supplied."
+    )
+  }
+
+  # The dates argument takes precedence over date_range if both supplied
+  if (missing(dates)) {
+    dates <- .parse_date_range(date_range)
+  } else {
+    dates <- as.Date(dates)
+  }
+  n_dt <- length(dates)
+
+  coords_df <- .parse_coordinates(lon, lat, xy)
+  n_loc <- nrow(coords_df)
+  pts <- terra::vect(
+    as.matrix(coords_df[, c("lon", "lat")]),
+    type = "points",
+    crs = "EPSG:4326"
+  )
+
+  list(
+    dates = dates,
+    n_dt = n_dt,
+    coords_df = coords_df,
+    n_loc = n_loc,
+    pts = pts
+  )
+}
+
+
+#' Pre-initialise output columns for all work items
+#'
+#' Adds one `NA`-filled column per work item to the output `data.table`,
+#' using the correct storage type (`NA_character_` or `NA_real_`) for each.
+#' The table is modified in place.
+#'
+#' @param out The output `data.table` (modified in place).
+#' @param work_items A list of work items from [.build_work_items()].
+#' @returns `invisible(NULL)`. Called for its side effects.
+#'
+#' @dev
+.initialize_output_columns <- function(out, work_items) {
+  for (wi in work_items) {
+    for (col in wi$cols) {
+      out[,
+        (col) := if (identical(wi$type, "character")) {
+          NA_character_
+        } else {
+          NA_real_
+        }
+      ]
+    }
+  }
+  invisible(NULL)
+}
+
+
+#' Drop all-NA data rows from the output table
+#'
+#' When `na.rm` is `TRUE` and data columns are present, removes rows where
+#' every data column is `NA`.
+#'
+#' @param out A `data.table` containing the collected data.
+#' @param data_cols A `character` vector of column names to check (excludes
+#'   `date`, `lon`, `lat`).
+#' @param na.rm Logical. If `TRUE`, drop all-NA rows.
+#' @returns A (possibly filtered) `data.table`.
+#'
+#' @dev
+.filter_na_rows <- function(out, data_cols, na.rm) {
   if (na.rm && length(data_cols) > 0L) {
     keep <- vapply(
       seq_len(nrow(out)),
@@ -257,12 +328,7 @@ collect_tern_data <- function(
     )
     out <- out[keep]
   }
-
-  if (verbose) {
-    cli::cli_inform("Collected {nrow(out)} row{?s} x {ncol(out)} column{?s}")
-  }
-
-  return(out[])
+  return(out)
 }
 
 
