@@ -85,7 +85,34 @@ pak::pak("AAGI-AUS/nert")
 options(o) # reset options
 ```
 
-## Example: reading a SMIPS COG as a spatial object
+## A note on working with COGs
+
+COGs are not like working with other datasets in R that you might fetch
+from the web. They only fetch the information about the object for you
+in your R session and only at the time that you call it, *e.g.*,
+[`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html) or
+[`crop()`](https://rspatial.github.io/terra/reference/crop.html), will
+you actua
+
+A normal GeoTIFF is like downloading an entire 500-page book because you
+want one paragraph.
+
+A COG is like having an index that lets you jump directly to page 347
+and read only that page.
+
+COGs allow you to very quickly create a SpatRaster object locally that
+represents the entire dataset and then work with a sub-portion from
+there. Be aware that if you are not careful, you could end up
+downloading a large GeoTIFF file fully. It is best to create the local
+object and then
+[`crop()`](https://rspatial.github.io/terra/reference/crop.html),
+[`mask()`](https://rspatial.github.io/terra/reference/mask.html) or
+[`extract()`](https://rspatial.github.io/terra/reference/extract.html)
+the area of interest to save time, bandwidth and free memory. Then once
+you’ve done that, try plotting or using the object in models or
+calculations. Now, on to working with {nert} to read COGs from TERN!
+
+## Example: reading an SMIPS COG as a spatial object
 
 The {nert} package provides a number of convenient functions such as
 [`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)

@@ -118,7 +118,15 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="example-reading-a-smips-cog-as-a-spatial-object">Example: reading a SMIPS COG as a spatial object<a class="anchor" aria-label="anchor" href="#example-reading-a-smips-cog-as-a-spatial-object"></a>
+<h2 id="a-note-on-working-with-cogs">A note on working with COGs<a class="anchor" aria-label="anchor" href="#a-note-on-working-with-cogs"></a>
+</h2>
+<p>COGs are not like working with other datasets in R that you might fetch from the web. They only fetch the information about the object for you in your R session and only at the time that you call it, <em>e.g.</em>, <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> or <code><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop()</a></code>, will you actua</p>
+<p>A normal GeoTIFF is like downloading an entire 500-page book because you want one paragraph.</p>
+<p>A COG is like having an index that lets you jump directly to page 347 and read only that page.</p>
+<p>COGs allow you to very quickly create a SpatRaster object locally that represents the entire dataset and then work with a sub-portion from there. Be aware that if you are not careful, you could end up downloading a large GeoTIFF file fully. It is best to create the local object and then <code><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop()</a></code>, <code><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask()</a></code> or <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> the area of interest to save time, bandwidth and free memory. Then once you’ve done that, try plotting or using the object in models or calculations. Now, on to working with {nert} to read COGs from TERN!</p>
+</div>
+<div class="section level2">
+<h2 id="example-reading-an-smips-cog-as-a-spatial-object">Example: reading an SMIPS COG as a spatial object<a class="anchor" aria-label="anchor" href="#example-reading-an-smips-cog-as-a-spatial-object"></a>
 </h2>
 <p>The {nert} package provides a number of convenient functions such as <code><a href="reference/read_smips.html">read_smips()</a></code> which allow you to fetch COGs from the TERN Data Portal for use in your R session. The below code fetches the SMIPS soil moisture raster for the 1st of January 2024, and then uses the {terra} package’s <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract()</a></code> function to get a soil moisture estimate for the Adelaide CBD. Note that since these are cloud-optimised COGs, they employ Just-In-Time data streaming: that is, <em>only the bytes necessary for the spatial extent we actually need are downloaded</em>, resulting in significant time and disk-space savings.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
