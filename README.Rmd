@@ -90,7 +90,7 @@ options(o) # reset options
 ## A note on working with COGs
 
 COGs are not like working with other datasets in R that you might fetch from the web.
-They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `autoplot()` or `crop()`, will you actua
+They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `autoplot()` or `writeRaster()`.
 
 A normal GeoTIFF is like downloading an entire 500-page book because you want one paragraph.
 
