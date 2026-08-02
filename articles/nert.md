@@ -252,7 +252,7 @@ autoplot(r)
 ```
 
 ![A plot of SMIPS SMindex data for all of Australia on
-2025-06-30.](articles/test-plot-smips-1.png)
+2025-06-30.](test-plot-smips-1.png)
 
 A plot of SMIPS SMindex data for all of Australia on 2025-06-30.
 
@@ -262,9 +262,9 @@ you can use the
 function. Since the rasters are stored on the TERN Data Portal as
 Cloud-Optimised GeoTIFFs (COGs),
 [`terra::extract()`](https://rspatial.github.io/terra/reference/extract.html)
-is very time- and space-efficient, streaming only the bytes needed for
-the spatial extent that you ask for. The below R code downloads only the
-data at the coordinates specified, rather than fetching the entire
+is very time- and space-efficient, **streaming only the bytes needed for
+the spatial extent that you ask for**. The below R code downloads only
+the data at the coordinates specified, rather than fetching the entire
 dataset:
 
 ``` r
@@ -291,7 +291,7 @@ autoplot(asc)
 #> <SpatRaster> resampled to 500388 cells.
 ```
 
-![A plot of Australian Soils Classification data.](articles/asc-1.png)
+![A plot of Australian Soils Classification data.](asc-1.png)
 
 A plot of Australian Soils Classification data.
 
@@ -318,7 +318,7 @@ autoplot(cly)
 ```
 
 ![A plot of the soil clay content (%) at a 30-60cm soil
-depth.](articles/slga-1.png)
+depth.](slga-1.png)
 
 A plot of the soil clay content (%) at a 30-60cm soil depth.
 

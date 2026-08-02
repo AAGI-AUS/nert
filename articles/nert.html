@@ -293,7 +293,7 @@ ease of visualising the TERN data.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="articles/test-plot-smips-1.png" alt="A plot of SMIPS SMindex data for all of Australia on 2025-06-30."><p class="caption">
+<img src="test-plot-smips-1.png" alt="A plot of SMIPS SMindex data for all of Australia on 2025-06-30."><p class="caption">
 A plot of SMIPS SMindex data for all of Australia on 2025-06-30.
 </p>
 </div>
@@ -301,9 +301,9 @@ A plot of SMIPS SMindex data for all of Australia on 2025-06-30.
 you can use the <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">terra::extract()</a></code> function. Since the
 rasters are stored on the TERN Data Portal as Cloud-Optimised GeoTIFFs
 (COGs), <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">terra::extract()</a></code> is very time- and space-efficient,
-streaming only the bytes needed for the spatial extent that you ask for.
-The below R code downloads only the data at the coordinates specified,
-rather than fetching the entire dataset:</p>
+<strong>streaming only the bytes needed for the spatial extent that you
+ask for</strong>. The below R code downloads only the data at the
+coordinates specified, rather than fetching the entire dataset:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -322,7 +322,7 @@ are retrieved:</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">asc</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 500388 cells.</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="articles/asc-1.png" alt="A plot of Australian Soils Classification data."><p class="caption">
+<img src="asc-1.png" alt="A plot of Australian Soils Classification data."><p class="caption">
 A plot of Australian Soils Classification data.
 </p>
 </div>
@@ -341,7 +341,7 @@ at a depth of 30-60cm by specifying the <code>depth</code> argument:</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">cly</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 500388 cells.</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="articles/slga-1.png" alt="A plot of the soil clay content (%) at a 30-60cm soil depth."><p class="caption">
+<img src="slga-1.png" alt="A plot of the soil clay content (%) at a 30-60cm soil depth."><p class="caption">
 A plot of the soil clay content (%) at a 30-60cm soil depth.
 </p>
 </div>
