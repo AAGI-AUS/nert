@@ -977,3 +977,154 @@ test_that(".normalise_vector_elements aborts on an empty (non-NULL) selector", {
     "No widgets specified"
   )
 })
+
+# .validate_and_prepare_inputs -----------------------------------------------
+
+test_that(".validate_and_prepare_inputs returns expected names and types", {
+  res <- .validate_and_prepare_inputs(
+    dates = as.Date(c("2024-01-01", "2024-01-03")),
+    lon = 138.6,
+    lat = -34.9,
+    xy = NULL
+  )
+  expect_named(res, c("dates", "n_dt", "coords_df", "n_loc", "pts"))
+  expect_s3_class(res$dates, "Date")
+  expect_identical(res$n_dt, 2L)
+  expect_identical(res$n_loc, 1L)
+  expect_s4_class(res$pts, "SpatVector")
+})
+
+test_that(".validate_and_prepare_inputs resolves date_range when dates missing", {
+  res <- .validate_and_prepare_inputs(
+    date_range = c("2024-01-01", "2024-01-03"),
+    lon = 138.6,
+    lat = -34.9,
+    xy = NULL
+  )
+  expect_length(res$dates, 3L)
+  expect_identical(res$n_dt, 3L)
+})
+
+test_that(".validate_and_prepare_inputs errors when both dates and date_range missing", {
+  expect_error(
+    .validate_and_prepare_inputs(lon = 138.6, lat = -34.9, xy = NULL),
+    "dates.*date_range"
+  )
+})
+
+test_that(".validate_and_prepare_inputs accepts xy data.frame", {
+  res <- .validate_and_prepare_inputs(
+    dates = as.Date("2024-01-01"),
+    lon = NULL,
+    lat = NULL,
+    xy = data.frame(lon = c(138.6, 139.5), lat = c(-34.9, -35.5))
+  )
+  expect_identical(res$n_loc, 2L)
+})
+
+# .initialize_output_columns -------------------------------------------------
+
+test_that(".initialize_output_columns adds NA_real_ column for numeric work item", {
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9
+  )
+  wi <- list(type = "numeric", cols = "TEST_col")
+  .initialize_output_columns(out, list(wi))
+  expect_true("TEST_col" %in% names(out))
+  expect_true(is.na(out$TEST_col))
+  expect_type(out$TEST_col, "double")
+})
+
+test_that(".initialize_output_columns adds NA_character_ column for character work item", {
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9
+  )
+  wi <- list(type = "character", cols = "CHAR_col")
+  .initialize_output_columns(out, list(wi))
+  expect_true("CHAR_col" %in% names(out))
+  expect_true(is.na(out$CHAR_col))
+  expect_type(out$CHAR_col, "character")
+})
+
+test_that(".initialize_output_columns handles multiple work items", {
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9
+  )
+  work_items <- list(
+    list(type = "numeric", cols = "A"),
+    list(type = "character", cols = "B"),
+    list(type = "numeric", cols = "C")
+  )
+  .initialize_output_columns(out, work_items)
+  expect_true(all(c("A", "B", "C") %in% names(out)))
+})
+
+test_that(".initialize_output_columns returns invisible NULL", {
+  out <- data.table::data.table(x = 1L)
+  result <- .initialize_output_columns(out, list())
+  expect_null(result)
+})
+
+# .filter_na_rows ------------------------------------------------------------
+
+test_that(".filter_na_rows returns table unchanged when na.rm is FALSE", {
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9,
+    val = NA_real_
+  )
+  result <- .filter_na_rows(out, "val", na.rm = FALSE)
+  expect_identical(nrow(result), 1L)
+})
+
+test_that(".filter_na_rows drops all-NA rows when na.rm is TRUE", {
+  out <- data.table::data.table(
+    date = as.Date(c("2024-01-01", "2024-01-02")),
+    lon = 138.6,
+    lat = -34.9,
+    val = c(NA_real_, 1.0)
+  )
+  result <- .filter_na_rows(out, "val", na.rm = TRUE)
+  expect_identical(nrow(result), 1L)
+  expect_identical(result$val, 1.0)
+})
+
+test_that(".filter_na_rows drops all rows when every row is all-NA", {
+  out <- data.table::data.table(
+    date = as.Date(c("2024-01-01", "2024-01-02")),
+    lon = 138.6,
+    lat = -34.9,
+    val = c(NA_real_, NA_real_)
+  )
+  result <- .filter_na_rows(out, "val", na.rm = TRUE)
+  expect_identical(nrow(result), 0L)
+})
+
+test_that(".filter_na_rows keeps a row when at least one data column is non-NA", {
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9,
+    a = NA_real_,
+    b = 5.0
+  )
+  result <- .filter_na_rows(out, c("a", "b"), na.rm = TRUE)
+  expect_identical(nrow(result), 1L)
+})
+
+test_that(".filter_na_rows returns unchanged when data_cols is empty", {
+  out <- data.table::data.table(
+    date = as.Date("2024-01-01"),
+    lon = 138.6,
+    lat = -34.9
+  )
+  result <- .filter_na_rows(out, character(0L), na.rm = TRUE)
+  expect_identical(nrow(result), 1L)
+})

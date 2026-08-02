@@ -59,12 +59,10 @@ read_canopy_height <- function(
     initial_delay = initial_delay
   ))
 }
-
-
 #' Internal handler for retrieving Canopy Height data
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
-#' @param dots Named list of \code{...} args from [read_tern()].
+#' @param dots Named list of `...` args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the canopy height dataset.
@@ -82,16 +80,13 @@ read_canopy_height <- function(
   } else {
     "best_pick"
   }
-
   approved <- c("best_pick", "median")
   collection <- rlang::arg_match(collection, approved)
-
   dl_file <- switch(
     collection,
     best_pick = "best_pick_files_bhLNnun.tif",
-    median = "median_file_bhLNnun.tif"
+    median = "median_files_IREknUX.tif"
   )
-
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/%s",
     api_key,
