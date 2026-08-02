@@ -23,7 +23,7 @@ test_that("read_canopy_height returns a SpatRaster from the mock", {
   .use_mocked_cog(raster = .fixture_numeric_raster(value = 7))
   r <- read_canopy_height(api_key = KEY)
   expect_s4_class(r, "SpatRaster")
-  expect_equal(unname(terra::values(r)[1L, 1L]), 7)
+  expect_identical(unname(terra::values(r)[1L, 1L]), 7)
 })
 
 test_that("api_key with '/' is URL-encoded as %2f", {

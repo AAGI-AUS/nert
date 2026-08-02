@@ -38,7 +38,7 @@ test_that("read_aet returns the raster supplied by the mocked .read_cog", {
   .use_mocked_cog(raster = fixture)
   r <- read_aet("2023-06-01", api_key = KEY)
   expect_s4_class(r, "SpatRaster")
-  expect_equal(unname(terra::values(r)[1L, 1L]), 99)
+  expect_identical(unname(terra::values(r)[1L, 1L]), 99)
 })
 
 # ---- Validation errors (surfaced before .read_cog is reached) --------------
@@ -114,7 +114,11 @@ test_that(".read_tern_aet floors the date and builds the URL directly", {
   r <- .read_tern_aet("9fefa68b", list(date = "2023-06-15"), KEY, 1L, 0L)
   # legacy 'month' parameter + pixel_qa collection
   .read_tern_aet(
-    "9fefa68b", list(month = "2020-01-10", collection = "pixel_qa"), KEY, 1L, 0L
+    "9fefa68b",
+    list(month = "2020-01-10", collection = "pixel_qa"),
+    KEY,
+    1L,
+    0L
   )
   expect_s4_class(r, "SpatRaster")
   expect_match(

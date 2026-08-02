@@ -78,7 +78,11 @@ test_that("axis is coerced to integer", {
 test_that(".read_tern_soil_diversity builds URLs and defaults its args", {
   sink <- .use_mocked_cog()
   r <- .read_tern_soil_diversity(
-    "4a428d52", list(collection = "Fungi", axis = 3L), KEY, 1L, 0L
+    "4a428d52",
+    list(collection = "Fungi", axis = 3L),
+    KEY,
+    1L,
+    0L
   )
   .read_tern_soil_diversity("4a428d52", list(), KEY, 1L, 0L)
   expect_s4_class(r, "SpatRaster")
@@ -87,7 +91,11 @@ test_that(".read_tern_soil_diversity builds URLs and defaults its args", {
     "Other/SoilBetaDiversity/NMDS_Fungi_3_Fungi_pred.tif",
     fixed = TRUE
   )
-  expect_match(sink$urls[[2L]], "NMDS_Bacteria_1_Bacteria_pred.tif", fixed = TRUE)
+  expect_match(
+    sink$urls[[2L]],
+    "NMDS_Bacteria_1_Bacteria_pred.tif",
+    fixed = TRUE
+  )
 })
 
 test_that(".read_tern_soil_diversity rejects bad axis/collection directly", {
@@ -101,7 +109,11 @@ test_that(".read_tern_soil_diversity rejects bad axis/collection directly", {
   )
   expect_error(
     .read_tern_soil_diversity(
-      "4a428d52", list(collection = "Archaea"), KEY, 1L, 0L
+      "4a428d52",
+      list(collection = "Archaea"),
+      KEY,
+      1L,
+      0L
     ),
     "must be one of"
   )

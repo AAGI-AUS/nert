@@ -230,7 +230,7 @@ test_that("read_slga is case-insensitive on the attribute name", {
   read_slga("awc", api_key = KEY)
   read_slga("Awc", api_key = KEY)
   read_slga("AWC", api_key = KEY)
-  expect_identical(length(unique(sink$urls)), 1L)
+  expect_length(unique(sink$urls), 1L)
 })
 
 # ---- read_tern with raw SLGA dispatch id -----------------------------------
@@ -265,7 +265,11 @@ test_that(".read_tern_slga builds URLs from the config directly", {
   sink <- .use_mocked_cog()
   # AWC, explicit depth + 95th-percentile statistic
   r <- .read_tern_slga(
-    "482301c2", list(depth = "005_015", collection = "95"), KEY, 1L, 0L
+    "482301c2",
+    list(depth = "005_015", collection = "95"),
+    KEY,
+    1L,
+    0L
   )
   # PHC uses a distinct dir/suffix/date and default depth/EV
   .read_tern_slga("258afc98", list(), KEY, 1L, 0L)

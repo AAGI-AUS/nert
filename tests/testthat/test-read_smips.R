@@ -54,7 +54,11 @@ test_that(".validate_smips requires a date directly", {
 test_that(".read_tern_smips builds per-collection URLs directly", {
   sink <- .use_mocked_cog()
   r <- .read_tern_smips(
-    "d1995ee8", list(date = "2020-06-30", collection = "bucket1"), KEY, 1L, 0L
+    "d1995ee8",
+    list(date = "2020-06-30", collection = "bucket1"),
+    KEY,
+    1L,
+    0L
   )
   # legacy 'day' parameter + default totalbucket collection
   .read_tern_smips("d1995ee8", list(day = "2024-02-01"), KEY, 1L, 0L)

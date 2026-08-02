@@ -190,18 +190,32 @@ test_that(".read_tern_phenology defaults season/collection and checks season", {
   .read_tern_phenology("2bb0c81a", list(year = 2018L), KEY, 1L, 0L)
   expect_match(sink$urls, "SGS_2018_Season1.tif", fixed = TRUE)
   expect_error(
-    .read_tern_phenology("2bb0c81a", list(year = 2018L, season = 3L), KEY, 1L, 0L),
+    .read_tern_phenology(
+      "2bb0c81a",
+      list(year = 2018L, season = 3L),
+      KEY,
+      1L,
+      0L
+    ),
     "must be 1 or 2"
   )
   expect_error(
     .read_tern_phenology(
-      "2bb0c81a", list(year = 2018L, season = c(1L, 2L)), KEY, 1L, 0L
+      "2bb0c81a",
+      list(year = 2018L, season = c(1L, 2L)),
+      KEY,
+      1L,
+      0L
     ),
     "single value"
   )
   expect_error(
     .read_tern_phenology(
-      "2bb0c81a", list(year = 2018L, collection = "XYZ"), KEY, 1L, 0L
+      "2bb0c81a",
+      list(year = 2018L, collection = "XYZ"),
+      KEY,
+      1L,
+      0L
     ),
     "must be one of"
   )

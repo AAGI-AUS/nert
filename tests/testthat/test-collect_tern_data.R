@@ -78,7 +78,7 @@ test_that(".parse_coordinates rejects when both lon/lat and xy missing", {
 test_that(".parse_date_range expands a length-2 character range to daily", {
   d <- .parse_date_range(c("2024-01-01", "2024-01-05"))
   expect_length(d, 5L)
-  expect_equal(d[1L], as.Date("2024-01-01"))
+  expect_equal(d[1], as.Date("2024-01-01"))
 })
 
 test_that(".parse_date_range preserves an explicit Date vector", {
@@ -381,7 +381,7 @@ test_that(".normalise_asc_collection errors when no valid variants remain", {
 
 test_that(".normalise_aet_collection returns the full AET set for NULL/'all'", {
   valid_aet <- c("ETa", "pixel_qa")
-  expect_identical(length(.normalise_aet_collection(NULL)), length(valid_aet))
+  expect_length(.normalise_aet_collection(NULL), length(valid_aet))
   expect_identical(sort(.normalise_aet_collection(NULL)), sort(valid_aet))
   expect_identical(
     .normalise_aet_collection("all"),
@@ -432,8 +432,8 @@ test_that(".normalise_soildiv_collection returns the full SOILDIV set for NULL/'
     "Fungi_NMDS2",
     "Fungi_NMDS3"
   )
-  expect_identical(
-    length(.normalise_soildiv_collection(NULL)),
+  expect_length(
+    .normalise_soildiv_collection(NULL),
     length(valid_soildiv)
   )
   expect_identical(
@@ -515,8 +515,8 @@ test_that(".normalise_phen_collection returns the full SOILDIV set for NULL/'all
     "PGS_month",
     "EGS_month"
   )
-  expect_identical(
-    length(.normalise_phen_collection(NULL)),
+  expect_length(
+    .normalise_phen_collection(NULL),
     length(valid_phenology)
   )
   expect_identical(
@@ -529,7 +529,7 @@ test_that(".normalise_phen_collection returns the full SOILDIV set for NULL/'all
   )
 })
 
-test_that(".normalise_phen_collection deduplicates", {
+test_that(".normalection deduplicates", {
   expect_identical(
     .normalise_phen_collection(c("SGS", "PGS", "SGS", "SGS_month", "SGS")),
     c("SGS", "PGS", "SGS_month")
@@ -590,7 +590,7 @@ test_that("work-item planner emits one item per AET (date, variant)", {
     aet_collection = .normalise_aet_collection(NULL)
   )
   # 2 variants x 3 dates = 6 items
-  expect_identical(length(items), 6L)
+  expect_length(items, 6L)
 })
 
 test_that("work-item planner emits 18 items for an SLGA dataset depth='all', stat='all'", {
@@ -601,7 +601,7 @@ test_that("work-item planner emits 18 items for an SLGA dataset depth='all', sta
     stat = .normalise_stat(NULL)
   )
   # 1 SLGA dataset x 6 depths x 3 statistics = 18 items
-  expect_identical(length(items), 18L)
+  expect_length(items, 18L)
   expect_true(all(grepl(
     "^AWC_",
     vapply(items, function(x) x$cols[1L], character(1L))
@@ -632,7 +632,7 @@ test_that("work-item planner emits 14 items for all SLGA datasets at one depth, 
     stat = "EV"
   )
   # 14 SLGA datasets x 1 depth x 1 stat = 14 items
-  expect_identical(length(items), 14L)
+  expect_length(items, 14L)
   expect_true(all(grepl(
     "_EV_000_005",
     vapply(items, function(x) x$cols[1L], character(1L)),
@@ -647,7 +647,7 @@ test_that("work-item planner emits one item for SLGA single depth, single stat",
     depth = "000_005",
     stat = "EV"
   )
-  expect_identical(length(items), 1L)
+  expect_length(items, 1L)
   expect_identical(items[[1L]]$cols, "CLY_EV_000_005")
 })
 
@@ -658,7 +658,7 @@ test_that("work-item planner emits one item per ASC variant", {
     asc_collection = .normalise_asc_collection(NULL)
   )
   # 2 variants = 2 items
-  expect_identical(length(items), 2L)
+  expect_length(items, 2L)
   expect_true(is.na(items[[1]]$date_idx))
   expect_true(is.na(items[[2]]$date_idx))
   expect_true(all(grepl(
@@ -669,7 +669,7 @@ test_that("work-item planner emits one item per ASC variant", {
 
 test_that("work-item planner emits one item for CANOPY", {
   items <- .build_work_items("CANOPY", as.Date("2011-01-01"))
-  expect_identical(length(items), 1L)
+  expect_length(items, 1L)
   expect_true(is.na(items[[1]]$date_idx))
   expect_identical(items[[1]]$cols, "CANOPY")
 })
@@ -681,7 +681,7 @@ test_that("work-item planner emits one item per SOILDIV variant", {
     soildiv_collection = .normalise_soildiv_collection(NULL)
   )
   # 6 variants = 6 items
-  expect_identical(length(items), 6L)
+  expect_length(items, 6L)
   for (i in 1:6) {
     expect_true(is.na(items[[i]]$date_idx))
   }
@@ -698,7 +698,7 @@ test_that("work-item planner emits one item per PHENOLOGY (year,variant)", {
     phenology_collection = .normalise_phen_collection(NULL)
   )
   # 6 variants = 6 items
-  expect_identical(length(items), 22L)
+  expect_length(items, 22L)
   for (i in 1:22) {
     expect_true(is.na(items[[i]]$date_idx))
     expect_identical(items[[i]]$args$year, 2018)
@@ -878,7 +878,13 @@ test_that("collect_tern_data(verbose = TRUE) prints the dataset table", {
       lon = 138.6,
       lat = -34.9,
       datasets = c(
-        "SMIPS", "AWC", "CANOPY", "ASC", "AET", "SOILDIV", "PHENOLOGY"
+        "SMIPS",
+        "AWC",
+        "CANOPY",
+        "ASC",
+        "AET",
+        "SOILDIV",
+        "PHENOLOGY"
       ),
       smips_collection = "totalbucket",
       depth = "000_005",
@@ -910,7 +916,10 @@ test_that(".parse_date_range rejects empty or NA input", {
 
 test_that("collect_tern_data leaves NA when extraction returns nothing", {
   .use_mocked_cog()
-  testthat::local_mocked_bindings(extract = function(...) NULL, .package = "terra")
+  testthat::local_mocked_bindings(
+    extract = function(...) NULL,
+    .package = "terra"
+  )
   out <- suppressWarnings(collect_tern_data(
     date_range = as.Date("2024-01-01"),
     lon = 138.6,
