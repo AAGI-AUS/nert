@@ -87,7 +87,22 @@ pak::pak("AAGI-AUS/nert")
 options(o) # reset options
 ```
 
-## Example: reading a SMIPS COG as a spatial object
+## A note on working with COGs
+
+COGs are not like working with other datasets in R that you might fetch from the web.
+They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `autoplot()` or `crop()`, will you actua
+
+A normal GeoTIFF is like downloading an entire 500-page book because you want one paragraph.
+
+A COG is like having an index that lets you jump directly to page 347 and read only that page.
+
+COGs allow you to very quickly create a SpatRaster object locally that represents the entire dataset and then work with a sub-portion from there.
+Be aware that if you are not careful, you could end up downloading a large GeoTIFF file fully.
+It is best to create the local object and then `crop()`, `mask()` or `extract()` the area of interest to save time, bandwidth and free memory.
+Then once you've done that, try plotting or using the object in models or calculations.
+Now, on to working with {nert} to read COGs from TERN!
+
+## Example: reading an SMIPS COG as a spatial object
 
 The {nert} package provides a number of convenient functions such as `read_smips()` which allow you to fetch COGs from the TERN Data Portal for use in your R session.
 The below code fetches the SMIPS soil moisture raster for the 1st of January 2024, and then uses the {terra} package's `extract()` function to get a soil moisture estimate for the Adelaide CBD.
