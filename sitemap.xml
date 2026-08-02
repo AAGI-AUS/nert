@@ -19,7 +19,9 @@
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-check_collection_agreement.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-check_date.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-fill_work_item.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-filter_na_rows.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-init_nert_options.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-initialize_output_columns.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-make_aet_url.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-make_smips_url.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-normalise_aet_collection.html</loc></url>
@@ -49,6 +51,7 @@
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-tern_datasets.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-tern_dispatch_id.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-validate_aet.html</loc></url>
+<url><loc>https://aagi-aus.github.io/nert/reference/dot-validate_and_prepare_inputs.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-validate_phenology.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/dot-validate_smips.html</loc></url>
 <url><loc>https://aagi-aus.github.io/nert/reference/get_key.html</loc></url>
