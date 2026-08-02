@@ -109,8 +109,10 @@
 #' }
 #'
 #' @section Canopy Height (`"CANOPY"`):
-#' Single static 30 m X 30 m best-pick canopy height model composite,
-#' from the OzTreeMap project. No function arguments required.
+#' \describe{
+#'   \item{`collection`}{Canopy-height composite variant: `"best_pick"`
+#'     (default) or `"median"`.}
+#' }
 #'
 #' @section Land Surface Phenology (`"PHENOLOGY"`):
 #' \describe{
@@ -336,7 +338,7 @@
 #'     TERN Point-of-truth metadata URL:
 #'     <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-dda6-4097-8dd9-d3ec63973029>
 #'   }
-#'   \item{**CANOPY: OzTreeMap Best-Pick Canopy Height Model**}{
+#'   \item{**CANOPY: OzTreeMap Canopy Height Models (Best Pick + Median)**}{
 #'     Pucino, N., McVicar, T., Levick, S. & Albert van Dijk (2025).
 #'     Australia-Wide 30 m Machine Learning-Derived Canopy Height Models
 #'     Composites: Best Pick and Median. Version 1. Terrestrial Ecosystem

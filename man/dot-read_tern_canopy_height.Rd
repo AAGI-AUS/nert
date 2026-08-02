@@ -9,7 +9,7 @@
 \arguments{
 \item{did}{Normalised 8-char dataset ID (unused; uniform handler signature).}
 
-\item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}} (unused).}
+\item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}
 
 \item{api_key}{URL-encoded API key.}
 

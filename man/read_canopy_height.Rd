@@ -4,9 +4,17 @@
 \alias{read_canopy_height}
 \title{Read OzTreeMap Canopy Height Data from TERN}
 \usage{
-read_canopy_height(api_key = get_key(), max_tries = NULL, initial_delay = NULL)
+read_canopy_height(
+  collection = "best_pick",
+  api_key = get_key(),
+  max_tries = NULL,
+  initial_delay = NULL
+)
 }
 \arguments{
+\item{collection}{The canopy-height composite variant to download:
+\code{"best_pick"} (default) or \code{"median"}.}
+
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
 \acronym{API} key. Defaults to automatic detection from your
 \code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
@@ -28,11 +36,11 @@ Note that the raster returned by this function uses the Australian Albers
 (EPSG:3577) coordinate reference system, not WGS84 (EPSG:4326).
 }
 \description{
-Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the OzTreeMap Best-Pick
-Canopy Height model dataset from the TERN Data Portal. The model estimates
-the vegetation canopy height (in metres) at 30m X 30m spatial resolution
-across Australia, based on underlying ML-derived vegetation models
-tuned to variable time periods between 2007 and 2020.
+Wrapper around \code{\link[=read_tern]{read_tern()}} for retrieving the OzTreeMap Canopy Height
+model dataset from the TERN Data Portal. The model estimates the vegetation
+canopy height (in metres) at 30m X 30m spatial resolution across Australia,
+based on underlying ML-derived vegetation models tuned to variable time
+periods between 2007 and 2020.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
