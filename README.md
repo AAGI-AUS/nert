@@ -77,7 +77,7 @@ options(o) # reset options
 ## A note on working with COGs
 
 COGs are not like working with other datasets in R that you might fetch from the web.
-They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `autoplot()` or `crop()`, will you actua
+They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `autoplot()` or `writeRaster()`.
 
 A normal GeoTIFF is like downloading an entire 500-page book because you want one paragraph.
 
@@ -99,6 +99,12 @@ Note that since these are cloud-optimised COGs, they employ Just-In-Time data st
 ``` r
 library(nert)
 library(terra)
+#> terra 1.9.34
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 
 r <- read_smips(date = "2024-01-01")
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
@@ -133,14 +139,22 @@ dat <- collect_tern_data(
   verbose = FALSE
 )
 head(dat)
-#>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015
-#>        <Date>  <num>  <num>             <num>          <num>          <num>
-#> 1: 2024-01-01 118.28 -31.48         0.2271653             11             15
-#> 2: 2024-01-01 150.84 -31.07        93.4498901             28             31
-#> 3: 2024-01-02 118.28 -31.48         0.2135102             11             15
-#> 4: 2024-01-02 150.84 -31.07        90.6175690             28             31
-#> 5: 2024-01-03 118.28 -31.48         0.2344290             11             15
-#> 6: 2024-01-03 150.84 -31.07        88.5260391             28             31
+#>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005
+#>        <Date>  <num>  <num>             <num>          <num>
+#> 1: 2024-01-01 118.28 -31.48         0.2271653             11
+#> 2: 2024-01-01 150.84 -31.07        93.4498901             28
+#> 3: 2024-01-02 118.28 -31.48         0.2135102             11
+#> 4: 2024-01-02 150.84 -31.07        90.6175690             28
+#> 5: 2024-01-03 118.28 -31.48         0.2344290             11
+#> 6: 2024-01-03 150.84 -31.07        88.5260391             28
+#>    CLY_EV_005_015
+#>             <num>
+#> 1:             15
+#> 2:             31
+#> 3:             15
+#> 4:             31
+#> 5:             15
+#> 6:             31
 ```
 
 ## Keeping {nert} updated
@@ -200,8 +214,9 @@ To cite nert:
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert:
-#>   Curated Access to TERN Environmental Raster Data. R package version 1.1.0.
+#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S,
+#>   Moldovan M (2026). nert: Curated Access to TERN
+#>   Environmental Raster Data. R package version 1.1.0.
 #>   https://aagi-aus.github.io/nert/
 #> 
 #> A BibTeX entry for LaTeX users is
