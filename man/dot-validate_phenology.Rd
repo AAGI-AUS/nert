@@ -11,6 +11,9 @@
 
 \item{dataset_id}{Raw \code{dataset_id} (unused; uniform validator signature).}
 }
+\value{
+\code{NULL}; called for its side effects (argument validation).
+}
 \description{
 Phenology requires an integer \code{year} in 2003--2018. The \code{season}
 and \code{collection} arguments are optional and validated downstream in the

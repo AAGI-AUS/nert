@@ -1,19 +1,9 @@
 # Cross-cutting helpers for COG access.
 
 #' Read a COG from TERN
-#'
-#' @param full_url The URL providing access to the requested data.
-#' @param max_tries Maximum number of download attempts before erroring.
-#'   When `NULL` (default), resolved at call time from
-#'   `getOption("nert.max_tries", 3L)`.  Pass an integer to override
-#'   for a single call.
-#' @param initial_delay Initial retry delay in seconds (doubles each
-#'   attempt).  When `NULL` (default), resolved at call time from
-#'   `getOption("nert.initial_delay", 1L)`.  Pass an integer to override
-#'   for a single call.
-#'
-#' @returns A [terra::rast()] object of the requested data.
-#' @importFrom rlang %||%
+#' @param dots Named list of `...` args from [read_tern()].
+#' @param dataset_id Raw `dataset_id` (unused; uniform validator signature).
+#' @returns `NULL`; called for its side effects (argument validation).
 #' @dev
 .read_cog <- function(full_url, max_tries = NULL, initial_delay = NULL) {
   max_tries <- max_tries %||% getOption("nert.max_tries", 3L)
@@ -28,39 +18,33 @@
   }
   if (is.na(initial_delay) || initial_delay < 0L) {
     cli::cli_abort(
-      "{.arg initial_delay} must be a non-negative integer; \\
-       got {.val {initial_delay}}."
+      "{.arg initial_delay} must be a non-negative integer; got {.val {initial_delay}}."
     )
   }
 
-  attempt <- 1L
-  success <- FALSE
-
-  while (attempt <= max_tries && !success) {
-    tryCatch(
+  for (attempt in seq_len(max_tries)) {
+    result <- tryCatch(
       {
-        r <- terra::rast(full_url)
-        success <- TRUE
-        return(r)
+        terra::rast(full_url)
       },
       error = function(e) {
         if (attempt < max_tries) {
           delay <- initial_delay * 2L^(attempt - 1L)
           cli::cli_alert(
-            "Download failed on attempt { attempt }.
-                         Retrying in { delay } seconds..."
+            "Download failed on attempt {attempt}. Retrying in {delay} seconds..."
           )
           Sys.sleep(delay)
-          attempt <<- attempt + 1L
-        } else {
-          cli::cli_abort(
-            "Download failed after { max_tries } attempts.",
-            parent = e
-          )
         }
+        NULL
       }
     )
+
+    if (!is.null(result)) {
+      return(result)
+    }
   }
+
+  cli::cli_abort("Download failed after {max_tries} attempts.")
 }
 
 #' Fix improper API keys

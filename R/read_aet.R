@@ -108,6 +108,7 @@ read_aet <- function(
 #' @param dots Named list of `...` args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @returns A [terra::SpatRaster] object for the requested AET collection/date.
 #'
 #' @dev
 .read_tern_aet <- function(did, dots, api_key, max_tries, initial_delay) {

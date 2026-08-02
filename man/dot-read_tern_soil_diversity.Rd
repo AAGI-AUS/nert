@@ -15,6 +15,9 @@
 
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }
+\value{
+A \link[terra:SpatRaster]{terra::SpatRaster} object for the requested soil diversity layer.
+}
 \description{
 Internal handler for retrieving Soil Beta Diversity datasets
 }

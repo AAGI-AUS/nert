@@ -335,6 +335,7 @@ read_slga <- function(
 #' @param dots Named list of \code{...} args from [read_tern()].
 #' @param api_key URL-encoded API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
+#' @returns A [terra::SpatRaster] object for the requested SLGA attribute/depth/statistic.
 #'
 #' @dev
 .read_tern_slga <- function(did, dots, api_key, max_tries, initial_delay) {
