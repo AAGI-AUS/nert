@@ -17,8 +17,7 @@ Internal handler for retrieving Canopy Height data
 - dots:
 
   Named list of `...` args from
-  [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
-  (unused).
+  [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md).
 
 - api_key:
 

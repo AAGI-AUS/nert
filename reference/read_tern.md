@@ -230,8 +230,10 @@ Supported attributes (use as the `dataset_id` alias):
 
 ## Canopy Height (`"CANOPY"`)
 
-Single static 30 m X 30 m best-pick canopy height model composite, from
-the OzTreeMap project. No function arguments required.
+- `collection`:
+
+  Canopy-height composite variant: `"best_pick"` (default) or
+  `"median"`.
 
 ## Land Surface Phenology (`"PHENOLOGY"`)
 
@@ -479,7 +481,7 @@ arguments always override the option. Example:
   TERN Point-of-truth metadata URL:
   <https://geonetwork.tern.org.au/geonetwork/srv/eng/catalog.search#/metadata/4a428d52-dda6-4097-8dd9-d3ec63973029>
 
-- **CANOPY: OzTreeMap Best-Pick Canopy Height Model**:
+- **CANOPY: OzTreeMap Canopy Height Models (Best Pick + Median)**:
 
   Pucino, N., McVicar, T., Levick, S. & Albert van Dijk (2025).
   Australia-Wide 30 m Machine Learning-Derived Canopy Height Models

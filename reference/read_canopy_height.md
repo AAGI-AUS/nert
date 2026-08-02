@@ -2,19 +2,29 @@
 
 Wrapper around
 [`read_tern()`](https://aagi-aus.github.io/nert/reference/read_tern.md)
-for retrieving the OzTreeMap Best-Pick Canopy Height model dataset from
-the TERN Data Portal. The model estimates the vegetation canopy height
-(in metres) at 30m X 30m spatial resolution across Australia, based on
+for retrieving the OzTreeMap Canopy Height model dataset from the TERN
+Data Portal. The model estimates the vegetation canopy height (in
+metres) at 30m X 30m spatial resolution across Australia, based on
 underlying ML-derived vegetation models tuned to variable time periods
 between 2007 and 2020.
 
 ## Usage
 
 ``` r
-read_canopy_height(api_key = get_key(), max_tries = NULL, initial_delay = NULL)
+read_canopy_height(
+  collection = "best_pick",
+  api_key = get_key(),
+  max_tries = NULL,
+  initial_delay = NULL
+)
 ```
 
 ## Arguments
+
+- collection:
+
+  The canopy-height composite variant to download: `"best_pick"`
+  (default) or `"median"`.
 
 - api_key:
 
