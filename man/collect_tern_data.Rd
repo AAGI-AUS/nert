@@ -64,8 +64,8 @@ for non-SLGA datasets.}
 statistic to retrieve for the SLGA datasets. (Default=All statistics.)
 Options: \code{"EV"} (estimated value), \code{"05"} (lower, 5th-percentile
 bound), \code{"95"} (upper, 95th-percentile bound); the \code{05} and \code{95}
-layers together span a 90\% interval. Use \code{NULL} (default) or \code{"all"} to specify
-retrieval of all statistics. This parameter is ignored for non-SLGA
+layers together span a 90\% interval. Use \code{NULL} (default) or \code{"all"} to
+specify retrieval of all statistics. This parameter is ignored for non-SLGA
 datasets.}
 
 \item{smips_collection}{\emph{For SMIPS datasets.} A \code{character} vector
