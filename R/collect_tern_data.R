@@ -634,7 +634,7 @@ collect_tern_data <- function(
           items[[length(items) + 1]] <- list(
             ds = ds,
             type = "numeric",
-            cols = paste(ds, v, sep = "_"),
+            cols = sprintf("%s_%s", ds, v),
             date_idx = i,
             args = list(date = dates[i], collection = v),
             label = sprintf("%s %s %s", ds, v, format(dates[i], "%Y-%m-%d"))
@@ -646,7 +646,7 @@ collect_tern_data <- function(
         items[[length(items) + 1]] <- list(
           ds = ds,
           type = ifelse(v == "EV", "character", "numeric"),
-          cols = paste(ds, v, sep = "_"),
+          cols = sprintf("%s_%s", ds, v),
           date_idx = NA_integer_,
           args = list(collection = v),
           label = sprintf("%s %s (static)", ds, v)
@@ -658,7 +658,7 @@ collect_tern_data <- function(
           items[[length(items) + 1]] <- list(
             ds = ds,
             type = "numeric",
-            cols = paste(ds, v, sep = "_"),
+            cols = sprintf("%s_%s", ds, v),
             date_idx = i,
             args = list(date = dates[i], collection = v),
             label = sprintf("%s %s %s", ds, v, format(dates[i], "%Y-%m-%d"))
@@ -671,7 +671,7 @@ collect_tern_data <- function(
           items[[length(items) + 1]] <- list(
             ds = ds,
             type = "numeric",
-            cols = paste(ds, v, d, sep = "_"),
+            cols = sprintf("%s_%s_%s", ds, v, d),
             date_idx = NA_integer_,
             args = list(depth = d, collection = v),
             label = sprintf("%s stat=%s depth=%s (static)", ds, v, d)
@@ -688,7 +688,7 @@ collect_tern_data <- function(
         items[[length(items) + 1]] <- list(
           ds = ds,
           type = "numeric",
-          cols = paste(ds, v, sep = "_"),
+          cols = sprintf("%s_%s", ds, v),
           date_idx = NA_integer_,
           args = list(collection = v_col, axis = v_axis),
           label = sprintf("%s %s (static)", ds, v)
@@ -704,14 +704,14 @@ collect_tern_data <- function(
           items[[length(items) + 1]] <- list(
             ds = ds,
             type = "numeric",
-            cols = paste0(ds, "_", v, "_y", phen_year, "_s", phen_season),
+            cols = sprintf("%s_%s_y%d_s%d", ds, v, phen_year, phen_season),
             date_idx = NA_integer_,
             args = list(collection = v, year = phen_year, season = phen_season),
             label = sprintf(
               "PHENOLOGY %s year=%s season=%s",
               v,
-              as.character(phen_year),
-              as.character(phen_season)
+              phen_year,
+              phen_season
             )
           )
         }
@@ -1005,13 +1005,13 @@ collect_tern_data <- function(
       if (ds %in% slga_datasets) {
         layer <- sprintf(
           "Statistic: %s | Depth: %s",
-          paste(stat, collapse = ", "),
-          paste(depth, collapse = ", ")
+          toString(stat),
+          toString(depth)
         )
       } else if (ds %in% names(collection_map)) {
         layer <- sprintf(
           "Collection: %s",
-          paste(collection_map[[ds]], collapse = ", ")
+          toString(collection_map[[ds]])
         )
       } else if (ds == "CANOPY") {
         layer <- "Collection: Best-pick Canopy Height"

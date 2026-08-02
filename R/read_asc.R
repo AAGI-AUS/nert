@@ -96,7 +96,7 @@ read_asc <- function(
   approved <- c("EV", "CI")
   collection <- rlang::arg_match(collection, approved)
 
-  dl_file <- paste0("ASC_", collection, "_C_P_AU_TRN_N.cog.tif")
+  dl_file <- sprintf("ASC_%s_C_P_AU_TRN_N.cog.tif", collection)
   full_url <- sprintf(
     "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
     api_key,
