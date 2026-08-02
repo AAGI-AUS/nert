@@ -4,7 +4,6 @@
 100g
 10cm
 15cm
-1cm
 1km
 200cm
 30cm
@@ -37,7 +36,6 @@ CUR2210
 CaCl2
 Calcarasol
 Chromosol
-Classification
 DUL
 Dermosol
 Dev
@@ -108,6 +106,7 @@ Searle
 Sodosol
 Somarathna
 Sommer
+SpatRaster
 Stenson
 TERN's
 THREDDS
@@ -128,6 +127,7 @@ aet
 anonymised
 args
 asc
+backoff
 bashrc
 center
 cm3
@@ -140,6 +140,7 @@ fifo
 funder
 geospatial
 ggplot2
+gridded
 keychain
 keyring
 locational
@@ -174,3 +175,4 @@ validator
 volatilisation
 vsicurl
 zshrc
+’s
