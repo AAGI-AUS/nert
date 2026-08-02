@@ -89,7 +89,7 @@ read_canopy_height <- function(
   dl_file <- switch(
     collection,
     best_pick = "best_pick_files_bhLNnun.tif",
-    median = "median_files_bhLNnun.tif"
+    median = "median_file_bhLNnun.tif"
   )
 
   full_url <- sprintf(
