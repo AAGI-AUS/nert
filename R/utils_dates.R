@@ -12,7 +12,10 @@
 #' @dev
 .check_date <- function(x) {
   if (length(x) > 1L) {
-    cli::cli_abort("Only one day is allowed per request.")
+    cli::cli_abort(
+      "Only one day is allowed per request.",
+      call = rlang::caller_env()
+    )
   }
 
   if (lubridate::is.POSIXct(x) || lubridate::is.Date(x)) {
@@ -35,7 +38,8 @@
     warning = function(c) {
       cli::cli_abort(
         "{ x } is not in a valid date format.
-         Please enter a valid date format."
+         Please enter a valid date format.",
+        call = rlang::caller_env()
       )
     }
   )
