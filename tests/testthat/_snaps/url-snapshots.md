@@ -85,7 +85,7 @@
       cat(sink$urls, sep = "\n")
     Output
       /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/best_pick_files_bhLNnun.tif
-      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/median_file_bhLNnun.tif
+      /vsicurl/https://apikey:test-key-0000@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/median_files_IREknUX.tif
 
 # Phenology URLs are stable across all eleven metrics
 
