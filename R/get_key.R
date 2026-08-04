@@ -23,12 +23,6 @@
 #'   query will work properly. However, `get_key()` simply returns the
 #'   \acronym{API} key verbatim.
 #'
-#' @details
-#' The suggestion is to use your .Renviron to set up the API key. However, if
-#'  you regularly interact with the APIs outside of \R using some other
-#'  language you may wish to set these up in your .bashrc, .zshrc, or
-#'  config.fish for cross-language use.
-#'
 #' @returns A string value with your \acronym{API} key value.
 #'
 #' @examples
@@ -38,11 +32,18 @@
 #'
 #' @export
 get_key <- function() {
-  TERN_API_KEY <- Sys.getenv("TERN_API_KEY")
+  key <- tryCatch(
+    keyring::key_get(
+      "TERN_API_KEY",
+      keyring = "nert"
+    ),
+    error = function(e) ""
+  )
 
-  if (nzchar(TERN_API_KEY)) {
-    return(TERN_API_KEY)
+  if (nzchar(key)) {
+    return(key)
   }
+
   .set_tern_key()
 }
 
@@ -58,16 +59,25 @@ get_key <- function() {
 #'   accounts page.
 .set_tern_key <- function() {
   if (rlang::is_interactive()) {
+    cli::cli_alert_warning(
+      "You need to create and/or set your TERN API key. Go to
+        {.url https://account.tern.org.au/authenticated_user/apikeys} to request
+      one, your browser should already be open at this url. After getting your
+      key, set it up as {.val TERN_API_KEY} using the {.pkg keyring} package."
+    )
+    cli::cat_line()
+    cli::cli_rule(left = "Instructions")
+    cli::cli_code(c(
+      "library(keyring)",
+      "keyring_create('tern')",
+      "key_set('TERN_API_KEY', keyring = 'tern')"
+    ))
+
     utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
   }
 
-  cli::cli_abort(
-    "You need to create and/or set your TERN API key.
-    Go to {.url https://account.tern.org.au/authenticated_user/apikeys} to
-    request one. After getting your key, set it as 'TERN_API_KEY' in
-    {.file ~/.Renviron}., {.emph e.g.},
-    {.code TERN_API_KEY='youractualkeynotthisstring'}.
-    For doing that, use {.fn edit_r_environ} from the {.pkg {{usethis}}}
-    package"
+  cli::cat_line()
+  rlang::abort(
+    "No TERN_API_KEY found. See the instructions above."
   )
 }

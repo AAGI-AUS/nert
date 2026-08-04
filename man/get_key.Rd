@@ -31,11 +31,6 @@ Then, from the left-hand menu, click on "Create API Key".  Once this is
 done, copy the key and put it in your .Renviron using
 \code{\link[usethis:edit_r_environ]{usethis::edit_r_environ()}} as \code{TERN_API_KEY="your_api_key"}. Restart your
 \R session and the query should work.
-
-The suggestion is to use your .Renviron to set up the API key. However, if
-you regularly interact with the APIs outside of \R using some other
-language you may wish to set these up in your .bashrc, .zshrc, or
-config.fish for cross-language use.
 }
 
 \examples{

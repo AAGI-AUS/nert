@@ -74,40 +74,10 @@ The following steps detail the process for signing in to your TERN account, gene
 
 ## Saving Your API Key Locally
 
-There are a couple of options for saving your key locally so that it is available for the {nert} package to use. The most straightforward way is to save it directly into your `.Renviron` file so that it is available in your R session upon each load. Alternatively, the API key can be stored in your operating system's keychain credential store using the [{keyring}](https://keyring.r-lib.org/index.html) package for extra security. Both methods are explained below.
-
-### Using Your .Renviron File
-
-You can store the TERN API Key in your `.Renviron` file as follows:
-
-1.  Open your `.Renviron` file. (An easy way to open this file is to use the {usethis} package in your R session, *e.g.*, `usethis::edit_r_environ()`.) In your `.Renviron` file, add a new line to set a variable called `TERN_API_KEY`, and paste in the API key you copied earlier as the value for the variable. Note that this is the variable that the {nert} package automatically looks for during the authentication, so be sure to double-check that the spelling and case are correct for the variable name.
-
-    ``` bash
-    TERN_API_KEY='<paste your key here>'
-    ```
-
-    ![](07-get-started.jpg){width="80%"}
-
-2.  Save your `.Renviron` file, and restart your R session so that the change is applied. Once you have restarted your R session, you can then test that the {nert} package is reading your API key properly by running `nert::get_key()` at the R command console. If the API key was successfully read by {nert}, then you should see your API key appear verbatim as output.
-
-    ![](08-get-started.jpg){width="80%"}
-
-3.  Finally, you can quickly test that the data download from the TERN Data Portal is working correctly by downloading a data raster. The below R code retrieves the SMIPS "totalbucket" soil moisture data raster for January 1st, 2024 using the `nert::read_smips()` function, and then uses the {terra} package's `terra::extract()` function to get a point value for the soil moisture measurement at the Adelaide CBD (at approximately 138.6007 decimal degrees Easting for the longitude, and -34.9285 decimal degrees Northing for the latitude):
-
-    ```{r test-nert}
-    library(nert)
-    library(terra)
-
-    r <- read_smips(date = "2024-01-01")
-
-    extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-    ```
-
-At this stage your {nert} package is now working, and you can use it to easily download COG data from the TERN Data Portal.
-
 ### Using the {keyring} Package for Secure Storage
 
-If you prefer a more secure method, you can use the [{keyring}](https://keyring.r-lib.org/index.html) package to store your TERN API Key in your system's credential store.
+We suggest that you use a secure method for storing your API keys in R.
+You can use the [{keyring}](https://keyring.r-lib.org/index.html) package to store your TERN API Key in your system's credential store.
 
 1.  If you don't have the {keyring} package installed, you can install it with:
 
