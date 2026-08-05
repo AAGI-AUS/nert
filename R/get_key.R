@@ -70,7 +70,7 @@ get_key <- function() {
     cli::cli_code(c(
       "library(keyring)",
       "keyring_create('tern')",
-      "key_set('TERN_API_KEY', keyring = 'tern')"
+      "key_set('TERN_API_KEY', keyring = 'nert')"
     ))
 
     utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
