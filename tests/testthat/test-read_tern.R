@@ -115,54 +115,54 @@ test_that(".make_aet_url errors for invalid collection", {
 # ── Integration tests (network; skipped without API key) ─────────────────────
 
 test_that("read_tern SMIPS returns SpatRaster for valid date", {
-  skip_if(
-    !nzchar(Sys.getenv("TERN_API_KEY")),
-    "TERN_API_KEY not set — skipping network test"
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
   )
   r <- read_tern("TERN/d1995ee8", date = "2024-01-15")
   expect_s4_class(r, "SpatRaster")
 })
 
 test_that("read_tern SMIPS SMindex collection returns SpatRaster", {
-  skip_if(
-    !nzchar(Sys.getenv("TERN_API_KEY")),
-    "TERN_API_KEY not set — skipping network test"
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
   )
   r <- read_tern("TERN/d1995ee8", date = "2024-01-15", collection = "SMindex")
   expect_s4_class(r, "SpatRaster")
 })
 
 test_that("read_tern ASC returns SpatRaster (EV)", {
-  skip_if(
-    !nzchar(Sys.getenv("TERN_API_KEY")),
-    "TERN_API_KEY not set — skipping network test"
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
   )
   r <- read_tern("TERN/15728dba")
   expect_s4_class(r, "SpatRaster")
 })
 
 test_that("read_tern ASC returns SpatRaster for confusion index", {
-  skip_if(
-    !nzchar(Sys.getenv("TERN_API_KEY")),
-    "TERN_API_KEY not set — skipping network test"
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
   )
   r <- read_tern("TERN/15728dba", collection = "CI")
   expect_s4_class(r, "SpatRaster")
 })
 
 test_that("read_tern AET returns SpatRaster for valid month", {
-  skip_if(
-    !nzchar(Sys.getenv("TERN_API_KEY")),
-    "TERN_API_KEY not set — skipping network test"
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
   )
   r <- read_tern("TERN/9fefa68b", date = "2023-06-01")
   expect_s4_class(r, "SpatRaster")
 })
 
 test_that("read_tern AET mid-month date is snapped to first of month", {
-  skip_if(
-    !nzchar(Sys.getenv("TERN_API_KEY")),
-    "TERN_API_KEY not set — skipping network test"
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
   )
   r1 <- read_tern("TERN/9fefa68b", date = "2023-06-01")
   r2 <- read_tern("TERN/9fefa68b", date = "2023-06-15")
