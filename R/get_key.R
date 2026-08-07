@@ -52,7 +52,7 @@ get_key <- function() {
 #'   acquiring one.
 .set_tern_key <- function() {
   if (rlang::is_interactive()) {
-    cli::cli_abort(
+    cli::cli_alert_warning(
       "You need to create and/or set your TERN API key. Go to
         {.url https://account.tern.org.au/authenticated_user/apikeys} to request
       one, your browser should already be open at this url. After getting your
@@ -66,4 +66,9 @@ get_key <- function() {
       "key_set('TERN_API_KEY', keyring = 'nert')"
     ))
   }
+
+  cli::cat_line()
+  rlang::abort(
+    "No TERN_API_KEY found. See the instructions above."
+  )
 }
