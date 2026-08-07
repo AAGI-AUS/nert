@@ -54,9 +54,9 @@ get_key <- function() {
   if (rlang::is_interactive()) {
     cli::cli_alert_warning(
       "You need to create and/or set your TERN API key. Go to
-        {.url https://account.tern.org.au/authenticated_user/apikeys} to request
-      one, your browser should already be open at this url. After getting your
-      key, set it up as {.val TERN_API_KEY} using the {.pkg keyring} package."
+      {.url https://account.tern.org.au/authenticated_user/apikeys} to request
+      one. After getting your key, set it up as {.val TERN_API_KEY} using the
+      {.pkg keyring} package."
     )
     cli::cat_line()
     cli::cli_rule(left = "Instructions")
