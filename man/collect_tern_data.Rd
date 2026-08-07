@@ -18,6 +18,7 @@ collect_tern_data(
   aet_collection = NULL,
   soildiv_collection = NULL,
   phenology_collection = NULL,
+  canopy_collection = NULL,
   api_key = NULL,
   max_tries = NULL,
   initial_delay = NULL,
@@ -100,6 +101,12 @@ PHENOLOGY datasets.) Options: \code{"SGS"}, \code{"PGS"}, \code{"EGS"}, \code{"L
 \code{"EVI1"}, \code{"EVI2"}, \code{"EVIP"}, \code{"EVII"}, \code{"SGS_month"}, \code{"PGS_month"},
 \code{"EGS_month"}. Use \code{NULL} (default) or \code{"all"} to specify retrieval of
 all PHENOLOGY datasets.}
+
+\item{canopy_collection}{\emph{For CANOPY datasets.} A \code{character} vector
+specifying the OzTreeMap canopy height composite(s) to be retrieved.
+(Default=All CANOPY datasets.) Options: \code{"best_pick"}, \code{"median"}. Use
+\code{NULL} (default) or \code{"all"} to specify retrieval of all CANOPY datasets.
+This parameter is ignored for non-CANOPY datasets.}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
 \acronym{API} key. Defaults to automatic detection from your

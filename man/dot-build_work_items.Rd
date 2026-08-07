@@ -13,7 +13,8 @@
   asc_collection,
   aet_collection,
   soildiv_collection,
-  phenology_collection
+  phenology_collection,
+  canopy_collection
 )
 }
 \arguments{
@@ -34,6 +35,8 @@
 \item{soildiv_collection}{SOILDIV collection selector.}
 
 \item{phenology_collection}{PHENOLOGY collection selector.}
+
+\item{canopy_collection}{CANOPY collection selector.}
 }
 \value{
 A list of work-item lists.

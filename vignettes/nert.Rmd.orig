@@ -39,16 +39,11 @@ The {nert} package uses your registered TERN API Key to authenticate with the TE
 
 ## Acquiring Your TERN API Key
 
-An API key is required to authenticate and access TERN datasets through the TERN Data Portal. It is straightforward to sign up to TERN and acquire an API key, and by setting the key in your R environment (via `.Renviron` or {keyring}) you can provide the {nert} package with that credential to allow convenient access whenever you use the package to download TERN datasets.
+An API key is required to authenticate and access TERN datasets through the TERN Data Portal. It is straightforward to sign up to TERN and acquire an API key, and by setting the key in your R environment (via {keyring}) you can provide the {nert} package with that credential to allow convenient access whenever you use the package to download TERN datasets.
 
-The following steps detail the process for signing in to your TERN account, generating an API key, and storing it in your R environment.
+The following steps detail the process for signing in to your TERN account, generating an API key, and setting it up for use with the {nert} package.
 
-1.  Navigate to the TERN Data Discovery Portal (<https://portal.tern.org.au/>) in a web browser. (Alternatively, use `nert::get_key()` to open the TERN website in a web browser.) Click the "Sign In" button that appears in the top-right of the browser window.
-
-    ```{r, get_key, eval = FALSE}
-    library(nert)
-    get_key()
-    ```
+1.  Navigate to the TERN Data Discovery Portal (<https://portal.tern.org.au/>) in a web browser. Click the "Sign In" button that appears in the top-right of the browser window.
 
     ![](01-get-started.jpg){width="80%"}
 
@@ -72,42 +67,9 @@ The following steps detail the process for signing in to your TERN account, gene
 
     ![](06-get-started.jpg){width="80%"}
 
-## Saving Your API Key Locally
+## Saving Your API Key Locally (using {keyring})
 
-There are a couple of options for saving your key locally so that it is available for the {nert} package to use. The most straightforward way is to save it directly into your `.Renviron` file so that it is available in your R session upon each load. Alternatively, the API key can be stored in your operating system's keychain credential store using the [{keyring}](https://keyring.r-lib.org/index.html) package for extra security. Both methods are explained below.
-
-### Using Your .Renviron File
-
-You can store the TERN API Key in your `.Renviron` file as follows:
-
-1.  Open your `.Renviron` file. (An easy way to open this file is to use the {usethis} package in your R session, *e.g.*, `usethis::edit_r_environ()`.) In your `.Renviron` file, add a new line to set a variable called `TERN_API_KEY`, and paste in the API key you copied earlier as the value for the variable. Note that this is the variable that the {nert} package automatically looks for during the authentication, so be sure to double-check that the spelling and case are correct for the variable name.
-
-    ``` bash
-    TERN_API_KEY='<paste your key here>'
-    ```
-
-    ![](07-get-started.jpg){width="80%"}
-
-2.  Save your `.Renviron` file, and restart your R session so that the change is applied. Once you have restarted your R session, you can then test that the {nert} package is reading your API key properly by running `nert::get_key()` at the R command console. If the API key was successfully read by {nert}, then you should see your API key appear verbatim as output.
-
-    ![](08-get-started.jpg){width="80%"}
-
-3.  Finally, you can quickly test that the data download from the TERN Data Portal is working correctly by downloading a data raster. The below R code retrieves the SMIPS "totalbucket" soil moisture data raster for January 1st, 2024 using the `nert::read_smips()` function, and then uses the {terra} package's `terra::extract()` function to get a point value for the soil moisture measurement at the Adelaide CBD (at approximately 138.6007 decimal degrees Easting for the longitude, and -34.9285 decimal degrees Northing for the latitude):
-
-    ```{r test-nert}
-    library(nert)
-    library(terra)
-
-    r <- read_smips(date = "2024-01-01")
-
-    extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-    ```
-
-At this stage your {nert} package is now working, and you can use it to easily download COG data from the TERN Data Portal.
-
-### Using the {keyring} Package for Secure Storage
-
-If you prefer a more secure method, you can use the [{keyring}](https://keyring.r-lib.org/index.html) package to store your TERN API Key in your system's credential store.
+We suggest that you use a secure method for storing your API keys in R. You can use the [{keyring}](https://keyring.r-lib.org/index.html) package to store your TERN API Key in your system's credential store.
 
 1.  If you don't have the {keyring} package installed, you can install it with:
 
@@ -115,16 +77,26 @@ If you prefer a more secure method, you can use the [{keyring}](https://keyring.
     install.packages("keyring")
     ```
 
+    Note that on Linux systems, you may need to install the `libsecret` and `libssl` system libraries before you install the {keyring} package, in order for {keyring} to have access to the Linux Secret Service API to set up the keyring. On Debian or RHEL derivatives, you can do this as follows:
+
+    - Debian/Ubuntu: `sudo apt install libsecret-1-dev libssl-dev`
+    - RHEL/Fedora: `sudo dnf install libsecret-devel openssl-devel`
+
 2.  Once {keyring} is installed, you can store your API key using the `keyring::keyring_create()` and `keyring::key_set()` functions as follows:
 
-    ```{r, save-key, eval=FALSE}
+    ```{r, save-key-1, eval=FALSE}
     library(keyring)
 
     keyring_create("nert")
+    ```
+
+    This will create a new keyring called `nert`, with a new key called `TERN_API_KEY`. You may be prompted by your system's keyring manager to create a password for the keyring here, which can be any password you like. Then run `keyring::key_set()`:
+
+    ```{r, save-key-2, eval=FALSE}
     key_set("TERN_API_KEY", keyring = "nert")
     ```
 
-    This will create a new keyring called `nert`, with a new key called `TERN_API_KEY`. The function will then prompt you for the actual key value, which you can paste from the TERN website where you copied it earlier. You can then verify that the key was stored as expected by using the `keyring::key_get()` function:
+    The function will then prompt you (via your system's keyring manager) for the actual key value. Here is where you paste the API key from the TERN website that you copied to the clipboard earlier. You can then verify that the key was stored as expected by using the `keyring::key_get()` function:
 
     ```{r, verify-key, eval=FALSE}
     key_get("TERN_API_KEY", keyring = "nert")
@@ -133,8 +105,8 @@ If you prefer a more secure method, you can use the [{keyring}](https://keyring.
 3.  Finally, you can quickly check that the TERN API key is working with the {nert} package correctly by trying to download a raster. The below R code retrieves the SMIPS "totalbucket" soil moisture data raster for January 1st, 2024 using the `nert::read_smips()` function, and then uses the {terra} package's `terra::extract()` function to get a point value for the soil moisture measurement at the Adelaide CBD (at approximately 138.6007 decimal degrees Easting for the longitude, and -34.9285 decimal degrees Northing for the latitude). Note that we explicitly specify to use the `TERN_API_KEY` we stored in the `nert` keyring by setting the `api_key` argument:
 
     ```{r, using-keyring, eval=FALSE}
-    library(nert)
-    library(keyring)
+    library(terra)
+    library(tern)
 
     r <- read_smips(
       date = "2024-01-01",

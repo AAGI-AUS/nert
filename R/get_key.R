@@ -15,20 +15,6 @@
 #'   [usethis::edit_r_environ()] as `TERN_API_KEY="your_api_key"`. Restart your
 #'   \R session and the query should work.
 #'
-#' @note
-#' \acronym{TERN} creates \acronym{API} keys that have special characters that
-#'   include \dQuote{/}, which causes the query to fail. Currently, the
-#'   `read_*()` functions will test for these problematic characters and
-#'   replace them with the HTML-safe equivalents where necessary so that the
-#'   query will work properly. However, `get_key()` simply returns the
-#'   \acronym{API} key verbatim.
-#'
-#' @details
-#' The suggestion is to use your .Renviron to set up the API key. However, if
-#'  you regularly interact with the APIs outside of \R using some other
-#'  language you may wish to set these up in your .bashrc, .zshrc, or
-#'  config.fish for cross-language use.
-#'
 #' @returns A string value with your \acronym{API} key value.
 #'
 #' @examples
@@ -38,11 +24,18 @@
 #'
 #' @export
 get_key <- function() {
-  TERN_API_KEY <- Sys.getenv("TERN_API_KEY")
+  key <- tryCatch(
+    keyring::key_get(
+      "TERN_API_KEY",
+      keyring = "nert"
+    ),
+    error = function(e) ""
+  )
 
-  if (nzchar(TERN_API_KEY)) {
-    return(TERN_API_KEY)
+  if (nzchar(key)) {
+    return(key)
   }
+
   .set_tern_key()
 }
 
@@ -54,20 +47,28 @@ get_key <- function() {
 #'
 #' @dev
 #'
-#' @returns Called for its side-effects, opens a browser window at the TERN
-#'   accounts page.
+#' @returns Called for its side-effects, checks for presence of a TERN key in
+#'   the user's key ring and errors if one is not found with instructions for
+#'   acquiring one.
 .set_tern_key <- function() {
   if (rlang::is_interactive()) {
-    utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
+    cli::cli_alert_warning(
+      "You need to create and/or set your TERN API key. Go to
+      {.url https://account.tern.org.au/authenticated_user/apikeys} to request
+      one. After getting your key, set it up as {.val TERN_API_KEY} using the
+      {.pkg keyring} package."
+    )
+    cli::cat_line()
+    cli::cli_rule(left = "Instructions")
+    cli::cli_code(c(
+      "library(keyring)",
+      "keyring_create('nert')",
+      "key_set('TERN_API_KEY', keyring = 'nert')"
+    ))
   }
 
-  cli::cli_abort(
-    "You need to create and/or set your TERN API key.
-    Go to {.url https://account.tern.org.au/authenticated_user/apikeys} to
-    request one. After getting your key, set it as 'TERN_API_KEY' in
-    {.file ~/.Renviron}., {.emph e.g.},
-    {.code TERN_API_KEY='youractualkeynotthisstring'}.
-    For doing that, use {.fn edit_r_environ} from the {.pkg {{usethis}}}
-    package"
+  cli::cat_line()
+  rlang::abort(
+    "No TERN_API_KEY found. See the instructions above."
   )
 }

@@ -15,14 +15,6 @@ If it's not found, then it suggests setting it up.  Can be used to check
 that your key that \R is using is the key that you wish to be using or for
 guidance in setting up the keys.
 }
-\note{
-\acronym{TERN} creates \acronym{API} keys that have special characters that
-include \dQuote{/}, which causes the query to fail. Currently, the
-\verb{read_*()} functions will test for these problematic characters and
-replace them with the HTML-safe equivalents where necessary so that the
-query will work properly. However, \code{get_key()} simply returns the
-\acronym{API} key verbatim.
-}
 \section{Requesting an API Key}{
 To request an \acronym{API} key, go to
 \url{https://account.tern.org.au/authenticated_user/apikeys} and click on
@@ -31,11 +23,6 @@ Then, from the left-hand menu, click on "Create API Key".  Once this is
 done, copy the key and put it in your .Renviron using
 \code{\link[usethis:edit_r_environ]{usethis::edit_r_environ()}} as \code{TERN_API_KEY="your_api_key"}. Restart your
 \R session and the query should work.
-
-The suggestion is to use your .Renviron to set up the API key. However, if
-you regularly interact with the APIs outside of \R using some other
-language you may wish to set these up in your .bashrc, .zshrc, or
-config.fish for cross-language use.
 }
 
 \examples{

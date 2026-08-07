@@ -141,7 +141,8 @@ test_that("CANOPY (static) value is replicated across the date axis", {
     verbose = FALSE
   )
   expect_identical(nrow(out), 5L)
-  expect_true(all(out$CANOPY == 12))
+  expect_true(all(out$CANOPY_best_pick == 12))
+  expect_true(all(out$CANOPY_median == 12))
 })
 
 # ---- Failure mode: schema invariance ---------------------------------------
@@ -189,15 +190,23 @@ test_that("column set is invariant under partial failure", {
     smips_collection = "totalbucket",
     depth = "000_005",
     stat = "05",
+    canopy_collection = "best_pick",
     api_key = KEY,
     verbose = FALSE
   ))
   # Every requested dataset still has its column, all NA on failure.
   expect_setequal(
     names(out),
-    c("date", "lon", "lat", "SMIPS_totalbucket", "AWC_05_000_005", "CANOPY")
+    c(
+      "date",
+      "lon",
+      "lat",
+      "SMIPS_totalbucket",
+      "AWC_05_000_005",
+      "CANOPY_best_pick"
+    )
   )
-  for (col in c("SMIPS_totalbucket", "AWC_05_000_005", "CANOPY")) {
+  for (col in c("SMIPS_totalbucket", "AWC_05_000_005", "CANOPY_best_pick")) {
     expect_true(all(is.na(out[[col]])))
   }
 })

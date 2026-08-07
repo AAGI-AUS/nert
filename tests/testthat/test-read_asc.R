@@ -4,7 +4,10 @@ KEY <- "test-key-0000"
 
 test_that("read_asc returns the soil classification data", {
   skip_on_ci()
-  skip_if(!nzchar(Sys.getenv("TERN_API_KEY")), "TERN API key not available")
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
+  )
   asc <- read_asc()
   expect_named(asc, "Class")
 })
@@ -12,7 +15,10 @@ test_that("read_asc returns the soil classification data", {
 
 test_that("read_asc returns the confusion index for soil class", {
   skip_on_ci()
-  skip_if(!nzchar(Sys.getenv("TERN_API_KEY")), "TERN API key not available")
+  skip_if_not(
+    has_tern_key(),
+    "TERN API key not available in keyring"
+  )
   asc <- read_asc(collection = "CI")
   expect_named(asc, "ASC_CI_C_P_AU_TRN_N.cog")
 })

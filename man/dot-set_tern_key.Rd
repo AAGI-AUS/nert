@@ -7,8 +7,9 @@
 .set_tern_key()
 }
 \value{
-Called for its side-effects, opens a browser window at the TERN
-accounts page.
+Called for its side-effects, checks for presence of a TERN key in
+the user's key ring and errors if one is not found with instructions for
+acquiring one.
 }
 \description{
 Opens a browser window at the TERN API key request URL and provides
