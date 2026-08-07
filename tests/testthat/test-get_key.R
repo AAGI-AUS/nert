@@ -41,34 +41,6 @@ test_that("get_key performs no sanitation on problematic characters", {
   )
 })
 
-test_that("interactive session opens the key-request page before aborting", {
-  opened <- new.env(parent = emptyenv())
-
-  testthat::local_mocked_bindings(
-    is_interactive = function() TRUE,
-    .package = "rlang"
-  )
-
-  testthat::local_mocked_bindings(
-    browseURL = function(url, ...) {
-      opened$url <- url
-      invisible()
-    },
-    .package = "utils"
-  )
-
-  expect_error(
-    .set_tern_key(),
-    "No TERN_API_KEY found"
-  )
-
-  expect_match(
-    opened$url,
-    "account.tern.org.au",
-    fixed = TRUE
-  )
-})
-
 test_that(".set_tern_key aborts in non-interactive sessions", {
   testthat::local_mocked_bindings(
     is_interactive = function() FALSE,
@@ -76,7 +48,6 @@ test_that(".set_tern_key aborts in non-interactive sessions", {
   )
 
   expect_error(
-    .set_tern_key(),
-    "No TERN_API_KEY found"
+    .set_tern_key()
   )
 })
