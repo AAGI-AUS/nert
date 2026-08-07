@@ -155,8 +155,6 @@ head(dat)
 If you installed {nert} using the R-Universe (the preferred method), you can keep {nert} up-to-date locally like so:
 
 ```r
-#| eval: false
-
 update.packages()
 ```
 
