@@ -15,14 +15,6 @@ If it's not found, then it suggests setting it up.  Can be used to check
 that your key that \R is using is the key that you wish to be using or for
 guidance in setting up the keys.
 }
-\note{
-\acronym{TERN} creates \acronym{API} keys that have special characters that
-include \dQuote{/}, which causes the query to fail. Currently, the
-\verb{read_*()} functions will test for these problematic characters and
-replace them with the HTML-safe equivalents where necessary so that the
-query will work properly. However, \code{get_key()} simply returns the
-\acronym{API} key verbatim.
-}
 \section{Requesting an API Key}{
 To request an \acronym{API} key, go to
 \url{https://account.tern.org.au/authenticated_user/apikeys} and click on

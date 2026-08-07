@@ -15,14 +15,6 @@
 #'   [usethis::edit_r_environ()] as `TERN_API_KEY="your_api_key"`. Restart your
 #'   \R session and the query should work.
 #'
-#' @note
-#' \acronym{TERN} creates \acronym{API} keys that have special characters that
-#'   include \dQuote{/}, which causes the query to fail. Currently, the
-#'   `read_*()` functions will test for these problematic characters and
-#'   replace them with the HTML-safe equivalents where necessary so that the
-#'   query will work properly. However, `get_key()` simply returns the
-#'   \acronym{API} key verbatim.
-#'
 #' @returns A string value with your \acronym{API} key value.
 #'
 #' @examples
@@ -55,11 +47,12 @@ get_key <- function() {
 #'
 #' @dev
 #'
-#' @returns Called for its side-effects, opens a browser window at the TERN
-#'   accounts page.
+#' @returns Called for its side-effects, checks for presence of a TERN key in
+#'   the user's key ring and errors if one is not found with instructions for
+#'   acquiring one.
 .set_tern_key <- function() {
   if (rlang::is_interactive()) {
-    cli::cli_alert_warning(
+    cli::cli_abort(
       "You need to create and/or set your TERN API key. Go to
         {.url https://account.tern.org.au/authenticated_user/apikeys} to request
       one, your browser should already be open at this url. After getting your
@@ -72,12 +65,5 @@ get_key <- function() {
       "keyring_create('tern')",
       "key_set('TERN_API_KEY', keyring = 'nert')"
     ))
-
-    utils::browseURL("https://account.tern.org.au/authenticated_user/apikeys")
   }
-
-  cli::cat_line()
-  rlang::abort(
-    "No TERN_API_KEY found. See the instructions above."
-  )
 }
