@@ -128,6 +128,9 @@ disk-space savings.
 ``` r
 
 library(nert)
+#> Registered S3 method overwritten by 'data.table':
+#>   method           from   
+#>   print.data.table colorDF
 library(terra)
 #> terra 1.9.34
 #> 
@@ -138,8 +141,10 @@ library(terra)
 
 r <- read_smips(date = "2024-01-01")
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#>   ID smips_totalbucket_mm_20240101        x         y
-#> 1  1                      46.07692 138.6037 -34.93254
+#> # Data frame like object (class data.frame) 4 x 1:
+#>  │ID   │smips_totalbucket_mm_20240101│x    │y    
+#>  │<dbl>│<dbl>                        │<dbl>│<dbl>
+#> 1│    1│                           46│  139│  -35
 ```
 
 The {nert} package also re-exports {tidyterra}’s
@@ -177,22 +182,14 @@ dat <- collect_tern_data(
   verbose = FALSE
 )
 head(dat)
-#>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005
-#>        <Date>  <num>  <num>             <num>          <num>
-#> 1: 2024-01-01 118.28 -31.48         0.2271653             11
-#> 2: 2024-01-01 150.84 -31.07        93.4498901             28
-#> 3: 2024-01-02 118.28 -31.48         0.2135102             11
-#> 4: 2024-01-02 150.84 -31.07        90.6175690             28
-#> 5: 2024-01-03 118.28 -31.48         0.2344290             11
-#> 6: 2024-01-03 150.84 -31.07        88.5260391             28
-#>    CLY_EV_005_015
-#>             <num>
-#> 1:             15
-#> 2:             31
-#> 3:             15
-#> 4:             31
-#> 5:             15
-#> 6:             31
+#>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015
+#>        <Date>  <num>  <num>             <num>          <num>          <num>
+#> 1: 2024-01-01 118.28 -31.48         0.2271653             11             15
+#> 2: 2024-01-01 150.84 -31.07        93.4498901             28             31
+#> 3: 2024-01-02 118.28 -31.48         0.2135102             11             15
+#> 4: 2024-01-02 150.84 -31.07        90.6175690             28             31
+#> 5: 2024-01-03 118.28 -31.48         0.2344290             11             15
+#> 6: 2024-01-03 150.84 -31.07        88.5260391             28             31
 ```
 
 ## Keeping {nert} updated
@@ -202,8 +199,6 @@ installed {nert} using the R-Universe (the preferred method), you can
 keep {nert} up-to-date locally like so:
 
 ``` r
-
-#| eval: false
 
 update.packages()
 ```
@@ -257,10 +252,7 @@ To cite nert:
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S,
-#>   Moldovan M (2026). nert: Curated Access to TERN
-#>   Environmental Raster Data. R package version 1.1.0.
-#>   https://aagi-aus.github.io/nert/
+#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: Curated Access to TERN Environmental Raster Data. R package version 1.1.0. https://aagi-aus.github.io/nert/
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
