@@ -568,6 +568,50 @@ test_that(".normalise_phen_collection errors when no valid variants remain", {
   )
 })
 
+# .normalise_canopy_collection -----------------------------------------------
+
+test_that(".normalise_canopy_collection returns the full CANOPY set for NULL/'all'", {
+  valid_canopy <- c("best_pick", "median")
+  expect_length(.normalise_canopy_collection(NULL), length(valid_canopy))
+  expect_identical(sort(.normalise_canopy_collection(NULL)), sort(valid_canopy))
+  expect_identical(
+    .normalise_canopy_collection("all"),
+    .normalise_canopy_collection(NULL)
+  )
+})
+
+test_that(".normalise_canopy_collection deduplicates", {
+  expect_identical(
+    .normalise_canopy_collection(c("best_pick", "best_pick", "median")),
+    c("best_pick", "median")
+  )
+})
+
+test_that(".normalise_canopy_collection preserves order", {
+  expect_identical(
+    .normalise_canopy_collection(c("median", "best_pick")),
+    c("median", "best_pick")
+  )
+  expect_false(isTRUE(all.equal(
+    .normalise_canopy_collection(c("median", "best_pick")),
+    c("best_pick", "median")
+  )))
+})
+
+test_that(".normalise_canopy_collection warns and filters invalid variants", {
+  expect_warning(
+    out <- .normalise_canopy_collection(c("best_pick", "mean")),
+    "Invalid"
+  )
+  expect_identical(out, "best_pick")
+})
+
+test_that(".normalise_canopy_collection errors when no valid variants remain", {
+  suppressWarnings(
+    expect_error(.normalise_canopy_collection("mean"), "No valid")
+  )
+})
+
 # .build_work_items planner: shape only -------------------------------------
 
 test_that("work-item planner emits one item per SMIPS (date, variant)", {
@@ -667,11 +711,20 @@ test_that("work-item planner emits one item per ASC variant", {
   )))
 })
 
-test_that("work-item planner emits one item for CANOPY", {
-  items <- .build_work_items("CANOPY", as.Date("2011-01-01"))
-  expect_length(items, 1L)
+test_that("work-item planner emits one item per CANOPY variant", {
+  items <- .build_work_items(
+    "CANOPY",
+    as.Date("2011-01-01"),
+    canopy_collection = .normalise_canopy_collection(NULL)
+  )
+  # 2 variants = 2 items
+  expect_length(items, 2L)
   expect_true(is.na(items[[1]]$date_idx))
-  expect_identical(items[[1]]$cols, "CANOPY")
+  expect_true(is.na(items[[2]]$date_idx))
+  expect_identical(
+    vapply(items, function(x) x$cols[1L], character(1L)),
+    c("CANOPY_best_pick", "CANOPY_median")
+  )
 })
 
 test_that("work-item planner emits one item per SOILDIV variant", {
@@ -768,9 +821,15 @@ test_that("SLGA dataset work items have numeric-type for all depths, variants", 
   }
 })
 
-test_that("CANOPY work items have numeric-type", {
-  items <- .build_work_items("CANOPY", as.Date("2024-01-01"))
-  expect_identical(items[[1]]$type, "numeric")
+test_that("CANOPY work items have numeric-type for all variants", {
+  items <- .build_work_items(
+    "CANOPY",
+    as.Date("2024-01-01"),
+    canopy_collection = .normalise_canopy_collection(NULL)
+  )
+  for (i in seq_along(items)) {
+    expect_identical(items[[i]]$type, "numeric")
+  }
 })
 
 test_that("SOILDIV work items have numeric-type for all variants", {
@@ -828,7 +887,8 @@ test_that("collect_tern_data plans schema independently of fetch success", {
     smips_collection = c("bucket1", "bucket2"),
     stat = "EV",
     depth = c("000_005", "060_100"),
-    asc_collection = c("EV", "CI")
+    asc_collection = c("EV", "CI"),
+    canopy_collection = c("best_pick", "median")
   )
   cols <- unique(unlist(lapply(items, function(x) x$cols)))
   expect_setequal(
@@ -838,7 +898,8 @@ test_that("collect_tern_data plans schema independently of fetch success", {
       "SMIPS_bucket2",
       "AWC_EV_000_005",
       "AWC_EV_060_100",
-      "CANOPY",
+      "CANOPY_best_pick",
+      "CANOPY_median",
       "ASC_EV",
       "ASC_CI"
     )

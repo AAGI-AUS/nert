@@ -67,6 +67,11 @@
 #'   `"EVI1"`, `"EVI2"`, `"EVIP"`, `"EVII"`, `"SGS_month"`, `"PGS_month"`,
 #'   `"EGS_month"`. Use `NULL` (default) or `"all"` to specify retrieval of
 #'   all PHENOLOGY datasets.
+#' @param canopy_collection *For CANOPY datasets.* A `character` vector
+#'   specifying the OzTreeMap canopy height composite(s) to be retrieved.
+#'   (Default=All CANOPY datasets.) Options: `"best_pick"`, `"median"`. Use
+#'   `NULL` (default) or `"all"` to specify retrieval of all CANOPY datasets.
+#'   This parameter is ignored for non-CANOPY datasets.
 #' @param api_key A `character` string containing your \acronym{TERN}
 #'   \acronym{API} key. Defaults to automatic detection from your
 #'   `.Renviron` or `.Rprofile`.  See [get_key()] for setup.
@@ -144,6 +149,7 @@ collect_tern_data <- function(
   aet_collection = NULL,
   soildiv_collection = NULL,
   phenology_collection = NULL,
+  canopy_collection = NULL,
   api_key = NULL,
   max_tries = NULL,
   initial_delay = NULL,
@@ -166,6 +172,7 @@ collect_tern_data <- function(
   aet_collection <- .normalise_aet_collection(aet_collection)
   soildiv_collection <- .normalise_soildiv_collection(soildiv_collection)
   phenology_collection <- .normalise_phen_collection(phenology_collection)
+  canopy_collection <- .normalise_canopy_collection(canopy_collection)
 
   if (verbose) {
     .print_datasets_table(
@@ -176,7 +183,8 @@ collect_tern_data <- function(
       asc_collection,
       aet_collection,
       soildiv_collection,
-      phenology_collection
+      phenology_collection,
+      canopy_collection
     )
     cli::cli_inform(
       "Collecting {length(datasets)} dataset{?s} at {n_loc} \\
@@ -197,7 +205,8 @@ collect_tern_data <- function(
     asc_collection,
     aet_collection,
     soildiv_collection,
-    phenology_collection
+    phenology_collection,
+    canopy_collection
   )
 
   out <- data.table::data.table(
@@ -642,6 +651,20 @@ collect_tern_data <- function(
 }
 
 
+#' Resolve the 'canopy_collection' argument to a clean vector
+#'
+#' @param canopy_collection User-supplied vector of CANOPY datasets to
+#'   collect (or `NULL`/`"all"`).
+#' @returns A `character` vector of valid CANOPY datasets (de-duplicated,
+#'   order preserved).
+#' @dev
+.normalise_canopy_collection <- function(canopy_collection) {
+  valid_canopy <- c("best_pick", "median")
+  info <- "CANOPY datasets"
+  return(.normalise_vector_elements(canopy_collection, valid_canopy, info))
+}
+
+
 #' Plan the list of COG fetches
 #'
 #' A *work item* is one COG-shaped request: a tuple of
@@ -664,6 +687,7 @@ collect_tern_data <- function(
 #' @param aet_collection AET collection selector.
 #' @param soildiv_collection SOILDIV collection selector.
 #' @param phenology_collection PHENOLOGY collection selector.
+#' @param canopy_collection CANOPY collection selector.
 #' @returns A list of work-item lists.
 #'
 #' @dev
@@ -677,7 +701,8 @@ collect_tern_data <- function(
   asc_collection,
   aet_collection,
   soildiv_collection,
-  phenology_collection
+  phenology_collection,
+  canopy_collection
 ) {
   slga_aliases <- c(
     "AWC",
@@ -786,8 +811,19 @@ collect_tern_data <- function(
           )
         }
       }
+    } else if (ds == "CANOPY") {
+      for (v in canopy_collection) {
+        items[[length(items) + 1]] <- list(
+          ds = ds,
+          type = "numeric",
+          cols = sprintf("%s_%s", ds, v),
+          date_idx = NA_integer_,
+          args = list(collection = v),
+          label = sprintf("%s %s (static)", ds, v)
+        )
+      }
     } else {
-      # Catch-all for datasets without variants/args (e.g., CANOPY)
+      # Catch-all for datasets without variants/args
       items[[length(items) + 1]] <- list(
         ds = ds,
         type = "numeric",
@@ -908,6 +944,7 @@ collect_tern_data <- function(
 #' @param aet_collection Normalised AET collection selector.
 #' @param soildiv_collection Normalised SOILDIV collection selector.
 #' @param phenology_collection Normalised PHENOLOGY collection selector.
+#' @param canopy_collection Normalised CANOPY collection selector.
 #' @returns `invisible(NULL)`. This function is called for its side effects.
 #' @dev
 .print_datasets_table <- function(
@@ -918,7 +955,8 @@ collect_tern_data <- function(
   asc_collection,
   aet_collection,
   soildiv_collection,
-  phenology_collection
+  phenology_collection,
+  canopy_collection
 ) {
   dataset_info <- list(
     SMIPS = list(
@@ -1033,7 +1071,7 @@ collect_tern_data <- function(
       id = "TERN/36c98155",
       temporal = "Static",
       resolution = "30 m",
-      description = "Canopy Height best-pick composite (OzTreeMap)"
+      description = "Canopy Height composites (OzTreeMap)"
     ),
     PHENOLOGY = list(
       id = "TERN/2bb0c81a",
@@ -1069,7 +1107,8 @@ collect_tern_data <- function(
         ASC = asc_collection,
         AET = aet_collection,
         SOILDIV = soildiv_collection,
-        PHENOLOGY = phenology_collection
+        PHENOLOGY = phenology_collection,
+        CANOPY = canopy_collection
       )
 
       if (ds %in% slga_datasets) {
@@ -1083,8 +1122,6 @@ collect_tern_data <- function(
           "Collection: %s",
           toString(collection_map[[ds]])
         )
-      } else if (ds == "CANOPY") {
-        layer <- "Collection: Best-pick Canopy Height"
       }
       return(layer)
     },

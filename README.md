@@ -17,7 +17,7 @@ Currently supported datasets in the {nert} package include:
 - Daily volumetric soil moisture estimates from the Soil Moisture Integration and Prediction System (SMIPS),
 - Actual evapotranspiration estimates using the CSIRO MODIS Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm,
 - Soil orders from the Australian Soil Classification Map,
-- Canopy height estimates from the OzTreeMap best-pick canopy height model,
+- Canopy height estimates from the OzTreeMap best-pick and median canopy height models,
 - Australian land surface phenology based on thresholded MODIS Enhanced Vegetation Index (EVI) data,
 - Soil and Landscape Grid of Australia (SLGA) datasets, including available volumetric water capacity, clay/sand/silt content, Bulk Density (whole earth) measurements, soil pH (CaCl2 and water), nitrogen and phosphorus content, cation exchange capacity, and the drained upper limit and 15-bar lower limit water content readings,
 - Soil bacteria and soil fungi Beta Diversity datasets.

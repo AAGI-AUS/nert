@@ -12,7 +12,8 @@
   asc_collection,
   aet_collection,
   soildiv_collection,
-  phenology_collection
+  phenology_collection,
+  canopy_collection
 )
 }
 \arguments{
@@ -31,6 +32,8 @@
 \item{soildiv_collection}{Normalised SOILDIV collection selector.}
 
 \item{phenology_collection}{Normalised PHENOLOGY collection selector.}
+
+\item{canopy_collection}{Normalised CANOPY collection selector.}
 }
 \value{
 \code{invisible(NULL)}. This function is called for its side effects.
