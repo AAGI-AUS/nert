@@ -28,19 +28,39 @@ dt <- collect_tern_data(
   datasets = "SMIPS",
   verbose = TRUE
 )
-#> ── Datasets to Collect ────────────────────────────────────────────────────────────────────────────────────────────────────────────
-#>     Alias            ID                                                             Layer Temporal Resolution
-#>    <char>        <char>                                                            <char>   <char>     <char>
-#> 1:  SMIPS TERN/d1995ee8 Collection: totalbucket, SMindex, bucket1, bucket2, deepD, runoff    Daily       1 km
-#>                                      Description
-#>                                           <char>
-#> 1: Soil Moisture Integration & Prediction System
+#> 
+#> ── Datasets to Collect ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> 
+#> SMIPS
+#> TERN/d1995ee8
+#> Collection: totalbucket, SMindex, bucket1, bucket2, deepD, runoff
+#> Daily
+#> 1 km
+#> Soil Moisture Integration & Prediction System
+#> 
+#> 
 #> Collecting 1 dataset at 1 location over 4 dates
 #> SMIPS totalbucket 2024-01-01
 #> SMIPS totalbucket 2024-01-02
 #> SMIPS totalbucket 2024-01-03
-#> ...
-#> ...
+#> SMIPS totalbucket 2024-01-04
+#> SMIPS SMindex 2024-01-01
+#> SMIPS SMindex 2024-01-02
+#> SMIPS SMindex 2024-01-03
+#> SMIPS SMindex 2024-01-04
+#> SMIPS bucket1 2024-01-01
+#> SMIPS bucket1 2024-01-02
+#> SMIPS bucket1 2024-01-03
+#> SMIPS bucket1 2024-01-04
+#> SMIPS bucket2 2024-01-01
+#> SMIPS bucket2 2024-01-02
+#> SMIPS bucket2 2024-01-03
+#> SMIPS bucket2 2024-01-04
+#> SMIPS deepD 2024-01-01
+#> SMIPS deepD 2024-01-02
+#> SMIPS deepD 2024-01-03
+#> SMIPS deepD 2024-01-04
+#> SMIPS runoff 2024-01-01
 #> SMIPS runoff 2024-01-02
 #> SMIPS runoff 2024-01-03
 #> SMIPS runoff 2024-01-04
@@ -81,9 +101,8 @@ dt <- collect_tern_data(
   verbose = FALSE
 )
 names(dt)
-#>  [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060"
-#>  [8] "AWC_EV_060_100" "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030" "AWC_05_030_060" "AWC_05_060_100"
-#> [15] "AWC_05_100_200" "AWC_95_000_005" "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100" "AWC_95_100_200"
+#>  [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060" "AWC_EV_060_100" "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030" "AWC_05_030_060"
+#> [14] "AWC_05_060_100" "AWC_05_100_200" "AWC_95_000_005" "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100" "AWC_95_100_200"
 ```
 
 This ensures that, by default, you get the most comprehensive data for

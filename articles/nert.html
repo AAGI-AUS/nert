@@ -103,21 +103,17 @@ download TERN COG datasets.</p>
 <p>An API key is required to authenticate and access TERN datasets
 through the TERN Data Portal. It is straightforward to sign up to TERN
 and acquire an API key, and by setting the key in your R environment
-(via <code>.Renviron</code> or {keyring}) you can provide the {nert}
-package with that credential to allow convenient access whenever you use
-the package to download TERN datasets.</p>
+(via {keyring}) you can provide the {nert} package with that credential
+to allow convenient access whenever you use the package to download TERN
+datasets.</p>
 <p>The following steps detail the process for signing in to your TERN
-account, generating an API key, and storing it in your R
-environment.</p>
+account, generating an API key, and setting it up for use with the
+{nert} package.</p>
 <ol style="list-style-type: decimal">
 <li>
-<p>Navigate to the TERN Data Discovery Portal (<a href="https://portal.tern.org.au/" class="external-link uri">https://portal.tern.org.au/</a>) in a web browser.
-(Alternatively, use <code><a href="../reference/get_key.html">nert::get_key()</a></code> to open the TERN
-website in a web browser.) Click the “Sign In” button that appears in
-the top-right of the browser window.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/get_key.html">get_key</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Navigate to the TERN Data Discovery Portal (<a href="https://portal.tern.org.au/" class="external-link uri">https://portal.tern.org.au/</a>) in a web browser. Click the
+“Sign In” button that appears in the top-right of the browser
+window.</p>
 <p><img src="01-get-started.jpg" style="width:80.0%"></p>
 </li>
 <li>
@@ -154,94 +150,52 @@ key locally somewhere as you won’t see it again.</p>
 </ol>
 </div>
 <div class="section level2">
-<h2 id="saving-your-api-key-locally">Saving Your API Key Locally<a class="anchor" aria-label="anchor" href="#saving-your-api-key-locally"></a>
+<h2 id="saving-your-api-key-locally-using-keyring">Saving Your API Key Locally (using {keyring})<a class="anchor" aria-label="anchor" href="#saving-your-api-key-locally-using-keyring"></a>
 </h2>
-<p>There are a couple of options for saving your key locally so that it
-is available for the {nert} package to use. The most straightforward way
-is to save it directly into your <code>.Renviron</code> file so that it
-is available in your R session upon each load. Alternatively, the API
-key can be stored in your operating system’s keychain credential store
-using the <a href="https://keyring.r-lib.org/index.html" class="external-link">{keyring}</a>
-package for extra security. Both methods are explained below.</p>
-<div class="section level3">
-<h3 id="using-your--renviron-file">Using Your .Renviron File<a class="anchor" aria-label="anchor" href="#using-your--renviron-file"></a>
-</h3>
-<p>You can store the TERN API Key in your <code>.Renviron</code> file as
-follows:</p>
-<ol style="list-style-type: decimal">
-<li>
-<p>Open your <code>.Renviron</code> file. (An easy way to open this
-file is to use the {usethis} package in your R session, <em>e.g.</em>,
-<code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code>.) In your <code>.Renviron</code>
-file, add a new line to set a variable called <code>TERN_API_KEY</code>,
-and paste in the API key you copied earlier as the value for the
-variable. Note that this is the variable that the {nert} package
-automatically looks for during the authentication, so be sure to
-double-check that the spelling and case are correct for the variable
-name.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="va">TERN_API_KEY</span><span class="op">=</span><span class="st">'&lt;paste your key here&gt;'</span></span></code></pre></div>
-<p><img src="07-get-started.jpg" style="width:80.0%"></p>
-</li>
-<li>
-<p>Save your <code>.Renviron</code> file, and restart your R session
-so that the change is applied. Once you have restarted your R session,
-you can then test that the {nert} package is reading your API key
-properly by running <code><a href="../reference/get_key.html">nert::get_key()</a></code> at the R command
-console. If the API key was successfully read by {nert}, then you should
-see your API key appear verbatim as output.</p>
-<p><img src="08-get-started.jpg" style="width:80.0%"></p>
-</li>
-<li>
-<p>Finally, you can quickly test that the data download from the
-TERN Data Portal is working correctly by downloading a data raster. The
-below R code retrieves the SMIPS “totalbucket” soil moisture data raster
-for January 1st, 2024 using the <code><a href="../reference/read_smips.html">nert::read_smips()</a></code>
-function, and then uses the {terra} package’s
-<code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">terra::extract()</a></code> function to get a point value for the soil
-moisture measurement at the Adelaide CBD (at approximately 138.6007
-decimal degrees Easting for the longitude, and -34.9285 decimal degrees
-Northing for the latitude):</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2024-01-01"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   ID smips_totalbucket_mm_20240101        x         y</span></span>
-<span><span class="co">#&gt; 1  1                      46.07692 138.6037 -34.93254</span></span></code></pre></div>
-</li>
-</ol>
-<p>At this stage your {nert} package is now working, and you can use it
-to easily download COG data from the TERN Data Portal.</p>
-</div>
-<div class="section level3">
-<h3 id="using-the-keyring-package-for-secure-storage">Using the {keyring} Package for Secure Storage<a class="anchor" aria-label="anchor" href="#using-the-keyring-package-for-secure-storage"></a>
-</h3>
-<p>If you prefer a more secure method, you can use the <a href="https://keyring.r-lib.org/index.html" class="external-link">{keyring}</a> package to
+<p>We suggest that you use a secure method for storing your API keys in
+R. You can use the <a href="https://keyring.r-lib.org/index.html" class="external-link">{keyring}</a> package to
 store your TERN API Key in your system’s credential store.</p>
 <ol style="list-style-type: decimal">
 <li>
 <p>If you don’t have the {keyring} package installed, you can
 install it with:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"keyring"</span><span class="op">)</span></span></code></pre></div>
+<p>Note that on Linux systems, you may need to install the
+<code>libsecret</code> and <code>libssl</code> system libraries before
+you install the {keyring} package, in order for {keyring} to have access
+to the Linux Secret Service API to set up the keyring. On Debian or RHEL
+derivatives, you can do this as follows:</p>
+<ul>
+<li>Debian/Ubuntu:
+<code>sudo apt install libsecret-1-dev libssl-dev</code>
+</li>
+<li>RHEL/Fedora:
+<code>sudo dnf install libsecret-devel openssl-devel</code>
+</li>
+</ul>
 </li>
 <li>
 <p>Once {keyring} is installed, you can store your API key using the
 <code><a href="https://keyring.r-lib.org/reference/has_keyring_support.html" class="external-link">keyring::keyring_create()</a></code> and
 <code><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">keyring::key_set()</a></code> functions as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keyring.r-lib.org/" class="external-link">keyring</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://keyring.r-lib.org/reference/has_keyring_support.html" class="external-link">keyring_create</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_set</a></span><span class="op">(</span><span class="st">"TERN_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://keyring.r-lib.org/reference/has_keyring_support.html" class="external-link">keyring_create</a></span><span class="op">(</span><span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
 <p>This will create a new keyring called <code>nert</code>, with a new
-key called <code>TERN_API_KEY</code>. The function will then prompt you
-for the actual key value, which you can paste from the TERN website
-where you copied it earlier. You can then verify that the key was stored
-as expected by using the <code><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">keyring::key_get()</a></code> function:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+key called <code>TERN_API_KEY</code>. You may be prompted by your
+system’s keyring manager to create a password for the keyring here,
+which can be any password you like. Then run
+<code><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">keyring::key_set()</a></code>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_set</a></span><span class="op">(</span><span class="st">"TERN_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
+<p>The function will then prompt you (via your system’s keyring manager)
+for the actual key value. Here is where you paste the API key from the
+TERN website that you copied to the clipboard earlier. You can then
+verify that the key was stored as expected by using the
+<code><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">keyring::key_get()</a></code> function:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://keyring.r-lib.org/reference/key_get.html" class="external-link">key_get</a></span><span class="op">(</span><span class="st">"TERN_API_KEY"</span>, keyring <span class="op">=</span> <span class="st">"nert"</span><span class="op">)</span></span></code></pre></div>
 </li>
 <li>
@@ -256,9 +210,9 @@ decimal degrees Easting for the longitude, and -34.9285 decimal degrees
 Northing for the latitude). Note that we explicitly specify to use the
 <code>TERN_API_KEY</code> we stored in the <code>nert</code> keyring by
 setting the <code>api_key</code> argument:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keyring.r-lib.org/" class="external-link">keyring</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://insightsengineering.github.io/tern/" class="external-link">tern</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span></span>
 <span>  date <span class="op">=</span> <span class="st">"2024-01-01"</span>,</span>
@@ -269,7 +223,6 @@ setting the <code>api_key</code> argument:</p>
 </li>
 </ol>
 </div>
-</div>
 <div class="section level2">
 <h2 id="reading-tern-data">Reading TERN Data<a class="anchor" aria-label="anchor" href="#reading-tern-data"></a>
 </h2>
@@ -279,12 +232,12 @@ the <code>date</code> argument to specify the date for the raster to be
 retrieved, and the <code>collection</code> argument to specify which
 specific SMIPS dataset to download. For instance, the following R code
 retrieves the “SMindex” raster for June 30, 2025:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2025-06-30"</span>, collection <span class="op">=</span> <span class="st">"SMindex"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that {nert} re-exports <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">tidyterra::autoplot()</a></code> for
 ease of visualising the TERN data.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
@@ -299,8 +252,17 @@ rasters are stored on the TERN Data Portal as Cloud-Optimised GeoTIFFs
 <strong>streaming only the bytes needed for the spatial extent that you
 ask for</strong>. The below R code downloads only the data at the
 coordinates specified, rather than fetching the entire dataset:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.9.34</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     spin</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:testthat':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     compare, describe</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   ID smips_smi_perc_20250630        x         y</span></span>
@@ -311,7 +273,7 @@ Australian Soil Classification Map using the
 <code><a href="../reference/read_asc.html">nert::read_asc()</a></code> function. Since this is a static dataset,
 you do not need to specify a date. By default, the soil classifications
 are retrieved:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">asc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_asc.html">read_asc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">asc</span><span class="op">)</span></span>
@@ -324,13 +286,13 @@ A plot of Australian Soils Classification data.
 <p>If you wanted to see the confusion index instead (which provides a
 measure of the uncertainty associated with each classification), you can
 specify that dataset using the <code>collection</code> argument:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">asc_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_asc.html">read_asc</a></span><span class="op">(</span>collection <span class="op">=</span> <span class="st">"CI"</span><span class="op">)</span></span></code></pre></div>
 <p>The SLGA soil attribute rasters work similarly, but have an
 additional depth parameter that you can specify. For instance, the
 following R code fetches and views the raster for the soil clay content
 at a depth of 30-60cm by specifying the <code>depth</code> argument:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cly</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_slga.html">read_slga</a></span><span class="op">(</span><span class="st">"CLY"</span>, depth <span class="op">=</span> <span class="st">"030_060"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">cly</span><span class="op">)</span></span>

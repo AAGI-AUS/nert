@@ -13,7 +13,8 @@ Print the user-facing datasets-table summarising what will be fetched.
   asc_collection,
   aet_collection,
   soildiv_collection,
-  phenology_collection
+  phenology_collection,
+  canopy_collection
 )
 ```
 
@@ -50,6 +51,10 @@ Print the user-facing datasets-table summarising what will be fetched.
 - phenology_collection:
 
   Normalised PHENOLOGY collection selector.
+
+- canopy_collection:
+
+  Normalised CANOPY collection selector.
 
 ## Value
 

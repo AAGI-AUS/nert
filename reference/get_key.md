@@ -15,14 +15,6 @@ get_key()
 
 A string value with your API key value.
 
-## Note
-
-TERN creates API keys that have special characters that include “/”,
-which causes the query to fail. Currently, the `read_*()` functions will
-test for these problematic characters and replace them with the
-HTML-safe equivalents where necessary so that the query will work
-properly. However, `get_key()` simply returns the API key verbatim.
-
 ## Requesting an API Key
 
 To request an API key, go to
@@ -33,11 +25,6 @@ Once this is done, copy the key and put it in your .Renviron using
 [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)
 as `TERN_API_KEY="your_api_key"`. Restart your R session and the query
 should work.
-
-The suggestion is to use your .Renviron to set up the API key. However,
-if you regularly interact with the APIs outside of R using some other
-language you may wish to set these up in your .bashrc, .zshrc, or
-config.fish for cross-language use.
 
 ## Examples
 

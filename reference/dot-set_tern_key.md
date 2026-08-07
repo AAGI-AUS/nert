@@ -12,5 +12,6 @@ the key soon, but not immediately.
 
 ## Value
 
-Called for its side-effects, opens a browser window at the TERN accounts
-page.
+Called for its side-effects, checks for presence of a TERN key in the
+user's key ring and errors if one is not found with instructions for
+acquiring one.

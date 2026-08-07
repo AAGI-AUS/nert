@@ -62,15 +62,6 @@ guidance in setting up the keys.</p>
     <p>A string value with your <acronym>API</acronym> key value.</p>
     </div>
     <div class="section level2">
-    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p><acronym>TERN</acronym> creates <acronym>API</acronym> keys that have special characters that
-include “/”, which causes the query to fail. Currently, the
-<code>read_*()</code> functions will test for these problematic characters and
-replace them with the HTML-safe equivalents where necessary so that the
-query will work properly. However, <code>get_key()</code> simply returns the
-<acronym>API</acronym> key verbatim.</p>
-    </div>
-    <div class="section level2">
     <h2 id="requesting-an-api-key">Requesting an API Key<a class="anchor" aria-label="anchor" href="#requesting-an-api-key"></a></h2>
     <p>To request an <acronym>API</acronym> key, go to
 <a href="https://account.tern.org.au/authenticated_user/apikeys" class="external-link">https://account.tern.org.au/authenticated_user/apikeys</a> and click on
@@ -79,10 +70,6 @@ Then, from the left-hand menu, click on "Create API Key".  Once this is
 done, copy the key and put it in your .Renviron using
 <code><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">usethis::edit_r_environ()</a></code> as <code>TERN_API_KEY="your_api_key"</code>. Restart your
 <span style="R">R</span> session and the query should work.</p>
-<p>The suggestion is to use your .Renviron to set up the API key. However, if
-you regularly interact with the APIs outside of <span style="R">R</span> using some other
-language you may wish to set these up in your .bashrc, .zshrc, or
-config.fish for cross-language use.</p>
     </div>
 
     <div class="section level2">

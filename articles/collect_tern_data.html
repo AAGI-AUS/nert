@@ -92,19 +92,39 @@ multiple dates:</p>
 <span>  datasets <span class="op">=</span> <span class="st">"SMIPS"</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; ── Datasets to Collect ────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;     Alias            ID                                                             Layer Temporal Resolution</span></span>
-<span><span class="co">#&gt;    &lt;char&gt;        &lt;char&gt;                                                            &lt;char&gt;   &lt;char&gt;     &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:  SMIPS TERN/d1995ee8 Collection: totalbucket, SMindex, bucket1, bucket2, deepD, runoff    Daily       1 km</span></span>
-<span><span class="co">#&gt;                                      Description</span></span>
-<span><span class="co">#&gt;                                           &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: Soil Moisture Integration &amp; Prediction System</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Datasets to Collect ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SMIPS</span></span>
+<span><span class="co">#&gt; TERN/d1995ee8</span></span>
+<span><span class="co">#&gt; Collection: totalbucket, SMindex, bucket1, bucket2, deepD, runoff</span></span>
+<span><span class="co">#&gt; Daily</span></span>
+<span><span class="co">#&gt; 1 km</span></span>
+<span><span class="co">#&gt; Soil Moisture Integration &amp; Prediction System</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Collecting 1 dataset at 1 location over 4 dates</span></span>
 <span><span class="co">#&gt; SMIPS totalbucket 2024-01-01</span></span>
 <span><span class="co">#&gt; SMIPS totalbucket 2024-01-02</span></span>
 <span><span class="co">#&gt; SMIPS totalbucket 2024-01-03</span></span>
-<span><span class="co">#&gt; ...</span></span>
-<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; SMIPS totalbucket 2024-01-04</span></span>
+<span><span class="co">#&gt; SMIPS SMindex 2024-01-01</span></span>
+<span><span class="co">#&gt; SMIPS SMindex 2024-01-02</span></span>
+<span><span class="co">#&gt; SMIPS SMindex 2024-01-03</span></span>
+<span><span class="co">#&gt; SMIPS SMindex 2024-01-04</span></span>
+<span><span class="co">#&gt; SMIPS bucket1 2024-01-01</span></span>
+<span><span class="co">#&gt; SMIPS bucket1 2024-01-02</span></span>
+<span><span class="co">#&gt; SMIPS bucket1 2024-01-03</span></span>
+<span><span class="co">#&gt; SMIPS bucket1 2024-01-04</span></span>
+<span><span class="co">#&gt; SMIPS bucket2 2024-01-01</span></span>
+<span><span class="co">#&gt; SMIPS bucket2 2024-01-02</span></span>
+<span><span class="co">#&gt; SMIPS bucket2 2024-01-03</span></span>
+<span><span class="co">#&gt; SMIPS bucket2 2024-01-04</span></span>
+<span><span class="co">#&gt; SMIPS deepD 2024-01-01</span></span>
+<span><span class="co">#&gt; SMIPS deepD 2024-01-02</span></span>
+<span><span class="co">#&gt; SMIPS deepD 2024-01-03</span></span>
+<span><span class="co">#&gt; SMIPS deepD 2024-01-04</span></span>
+<span><span class="co">#&gt; SMIPS runoff 2024-01-01</span></span>
 <span><span class="co">#&gt; SMIPS runoff 2024-01-02</span></span>
 <span><span class="co">#&gt; SMIPS runoff 2024-01-03</span></span>
 <span><span class="co">#&gt; SMIPS runoff 2024-01-04</span></span>
@@ -140,9 +160,8 @@ span a 90% interval):</p>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060"</span></span>
-<span><span class="co">#&gt;  [8] "AWC_EV_060_100" "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030" "AWC_05_030_060" "AWC_05_060_100"</span></span>
-<span><span class="co">#&gt; [15] "AWC_05_100_200" "AWC_95_000_005" "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100" "AWC_95_100_200"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060" "AWC_EV_060_100" "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030" "AWC_05_030_060"</span></span>
+<span><span class="co">#&gt; [14] "AWC_05_060_100" "AWC_05_100_200" "AWC_95_000_005" "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100" "AWC_95_100_200"</span></span></code></pre></div>
 <p>This ensures that, by default, you get the most comprehensive data
 for each dataset. The arguments for <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> can
 always be used to specify variants where desired. For example, if we

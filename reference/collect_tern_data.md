@@ -22,6 +22,7 @@ collect_tern_data(
   aet_collection = NULL,
   soildiv_collection = NULL,
   phenology_collection = NULL,
+  canopy_collection = NULL,
   api_key = NULL,
   max_tries = NULL,
   initial_delay = NULL,
@@ -131,6 +132,14 @@ collect_tern_data(
   `"EVIP"`, `"EVII"`, `"SGS_month"`, `"PGS_month"`, `"EGS_month"`. Use
   `NULL` (default) or `"all"` to specify retrieval of all PHENOLOGY
   datasets.
+
+- canopy_collection:
+
+  *For CANOPY datasets.* A `character` vector specifying the OzTreeMap
+  canopy height composite(s) to be retrieved. (Default=All CANOPY
+  datasets.) Options: `"best_pick"`, `"median"`. Use `NULL` (default) or
+  `"all"` to specify retrieval of all CANOPY datasets. This parameter is
+  ignored for non-CANOPY datasets.
 
 - api_key:
 

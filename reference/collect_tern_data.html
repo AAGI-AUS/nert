@@ -68,6 +68,7 @@ datasets are repeated across all dates for consistency.)</p>
 <span>  aet_collection <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  soildiv_collection <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  phenology_collection <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  canopy_collection <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  api_key <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  max_tries <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  initial_delay <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -179,6 +180,14 @@ PHENOLOGY datasets.) Options: <code>"SGS"</code>, <code>"PGS"</code>, <code>"EGS
 <code>"EVI1"</code>, <code>"EVI2"</code>, <code>"EVIP"</code>, <code>"EVII"</code>, <code>"SGS_month"</code>, <code>"PGS_month"</code>,
 <code>"EGS_month"</code>. Use <code>NULL</code> (default) or <code>"all"</code> to specify retrieval of
 all PHENOLOGY datasets.</p></dd>
+
+
+<dt id="arg-canopy-collection">canopy_collection<a class="anchor" aria-label="anchor" href="#arg-canopy-collection"></a></dt>
+<dd><p><em>For CANOPY datasets.</em> A <code>character</code> vector
+specifying the OzTreeMap canopy height composite(s) to be retrieved.
+(Default=All CANOPY datasets.) Options: <code>"best_pick"</code>, <code>"median"</code>. Use
+<code>NULL</code> (default) or <code>"all"</code> to specify retrieval of all CANOPY datasets.
+This parameter is ignored for non-CANOPY datasets.</p></dd>
 
 
 <dt id="arg-api-key">api_key<a class="anchor" aria-label="anchor" href="#arg-api-key"></a></dt>

@@ -11,8 +11,8 @@ datasets into your R analytics. Currently supported datasets in the
 - Actual evapotranspiration estimates using the CSIRO MODIS
   Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm,
 - Soil orders from the Australian Soil Classification Map,
-- Canopy height estimates from the OzTreeMap best-pick canopy height
-  model,
+- Canopy height estimates from the OzTreeMap best-pick and median canopy
+  height models,
 - Australian land surface phenology based on thresholded MODIS Enhanced
   Vegetation Index (EVI) data,
 - Soil and Landscape Grid of Australia (SLGA) datasets, including

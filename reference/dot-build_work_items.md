@@ -18,7 +18,8 @@ round-trip and produces one or more columns in the output table.
   asc_collection,
   aet_collection,
   soildiv_collection,
-  phenology_collection
+  phenology_collection,
+  canopy_collection
 )
 ```
 
@@ -59,6 +60,10 @@ round-trip and produces one or more columns in the output table.
 - phenology_collection:
 
   PHENOLOGY collection selector.
+
+- canopy_collection:
+
+  CANOPY collection selector.
 
 ## Value
 
