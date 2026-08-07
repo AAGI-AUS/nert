@@ -62,7 +62,7 @@ get_key <- function() {
     cli::cli_rule(left = "Instructions")
     cli::cli_code(c(
       "library(keyring)",
-      "keyring_create('tern')",
+      "keyring_create('nert')",
       "key_set('TERN_API_KEY', keyring = 'nert')"
     ))
   }
