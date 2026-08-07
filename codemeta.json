@@ -263,17 +263,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyterra"
     },
-    "9": {
-      "@type": "SoftwareApplication",
-      "identifier": "utils",
-      "name": "utils"
-    },
     "SystemRequirements": null
   },
   "applicationCategory": "Tools",
   "isPartOf": "https://grdc.com.au/research/partnerships-and-initiatives/strategic-partnerships/aagi",
   "keywords": ["TERN", "soil-data", "Australia", "earth-science", "data-access"],
-  "fileSize": "1818.535KB",
+  "fileSize": "1818.524KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",
