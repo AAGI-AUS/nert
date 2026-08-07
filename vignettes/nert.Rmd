@@ -30,17 +30,11 @@ The {nert} package uses your registered TERN API Key to authenticate with the TE
 
 ## Acquiring Your TERN API Key
 
-An API key is required to authenticate and access TERN datasets through the TERN Data Portal. It is straightforward to sign up to TERN and acquire an API key, and by setting the key in your R environment (via `.Renviron` or {keyring}) you can provide the {nert} package with that credential to allow convenient access whenever you use the package to download TERN datasets.
+An API key is required to authenticate and access TERN datasets through the TERN Data Portal. It is straightforward to sign up to TERN and acquire an API key, and by setting the key in your R environment (via {keyring}) you can provide the {nert} package with that credential to allow convenient access whenever you use the package to download TERN datasets.
 
-The following steps detail the process for signing in to your TERN account, generating an API key, and storing it in your R environment.
+The following steps detail the process for signing in to your TERN account, generating an API key, and setting it up for use with the {nert} package.
 
-1.  Navigate to the TERN Data Discovery Portal (<https://portal.tern.org.au/>) in a web browser. (Alternatively, use `nert::get_key()` to open the TERN website in a web browser.) Click the "Sign In" button that appears in the top-right of the browser window.
-
-    
-    ``` r
-    library(nert)
-    get_key()
-    ```
+1.  Navigate to the TERN Data Discovery Portal (<https://portal.tern.org.au/>) in a web browser. Click the "Sign In" button that appears in the top-right of the browser window.
 
     ![](01-get-started.jpg){width="80%"}
 
@@ -64,12 +58,9 @@ The following steps detail the process for signing in to your TERN account, gene
 
     ![](06-get-started.jpg){width="80%"}
 
-## Saving Your API Key Locally
+## Saving Your API Key Locally (using {keyring})
 
-### Using the {keyring} Package for Secure Storage
-
-We suggest that you use a secure method for storing your API keys in R.
-You can use the [{keyring}](https://keyring.r-lib.org/index.html) package to store your TERN API Key in your system's credential store.
+We suggest that you use a secure method for storing your API keys in R. You can use the [{keyring}](https://keyring.r-lib.org/index.html) package to store your TERN API Key in your system's credential store.
 
 1.  If you don't have the {keyring} package installed, you can install it with:
 
@@ -78,6 +69,11 @@ You can use the [{keyring}](https://keyring.r-lib.org/index.html) package to sto
     install.packages("keyring")
     ```
 
+    Note that on Linux systems, you may need to install the `libsecret` and `libssl` system libraries before you install the {keyring} package, in order for {keyring} to have access to the Linux Secret Service API to set up the keyring. On Debian or RHEL derivatives, you can do this as follows:
+
+    - Debian/Ubuntu: `sudo apt install libsecret-1-dev libssl-dev`
+    - RHEL/Fedora: `sudo dnf install libsecret-devel openssl-devel`
+
 2.  Once {keyring} is installed, you can store your API key using the `keyring::keyring_create()` and `keyring::key_set()` functions as follows:
 
     
@@ -85,10 +81,16 @@ You can use the [{keyring}](https://keyring.r-lib.org/index.html) package to sto
     library(keyring)
     
     keyring_create("nert")
+    ```
+
+    This will create a new keyring called `nert`, with a new key called `TERN_API_KEY`. You may be prompted by your system's keyring manager to create a password for the keyring here, which can be any password you like. Then run `keyring::key_set()`:
+
+    
+    ``` r
     key_set("TERN_API_KEY", keyring = "nert")
     ```
 
-    This will create a new keyring called `nert`, with a new key called `TERN_API_KEY`. The function will then prompt you for the actual key value, which you can paste from the TERN website where you copied it earlier. You can then verify that the key was stored as expected by using the `keyring::key_get()` function:
+    The function will then prompt you (via your system's keyring manager) for the actual key value. Here is where you paste the API key from the TERN website that you copied to the clipboard earlier. You can then verify that the key was stored as expected by using the `keyring::key_get()` function:
 
     
     ``` r
@@ -150,6 +152,9 @@ library(terra)
 #> The following object is masked from 'package:knitr':
 #> 
 #>     spin
+#> The following objects are masked from 'package:testthat':
+#> 
+#>     compare, describe
 
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #>   ID smips_smi_perc_20250630        x         y
