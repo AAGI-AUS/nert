@@ -399,7 +399,8 @@ collect_tern_data <- function(
     )
   ) {
     cli::cli_abort(
-      "Coordinate out of bounds: for TERN rasters, lon in [90, 180], lat in [-51, -8]."
+      "Coordinate out of bounds: for TERN rasters, lon in [90, 180], lat in 
+       [-51, -8]."
     )
   }
   return(coords)
@@ -675,7 +676,8 @@ collect_tern_data <- function(
 #' (date, variant); for PHENOLOGY datasets we emit two work items per
 #' (date, variant), one for each season; for SLGA datasets we emit one work
 #' item per (depth, variant) combination. For temporally-static datasets,
-#' the item values are replicated across the date axis (`date_idx = NA_integer_`).
+#' the item values are replicated across the date axis
+#' (`date_idx = NA_integer_`).
 #'
 #' @param datasets Normalised alias vector.
 #' @param dates Resolved `Date` vector.

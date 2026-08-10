@@ -52,6 +52,7 @@ For time-series datasets (SMIPS, AET) we emit one work item per
 (date, variant); for PHENOLOGY datasets we emit two work items per
 (date, variant), one for each season; for SLGA datasets we emit one work
 item per (depth, variant) combination. For temporally-static datasets,
-the item values are replicated across the date axis (\code{date_idx = NA_integer_}).
+the item values are replicated across the date axis
+(\code{date_idx = NA_integer_}).
 }
 \keyword{internal}
