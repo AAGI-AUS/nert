@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Bandwidth-safe spatial
+  subsetting](https://aagi-aus.github.io/nert/articles/bandwidth_safe_subsetting.md):
 - [collect_tern_data() for bulk TERN dataset
   collection](https://aagi-aus.github.io/nert/articles/collect_tern_data.md):
 - [Using nert to augment agricultural analytics with SMIPS

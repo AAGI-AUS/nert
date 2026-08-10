@@ -18,6 +18,12 @@
   continuous integration, which runs without a TERN API key) is now
   approximately 99.8%.
 
+- New vignette, *Bandwidth-safe spatial subsetting*, showing how to crop
+  to an area of interest, extract at point locations, and save a local
+  copy so that only the data you need crosses the network, and covering
+  the coordinate reference system handling for the canopy height
+  dataset.
+
 ## nert 1.1.0
 
 Updated version, fixing a number of issues with the TERN dataset
