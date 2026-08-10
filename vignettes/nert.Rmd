@@ -102,7 +102,7 @@ We suggest that you use a secure method for storing your API keys in R. You can 
     
     ``` r
     library(terra)
-    library(tern)
+    library(nert)
     
     r <- read_smips(
       date = "2024-01-01",
