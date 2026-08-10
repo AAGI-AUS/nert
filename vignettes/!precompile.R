@@ -67,6 +67,24 @@ writeLines(ctd_replace, ctd_file_conn)
 close(ctd_file_conn)
 
 
+## Vignette - bandwidth_safe_subsetting.Rmd (bandwidth-safe spatial subsetting)
+knit(
+  input = file.path("vignettes", "bandwidth_safe_subsetting.Rmd.orig"),
+  output = file.path("vignettes", "bandwidth_safe_subsetting.Rmd")
+)
+purl(
+  file.path("vignettes", "bandwidth_safe_subsetting.Rmd.orig"),
+  output = file.path("vignettes", "bandwidth_safe_subsetting.R")
+)
+
+# remove file path such that vignettes will build with figures
+bss_replace <- readLines(file.path("vignettes", "bandwidth_safe_subsetting.Rmd"))
+bss_replace <- gsub("<img src=\"vignettes/", "<img src=\"", bss_replace)
+bss_file_conn <- file(file.path("vignettes", "bandwidth_safe_subsetting.Rmd"))
+writeLines(bss_replace, bss_file_conn)
+close(bss_file_conn)
+
+
 build_vignettes()
 
 # move resource files to /doc
