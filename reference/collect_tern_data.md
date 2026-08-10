@@ -143,8 +143,7 @@ collect_tern_data(
 
 - api_key:
 
-  A `character` string containing your TERN API key. Defaults to
-  automatic detection from your `.Renviron` or `.Rprofile`. See
+  A `character` string containing your TERN API key. See
   [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
   for setup.
 
