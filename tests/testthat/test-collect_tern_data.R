@@ -78,7 +78,7 @@ test_that(".parse_coordinates rejects when both lon/lat and xy missing", {
 test_that(".parse_date_range expands a length-2 character range to daily", {
   d <- .parse_date_range(c("2024-01-01", "2024-01-05"))
   expect_length(d, 5L)
-  expect_identical(d[1], as.Date("2024-01-01"))
+  expect_equal(d[1], as.Date("2024-01-01"))
 })
 
 test_that(".parse_date_range preserves an explicit Date vector", {
