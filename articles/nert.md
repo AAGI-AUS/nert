@@ -152,7 +152,7 @@ package to store your TERN API Key in your system’s credential store.
     ``` r
 
     library(terra)
-    library(tern)
+    library(nert)
 
     r <- read_smips(
       date = "2024-01-01",
