@@ -15,8 +15,7 @@
 #' @param collection One of `"ETa"` (actual evapotranspiration in
 #'   mm/month, default) or `"pixel_qa"` (quality assurance attributes).
 #' @param api_key A `character` string containing your \acronym{TERN}
-#'   \acronym{API} key. Defaults to automatic detection from your
-#'   `.Renviron` or `.Rprofile`.  See [get_key()] for setup.
+#'   \acronym{API} key.  See [get_key()] for setup.
 #' @param max_tries Maximum number of download retries before an error is
 #'   raised. Default=`NULL`, in which case the maximum retry number is
 #'   resolved from the option `nert.max_tries` if that option exists.

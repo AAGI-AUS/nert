@@ -21,8 +21,7 @@ is snapped to the first of the month internally.  Required.}
 mm/month, default) or \code{"pixel_qa"} (quality assurance attributes).}
 
 \item{api_key}{A \code{character} string containing your \acronym{TERN}
-\acronym{API} key. Defaults to automatic detection from your
-\code{.Renviron} or \code{.Rprofile}.  See \code{\link[=get_key]{get_key()}} for setup.}
+\acronym{API} key.  See \code{\link[=get_key]{get_key()}} for setup.}
 
 \item{max_tries}{Maximum number of download retries before an error is
 raised. Default=\code{NULL}, in which case the maximum retry number is
