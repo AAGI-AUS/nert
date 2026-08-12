@@ -16,8 +16,8 @@ datasets into your R analytics. Currently supported datasets in the
 - Australian land surface phenology based on thresholded MODIS Enhanced
   Vegetation Index (EVI) data,
 - Soil and Landscape Grid of Australia (SLGA) datasets, including
-  available volumetric water capacity, clay/sand/silt content, Bulk
-  Density (whole earth) measurements, soil pH (CaCl2 and water),
+  available volumetric water capacity, clay/sand/silt content, bulk
+  density (whole earth) measurements, soil pH (CaCl2 and water),
   nitrogen and phosphorus content, cation exchange capacity, and the
   drained upper limit and 15-bar lower limit water content readings,
 - Soil bacteria and soil fungi Beta Diversity datasets.
@@ -252,7 +252,8 @@ To cite nert:
 citation("nert")
 #> To cite package 'nert' in publications use:
 #> 
-#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: Curated Access to TERN Environmental Raster Data. R package version 1.1.0. https://aagi-aus.github.io/nert/
+#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: Curated Access to TERN Environmental Raster Data. R package
+#>   version 1.1.0. https://aagi-aus.github.io/nert/
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
