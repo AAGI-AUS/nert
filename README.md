@@ -4,8 +4,6 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
-
 # nert
 
 <!-- badges: start -->
@@ -19,7 +17,7 @@ Currently supported datasets in the {nert} package include:
 - Soil orders from the Australian Soil Classification Map,
 - Canopy height estimates from the OzTreeMap best-pick and median canopy height models,
 - Australian land surface phenology based on thresholded MODIS Enhanced Vegetation Index (EVI) data,
-- Soil and Landscape Grid of Australia (SLGA) datasets, including available volumetric water capacity, clay/sand/silt content, bulk density (whole earth) measurements, soil pH (CaCl2 and water), nitrogen and phosphorus content, cation exchange capacity, and the drained upper limit and 15-bar lower limit water content readings,
+- Soil and Landscape Grid of Australia (SLGA) datasets, including available volumetric water capacity, clay/sand/silt content, bulk density (whole earth) measurements, soil pH (CaCl2 and water), nitrogen and phosphorus content, cation exchange capacity (CEC), and the drained upper limit and 15-bar lower limit water content readings,
 - Soil bacteria and soil fungi Beta Diversity datasets.
 
 ## Installation instructions
@@ -52,8 +50,7 @@ If you run into errors, *e.g.*, `Bad GitHub Credentials`, please read this: [Man
 
 You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
 
-
-``` r
+```r
 o <- options() # store original options
 
 options(pkg.build_vignettes = TRUE)
@@ -95,32 +92,30 @@ The {nert} package provides a number of convenient functions such as `read_smips
 The below code fetches the SMIPS soil moisture raster for the 1st of January 2024, and then uses the {terra} package's `extract()` function to get a soil moisture estimate for the Adelaide CBD.
 Note that since these are cloud-optimised COGs, they employ Just-In-Time data streaming: that is, *only the bytes necessary for the spatial extent we actually need are downloaded*, resulting in significant time and disk-space savings.
 
-
-``` r
+```r
 library(nert)
 #> Registered S3 method overwritten by 'data.table':
-#>   method           from   
+#>   method           from
 #>   print.data.table colorDF
 library(terra)
 #> terra 1.9.34
-#> 
+#>
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
-#> 
+#>
 #>     spin
 
 r <- read_smips(date = "2024-01-01")
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #> # Data frame like object (class data.frame) 4 x 1:
-#>  │ID   │smips_totalbucket_mm_20240101│x    │y    
+#>  │ID   │smips_totalbucket_mm_20240101│x    │y
 #>  │<dbl>│<dbl>                        │<dbl>│<dbl>
 #> 1│    1│                           46│  139│  -35
 ```
 
 The {nert} package also re-exports {tidyterra}'s `autoplot()` function, which can be used to create a visualisation of the Australia-wide data rasters.
 
-
-``` r
+```r
 autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
@@ -132,8 +127,7 @@ autoplot(r)
 The {nert} package also provides a convenient function `collect_tern_data()` which allows you to easily grab multiple TERN datasets across multiple times and multiple spatial locations.
 For example, the below code grabs the SMIPS "totalbucket" and SLGA "CLY" clay content estimates at 0-5cm and 5-15cm depths, across the first week of 2024 at Merriden, WA and Tamworth, NSW:
 
-
-``` r
+```r
 dat <- collect_tern_data(
   xy = data.frame(lon = c(118.28, 150.84), lat = c(-31.48, -31.07)),
   date_range = c("2024-01-01", "2024-01-07"),
@@ -181,22 +175,19 @@ sudo apt update && sudo apt install libcurl4-openssl-dev libgdal-dev gdal-bin li
 
 Set up the container.
 
-
-``` bash
+```bash
 devcontainer up --workspace-folder .
 ```
 
 Run tests and check stuff.
 
-
-``` bash
+```bash
 devcontainer exec --workspace-folder . R -e "devtools::check()"
 ```
 
 Render this file.
 
-
-``` bash
+```bash
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 ```
 
@@ -204,16 +195,15 @@ devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 
 To cite nert:
 
-
-``` r
+```r
 citation("nert")
 #> To cite package 'nert' in publications use:
-#> 
+#>
 #>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: Curated Access to TERN Environmental Raster Data. R package
 #>   version 1.1.0. https://aagi-aus.github.io/nert/
-#> 
+#>
 #> A BibTeX entry for LaTeX users is
-#> 
+#>
 #>   @Manual{,
 #>     title = {{nert}: Curated Access to TERN Environmental Raster Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
