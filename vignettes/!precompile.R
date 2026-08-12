@@ -78,7 +78,10 @@ purl(
 )
 
 # remove file path such that vignettes will build with figures
-bss_replace <- readLines(file.path("vignettes", "bandwidth_safe_subsetting.Rmd"))
+bss_replace <- readLines(file.path(
+  "vignettes",
+  "bandwidth_safe_subsetting.Rmd"
+))
 bss_replace <- gsub("<img src=\"vignettes/", "<img src=\"", bss_replace)
 bss_file_conn <- file(file.path("vignettes", "bandwidth_safe_subsetting.Rmd"))
 writeLines(bss_replace, bss_file_conn)
