@@ -1,34 +1,49 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nert
+# nert <img src="man/figures/logo.png" style="float:right;" alt="logo" width="120" />
 
 <!-- badges: start -->
-[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://app.codecov.io/gh/AAGI-AUS/nert) <!-- badges: end -->
 
-The {nert} package streamlines access to various Cloud-Optimised GeoTIFF (COG) datasets provided by the Australian Terrestrial Ecosystem Research Network (TERN), allowing you to easily incorporate these environmental datasets into your R analytics.
-Currently supported datasets in the {nert} package include:
+[![Project Status:
+Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![R-CMD-check](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AAGI-AUS/nert/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/AAGI-AUS/nert/graph/badge.svg?token=WgBeTrqQnQ)](https://app.codecov.io/gh/AAGI-AUS/nert)
+<!-- badges: end -->
 
-- Daily volumetric soil moisture estimates from the Soil Moisture Integration and Prediction System (SMIPS),
-- Actual evapotranspiration estimates using the CSIRO MODIS Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm,
+The {nert} package streamlines access to various Cloud-Optimised GeoTIFF
+(COG) datasets provided by the Australian Terrestrial Ecosystem Research
+Network (TERN), allowing you to easily incorporate these environmental
+datasets into your R analytics. Currently supported datasets in the
+{nert} package include:
+
+- Daily volumetric soil moisture estimates from the Soil Moisture
+  Integration and Prediction System (SMIPS),
+- Actual evapotranspiration estimates using the CSIRO MODIS
+  Reflectance-based Scaling EvapoTranspiration (CMRSET) algorithm,
 - Soil orders from the Australian Soil Classification Map,
-- Canopy height estimates from the OzTreeMap best-pick and median canopy height models,
-- Australian land surface phenology based on thresholded MODIS Enhanced Vegetation Index (EVI) data,
-- Soil and Landscape Grid of Australia (SLGA) datasets, including available volumetric water capacity, clay/sand/silt content, bulk density (whole earth) measurements, soil pH (CaCl2 and water), nitrogen and phosphorus content, cation exchange capacity (CEC), and the drained upper limit and 15-bar lower limit water content readings,
+- Canopy height estimates from the OzTreeMap best-pick and median canopy
+  height models,
+- Australian land surface phenology based on thresholded MODIS Enhanced
+  Vegetation Index (EVI) data,
+- Soil and Landscape Grid of Australia (SLGA) datasets, including
+  available volumetric water capacity, clay/sand/silt content, bulk
+  density (whole earth) measurements, soil pH (CaCl2 and water),
+  nitrogen and phosphorus content, cation exchange capacity (CEC), and
+  the drained upper limit and 15-bar lower limit water content readings,
 - Soil bacteria and soil fungi Beta Diversity datasets.
 
 ## Installation instructions
 
-{nert} is available through the [R-Universe](https://r-universe.dev/search) with pre-built binaries (this is the easy way).
+{nert} is available through the
+[R-Universe](https://r-universe.dev/search) with pre-built binaries
+(this is the easy way).
 
 To get started:
 
 ### Enable this universe
 
-```r
+``` r
 options(
   repos = c(
     AAGI = "https://aagi-aus.r-universe.dev",
@@ -39,18 +54,25 @@ options(
 
 ### Install
 
-```r
+``` r
 install.packages("nert")
 ```
 
 ### The hard(er) way
 
-Note that for Linux users, you will need to install system libraries to support geospatial packages in R, *e.g.*, {sf} and {terra} as well as some packages for downloading data via [curl](https://curl.se/download.html), please see [Note for Linux Installers](#Note-for-Linux-Installers).
-If you run into errors, *e.g.*, `Bad GitHub Credentials`, please read this: [Managing Git(Hub) Credentials](https://usethis.r-lib.org/articles/git-credentials.html) and set up your GitHub credentials in R and try again.
+Note that for Linux users, you will need to install system libraries to
+support geospatial packages in R, *e.g.*, {sf} and {terra} as well as
+some packages for downloading data via
+[curl](https://curl.se/download.html), please see [Note for Linux
+Installers](#Note-for-Linux-Installers). If you run into errors, *e.g.*,
+`Bad GitHub Credentials`, please read this: [Managing Git(Hub)
+Credentials](https://usethis.r-lib.org/articles/git-credentials.html)
+and set up your GitHub credentials in R and try again.
 
-You can install the development version of {nert} from [GitHub](https://github.com/AAGI-AUS/nert) with:
+You can install the development version of {nert} from
+[GitHub](https://github.com/AAGI-AUS/nert) with:
 
-```r
+``` r
 o <- options() # store original options
 
 options(pkg.build_vignettes = TRUE)
@@ -73,61 +95,74 @@ options(o) # reset options
 
 ## A note on working with COGs
 
-COGs are not like working with other datasets in R that you might fetch from the web.
-They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `autoplot()` or `writeRaster()`.
+COGs are not like working with other datasets in R that you might fetch
+from the web. They only fetch the information about the object for you
+in your R session and only at the time that you call it, *e.g.*,
+`autoplot()` or `writeRaster()`.
 
-A normal GeoTIFF is like downloading an entire 500-page book because you want one paragraph.
+A normal GeoTIFF is like downloading an entire 500-page book because you
+want one paragraph.
 
-A COG is like having an index that lets you jump directly to page 347 and read only that page.
+A COG is like having an index that lets you jump directly to page 347
+and read only that page.
 
-COGs allow you to very quickly create a SpatRaster object locally that represents the entire dataset and then work with a sub-portion from there.
-Be aware that if you are not careful, you could end up downloading a large GeoTIFF file fully.
-It is best to create the local object and then `crop()`, `mask()` or `extract()` the area of interest to save time, bandwidth and free memory.
-Then once you've done that, try plotting or using the object in models or calculations.
-Now, on to working with {nert} to read COGs from TERN!
+COGs allow you to very quickly create a SpatRaster object locally that
+represents the entire dataset and then work with a sub-portion from
+there. Be aware that if you are not careful, you could end up
+downloading a large GeoTIFF file fully. It is best to create the local
+object and then `crop()`, `mask()` or `extract()` the area of interest
+to save time, bandwidth and free memory. Then once you’ve done that, try
+plotting or using the object in models or calculations. Now, on to
+working with {nert} to read COGs from TERN!
 
 ## Example: reading an SMIPS COG as a spatial object
 
-The {nert} package provides a number of convenient functions such as `read_smips()` which allow you to fetch COGs from the TERN Data Portal for use in your R session.
-The below code fetches the SMIPS soil moisture raster for the 1st of January 2024, and then uses the {terra} package's `extract()` function to get a soil moisture estimate for the Adelaide CBD.
-Note that since these are cloud-optimised COGs, they employ Just-In-Time data streaming: that is, *only the bytes necessary for the spatial extent we actually need are downloaded*, resulting in significant time and disk-space savings.
+The {nert} package provides a number of convenient functions such as
+`read_smips()` which allow you to fetch COGs from the TERN Data Portal
+for use in your R session. The below code fetches the SMIPS soil
+moisture raster for the 1st of January 2024, and then uses the {terra}
+package’s `extract()` function to get a soil moisture estimate for the
+Adelaide CBD. Note that since these are cloud-optimised COGs, they
+employ Just-In-Time data streaming: that is, *only the bytes necessary
+for the spatial extent we actually need are downloaded*, resulting in
+significant time and disk-space savings.
 
-```r
+``` r
 library(nert)
-#> Registered S3 method overwritten by 'data.table':
-#>   method           from
-#>   print.data.table colorDF
 library(terra)
-#> terra 1.9.34
-#>
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#>
-#>     spin
+#> terra 1.8.86
 
 r <- read_smips(date = "2024-01-01")
+#> Warning in default_backend_auto(): Selecting 'env' backend. Secrets are stored
+#> in environment variables
+#> Warning in warn_for_keyring(keyring): The 'env' backend does not support
+#> multiple keyrings, the 'keyring' argument is ignored
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
-#> # Data frame like object (class data.frame) 4 x 1:
-#>  │ID   │smips_totalbucket_mm_20240101│x    │y
-#>  │<dbl>│<dbl>                        │<dbl>│<dbl>
-#> 1│    1│                           46│  139│  -35
+#>   ID smips_totalbucket_mm_20240101        x         y
+#> 1  1                      46.07692 138.6037 -34.93254
 ```
 
-The {nert} package also re-exports {tidyterra}'s `autoplot()` function, which can be used to create a visualisation of the Australia-wide data rasters.
+The {nert} package also re-exports {tidyterra}’s `autoplot()` function,
+which can be used to create a visualisation of the Australia-wide data
+rasters.
 
-```r
+``` r
 autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 
-<img src="man/figures/README-example_cog-1.png" alt="" width="100%" />
+<img src="man/figures/README-example_cog-1.png" width="100%" />
 
 ## Extract values in bulk given Lat/Lon values
 
-The {nert} package also provides a convenient function `collect_tern_data()` which allows you to easily grab multiple TERN datasets across multiple times and multiple spatial locations.
-For example, the below code grabs the SMIPS "totalbucket" and SLGA "CLY" clay content estimates at 0-5cm and 5-15cm depths, across the first week of 2024 at Merriden, WA and Tamworth, NSW:
+The {nert} package also provides a convenient function
+`collect_tern_data()` which allows you to easily grab multiple TERN
+datasets across multiple times and multiple spatial locations. For
+example, the below code grabs the SMIPS “totalbucket” and SLGA “CLY”
+clay content estimates at 0-5cm and 5-15cm depths, across the first week
+of 2024 at Merriden, WA and Tamworth, NSW:
 
-```r
+``` r
 dat <- collect_tern_data(
   xy = data.frame(lon = c(118.28, 150.84), lat = c(-31.48, -31.07)),
   date_range = c("2024-01-01", "2024-01-07"),
@@ -137,6 +172,10 @@ dat <- collect_tern_data(
   stat = "EV",
   verbose = FALSE
 )
+#> Warning in default_backend_auto(): Selecting 'env' backend. Secrets are stored
+#> in environment variables
+#> Warning in warn_for_keyring(keyring): The 'env' backend does not support
+#> multiple keyrings, the 'keyring' argument is ignored
 head(dat)
 #>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015
 #>        <Date>  <num>  <num>             <num>          <num>          <num>
@@ -150,22 +189,29 @@ head(dat)
 
 ## Keeping {nert} updated
 
-{nert} is undergoing active development and is not yet on CRAN.
-If you installed {nert} using the R-Universe (the preferred method), you can keep {nert} up-to-date locally like so:
+{nert} is undergoing active development and is not yet on CRAN. If you
+installed {nert} using the R-Universe (the preferred method), you can
+keep {nert} up-to-date locally like so:
 
-```r
+``` r
 update.packages()
 ```
 
-and answering `yes` or `y` when asked if you would like to upgrade {nert}.
+and answering `yes` or `y` when asked if you would like to upgrade
+{nert}.
 
 ## Note for Linux installers
 
-If you are using Linux, you will likely need to install several system-level libraries, {pak} will do it's best to install most of them but some may not be installable this way.
-For [Nectar](https://ardc.edu.au/services/ardc-nectar-research-cloud/) with a fresh Ubuntu image, you can use the following command to install system libraries to install {pak} and then install {fifo}.
-In your Linux terminal (not your R console, the "terminal" tab in RStudio should do here in most cases) type:
+If you are using Linux, you will likely need to install several
+system-level libraries, {pak} will do it’s best to install most of them
+but some may not be installable this way. For
+[Nectar](https://ardc.edu.au/services/ardc-nectar-research-cloud/) with
+a fresh Ubuntu image, you can use the following command to install
+system libraries to install {pak} and then install {fifo}. In your Linux
+terminal (not your R console, the “terminal” tab in RStudio should do
+here in most cases) type:
 
-```bash
+``` bash
 sudo apt update && sudo apt install libcurl4-openssl-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev libudunits2-dev libxml2-dev
 ```
 
@@ -175,19 +221,19 @@ sudo apt update && sudo apt install libcurl4-openssl-dev libgdal-dev gdal-bin li
 
 Set up the container.
 
-```bash
+``` bash
 devcontainer up --workspace-folder .
 ```
 
 Run tests and check stuff.
 
-```bash
+``` bash
 devcontainer exec --workspace-folder . R -e "devtools::check()"
 ```
 
 Render this file.
 
-```bash
+``` bash
 devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 ```
 
@@ -195,15 +241,16 @@ devcontainer exec --workspace-folder . R -e "devtools::build_readme()"
 
 To cite nert:
 
-```r
+``` r
 citation("nert")
 #> To cite package 'nert' in publications use:
-#>
-#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: Curated Access to TERN Environmental Raster Data. R package
+#> 
+#>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026).
+#>   nert: Curated Access to TERN Environmental Raster Data. R package
 #>   version 1.1.0. https://aagi-aus.github.io/nert/
-#>
+#> 
 #> A BibTeX entry for LaTeX users is
-#>
+#> 
 #>   @Manual{,
 #>     title = {{nert}: Curated Access to TERN Environmental Raster Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
