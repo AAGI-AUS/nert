@@ -18,8 +18,8 @@ datasets into your R analytics. Currently supported datasets in the
 - Soil and Landscape Grid of Australia (SLGA) datasets, including
   available volumetric water capacity, clay/sand/silt content, bulk
   density (whole earth) measurements, soil pH (CaCl2 and water),
-  nitrogen and phosphorus content, cation exchange capacity, and the
-  drained upper limit and 15-bar lower limit water content readings,
+  nitrogen and phosphorus content, cation exchange capacity (CEC), and
+  the drained upper limit and 15-bar lower limit water content readings,
 - Soil bacteria and soil fungi Beta Diversity datasets.
 
 ## Installation instructions
@@ -129,20 +129,20 @@ disk-space savings.
 
 library(nert)
 #> Registered S3 method overwritten by 'data.table':
-#>   method           from   
+#>   method           from
 #>   print.data.table colorDF
 library(terra)
 #> terra 1.9.34
-#> 
+#>
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
-#> 
+#>
 #>     spin
 
 r <- read_smips(date = "2024-01-01")
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #> # Data frame like object (class data.frame) 4 x 1:
-#>  │ID   │smips_totalbucket_mm_20240101│x    │y    
+#>  │ID   │smips_totalbucket_mm_20240101│x    │y
 #>  │<dbl>│<dbl>                        │<dbl>│<dbl>
 #> 1│    1│                           46│  139│  -35
 ```
@@ -251,12 +251,12 @@ To cite nert:
 
 citation("nert")
 #> To cite package 'nert' in publications use:
-#> 
+#>
 #>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert: Curated Access to TERN Environmental Raster Data. R package
 #>   version 1.1.0. https://aagi-aus.github.io/nert/
-#> 
+#>
 #> A BibTeX entry for LaTeX users is
-#> 
+#>
 #>   @Manual{,
 #>     title = {{nert}: Curated Access to TERN Environmental Raster Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
