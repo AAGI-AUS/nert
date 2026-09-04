@@ -51,3 +51,67 @@ test_that(".set_tern_key aborts in non-interactive sessions", {
     .set_tern_key()
   )
 })
+
+test_that("get_key reports a missing keyring package as a missing package", {
+  testthat::local_mocked_bindings(
+    .has_keyring = function() FALSE,
+    .package = "nert"
+  )
+
+  expect_error(
+    get_key(),
+    "keyring"
+  )
+})
+
+test_that("get_key reads the default store when the named keyring is empty", {
+  testthat::local_mocked_bindings(
+    has_keyring_support = function(...) TRUE,
+    key_get = function(service, keyring = NULL, ...) {
+      if (!is.null(keyring)) {
+        stop("password not found")
+      }
+
+      "default_store_key"
+    },
+    .package = "keyring"
+  )
+
+  expect_identical(
+    get_key(),
+    "default_store_key"
+  )
+})
+
+test_that("get_key is silent where the backend has no named keyrings", {
+  testthat::local_mocked_bindings(
+    has_keyring_support = function(...) FALSE,
+    key_get = function(service, keyring = NULL, ...) {
+      if (!is.null(keyring)) {
+        warning("The 'env' backend does not support multiple keyrings")
+      }
+
+      "env_key"
+    },
+    .package = "keyring"
+  )
+
+  expect_silent(key <- get_key())
+  expect_identical(key, "env_key")
+})
+
+test_that(".read_tern_key skips a named keyring the backend cannot provide", {
+  called <- FALSE
+
+  testthat::local_mocked_bindings(
+    has_keyring_support = function(...) FALSE,
+    key_get = function(...) {
+      called <<- TRUE
+      "unreachable_key"
+    },
+    .package = "keyring"
+  )
+
+  expect_identical(.read_tern_key(keyring = "nert"), "")
+  expect_false(called)
+})
