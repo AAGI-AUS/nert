@@ -4,12 +4,16 @@
 \alias{.set_tern_key}
 \title{Help the User Request an API Key for the TERN API}
 \usage{
-.set_tern_key()
+.set_tern_key(reports = character())
+}
+\arguments{
+\item{reports}{A \code{character} vector of what each credential store said when
+it could not supply a key. Listed in the error so that a locked store is
+not mistaken for an absent key.}
 }
 \value{
-Called for its side-effects, checks for presence of a TERN key in
-the user's key ring and errors if one is not found with instructions for
-acquiring one.
+Called for its side-effects, shows instructions for acquiring and
+storing a key and raises an error of class \code{nert_no_key}.
 }
 \description{
 Opens a browser window at the TERN API key request URL and provides

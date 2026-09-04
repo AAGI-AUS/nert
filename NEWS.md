@@ -7,6 +7,14 @@
   environment backend used on servers and continuous integration runners no
   longer warns on every call that the `keyring` argument is ignored.
 
+- A credential store that cannot be read is no longer reported as an absent
+  key. {keyring} raises a plain error for a key that is not held, for a store
+  that is locked, and for a backend that cannot be reached, without
+  distinguishing them, so `get_key()` now carries each store's own words into
+  its error rather than discarding them. The failure it raises carries the
+  class `nert_no_key`, so a caller can tell "no key is configured" from "the
+  key could not be read".
+
 - `get_key()` reports a missing {keyring} package as a missing package. The
   installation error was previously caught by the same handler as a missing
   key and reported as "No TERN_API_KEY found", which sent the user to fix the

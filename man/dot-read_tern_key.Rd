@@ -10,13 +10,21 @@
 \item{keyring}{Name of the keyring to read, or \code{NULL} for the default store.}
 }
 \value{
-A \code{character} string holding the key, empty when none is found.
+A named \code{list} of two elements: \code{key}, a \code{character} string that is
+empty when no key was supplied, and \code{report}, a \code{character} string naming
+the store and what it said, empty when there was nothing to report.
 }
 \description{
-Returns an empty string rather than raising an error when no key is held, so
-that the caller can go on to the next store.  A named keyring is skipped
-where the active backend does not support one, which is what keeps the
-environment backend used by servers and continuous integration runners
-from warning on every call that the \code{keyring} argument is ignored.
+Reports the key, or what the store said when it could not supply one, so
+that a caller working through several stores can name every cause it met
+rather than treating each failure as an absent key.  \pkg{keyring} raises
+a plain error for a key that is not held, for a store that is locked, and
+for a backend that cannot be reached, and does not distinguish them by
+class, so the message is carried up and shown to the user.
+}
+\details{
+A named keyring is not asked for where the active backend has none, which
+is what keeps the environment backend used by servers and continuous
+integration runners from warning that the \code{keyring} argument is ignored.
 }
 \keyword{internal}

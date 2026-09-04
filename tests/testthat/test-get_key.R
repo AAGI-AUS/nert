@@ -17,7 +17,7 @@ test_that("get_key falls back to .set_tern_key when no key exists", {
   )
 
   testthat::local_mocked_bindings(
-    .set_tern_key = function() {
+    .set_tern_key = function(...) {
       rlang::abort("No TERN_API_KEY found.")
     },
     .package = "nert"
@@ -112,6 +112,39 @@ test_that(".read_tern_key skips a named keyring the backend cannot provide", {
     .package = "keyring"
   )
 
-  expect_identical(.read_tern_key(keyring = "nert"), "")
+  skipped <- .read_tern_key(keyring = "nert")
+
+  expect_identical(skipped$key, "")
+  expect_identical(skipped$report, character())
   expect_false(called)
+})
+
+test_that("get_key names what each credential store reported", {
+  testthat::local_mocked_bindings(
+    has_keyring_support = function(...) TRUE,
+    key_get = function(...) {
+      stop("User interaction is not allowed.")
+    },
+    .package = "keyring"
+  )
+
+  expect_error(
+    get_key(),
+    "User interaction is not allowed",
+    class = "nert_no_key"
+  )
+})
+
+test_that("a store that cannot be read is not reported as an absent key", {
+  testthat::local_mocked_bindings(
+    has_keyring_support = function(...) TRUE,
+    key_get = function(...) {
+      stop("The nert keychain is locked.")
+    },
+    .package = "keyring"
+  )
+
+  reported <- tryCatch(get_key(), error = function(e) conditionMessage(e))
+
+  expect_match(reported, "locked")
 })

@@ -1,8 +1,6 @@
 has_tern_key <- function() {
-  key <- tryCatch(
-    get_key(),
-    error = function(e) ""
+  tryCatch(
+    nzchar(get_key()),
+    nert_no_key = function(cnd) FALSE
   )
-
-  nzchar(key)
 }
