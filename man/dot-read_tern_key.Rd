@@ -4,27 +4,18 @@
 \alias{.read_tern_key}
 \title{Read the TERN API Key From One Credential Store}
 \usage{
-.read_tern_key(keyring)
+.read_tern_key(backend, keyring)
 }
 \arguments{
+\item{backend}{The \pkg{keyring} backend, from \code{\link[keyring:default_backend]{keyring::default_backend()}}.}
+
 \item{keyring}{Name of the keyring to read, or \code{NULL} for the default store.}
 }
 \value{
-A named \code{list} of two elements: \code{key}, a \code{character} string that is
-empty when no key was supplied, and \code{report}, a \code{character} string naming
-the store and what it said, empty when there was nothing to report.
+A named \code{list}: \code{key}, empty when no key was supplied, and \code{report},
+what the store raised.
 }
 \description{
-Reports the key, or what the store said when it could not supply one, so
-that a caller working through several stores can name every cause it met
-rather than treating each failure as an absent key.  \pkg{keyring} raises
-a plain error for a key that is not held, for a store that is locked, and
-for a backend that cannot be reached, and does not distinguish them by
-class, so the message is carried up and shown to the user.
-}
-\details{
-A named keyring is not asked for where the active backend has none, which
-is what keeps the environment backend used by servers and continuous
-integration runners from warning that the \code{keyring} argument is ignored.
+Reports the key or what the store raised when no key is supplied.
 }
 \keyword{internal}

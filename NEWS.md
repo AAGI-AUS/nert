@@ -1,28 +1,6 @@
 # nert (development version)
 
-- `get_key()` reads the default credential store when the `"nert"` keyring
-  holds no key, and asks for a named keyring only where the active {keyring}
-  backend supports one. A key kept in the macOS login keychain is therefore
-  found, which the hard-coded `keyring = "nert"` could not reach, and the
-  environment backend used on servers and continuous integration runners no
-  longer warns on every call that the `keyring` argument is ignored.
-
-- A credential store that cannot be read is no longer reported as an absent
-  key. {keyring} raises a plain error for a key that is not held, for a store
-  that is locked, and for a backend that cannot be reached, without
-  distinguishing them, so `get_key()` now carries each store's own words into
-  its error rather than discarding them. The failure it raises carries the
-  class `nert_no_key`, so a caller can tell "no key is configured" from "the
-  key could not be read".
-
-- `get_key()` reports a missing {keyring} package as a missing package. The
-  installation error was previously caught by the same handler as a missing
-  key and reported as "No TERN_API_KEY found", which sent the user to fix the
-  wrong thing.
-
-- The documentation of `get_key()` describes where the key is now read from.
-  It still told users to store the key in `.Renviron` alone, which has had no
-  effect on macOS or Windows since that file stopped being consulted.
+- `get_key()` checks the `"nert"` keyring first, then the default keyring (#92).
 
 - The SMIPS date validator now uses a per-collection earliest date. Requests
   for the `totalbucket` and `SMindex` collections are accepted back to

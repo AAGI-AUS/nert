@@ -1,10 +1,10 @@
 #' Get or Set Up API Key for TERN
 #'
-#' Fetches your \acronym{TERN} \acronym{API} key from the \pkg{keyring}
-#'   package's credential store.  If no key is found, instructions for setting
-#'   one up are shown and an error is raised.  Can be used to check that the
-#'   key that \R is using is the key that you wish to be using, or for guidance
-#'   in setting the key up in the first place.
+#' Fetches your \acronym{TERN} \acronym{API} key through \pkg{keyring}.  If no
+#'   key is found, instructions for setting one up are shown and an error is
+#'   raised.  Can be used to check that the key that \R is using is the key that
+#'   you wish to be using, or for guidance in setting the key up in the first
+#'   place.
 #'
 #' # Requesting an API Key
 #'
@@ -16,9 +16,8 @@
 #'
 #' # Storing your key
 #'
-#' \pkg{nert} reads the key through \pkg{keyring}, which is a suggested
-#'   package rather than a hard dependency, so install it first with
-#'   `install.packages("keyring")`.
+#' \pkg{nert} reads the key through \pkg{keyring}, a suggested package, so
+#'   install it first with `install.packages("keyring")`.
 #'
 #' The `"nert"` keyring is read first, where the backend supports named
 #'   keyrings:
@@ -29,29 +28,22 @@
 #' key_set("TERN_API_KEY", keyring = "nert")
 #' ```
 #'
-#' A key held in the default store is used as well.  This is the more
-#'   comfortable option on macOS, where a named keyring is a separate keychain
-#'   file that locks when the machine sleeps or restarts and then asks for a
-#'   password of its own.  The login keychain does not:
+#' A key held in the default store is used as well.  On macOS this is the login
+#'   keychain, which unlocks when you log in:
 #'
 #' ```r
 #' library(keyring)
 #' key_set("TERN_API_KEY")
 #' ```
 #'
-#' On a machine with no password manager, such as a server or a continuous
-#'   integration runner, \pkg{keyring} reads the environment instead.  Set both
-#'   variables in the `.Renviron` file that [usethis::edit_r_environ()] opens,
-#'   then restart \R:
+#' On a machine with no password manager, \pkg{keyring} reads the environment
+#'   instead.  Set both variables in the `.Renviron` file that
+#'   [usethis::edit_r_environ()] opens, then restart \R:
 #'
 #' ```
 #' R_KEYRING_BACKEND=env
 #' TERN_API_KEY=your_api_key
 #' ```
-#'
-#' Setting `TERN_API_KEY` on its own has no effect on macOS or Windows, where
-#'   \pkg{keyring} reads the system password manager unless
-#'   `R_KEYRING_BACKEND` sends it elsewhere.
 #'
 #' @returns A string value with your \acronym{API} key value.
 #'
@@ -62,10 +54,10 @@
 #'
 #' @export
 get_key <- function() {
-  if (!.has_keyring()) {
+  if (!rlang::is_installed("keyring")) {
     cli::cli_abort(
       c(
-        "The {.pkg keyring} package is required to read your TERN API key.",
+        "{.pkg keyring} is required to read your TERN API key.",
         "i" = "Install it with {.code install.packages('keyring')}, then store
                your key as shown in {.code ?get_key}."
       ),
@@ -73,10 +65,18 @@ get_key <- function() {
     )
   }
 
+  backend <- tryCatch(
+    keyring::default_backend(),
+    error = function(e) {
+      .set_tern_key(reports = paste0("keyring: ", conditionMessage(e)))
+    }
+  )
+
   reports <- character()
 
+  # The "nert" keyring first, then the default store.
   for (store in list("nert", NULL)) {
-    attempt <- .read_tern_key(keyring = store)
+    attempt <- .read_tern_key(backend, keyring = store)
 
     if (nzchar(attempt$key)) {
       return(attempt$key)
@@ -88,40 +88,18 @@ get_key <- function() {
   .set_tern_key(reports = reports)
 }
 
-#' Report Whether the keyring Package Is Installed
-#'
-#' \pkg{keyring} is a suggested package, so its absence has to be reported as a
-#'   missing package rather than as a missing key.  Wrapping
-#'   [requireNamespace()] keeps the check mockable in the test suite.
-#'
-#' @returns A `logical` value, `TRUE` when \pkg{keyring} is installed.
-#'
-#' @dev
-.has_keyring <- function() {
-  return(requireNamespace("keyring", quietly = TRUE))
-}
-
 #' Read the TERN API Key From One Credential Store
 #'
-#' Reports the key, or what the store said when it could not supply one, so
-#'   that a caller working through several stores can name every cause it met
-#'   rather than treating each failure as an absent key.  \pkg{keyring} raises
-#'   a plain error for a key that is not held, for a store that is locked, and
-#'   for a backend that cannot be reached, and does not distinguish them by
-#'   class, so the message is carried up and shown to the user.
+#' Reports the key or what the store raised when no key is supplied.
 #'
-#' A named keyring is not asked for where the active backend has none, which
-#'   is what keeps the environment backend used by servers and continuous
-#'   integration runners from warning that the `keyring` argument is ignored.
-#'
+#' @param backend The \pkg{keyring} backend, from [keyring::default_backend()].
 #' @param keyring Name of the keyring to read, or `NULL` for the default store.
-#' @returns A named `list` of two elements: `key`, a `character` string that is
-#'   empty when no key was supplied, and `report`, a `character` string naming
-#'   the store and what it said, empty when there was nothing to report.
+#' @returns A named `list`: `key`, empty when no key was supplied, and `report`,
+#'   what the store raised.
 #'
 #' @dev
-.read_tern_key <- function(keyring) {
-  if (!is.null(keyring) && !isTRUE(keyring::has_keyring_support())) {
+.read_tern_key <- function(backend, keyring) {
+  if (!is.null(keyring) && !isTRUE(backend$has_keyring_support())) {
     return(list(key = "", report = character()))
   }
 
@@ -133,10 +111,7 @@ get_key <- function() {
 
   return(tryCatch(
     list(
-      key = keyring::key_get(
-        "TERN_API_KEY",
-        keyring = keyring
-      ),
+      key = backend$get("TERN_API_KEY", keyring = keyring),
       report = character()
     ),
     error = function(e) {
@@ -156,9 +131,8 @@ get_key <- function() {
 #'
 #' @dev
 #'
-#' @param reports A `character` vector of what each credential store said when
-#'   it could not supply a key. Listed in the error so that a locked store is
-#'   not mistaken for an absent key.
+#' @param reports A `character` vector of what each credential store raised,
+#'   listed in the error.
 #' @returns Called for its side-effects, shows instructions for acquiring and
 #'   storing a key and raises an error of class `nert_no_key`.
 .set_tern_key <- function(reports = character()) {
@@ -179,7 +153,7 @@ get_key <- function() {
     cli::cat_line()
     cli::cli_alert_info(
       "On macOS, {.code key_set('TERN_API_KEY')} on its own puts the key in the
-      login keychain, which does not lock behind a second password."
+      login keychain, which unlocks when you log in."
     )
   }
 

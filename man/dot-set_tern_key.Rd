@@ -7,9 +7,8 @@
 .set_tern_key(reports = character())
 }
 \arguments{
-\item{reports}{A \code{character} vector of what each credential store said when
-it could not supply a key. Listed in the error so that a locked store is
-not mistaken for an absent key.}
+\item{reports}{A \code{character} vector of what each credential store raised,
+listed in the error.}
 }
 \value{
 Called for its side-effects, shows instructions for acquiring and
