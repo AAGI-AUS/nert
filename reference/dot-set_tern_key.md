@@ -7,11 +7,17 @@ the key soon, but not immediately.
 ## Usage
 
 ``` r
-.set_tern_key()
+.set_tern_key(reports = character())
 ```
+
+## Arguments
+
+- reports:
+
+  A `character` vector of what each credential store raised, listed in
+  the error.
 
 ## Value
 
-Called for its side-effects, checks for presence of a TERN key in the
-user's key ring and errors if one is not found with instructions for
-acquiring one.
+Called for its side-effects, shows instructions for acquiring and
+storing a key and raises an error of class `nert_no_key`.

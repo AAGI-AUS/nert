@@ -2,6 +2,10 @@
 
 ## nert (development version)
 
+- [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
+  checks the `"nert"` keyring first, then the default keyring
+  ([\#92](https://github.com/AAGI-AUS/nert/issues/92)).
+
 - The SMIPS date validator now uses a per-collection earliest date.
   Requests for the `totalbucket` and `SMindex` collections are accepted
   back to 2005-01-01 (these are archived earlier than the four

@@ -1,9 +1,9 @@
 # Get or Set Up API Key for TERN
 
-Checks first to get key from your .Rprofile or .Renviron (or similar)
-file. If it's not found, then it suggests setting it up. Can be used to
-check that your key that R is using is the key that you wish to be using
-or for guidance in setting up the keys.
+Fetches your TERN API key through keyring. If no key is found,
+instructions for setting one up are shown and an error is raised. Can be
+used to check that the key that R is using is the key that you wish to
+be using, or for guidance in setting the key up in the first place.
 
 ## Usage
 
@@ -21,10 +21,34 @@ To request an API key, go to
 <https://account.tern.org.au/authenticated_user/apikeys> and click on
 "Sign In" in the upper right corner. Sign in with your proper
 credentials. Then, from the left-hand menu, click on "Create API Key".
-Once this is done, copy the key and put it in your .Renviron using
+Copy the key before leaving the page, as it cannot be read back
+afterwards.
+
+## Storing your key
+
+nert reads the key through keyring, a suggested package, so install it
+first with `install.packages("keyring")`.
+
+The `"nert"` keyring is read first, where the backend supports named
+keyrings:
+
+    library(keyring)
+    keyring_create("nert")
+    key_set("TERN_API_KEY", keyring = "nert")
+
+A key held in the default store is used as well. On macOS this is the
+login keychain, which unlocks when you log in:
+
+    library(keyring)
+    key_set("TERN_API_KEY")
+
+On a machine with no password manager, keyring reads the environment
+instead. Set both variables in the `.Renviron` file that
 [`usethis::edit_r_environ()`](https://usethis.r-lib.org/reference/edit.html)
-as `TERN_API_KEY="your_api_key"`. Restart your R session and the query
-should work.
+opens, then restart R:
+
+    R_KEYRING_BACKEND=env
+    TERN_API_KEY=your_api_key
 
 ## Examples
 
