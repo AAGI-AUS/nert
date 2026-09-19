@@ -1,5 +1,7 @@
 # nert (development version)
 
+- `get_key()` checks the `"nert"` keyring first, then the default keyring (#92).
+
 - The SMIPS date validator now uses a per-collection earliest date. Requests
   for the `totalbucket` and `SMindex` collections are accepted back to
   2005-01-01 (these are archived earlier than the four bucket-level
