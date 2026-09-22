@@ -1,5 +1,10 @@
 # nert (development version)
 
+- Breaking change: `collect_tern_data()` takes each row's PHENOLOGY value from
+  the year of that row's `date`, and leaves rows dated outside 2003--2018 as
+  `NA` with a warning. PHENOLOGY columns no longer carry the year
+  (`PHENOLOGY_SGS_y2018_s1` becomes `PHENOLOGY_SGS_s1`) (#95).
+
 - `get_key()` checks the `"nert"` keyring first, then the default keyring (#92).
 
 - The SMIPS date validator now uses a per-collection earliest date. Requests

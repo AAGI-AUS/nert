@@ -97,13 +97,23 @@
 #'   followed by any variant information (e.g., depth, statistic, dataset
 #'   name) after an underscore. For example, `SMIPS_totalbucket` for
 #'   the SMIPS "totalbucket" dataset, `CLY_05_000_005` for the lower (05)
-#'   percentile limit of the soil clay at 0-5cm depth, and so on.
+#'   percentile limit of the soil clay at 0-5cm depth, and so on. PHENOLOGY
+#'   carries a growing-season suffix, `PHENOLOGY_SGS_s1` and
+#'   `PHENOLOGY_SGS_s2` for the two seasons of the `SGS` metric.
 #'
 #' @details
 #' **Failure handling.** Note that if a COG fetch fails (i.e., no
 #' successful download after `max_tries`), the corresponding column(s)
 #' will be set as `NA` for the affected rows, and a `cli::cli_warn()`
 #' warning is emitted.
+#'
+#' **PHENOLOGY temporal coverage.** PHENOLOGY layers are annual, published
+#' for two growing seasons per year between 2003 and 2018. Each row is
+#' answered by the layer for the year of its own `date`, so a request
+#' spanning several years returns several years of values in one column, and
+#' dates within one year repeat that year's value. Rows dated outside
+#' 2003--2018 are left as `NA` with a warning naming the year, as rows dated
+#' outside the SMIPS and AET archives are.
 #'
 #' @examplesIf interactive()
 #' # Single location, single dataset
@@ -673,11 +683,14 @@ collect_tern_data <- function(
 #' columns in the output table.
 #'
 #' For time-series datasets (SMIPS, AET) we emit one work item per
-#' (date, variant); for PHENOLOGY datasets we emit two work items per
-#' (date, variant), one for each season; for SLGA datasets we emit one work
-#' item per (depth, variant) combination. For temporally-static datasets,
-#' the item values are replicated across the date axis
-#' (`date_idx = NA_integer_`).
+#' (date, variant); for PHENOLOGY datasets, which are annual over two growing
+#' seasons, we emit one work item per (year, variant, season) naming every
+#' date that falls in that year; for SLGA datasets we emit one work item per
+#' (depth, variant) combination. For temporally-static datasets, the item
+#' values are replicated across the date axis (`date_idx = NA_integer_`).
+#'
+#' `date_idx` is therefore an `integer` vector of positions into `dates`, and
+#' `NA_integer_` marks an item whose single value applies to every date.
 #'
 #' @param datasets Normalised alias vector.
 #' @param dates Resolved `Date` vector.
@@ -791,25 +804,33 @@ collect_tern_data <- function(
         )
       }
     } else if (ds == "PHENOLOGY") {
+      # PHENOLOGY is annual over two growing seasons, so one item is planned
+      # per year present in the request and fills only that year's rows.  The
+      # value a caller gets therefore follows the `date` column.  Years outside
+      # 2003-2018 are planned as well: read_phenology() rejects them, and
+      # .fill_work_item() leaves their rows NA with a warning.
+      phen_years <- as.integer(format(dates, "%Y"))
       for (v in phenology_collection) {
-        # Temporally snap to the nearest phenology dataset, and grab
-        # both seasons
-        phen_year <- as.integer(format(dates[1], "%Y"))
-        phen_year <- max(2003, min(2018, phen_year))
         for (phen_season in 1:2) {
-          items[[length(items) + 1]] <- list(
-            ds = ds,
-            type = "numeric",
-            cols = sprintf("%s_%s_y%d_s%d", ds, v, phen_year, phen_season),
-            date_idx = NA_integer_,
-            args = list(collection = v, year = phen_year, season = phen_season),
-            label = sprintf(
-              "PHENOLOGY %s year=%s season=%s",
-              v,
-              phen_year,
-              phen_season
+          for (phen_year in sort(unique(phen_years))) {
+            items[[length(items) + 1L]] <- list(
+              ds = ds,
+              type = "numeric",
+              cols = sprintf("%s_%s_s%d", ds, v, phen_season),
+              date_idx = which(phen_years == phen_year),
+              args = list(
+                collection = v,
+                year = phen_year,
+                season = phen_season
+              ),
+              label = sprintf(
+                "PHENOLOGY %s year=%s season=%s",
+                v,
+                phen_year,
+                phen_season
+              )
             )
-          )
+          }
         }
       }
     } else if (ds == "CANOPY") {
@@ -841,9 +862,9 @@ collect_tern_data <- function(
 
 #' Fetch one work item and write its values into the output table by reference.
 #'
-#' For a time-series work item, exactly one row block (`length(coords)`
-#' rows) is filled.  For a static work item, the value is replicated
-#' across every date.  Failures leave the predeclared `NA` values
+#' For a time-series work item, the row block (`length(coords)` rows) of each
+#' date the item names is filled.  For a static work item, the value is
+#' replicated across every date.  Failures leave the predeclared `NA` values
 #' untouched and surface as a `cli::cli_warn()` with the underlying error.
 #'
 #' @param out The output `data.table` (modified in place).
@@ -923,12 +944,13 @@ collect_tern_data <- function(
     v <- as.numeric(v)
   }
 
-  if (is.na(wi$date_idx)) {
+  if (all(is.na(wi$date_idx))) {
     out[, (wi$cols[1L]) := rep(v, times = n_dt)]
   } else {
-    row_start <- (wi$date_idx - 1L) * n_loc + 1L
-    row_end <- wi$date_idx * n_loc
-    out[seq.int(row_start, row_end), (wi$cols[1L]) := v]
+    # Rows for date index k are (k - 1) * n_loc + seq_len(n_loc); a work item
+    # may name several dates, as the annual PHENOLOGY layers do.
+    rows <- rep((wi$date_idx - 1L) * n_loc, each = n_loc) + seq_len(n_loc)
+    out[rows, (wi$cols[1L]) := rep(v, times = length(wi$date_idx))]
   }
 
   return(invisible(NULL))

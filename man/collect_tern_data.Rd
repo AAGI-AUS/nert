@@ -138,7 +138,9 @@ with their alias as the prefix (e.g., \code{SMIPS}, \code{AWC}, \code{SOILDIV}),
 followed by any variant information (e.g., depth, statistic, dataset
 name) after an underscore. For example, \code{SMIPS_totalbucket} for
 the SMIPS "totalbucket" dataset, \code{CLY_05_000_005} for the lower (05)
-percentile limit of the soil clay at 0-5cm depth, and so on.
+percentile limit of the soil clay at 0-5cm depth, and so on. PHENOLOGY
+carries a growing-season suffix, \code{PHENOLOGY_SGS_s1} and
+\code{PHENOLOGY_SGS_s2} for the two seasons of the \code{SGS} metric.
 }
 }
 \description{
@@ -152,6 +154,14 @@ datasets are repeated across all dates for consistency.)
 successful download after \code{max_tries}), the corresponding column(s)
 will be set as \code{NA} for the affected rows, and a \code{cli::cli_warn()}
 warning is emitted.
+
+\strong{PHENOLOGY temporal coverage.} PHENOLOGY layers are annual, published
+for two growing seasons per year between 2003 and 2018. Each row is
+answered by the layer for the year of its own \code{date}, so a request
+spanning several years returns several years of values in one column, and
+dates within one year repeat that year's value. Rows dated outside
+2003--2018 are left as \code{NA} with a warning naming the year, as rows dated
+outside the SMIPS and AET archives are.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
