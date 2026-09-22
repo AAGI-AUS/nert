@@ -331,14 +331,8 @@ collect_tern_data <- function(
 #' @dev
 .filter_na_rows <- function(out, data_cols, na.rm) {
   if (na.rm && length(data_cols) > 0L) {
-    keep <- vapply(
-      seq_len(nrow(out)),
-      function(i) {
-        !all(is.na(unlist(out[i, data_cols, with = FALSE])))
-      },
-      logical(1L)
-    )
-    out <- out[keep]
+    n_na <- rowSums(is.na(out[, data_cols, with = FALSE]))
+    out <- out[n_na < length(data_cols)]
   }
   return(out)
 }
