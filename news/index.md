@@ -2,6 +2,14 @@
 
 ## nert (development version)
 
+- Breaking change:
+  [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+  takes each row’s PHENOLOGY value from the year of that row’s `date`,
+  and leaves rows dated outside 2003–2018 as `NA` with a warning.
+  PHENOLOGY columns no longer carry the year (`PHENOLOGY_SGS_y2018_s1`
+  becomes `PHENOLOGY_SGS_s1`)
+  ([\#95](https://github.com/AAGI-AUS/nert/issues/95)).
+
 - [`get_key()`](https://aagi-aus.github.io/nert/reference/get_key.md)
   checks the `"nert"` keyring first, then the default keyring
   ([\#92](https://github.com/AAGI-AUS/nert/issues/92)).

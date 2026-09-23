@@ -184,7 +184,10 @@ A `data.table` with the following columns:
   by any variant information (e.g., depth, statistic, dataset name)
   after an underscore. For example, `SMIPS_totalbucket` for the SMIPS
   "totalbucket" dataset, `CLY_05_000_005` for the lower (05) percentile
-  limit of the soil clay at 0-5cm depth, and so on.
+  limit of the soil clay at 0-5cm depth, and so on. PHENOLOGY column
+  names carry a growing season suffix for each year, `_s1` and `_s2`,
+  designating the first and second growing seasons for the year
+  respectively.
 
 ## Details
 
@@ -193,6 +196,14 @@ successful download after `max_tries`), the corresponding column(s) will
 be set as `NA` for the affected rows, and a
 [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html)
 warning is emitted.
+
+**PHENOLOGY temporal coverage.** PHENOLOGY datasets are annual,
+published for two growing seasons per year between 2003 and 2018. For
+each requested `date`, both the S1 and S2 growing season values for that
+year are returned if the date falls within 2003 and 2018, with their
+columns suffixed as `_s1` and `_s2` respectively. If the date does not
+fall within the 2003 and 2018 year span, these values are returned as
+`NA`, with a helpful warning message emitted.
 
 ## Examples
 

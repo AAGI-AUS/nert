@@ -72,8 +72,12 @@ A list of work-item lists.
 ## Details
 
 For time-series datasets (SMIPS, AET) we emit one work item per (date,
-variant); for PHENOLOGY datasets we emit two work items per (date,
-variant), one for each season; for SLGA datasets we emit one work item
-per (depth, variant) combination. For temporally-static datasets, the
-item values are replicated across the date axis
-(`date_idx = NA_integer_`).
+variant); for PHENOLOGY datasets, which are annual over two growing
+seasons, we emit one work item per (year, variant, season) for each
+date; for SLGA datasets we emit one work item per (depth, variant)
+combination. For temporally-static datasets, the item values are
+replicated across the date axis (`date_idx = NA_integer_`).
+
+`date_idx` is therefore an `integer` vector of positions into `dates`,
+and `NA_integer_` marks an item whose single value applies to every
+date.

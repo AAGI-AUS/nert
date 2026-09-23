@@ -39,6 +39,7 @@ Authors:
   ([ORCID](https://orcid.org/0000-0002-0061-8359))
 
 - Wasin Pipattungsakul <wasin.pipattungsakul@adelaide.edu.au>
+  ([ORCID](https://orcid.org/0009-0005-2666-6315))
 
 - Russell Edson <russell.edson@adelaide.edu.au>
   ([ORCID](https://orcid.org/0000-0002-4607-5396))

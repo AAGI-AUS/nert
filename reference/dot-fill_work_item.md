@@ -1,9 +1,9 @@
 # Fetch one work item and write its values into the output table by reference.
 
-For a time-series work item, exactly one row block (`length(coords)`
-rows) is filled. For a static work item, the value is replicated across
-every date. Failures leave the predeclared `NA` values untouched and
-surface as a
+For a time-series work item, the row block (`length(coords)` rows) of
+each date for the item is filled. For a static work item, the value is
+replicated across every date. Failures leave the predeclared `NA` values
+untouched and surface as a
 [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html) with
 the underlying error.
 
