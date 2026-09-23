@@ -750,11 +750,11 @@ test_that("work-item planner emits one item per PHENOLOGY (year,variant)", {
     as.Date("2018-09-01"),
     phenology_collection = .normalise_phen_collection(NULL)
   )
-  # 6 variants = 6 items
+  # 11 variants x 2 seasons x 1 year in the request = 22 items
   expect_length(items, 22L)
-  for (i in 1:22) {
-    expect_true(is.na(items[[i]]$date_idx))
-    expect_identical(items[[i]]$args$year, 2018)
+  for (i in seq_along(items)) {
+    expect_identical(items[[i]]$date_idx, 1L)
+    expect_identical(items[[i]]$args$year, 2018L)
   }
   expect_true(all(grepl(
     "^PHENOLOGY_",
@@ -855,25 +855,55 @@ test_that("PHENOLOGY work items have numeric-type for all variants", {
 })
 
 
-# Russell (19/06/2026): So we actually expect the PHENOLOGY datasets to
-#   clamp to 2003-2018 -- this should be documented somewhere besides in
-#   these tests.
-test_that("PHENOLOGY clamps year to 2003-2018 window", {
+# PHENOLOGY temporal resolution (#95) --------------------------------------
+
+test_that("PHENOLOGY resolves each date to its own year", {
+  dates <- as.Date(c("2017-06-01", "2017-12-01", "2018-06-01"))
   items <- .build_work_items(
     "PHENOLOGY",
-    as.Date("2024-06-01"),
-    phenology_collection = .normalise_phen_collection(NULL)
+    dates,
+    phenology_collection = "SGS"
   )
-  for (i in seq_along(items)) {
-    expect_identical(items[[i]]$args$year, 2018)
+  # 1 variant x 2 seasons x 2 years present = 4 items
+  expect_length(items, 4L)
+  expect_setequal(
+    vapply(items, function(x) x$args$year, integer(1L)),
+    c(2017L, 2018L)
+  )
+  for (item in items) {
+    expect_identical(
+      item$date_idx,
+      which(as.integer(format(dates, "%Y")) == item$args$year)
+    )
   }
-  items2 <- .build_work_items(
-    "PHENOLOGY",
-    as.Date("1990-06-01"),
-    phenology_collection = .normalise_phen_collection(NULL)
+  expect_setequal(
+    vapply(items, function(x) x$cols[1L], character(1L)),
+    c("PHENOLOGY_SGS_s1", "PHENOLOGY_SGS_s2")
   )
-  for (i in seq_along(items)) {
-    expect_identical(items2[[i]]$args$year, 2003)
+})
+
+test_that("PHENOLOGY planning does not depend on the order of the dates", {
+  dates <- seq(as.Date("2017-06-01"), as.Date("2018-06-01"), by = "month")
+  forward <- .build_work_items(
+    "PHENOLOGY",
+    dates,
+    phenology_collection = "SGS"
+  )
+  reversed <- .build_work_items(
+    "PHENOLOGY",
+    rev(dates),
+    phenology_collection = "SGS"
+  )
+  expect_identical(
+    sort(vapply(forward, function(x) x$args$year, integer(1L))),
+    sort(vapply(reversed, function(x) x$args$year, integer(1L)))
+  )
+  # The plan tracks the vector it was given, whatever order it arrives in
+  for (item in reversed) {
+    expect_identical(
+      item$date_idx,
+      which(as.integer(format(rev(dates), "%Y")) == item$args$year)
+    )
   }
 })
 
@@ -933,9 +963,10 @@ test_that("collect_tern_data accepts an explicit dates vector (precedence)", {
 
 test_that("collect_tern_data(verbose = TRUE) prints the dataset table", {
   .use_mocked_cog()
+  # Dated inside the PHENOLOGY window so the table is what is under test
   expect_no_error(capture.output(suppressMessages(
     collect_tern_data(
-      date_range = as.Date("2024-01-01"),
+      date_range = as.Date("2018-01-01"),
       lon = 138.6,
       lat = -34.9,
       datasets = c(

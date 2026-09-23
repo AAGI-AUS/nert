@@ -27,9 +27,9 @@
 \code{invisible(NULL)}. This function is called for its side effects.
 }
 \description{
-For a time-series work item, exactly one row block (\code{length(coords)}
-rows) is filled.  For a static work item, the value is replicated
-across every date.  Failures leave the predeclared \code{NA} values
+For a time-series work item, the row block (\code{length(coords)} rows) of each
+date for the item is filled.  For a static work item, the value is
+replicated across every date.  Failures leave the predeclared \code{NA} values
 untouched and surface as a \code{cli::cli_warn()} with the underlying error.
 }
 \keyword{internal}

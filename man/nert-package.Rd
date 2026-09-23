@@ -6,6 +6,8 @@
 \alias{nert-package}
 \title{nert: Curated Access to TERN Environmental Raster Data}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 Provides curated access to gridded environmental data published by Australia's Terrestrial Ecosystem Research Network (TERN; \url{https://www.tern.org.au/}), spanning national soil attribute, soil classification, soil biodiversity, soil moisture, actual evapotranspiration, vegetation canopy height and phenology products. The package reads Cloud-Optimised GeoTIFF and virtual raster files directly from the TERN data server via GDAL /vsicurl range requests, streaming only the requested spatial and temporal subset for efficient data transfer. The environmental raster data are returned as terra::SpatRaster objects. A convenient helper function is also provided that provides a batch-download capability given specific locations and dates, returning the extracted data values in an analysis-ready data.table. Access to the TERN datasets using this package requires a TERN API key.
 }
 \seealso{
@@ -24,7 +26,7 @@ Authors:
 \itemize{
   \item Max Moldovan \email{max.moldovan@adelaide.edu.au} (\href{https://orcid.org/0000-0001-9680-8474}{ORCID})
   \item Adam H. Sparks \email{adamhsparks@gmail.com} (\href{https://orcid.org/0000-0002-0061-8359}{ORCID})
-  \item Wasin Pipattungsakul \email{wasin.pipattungsakul@adelaide.edu.au}
+  \item Wasin Pipattungsakul \email{wasin.pipattungsakul@adelaide.edu.au} (\href{https://orcid.org/0009-0005-2666-6315}{ORCID})
   \item Russell Edson \email{russell.edson@adelaide.edu.au} (\href{https://orcid.org/0000-0002-4607-5396}{ORCID})
   \item Sam Rogers \email{sam.rogers@adelaide.edu.au} (\href{https://orcid.org/0000-0002-8147-1239}{ORCID})
 }

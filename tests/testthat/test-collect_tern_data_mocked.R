@@ -227,3 +227,90 @@ test_that("na.rm=TRUE drops rows where every data column is NA", {
   ))
   expect_identical(nrow(out), 0L)
 })
+
+# ---- PHENOLOGY resolves per row, not per request (#95) ---------------------
+
+test_that("PHENOLOGY writes each year's value into that year's rows", {
+  by_year <- c("2017" = 17, "2018" = 18)
+  urls <- character()
+  testthat::local_mocked_bindings(
+    .read_cog = function(full_url, max_tries = NULL, initial_delay = NULL) {
+      urls <<- c(urls, full_url)
+      year <- sub("^.*_(\\d{4})_Season\\d\\.tif$", "\\1", full_url)
+      .fixture_numeric_raster(value = by_year[[year]])
+    },
+    .package = "nert"
+  )
+
+  dates <- as.Date(c("2017-06-01", "2017-12-01", "2018-06-01"))
+  out <- collect_tern_data(
+    dates = dates,
+    lon = c(138.6, 139.5),
+    lat = c(-34.9, -35.5),
+    datasets = "PHENOLOGY",
+    phenology_collection = "SGS",
+    api_key = KEY,
+    verbose = FALSE
+  )
+
+  # 2 seasons x 2 years = 4 reads, and 2 columns rather than 4
+  expect_length(urls, 4L)
+  expect_true(all(c("PHENOLOGY_SGS_s1", "PHENOLOGY_SGS_s2") %in% names(out)))
+  expect_identical(nrow(out), 6L) # 3 dates x 2 locations
+
+  # Every row carries the value belonging to the year of its own date
+  expected <- unname(by_year[format(out$date, "%Y")])
+  expect_identical(out$PHENOLOGY_SGS_s1, expected)
+  expect_identical(out$PHENOLOGY_SGS_s2, expected)
+  expect_false(anyNA(out$PHENOLOGY_SGS_s1))
+})
+
+test_that("PHENOLOGY rows outside 2003-2018 are NA with a warning", {
+  sink <- .use_mocked_cog(raster = .fixture_numeric_raster(value = 5))
+  # The out-of-window date comes first, where it used to decide the year
+  dates <- as.Date(c("1990-06-01", "2005-06-01", "2024-06-01"))
+  warns <- character()
+  out <- withCallingHandlers(
+    collect_tern_data(
+      dates = dates,
+      lon = 138.6,
+      lat = -34.9,
+      datasets = "PHENOLOGY",
+      phenology_collection = "SGS",
+      api_key = KEY,
+      verbose = FALSE
+    ),
+    warning = function(w) {
+      warns <<- c(warns, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+
+  # Only 2005 is read, once per season
+  expect_length(sink$urls, 2L)
+  expect_true(all(grepl("_2005_Season[12]\\.tif$", sink$urls)))
+  # 2 out-of-window years x 2 seasons, each naming the window
+  expect_length(warns, 4L)
+  expect_true(all(grepl("2003--2018", warns)))
+
+  expected <- ifelse(format(out$date, "%Y") == "2005", 5, NA_real_)
+  expect_identical(out$PHENOLOGY_SGS_s1, expected)
+  expect_identical(out$PHENOLOGY_SGS_s2, expected)
+})
+
+test_that("the #95 reprex returns NA PHENOLOGY columns without reading", {
+  sink <- .use_mocked_cog()
+  out <- suppressWarnings(collect_tern_data(
+    date_range = seq(as.Date("2024-01-01"), as.Date("2024-01-05"), by = "day"),
+    lon = 138.6,
+    lat = -34.9,
+    datasets = "PHENOLOGY",
+    phenology_collection = "SGS",
+    api_key = KEY,
+    verbose = FALSE
+  ))
+  expect_length(sink$urls, 0L)
+  expect_identical(nrow(out), 5L)
+  expect_true(all(is.na(out$PHENOLOGY_SGS_s1)))
+  expect_true(all(is.na(out$PHENOLOGY_SGS_s2)))
+})
