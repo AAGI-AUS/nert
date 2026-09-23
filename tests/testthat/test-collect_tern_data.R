@@ -856,12 +856,6 @@ test_that("PHENOLOGY work items have numeric-type for all variants", {
 
 
 # PHENOLOGY temporal resolution (#95) --------------------------------------
-#
-# The planner used to read the year from `dates[1]` and clamp it into the
-# 2003-2018 window, so the answer depended on the order of the request and an
-# out-of-window date was served a neighbouring year with only the column name
-# to say so.  Each date is now answered by its own year, and rows outside the
-# window are NA (see test-collect_tern_data_mocked.R).
 
 test_that("PHENOLOGY resolves each date to its own year", {
   dates <- as.Date(c("2017-06-01", "2017-12-01", "2018-06-01"))
@@ -876,15 +870,12 @@ test_that("PHENOLOGY resolves each date to its own year", {
     vapply(items, function(x) x$args$year, integer(1L)),
     c(2017L, 2018L)
   )
-  # Each item names exactly the dates falling in its own year
   for (item in items) {
     expect_identical(
       item$date_idx,
       which(as.integer(format(dates, "%Y")) == item$args$year)
     )
   }
-  # Both years write one column per season, so the year is read off the `date`
-  # column rather than the column name
   expect_setequal(
     vapply(items, function(x) x$cols[1L], character(1L)),
     c("PHENOLOGY_SGS_s1", "PHENOLOGY_SGS_s2")

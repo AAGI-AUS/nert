@@ -139,8 +139,8 @@ followed by any variant information (e.g., depth, statistic, dataset
 name) after an underscore. For example, \code{SMIPS_totalbucket} for
 the SMIPS "totalbucket" dataset, \code{CLY_05_000_005} for the lower (05)
 percentile limit of the soil clay at 0-5cm depth, and so on. PHENOLOGY
-carries a growing-season suffix, \code{PHENOLOGY_SGS_s1} and
-\code{PHENOLOGY_SGS_s2} for the two seasons of the \code{SGS} metric.
+column names carry a growing season suffix for each year, \verb{_s1} and \verb{_s2},
+designating the first and second growing seasons for the year respectively.
 }
 }
 \description{
@@ -155,13 +155,13 @@ successful download after \code{max_tries}), the corresponding column(s)
 will be set as \code{NA} for the affected rows, and a \code{cli::cli_warn()}
 warning is emitted.
 
-\strong{PHENOLOGY temporal coverage.} PHENOLOGY layers are annual, published
-for two growing seasons per year between 2003 and 2018. Each row is
-answered by the layer for the year of its own \code{date}, so a request
-spanning several years returns several years of values in one column, and
-dates within one year repeat that year's value. Rows dated outside
-2003--2018 are left as \code{NA} with a warning naming the year, as rows dated
-outside the SMIPS and AET archives are.
+\strong{PHENOLOGY temporal coverage.} PHENOLOGY datasets are annual, published
+for two growing seasons per year between 2003 and 2018. For each requested
+\code{date}, both the S1 and S2 growing season values for that year are returned
+if the date falls within 2003 and 2018, with their columns suffixed as
+\verb{_s1} and \verb{_s2} respectively. If the date does not fall within the 2003 and
+2018 year span, these values are returned as \code{NA}, with a helpful warning
+message emitted.
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}

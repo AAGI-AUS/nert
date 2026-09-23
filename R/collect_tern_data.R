@@ -98,8 +98,8 @@
 #'   name) after an underscore. For example, `SMIPS_totalbucket` for
 #'   the SMIPS "totalbucket" dataset, `CLY_05_000_005` for the lower (05)
 #'   percentile limit of the soil clay at 0-5cm depth, and so on. PHENOLOGY
-#'   carries a growing-season suffix, `PHENOLOGY_SGS_s1` and
-#'   `PHENOLOGY_SGS_s2` for the two seasons of the `SGS` metric.
+#'   column names carry a growing season suffix for each year, `_s1` and `_s2`,
+#'   designating the first and second growing seasons for the year respectively.
 #'
 #' @details
 #' **Failure handling.** Note that if a COG fetch fails (i.e., no
@@ -107,13 +107,13 @@
 #' will be set as `NA` for the affected rows, and a `cli::cli_warn()`
 #' warning is emitted.
 #'
-#' **PHENOLOGY temporal coverage.** PHENOLOGY layers are annual, published
-#' for two growing seasons per year between 2003 and 2018. Each row is
-#' answered by the layer for the year of its own `date`, so a request
-#' spanning several years returns several years of values in one column, and
-#' dates within one year repeat that year's value. Rows dated outside
-#' 2003--2018 are left as `NA` with a warning naming the year, as rows dated
-#' outside the SMIPS and AET archives are.
+#' **PHENOLOGY temporal coverage.** PHENOLOGY datasets are annual, published
+#' for two growing seasons per year between 2003 and 2018. For each requested
+#' `date`, both the S1 and S2 growing season values for that year are returned
+#' if the date falls within 2003 and 2018, with their columns suffixed as
+#' `_s1` and `_s2` respectively. If the date does not fall within the 2003 and
+#' 2018 year span, these values are returned as `NA`, with a helpful warning
+#' message emitted.
 #'
 #' @examplesIf interactive()
 #' # Single location, single dataset
@@ -409,7 +409,7 @@ collect_tern_data <- function(
     )
   ) {
     cli::cli_abort(
-      "Coordinate out of bounds: for TERN rasters, lon in [90, 180], lat in 
+      "Coordinate out of bounds: for TERN rasters, lon in [90, 180], lat in
        [-51, -8]."
     )
   }
@@ -684,8 +684,8 @@ collect_tern_data <- function(
 #'
 #' For time-series datasets (SMIPS, AET) we emit one work item per
 #' (date, variant); for PHENOLOGY datasets, which are annual over two growing
-#' seasons, we emit one work item per (year, variant, season) naming every
-#' date that falls in that year; for SLGA datasets we emit one work item per
+#' seasons, we emit one work item per (year, variant, season) for each date;
+#' for SLGA datasets we emit one work item per
 #' (depth, variant) combination. For temporally-static datasets, the item
 #' values are replicated across the date axis (`date_idx = NA_integer_`).
 #'
@@ -804,11 +804,7 @@ collect_tern_data <- function(
         )
       }
     } else if (ds == "PHENOLOGY") {
-      # PHENOLOGY is annual over two growing seasons, so one item is planned
-      # per year present in the request and fills only that year's rows.  The
-      # value a caller gets therefore follows the `date` column.  Years outside
-      # 2003-2018 are planned as well: read_phenology() rejects them, and
-      # .fill_work_item() leaves their rows NA with a warning.
+      # 2 growing seasons per year between 2003-2018 (NAs returned otherwise)
       phen_years <- as.integer(format(dates, "%Y"))
       for (v in phenology_collection) {
         for (phen_season in 1:2) {
@@ -863,7 +859,7 @@ collect_tern_data <- function(
 #' Fetch one work item and write its values into the output table by reference.
 #'
 #' For a time-series work item, the row block (`length(coords)` rows) of each
-#' date the item names is filled.  For a static work item, the value is
+#' date for the item is filled.  For a static work item, the value is
 #' replicated across every date.  Failures leave the predeclared `NA` values
 #' untouched and surface as a `cli::cli_warn()` with the underlying error.
 #'

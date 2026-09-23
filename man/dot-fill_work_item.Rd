@@ -28,7 +28,7 @@
 }
 \description{
 For a time-series work item, the row block (\code{length(coords)} rows) of each
-date the item names is filled.  For a static work item, the value is
+date for the item is filled.  For a static work item, the value is
 replicated across every date.  Failures leave the predeclared \code{NA} values
 untouched and surface as a \code{cli::cli_warn()} with the underlying error.
 }

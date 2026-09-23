@@ -231,9 +231,6 @@ test_that("na.rm=TRUE drops rows where every data column is NA", {
 # ---- PHENOLOGY resolves per row, not per request (#95) ---------------------
 
 test_that("PHENOLOGY writes each year's value into that year's rows", {
-  # One raster per phenology year, so the value in a row identifies the year
-  # the row was actually served.  The year is read back out of the COG
-  # filename the planner asked for (SGS_<year>_Season<n>.tif).
   by_year <- c("2017" = 17, "2018" = 18)
   urls <- character()
   testthat::local_mocked_bindings(

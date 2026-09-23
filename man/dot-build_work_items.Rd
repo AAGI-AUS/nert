@@ -50,8 +50,8 @@ columns in the output table.
 \details{
 For time-series datasets (SMIPS, AET) we emit one work item per
 (date, variant); for PHENOLOGY datasets, which are annual over two growing
-seasons, we emit one work item per (year, variant, season) naming every
-date that falls in that year; for SLGA datasets we emit one work item per
+seasons, we emit one work item per (year, variant, season) for each date;
+for SLGA datasets we emit one work item per
 (depth, variant) combination. For temporally-static datasets, the item
 values are replicated across the date axis (\code{date_idx = NA_integer_}).
 
