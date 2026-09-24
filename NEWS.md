@@ -1,5 +1,8 @@
 # nert (development version)
 
+- The screenshots in the *Getting started* vignette and the plot in the README
+  now have alt-text.
+
 - Breaking change: `collect_tern_data()` takes each row's PHENOLOGY value from
   the year of that row's `date`, and leaves rows dated outside 2003--2018 as
   `NA` with a warning. PHENOLOGY columns no longer carry the year
