@@ -48,13 +48,15 @@
   cli::cli_abort("Download failed after {max_tries} attempts.")
 }
 
-#' Fix improper API keys
+#' Pass the TERN API key to GDAL
 #'
-#' @param api_key A `string` value containing a TERN API key for checking
+#' Sets the GDAL `GDAL_HTTP_USERPWD` option, which stays set for the rest of the
+#' R session because terra reads raster values only when they are used.
 #'
-#' @returns A `string` value with replacement of troublesome characters if
-#'  necessary.
+#' @param api_key A `string` value containing a TERN API key.
+#' @returns `invisible(NULL)`. This function is called for its side effect.
 #' @dev
-.check_api_key <- function(api_key) {
-  return(gsub("/", "%2f", api_key, fixed = TRUE))
+.set_tern_auth <- function(api_key) {
+  terra::setGDALconfig("GDAL_HTTP_USERPWD", paste0("apikey:", api_key))
+  return(invisible(NULL))
 }

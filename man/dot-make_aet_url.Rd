@@ -4,7 +4,7 @@
 \alias{.make_aet_url}
 \title{Build a GDAL vsicurl URL to retrieve AET data}
 \usage{
-.make_aet_url(.collection, .month, .api_key)
+.make_aet_url(.collection, .month)
 }
 \arguments{
 \item{.collection}{The user-supplied \acronym{AET} collection
@@ -12,8 +12,6 @@
 
 \item{.month}{The validated \code{POSIXct} date snapped to the first of
 the month.}
-
-\item{.api_key}{The \acronym{URL}-encoded \acronym{API} key.}
 }
 \value{
 A \code{character} GDAL vsicurl URL string.

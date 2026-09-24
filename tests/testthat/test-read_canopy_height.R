@@ -10,9 +10,7 @@ test_that("read_canopy_height default resolves to best-pick URL", {
   expect_match(
     sink$urls,
     paste0(
-      "/vsicurl/https://apikey:",
-      KEY,
-      "@data.tern.org.au/model-derived/OzTreeMap/",
+      "/vsicurl/https://data.tern.org.au/model-derived/OzTreeMap/",
       "CanopyHeightComposite/best_pick_files_bhLNnun.tif"
     ),
     fixed = TRUE
@@ -26,9 +24,7 @@ test_that("read_canopy_height(collection = \"median\") resolves to median URL", 
   expect_match(
     sink$urls,
     paste0(
-      "/vsicurl/https://apikey:",
-      KEY,
-      "@data.tern.org.au/model-derived/OzTreeMap/",
+      "/vsicurl/https://data.tern.org.au/model-derived/OzTreeMap/",
       "CanopyHeightComposite/median_files_IREknUX.tif"
     ),
     fixed = TRUE
@@ -42,10 +38,15 @@ test_that("read_canopy_height returns a SpatRaster from the mock", {
   expect_identical(unname(terra::values(r)[1L, 1L]), 7)
 })
 
-test_that("api_key with '/' is URL-encoded as %2f", {
+test_that("read_canopy_height passes the api_key to GDAL, not the URL", {
+  withr::defer(terra::setGDALconfig("GDAL_HTTP_USERPWD", ""))
   sink <- .use_mocked_cog()
   read_canopy_height(api_key = "abc/def")
-  expect_match(sink$urls, "apikey:abc%2fdef@", fixed = TRUE)
+  expect_no_match(sink$urls, "abc", fixed = TRUE)
+  expect_identical(
+    unname(terra::getGDALconfig("GDAL_HTTP_USERPWD")),
+    "apikey:abc/def"
+  )
 })
 
 test_that("read_canopy_height propagates max_tries / initial_delay", {
