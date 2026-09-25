@@ -150,7 +150,13 @@ read_smips <- function(
     lubridate::year(day),
     dl_file
   )
-  return(.read_cog(full_url, max_tries, initial_delay))
+  # TERN's SMIPS overviews hold wrong values at NoData edges.
+  return(.read_cog(
+    full_url,
+    max_tries,
+    initial_delay,
+    opts = "OVERVIEW_LEVEL=NONE"
+  ))
 }
 
 

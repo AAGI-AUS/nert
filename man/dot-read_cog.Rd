@@ -4,7 +4,7 @@
 \alias{.read_cog}
 \title{Read a COG from TERN}
 \usage{
-.read_cog(full_url, max_tries = NULL, initial_delay = NULL)
+.read_cog(full_url, max_tries = NULL, initial_delay = NULL, opts = NULL)
 }
 \arguments{
 \item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}

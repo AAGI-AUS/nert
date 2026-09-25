@@ -26,6 +26,12 @@ test_that("read_smips SMindex collection maps to the smi_perc filename", {
   )
 })
 
+test_that("read_smips opens the file without its overviews", {
+  sink <- .use_mocked_cog()
+  read_smips(date = "2024-01-15", api_key = KEY)
+  expect_identical(sink$opts, list("OVERVIEW_LEVEL=NONE"))
+})
+
 test_that("read_smips rejects a date before the collection's availability", {
   # totalbucket/SMindex are available from 2005; earlier dates are refused.
   expect_error(
