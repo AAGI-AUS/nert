@@ -39,7 +39,7 @@ test_that("read_canopy_height returns a SpatRaster from the mock", {
 })
 
 test_that("read_canopy_height passes the api_key to GDAL, not the URL", {
-  withr::defer(terra::setGDALconfig("GDAL_HTTP_USERPWD", ""))
+  .local_gdal_config("GDAL_HTTP_USERPWD", "apikey:test-key-0000")
   sink <- .use_mocked_cog()
   read_canopy_height(api_key = "abc/def")
   expect_no_match(sink$urls, "abc", fixed = TRUE)

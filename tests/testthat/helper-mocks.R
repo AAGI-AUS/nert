@@ -97,3 +97,10 @@
   )
   sink
 }
+
+# Set a GDAL config option for one test and restore the previous value after.
+.local_gdal_config <- function(name, value, .env = parent.frame()) {
+  old <- unname(terra::getGDALconfig(name))
+  terra::setGDALconfig(name, value)
+  withr::defer(terra::setGDALconfig(name, old), envir = .env)
+}

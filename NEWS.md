@@ -1,7 +1,9 @@
 # nert (development version)
 
 - The TERN API key is passed to GDAL as the `GDAL_HTTP_USERPWD` setting
-  instead of in the file URL, so `terra::sources()` no longer shows it.
+  instead of in the file URL, so `terra::sources()` no longer shows it. The
+  setting lasts for the R session and GDAL sends it to every server read with
+  `/vsicurl`, so the first read warns about this.
 
 - Breaking change: `collect_tern_data()` takes each row's PHENOLOGY value from
   the year of that row's `date`, and leaves rows dated outside 2003--2018 as

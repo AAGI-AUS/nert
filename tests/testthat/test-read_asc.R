@@ -53,7 +53,7 @@ test_that("read_asc returns the raster supplied by the mocked .read_cog", {
 })
 
 test_that("read_asc passes the api_key to GDAL, not the URL", {
-  withr::defer(terra::setGDALconfig("GDAL_HTTP_USERPWD", ""))
+  .local_gdal_config("GDAL_HTTP_USERPWD", "apikey:test-key-0000")
   sink <- .use_mocked_cog()
   read_asc(api_key = "abc/def")
   expect_no_match(sink$urls, "abc", fixed = TRUE)

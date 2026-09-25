@@ -150,7 +150,7 @@ test_that("Phenology URLs are stable across seasons and years", {
 # ---- API key ---------------------------------------------------------------
 
 test_that("the API key goes to GDAL unchanged and not into the URL", {
-  withr::defer(terra::setGDALconfig("GDAL_HTTP_USERPWD", ""))
+  .local_gdal_config("GDAL_HTTP_USERPWD", "apikey:test-key-0000")
   sink <- .use_mocked_cog()
   read_canopy_height(api_key = "abc/def/ghi")
   expect_no_match(sink$urls, "abc", fixed = TRUE)

@@ -14,6 +14,8 @@
 }
 \description{
 Sets the GDAL \code{GDAL_HTTP_USERPWD} option, which stays set for the rest of the
-R session because terra reads raster values only when they are used.
+R session because terra reads raster values only when they are used. Warns
+the first time it is set. When the key changes, TERN files are no longer
+cached, so a read that failed with the old key is not reused.
 }
 \keyword{internal}
