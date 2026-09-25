@@ -1,5 +1,11 @@
 # nert (development version)
 
+- Retries are handled by GDAL through `GDAL_HTTP_MAX_RETRY` and
+  `GDAL_HTTP_RETRY_DELAY`, set from `max_tries` and `initial_delay`. GDAL
+  retries busy and server-error responses (HTTP 429 and 5xx), both when a file
+  is opened and when its values are read later. The previous retry loop could
+  not recover, because GDAL remembered the first failure.
+
 - Breaking change: `collect_tern_data()` takes each row's PHENOLOGY value from
   the year of that row's `date`, and leaves rows dated outside 2003--2018 as
   `NA` with a warning. PHENOLOGY columns no longer carry the year

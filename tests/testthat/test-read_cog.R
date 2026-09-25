@@ -1,6 +1,4 @@
-# Offline tests for the retry/backoff logic in .read_cog().
-# terra::rast is mocked so no network I/O occurs; initial_delay = 0 keeps the
-# backoff Sys.sleep() instantaneous.
+# Offline tests for .read_cog(). terra::rast is mocked so no network I/O occurs.
 
 test_that(".read_cog returns the raster on the first successful attempt", {
   fake <- .fixture_numeric_raster()
@@ -12,33 +10,38 @@ test_that(".read_cog returns the raster on the first successful attempt", {
   expect_s4_class(r, "SpatRaster")
 })
 
-test_that(".read_cog retries a transient failure then succeeds", {
+test_that(".read_cog sets GDAL's HTTP retries from max_tries and initial_delay", {
   fake <- .fixture_numeric_raster()
+  testthat::local_mocked_bindings(
+    rast = function(x, ...) fake,
+    .package = "terra"
+  )
+  withr::defer(terra::setGDALconfig("GDAL_HTTP_MAX_RETRY", ""))
+  withr::defer(terra::setGDALconfig("GDAL_HTTP_RETRY_DELAY", ""))
+  .read_cog("/vsicurl/https://example", max_tries = 4L, initial_delay = 2L)
+  expect_identical(
+    unname(terra::getGDALconfig(c(
+      "GDAL_HTTP_MAX_RETRY",
+      "GDAL_HTTP_RETRY_DELAY"
+    ))),
+    c("3", "2")
+  )
+})
+
+test_that(".read_cog opens the file once and reports a failure", {
   attempts <- 0L
   testthat::local_mocked_bindings(
     rast = function(x, ...) {
       attempts <<- attempts + 1L
-      if (attempts < 2L) {
-        stop("transient failure")
-      }
-      fake
+      stop("file does not exist")
     },
     .package = "terra"
   )
-  r <- .read_cog("/vsicurl/https://example", max_tries = 3L, initial_delay = 0L)
-  expect_s4_class(r, "SpatRaster")
-  expect_identical(attempts, 2L)
-})
-
-test_that(".read_cog aborts after exhausting all retries", {
-  testthat::local_mocked_bindings(
-    rast = function(x, ...) stop("permanent failure"),
-    .package = "terra"
-  )
   expect_error(
-    .read_cog("/vsicurl/https://example", max_tries = 2L, initial_delay = 0L),
-    "Download failed after 2 attempts"
+    .read_cog("/vsicurl/https://example", max_tries = 3L, initial_delay = 0L),
+    "retried up to 2 times"
   )
+  expect_identical(attempts, 1L)
 })
 
 test_that(".read_cog validates max_tries and initial_delay", {
