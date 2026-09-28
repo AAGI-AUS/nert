@@ -23,7 +23,7 @@
     )
   }
 
-  # GDAL retries HTTP 429 and 5xx responses, including reads after the open.
+  # GDAL retries busy and server errors, including reads after the open.
   terra::setGDALconfig("GDAL_HTTP_MAX_RETRY", as.character(max_tries - 1L))
   terra::setGDALconfig("GDAL_HTTP_RETRY_DELAY", as.character(initial_delay))
 
