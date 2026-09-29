@@ -18,10 +18,12 @@ The SLGA entries are generated from
 
 ## Details
 
-Each entry is a `list` with an `alias` (upper-case short name), a `read`
-handler invoked as `read(did, dots, api_key, max_tries, initial_delay)`,
-and an optional `validate` function invoked as
-`validate(dots, dataset_id)` before the API key is checked. Both the
-validator (where present) and the handler live in the dataset's own
-`R/read_<name>.R` file. Datasets with no pre-key argument validation
-simply omit `validate`.
+Each entry is a `list` with an `alias` (upper-case short name), the
+`temporal`, `resolution` and `description` shown by
+[`show_datasets()`](https://aagi-aus.github.io/nert/reference/show_datasets.md),
+a `read` handler invoked as
+`read(did, dots, api_key, max_tries, initial_delay)`, and an optional
+`validate` function invoked as `validate(dots, dataset_id)` before the
+API key is checked. Both the validator (where present) and the handler
+live in the dataset's own `R/read_<name>.R` file. Datasets with no
+pre-key argument validation simply omit `validate`.

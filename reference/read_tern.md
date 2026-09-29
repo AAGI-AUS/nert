@@ -91,6 +91,9 @@ In addition to full TERN portal keys and 8-character prefixes,
 | `"CANOPY"`    | `TERN/36c98155` | Canopy Height (30 m)                         |
 | `"PHENOLOGY"` | `TERN/2bb0c81a` | Land Surface Phenology (500 m)               |
 
+[`show_datasets()`](https://aagi-aus.github.io/nert/reference/show_datasets.md)
+returns this table as a data frame.
+
 Convenience wrappers
 [`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md),
 [`read_asc()`](https://aagi-aus.github.io/nert/reference/read_asc.md),
