@@ -1,5 +1,9 @@
 # nert (development version)
 
+- New `show_datasets()` returns the datasets nert can read, with their
+  aliases, TERN IDs, time steps, resolutions and descriptions. The table that
+  `collect_tern_data()` prints comes from the same source.
+
 - Michael Sumner and Shandiya Balasubramaniam added as package reviewers
   (rOpenSci review, ropensci/software-review#785).
 
