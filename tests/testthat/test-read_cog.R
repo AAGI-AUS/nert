@@ -10,6 +10,20 @@ test_that(".read_cog returns the raster on the first successful attempt", {
   expect_s4_class(r, "SpatRaster")
 })
 
+test_that(".read_cog passes opts to terra::rast()", {
+  fake <- .fixture_numeric_raster()
+  seen <- NULL
+  testthat::local_mocked_bindings(
+    rast = function(x, ..., opts = NULL) {
+      seen <<- opts
+      fake
+    },
+    .package = "terra"
+  )
+  .read_cog("/vsicurl/https://example", 1L, 0L, opts = "OVERVIEW_LEVEL=NONE")
+  expect_identical(seen, "OVERVIEW_LEVEL=NONE")
+})
+
 test_that(".read_cog sets GDAL's HTTP retries from max_tries and initial_delay", {
   fake <- .fixture_numeric_raster()
   testthat::local_mocked_bindings(

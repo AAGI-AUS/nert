@@ -12,6 +12,8 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8147-1239")),
     person("Max", "Moldovan", , "max.moldovan@adelaide.edu.au", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0001-9680-8474")),
+    person("Michael", "Sumner", role = "rev"),
+    person("Shandiya", "Balasubramaniam", role = "rev"),
     person("Grains Research and Development Corporation", role = c("fnd", "cph"),
            comment = c("GRDC Project CUR2210-005OPX (AAGI-CU), UOA2301-005OPX (AAGI-AU)", ROR = "02xwr1996"))
   )

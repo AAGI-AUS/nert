@@ -62,7 +62,7 @@ read_canopy_height <- function(
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of `...` args from [read_tern()].
-#' @param api_key URL-encoded API key.
+#' @param api_key TERN API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the canopy height dataset.
 #'
@@ -87,9 +87,9 @@ read_canopy_height <- function(
     median = "median_files_IREknUX.tif"
   )
   full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/%s",
-    api_key,
+    "/vsicurl/https://data.tern.org.au/model-derived/OzTreeMap/CanopyHeightComposite/%s",
     dl_file
   )
+  .set_tern_auth(api_key)
   return(.read_cog(full_url, max_tries, initial_delay))
 }

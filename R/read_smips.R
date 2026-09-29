@@ -111,7 +111,7 @@ read_smips <- function(
 #'
 #' @dev
 .validate_smips <- function(dots, dataset_id) {
-  date <- dots[["date"]] %||% dots[["day"]]
+  date <- if (is.null(dots[["date"]])) dots[["day"]] else dots[["date"]]
   if (is.null(date)) {
     cli::cli_abort(
       "SMIPS requires a {.arg date} argument (daily resolution),
@@ -125,7 +125,7 @@ read_smips <- function(
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of \code{...} args from [read_tern()].
-#' @param api_key URL-encoded API key.
+#' @param api_key TERN API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the requested SMIPS layer/date.
 #'
@@ -134,7 +134,7 @@ read_smips <- function(
 .read_tern_smips <- function(did, dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'day' parameter name; presence is
   # guaranteed by .validate_smips() before this handler runs.
-  date <- dots[["date"]] %||% dots[["day"]]
+  date <- if (is.null(dots[["date"]])) dots[["day"]] else dots[["date"]]
   collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {
@@ -144,13 +144,19 @@ read_smips <- function(
   day <- .check_date(date)
   dl_file <- .make_smips_url(.collection = collection, .day = day)
   full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
-    api_key,
+    "/vsicurl/https://data.tern.org.au/model-derived/smips/v1_0/%s/%s/%s",
     collection,
     lubridate::year(day),
     dl_file
   )
-  return(.read_cog(full_url, max_tries, initial_delay))
+  .set_tern_auth(api_key)
+  # TERN's SMIPS overviews hold wrong values at NoData edges.
+  return(.read_cog(
+    full_url,
+    max_tries,
+    initial_delay,
+    opts = "OVERVIEW_LEVEL=NONE"
+  ))
 }
 
 

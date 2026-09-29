@@ -89,7 +89,7 @@ read_aet <- function(
 #'
 #' @dev
 .validate_aet <- function(dots, dataset_id) {
-  date <- dots[["date"]] %||% dots[["month"]]
+  date <- if (is.null(dots[["date"]])) dots[["month"]] else dots[["date"]]
   if (is.null(date)) {
     cli::cli_abort(
       "AET requires a {.arg date} argument (monthly resolution),
@@ -105,7 +105,7 @@ read_aet <- function(
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of `...` args from [read_tern()].
-#' @param api_key URL-encoded API key.
+#' @param api_key TERN API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the requested AET collection/date.
 #'
@@ -113,7 +113,7 @@ read_aet <- function(
 .read_tern_aet <- function(did, dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'month' parameter name; presence and the
   # availability window are guaranteed by .validate_aet() before this runs.
-  date <- dots[["date"]] %||% dots[["month"]]
+  date <- if (is.null(dots[["date"]])) dots[["month"]] else dots[["date"]]
   collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {
@@ -123,9 +123,9 @@ read_aet <- function(
   month <- .check_aet_date(date)
   full_url <- .make_aet_url(
     .collection = collection,
-    .month = month,
-    .api_key = api_key
+    .month = month
   )
+  .set_tern_auth(api_key)
   return(.read_cog(full_url, max_tries, initial_delay))
 }
 
@@ -160,11 +160,10 @@ read_aet <- function(
 #'   (`"ETa"` or `"pixel_qa"`).
 #' @param .month The validated `POSIXct` date snapped to the first of
 #'   the month.
-#' @param .api_key The \acronym{URL}-encoded \acronym{API} key.
 #' @returns A `character` GDAL vsicurl URL string.
 #'
 #' @dev
-.make_aet_url <- function(.collection, .month, .api_key) {
+.make_aet_url <- function(.collection, .month) {
   approved_collections <- c("ETa", "pixel_qa")
   collection <- rlang::arg_match(.collection, approved_collections)
 
@@ -172,8 +171,7 @@ read_aet <- function(
   date_str <- format(.month, "%Y_%m_%d")
 
   return(sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
-    .api_key,
+    "/vsicurl/https://data.tern.org.au/model-derived/aet/v2_2/%s/%s/CMRSET_LANDSAT_V2_2_%s_%s.vrt",
     year,
     date_str,
     date_str,

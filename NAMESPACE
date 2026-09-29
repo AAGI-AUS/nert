@@ -11,6 +11,7 @@ export(read_slga)
 export(read_smips)
 export(read_soil_diversity)
 export(read_tern)
+export(show_datasets)
 importFrom(data.table,
   ":=",
   .BY,

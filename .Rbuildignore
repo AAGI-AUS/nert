@@ -68,6 +68,6 @@
 ^man/dot-tern_aliases\.Rd$
 ^man/dot-tern_dispatch_id\.Rd$
 ^man/dot-read_cog\.Rd$
-^man/dot-check_api_key\.Rd$
+^man/dot-set_tern_auth\.Rd$
 ^man/dot-check_date\.Rd$
 ^man/dot-init_nert_options\.Rd$
