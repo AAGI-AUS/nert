@@ -102,3 +102,9 @@ test_that(".read_tern_asc rejects an unknown collection directly", {
     "must be one of"
   )
 })
+
+test_that("read_asc() keeps the file's overviews", {
+  sink <- .use_mocked_cog()
+  read_asc(api_key = "test-key")
+  expect_identical(sink$opts, list(NULL))
+})

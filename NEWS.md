@@ -1,5 +1,8 @@
 # nert (development version)
 
+- `plot()` on a `read_smips()` raster now shows the correct values. It used
+  to draw from the file's overviews, which hold wrong values at the coast.
+
 - The TERN API key is passed to GDAL as the `GDAL_HTTP_USERPWD` setting
   instead of in the file URL, so `terra::sources()` no longer shows it. The
   setting lasts for the R session and GDAL sends it to every server read with

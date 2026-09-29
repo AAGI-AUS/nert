@@ -5,7 +5,12 @@
 #' @param dataset_id Raw `dataset_id` (unused; uniform validator signature).
 #' @returns `NULL`; called for its side effects (argument validation).
 #' @dev
-.read_cog <- function(full_url, max_tries = NULL, initial_delay = NULL) {
+.read_cog <- function(
+  full_url,
+  max_tries = NULL,
+  initial_delay = NULL,
+  opts = NULL
+) {
   max_tries <- if (is.null(max_tries)) {
     getOption("nert.max_tries", 3L)
   } else {
@@ -34,7 +39,7 @@
   for (attempt in seq_len(max_tries)) {
     result <- tryCatch(
       {
-        terra::rast(full_url)
+        terra::rast(full_url, opts = opts)
       },
       error = function(e) {
         if (attempt < max_tries) {

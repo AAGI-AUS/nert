@@ -75,17 +75,20 @@
 ) {
   sink <- new.env(parent = emptyenv())
   sink$urls <- character()
+  sink$opts <- list()
 
   mock_fn <- if (!is.null(error_msg)) {
     force(error_msg)
-    function(full_url, max_tries = NULL, initial_delay = NULL) {
+    function(full_url, max_tries = NULL, initial_delay = NULL, opts = NULL) {
       sink$urls <- c(sink$urls, full_url)
+      sink$opts <- c(sink$opts, list(opts))
       stop(error_msg)
     }
   } else {
     force(raster)
-    function(full_url, max_tries = NULL, initial_delay = NULL) {
+    function(full_url, max_tries = NULL, initial_delay = NULL, opts = NULL) {
       sink$urls <- c(sink$urls, full_url)
+      sink$opts <- c(sink$opts, list(opts))
       raster
     }
   }
