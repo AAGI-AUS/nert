@@ -124,6 +124,7 @@ The {nert} package also re-exports {tidyterra}'s `autoplot()` function, which ca
 ```{r}
 #| label: example_cog
 #| eval: true
+#| fig.alt: "A map of SMIPS total soil moisture (mm) across Australia on 2024-01-01."
 
 autoplot(r)
 ```
