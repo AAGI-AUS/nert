@@ -147,10 +147,15 @@ test_that("Phenology URLs are stable across seasons and years", {
   expect_snapshot(cat(sink$urls, sep = "\n"))
 })
 
-# ---- API-key URL-encoding (slash -> %2f) ----------------------------------
+# ---- API key ---------------------------------------------------------------
 
-test_that("api_key with '/' is URL-encoded as %2f in every URL", {
+test_that("the API key goes to GDAL unchanged and not into the URL", {
+  .local_gdal_config("GDAL_HTTP_USERPWD", "apikey:test-key-0000")
   sink <- .use_mocked_cog()
   read_canopy_height(api_key = "abc/def/ghi")
-  expect_match(sink$urls, "apikey:abc%2fdef%2fghi@", fixed = TRUE)
+  expect_no_match(sink$urls, "abc", fixed = TRUE)
+  expect_identical(
+    unname(terra::getGDALconfig("GDAL_HTTP_USERPWD")),
+    "apikey:abc/def/ghi"
+  )
 })

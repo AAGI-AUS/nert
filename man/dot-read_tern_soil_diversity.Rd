@@ -11,7 +11,7 @@
 
 \item{dots}{Named list of \code{...} args from \code{\link[=read_tern]{read_tern()}}.}
 
-\item{api_key}{URL-encoded API key.}
+\item{api_key}{TERN API key.}
 
 \item{max_tries, initial_delay}{Passed to \code{\link[=.read_cog]{.read_cog()}}.}
 }

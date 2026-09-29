@@ -179,7 +179,7 @@ read_phenology <- function(
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of \code{...} args from [read_tern()].
-#' @param api_key URL-encoded API key.
+#' @param api_key TERN API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the requested phenology layer.
 #'
@@ -234,10 +234,10 @@ read_phenology <- function(
     season
   )
   full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/remote-sensing/modis/phenology_myd13a1/%s/%s",
-    api_key,
+    "/vsicurl/https://data.tern.org.au/remote-sensing/modis/phenology_myd13a1/%s/%s",
     metric_dir,
     fname
   )
+  .set_tern_auth(api_key)
   return(.read_cog(full_url, max_tries, initial_delay))
 }
