@@ -22,6 +22,7 @@ reference:
     desc: "Helper functions for working with TERN data."
     contents:
       - get_key
+      - show_datasets
       - autoplot
   - title: "Data"
     desc: "Example datasets bundled with the package."
