@@ -76,6 +76,8 @@ In addition to full \acronym{TERN} portal keys and 8-character prefixes,
 \code{"CANOPY"} \tab \verb{TERN/36c98155} \tab Canopy Height (30 m) \cr
 \code{"PHENOLOGY"} \tab \verb{TERN/2bb0c81a} \tab Land Surface Phenology (500 m) \cr
 }
+\code{\link[=show_datasets]{show_datasets()}} returns this table as a data frame.
+
 Convenience wrappers \code{\link[=read_smips]{read_smips()}}, \code{\link[=read_asc]{read_asc()}}, \code{\link[=read_aet]{read_aet()}},
 \code{\link[=read_slga]{read_slga()}}, \code{\link[=read_soil_diversity]{read_soil_diversity()}}, \code{\link[=read_canopy_height]{read_canopy_height()}}, and
 \code{\link[=read_phenology]{read_phenology()}} are also provided for simplified access to each dataset.

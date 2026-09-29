@@ -971,150 +971,15 @@ collect_tern_data <- function(
   phenology_collection,
   canopy_collection
 ) {
-  dataset_info <- list(
-    SMIPS = list(
-      id = "TERN/d1995ee8",
-      temporal = "Daily",
-      resolution = "1 km",
-      description = "Soil Moisture Integration & Prediction System"
-    ),
-    ASC = list(
-      id = "TERN/15728dba",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Australian Soil Classification (soil order)"
-    ),
-    AET = list(
-      id = "TERN/9fefa68b",
-      temporal = "Monthly",
-      resolution = "30 m",
-      description = "Actual Evapotranspiration via CMRSET"
-    ),
-    AWC = list(
-      id = "TERN/482301c2",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Available Water Capacity % (SLGA)"
-    ),
-    CLY = list(
-      id = "TERN/f95dc442",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Clay content % (SLGA)"
-    ),
-    SND = list(
-      id = "TERN/4224ddff",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Sand content % (SLGA)"
-    ),
-    SLT = list(
-      id = "TERN/11375f04",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Silt content % (SLGA)"
-    ),
-    BDW = list(
-      id = "TERN/95978aec",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Bulk Density whole earth (g/cm3) (SLGA)"
-    ),
-    PHC = list(
-      id = "TERN/258afc98",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "pH (CaCl2) (SLGA)"
-    ),
-    PHW = list(
-      id = "TERN/c37439a5",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "pH (water) (SLGA)"
-    ),
-    NTO = list(
-      id = "TERN/e9484508",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Total Nitrogen % (SLGA)"
-    ),
-    AVP = list(
-      id = "TERN/c6ef289b",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Available Phosphorus (mg/kg) (SLGA)"
-    ),
-    PTO = list(
-      id = "TERN/be382e63",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Total Phosphorus % (SLGA)"
-    ),
-    CEC = list(
-      id = "TERN/5b4b2991",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Cation Exchange Capacity (meq/100g) (SLGA)"
-    ),
-    ECE = list(
-      id = "TERN/0d27cf8b",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Effective Cation Exchange Capacity (meq/100g) (SLGA)"
-    ),
-    DUL = list(
-      id = "TERN/de9ddc12",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Drained upper limit water content % (SLGA)"
-    ),
-    L15 = list(
-      id = "TERN/4443f5df",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "15 bar lower limit water content % (SLGA)"
-    ),
-    SOILDIV = list(
-      id = "TERN/4a428d52",
-      temporal = "Static",
-      resolution = "90 m",
-      description = "Soil Beta Diversity (NMDS components)"
-    ),
-    CANOPY = list(
-      id = "TERN/36c98155",
-      temporal = "Static",
-      resolution = "30 m",
-      description = "Canopy Height composites (OzTreeMap)"
-    ),
-    PHENOLOGY = list(
-      id = "TERN/2bb0c81a",
-      temporal = "Annual",
-      resolution = "500 m",
-      description = "Land Surface Phenology"
-    )
-  )
+  info <- show_datasets()
+  info <- info[match(datasets, info$alias), ]
 
   layers_info <- vapply(
     datasets,
     function(ds) {
       layer <- "Single layer" # Catch-all case
 
-      slga_datasets <- c(
-        "AWC",
-        "CLY",
-        "SND",
-        "SLT",
-        "BDW",
-        "PHC",
-        "PHW",
-        "NTO",
-        "AVP",
-        "PTO",
-        "CEC",
-        "ECE",
-        "DUL",
-        "L15"
-      )
+      slga_datasets <- vapply(.slga_config, `[[`, character(1L), "prefix")
       collection_map <- list(
         SMIPS = smips_collection,
         ASC = asc_collection,
@@ -1143,35 +1008,11 @@ collect_tern_data <- function(
 
   tbl <- data.table::data.table(
     Alias = datasets,
-    ID = vapply(
-      datasets,
-      function(x) {
-        return(dataset_info[[x]]$id)
-      },
-      character(1L)
-    ),
+    ID = info$id,
     Layer = layers_info,
-    Temporal = vapply(
-      datasets,
-      function(x) {
-        return(dataset_info[[x]]$temporal)
-      },
-      character(1L)
-    ),
-    Resolution = vapply(
-      datasets,
-      function(x) {
-        return(dataset_info[[x]]$resolution)
-      },
-      character(1L)
-    ),
-    Description = vapply(
-      datasets,
-      function(x) {
-        return(dataset_info[[x]]$description)
-      },
-      character(1L)
-    )
+    Temporal = info$temporal,
+    Resolution = info$resolution,
+    Description = info$description
   )
 
   cli::cli_inform("")
