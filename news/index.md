@@ -2,6 +2,11 @@
 
 ## nert (development version)
 
+- [`plot()`](https://rspatial.github.io/terra/reference/plot.html) on a
+  [`read_smips()`](https://aagi-aus.github.io/nert/reference/read_smips.md)
+  raster now shows the correct values. It used to draw from the file’s
+  overviews, which hold wrong values at the coast.
+
 - The TERN API key is passed to GDAL as the `GDAL_HTTP_USERPWD` setting
   instead of in the file URL, so
   [`terra::sources()`](https://rspatial.github.io/terra/reference/sources.html)

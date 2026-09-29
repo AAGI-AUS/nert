@@ -5,7 +5,7 @@ Read a COG from TERN
 ## Usage
 
 ``` r
-.read_cog(full_url, max_tries = NULL, initial_delay = NULL)
+.read_cog(full_url, max_tries = NULL, initial_delay = NULL, opts = NULL)
 ```
 
 ## Arguments
