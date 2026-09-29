@@ -152,7 +152,8 @@ autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 
-![](reference/figures/README-example_cog-1.png)
+![A map of SMIPS total soil moisture (mm) across Australia on
+2024-01-01.](reference/figures/README-example_cog-1.png)
 
 ## Extract values in bulk given Lat/Lon values
 

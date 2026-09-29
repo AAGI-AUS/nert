@@ -2,6 +2,9 @@
 
 ## nert (development version)
 
+- The screenshots in the *Getting started* vignette and the plot in the
+  README now have alt-text.
+
 - New
   [`show_datasets()`](https://aagi-aus.github.io/nert/reference/show_datasets.md)
   returns the datasets nert can read, with their aliases, TERN IDs, time

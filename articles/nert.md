@@ -44,30 +44,35 @@ account, generating an API key, and setting it up for use with the
     (<https://portal.tern.org.au/>) in a web browser. Click the “Sign
     In” button that appears in the top-right of the browser window.
 
-    ![](01-get-started.jpg)
+    ![The TERN Data Discovery home page, with the Sign in button at the
+    top right.](01-get-started.jpg)
 
 2.  Click the Australian Access Federation button to sign in to the TERN
     Data Portal via your University ID (or alternatively, sign in via
     CILogon or your Google identity).
 
-    ![](02-get-started.jpg)
+    ![The TERN sign-in page, with the Australian Access Federation,
+    CILogon and Google sign-in options.](02-get-started.jpg)
 
 3.  Once signed in, click on the menu in the top-right with your name
     and click the “TERN Account” entry to open your account profile.
 
-    ![](03-get-started.jpg)
+    ![The user menu at the top right of the Data Discovery page, open at
+    the TERN Account entry.](03-get-started.jpg)
 
 4.  On your account profile screen, navigate to the menu on the
     left-hand side, and click the “Create API key” entry.
 
-    ![](04-get-started.jpg)
+    ![The TERN account page, with Create API key selected in the
+    left-hand menu.](04-get-started.jpg)
 
 5.  On this screen you can create your API key for accessing the TERN
     Data Portal. Give your key whatever name you like (e.g., below I
     have called the key “my_API_key” for demonstration purposes), and
     then click the “Request API Key” button.
 
-    ![](05-get-started.jpg)
+    ![The Create API Key form, with the key name my_API_key entered
+    above the Request API Key button.](05-get-started.jpg)
 
 6.  Your API key is now generated and appears as the string of text
     inside the text box on the page, together with the key’s creation
@@ -75,7 +80,8 @@ account, generating an API key, and setting it up for use with the
     not to close this browser window until after you have successfully
     stored the key locally somewhere as you won’t see it again.
 
-    ![](06-get-started.jpg)
+    ![The API Key Information page, showing the new key (blurred) and
+    its creation and expiry dates.](06-get-started.jpg)
 
 ## Saving Your API Key Locally (using {keyring})
 
