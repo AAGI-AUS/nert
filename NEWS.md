@@ -1,5 +1,11 @@
 # nert (development version)
 
+- Retries are handled by GDAL through `GDAL_HTTP_MAX_RETRY` and
+  `GDAL_HTTP_RETRY_DELAY`, set from `max_tries` and `initial_delay`. GDAL
+  retries busy and server-error responses, both when a file is opened and when
+  its values are read later. The previous retry loop could not recover,
+  because GDAL remembered the first failure.
+
 - `plot()` on a `read_smips()` raster now shows the correct values. It used
   to draw from the file's overviews, which hold wrong values at the coast.
 

@@ -36,29 +36,24 @@
     )
   }
 
-  for (attempt in seq_len(max_tries)) {
-    result <- tryCatch(
-      {
-        terra::rast(full_url, opts = opts)
-      },
-      error = function(e) {
-        if (attempt < max_tries) {
-          delay <- initial_delay * 2L^(attempt - 1L)
-          cli::cli_alert(
-            "Download failed on attempt {attempt}. Retrying in {delay} seconds..."
-          )
-          Sys.sleep(delay)
-        }
-        NULL
+  # GDAL retries busy and server errors, including reads after the open.
+  terra::setGDALconfig("GDAL_HTTP_MAX_RETRY", as.character(max_tries - 1L))
+  terra::setGDALconfig("GDAL_HTTP_RETRY_DELAY", as.character(initial_delay))
+
+  return(tryCatch(
+    terra::rast(full_url, opts = opts),
+    error = function(e) {
+      msg <- "Could not read the file from TERN."
+      if (max_tries > 1L) {
+        msg <- c(
+          msg,
+          "i" = "Busy and server-error responses were retried up to
+            {max_tries - 1L} time{?s}."
+        )
       }
-    )
-
-    if (!is.null(result)) {
-      return(result)
+      cli::cli_abort(msg)
     }
-  }
-
-  cli::cli_abort("Download failed after {max_tries} attempts.")
+  ))
 }
 
 #' Pass the TERN API key to GDAL
