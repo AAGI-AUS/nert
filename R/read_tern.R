@@ -385,7 +385,7 @@ read_tern <- function(
   if (!is.null(entry$validate)) {
     entry$validate(dots, dataset_id)
   }
-  api_key <- api_key %||% get_key()
+  api_key <- if (is.null(api_key)) get_key() else api_key
 
   return(entry$read(did, dots, api_key, max_tries, initial_delay))
 }

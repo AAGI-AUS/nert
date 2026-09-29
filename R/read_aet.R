@@ -89,7 +89,7 @@ read_aet <- function(
 #'
 #' @dev
 .validate_aet <- function(dots, dataset_id) {
-  date <- dots[["date"]] %||% dots[["month"]]
+  date <- if (is.null(dots[["date"]])) dots[["month"]] else dots[["date"]]
   if (is.null(date)) {
     cli::cli_abort(
       "AET requires a {.arg date} argument (monthly resolution),
@@ -113,7 +113,7 @@ read_aet <- function(
 .read_tern_aet <- function(did, dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'month' parameter name; presence and the
   # availability window are guaranteed by .validate_aet() before this runs.
-  date <- dots[["date"]] %||% dots[["month"]]
+  date <- if (is.null(dots[["date"]])) dots[["month"]] else dots[["date"]]
   collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {
