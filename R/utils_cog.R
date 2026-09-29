@@ -11,16 +11,8 @@
   initial_delay = NULL,
   opts = NULL
 ) {
-  max_tries <- if (is.null(max_tries)) {
-    getOption("nert.max_tries", 3L)
-  } else {
-    max_tries
-  }
-  initial_delay <- if (is.null(initial_delay)) {
-    getOption("nert.initial_delay", 1L)
-  } else {
-    initial_delay
-  }
+  max_tries <- max_tries %||% getOption("nert.max_tries", 3L)
+  initial_delay <- initial_delay %||% getOption("nert.initial_delay", 1L)
 
   params <- suppressWarnings(as.integer(c(max_tries, initial_delay)))
   max_tries <- params[[1L]]

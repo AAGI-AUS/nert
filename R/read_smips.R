@@ -111,7 +111,7 @@ read_smips <- function(
 #'
 #' @dev
 .validate_smips <- function(dots, dataset_id) {
-  date <- if (is.null(dots[["date"]])) dots[["day"]] else dots[["date"]]
+  date <- dots[["date"]] %||% dots[["day"]]
   if (is.null(date)) {
     cli::cli_abort(
       "SMIPS requires a {.arg date} argument (daily resolution),
@@ -134,7 +134,7 @@ read_smips <- function(
 .read_tern_smips <- function(did, dots, api_key, max_tries, initial_delay) {
   # Accept both 'date' and the legacy 'day' parameter name; presence is
   # guaranteed by .validate_smips() before this handler runs.
-  date <- if (is.null(dots[["date"]])) dots[["day"]] else dots[["date"]]
+  date <- dots[["date"]] %||% dots[["day"]]
   collection <- if (!is.null(dots[["collection"]])) {
     dots[["collection"]]
   } else {

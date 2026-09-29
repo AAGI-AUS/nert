@@ -14,5 +14,6 @@
 #' @importFrom data.table setnames
 #' @importFrom data.table rbindlist
 #' @importFrom data.table is.data.table
+#' @importFrom rlang %||%
 ## usethis namespace: end
 NULL
