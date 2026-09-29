@@ -227,6 +227,7 @@ read_slga <- function(
   "482301c2" = list(
     dir = "AWC",
     prefix = "AWC",
+    description = "Available Water Capacity % (SLGA)",
     version = "v2",
     date = "20210614",
     suffix = "AU_TRN_N"
@@ -234,6 +235,7 @@ read_slga <- function(
   "f95dc442" = list(
     dir = "CLY",
     prefix = "CLY",
+    description = "Clay content % (SLGA)",
     version = "v2",
     date = "20210902",
     suffix = "AU_TRN_N"
@@ -241,6 +243,7 @@ read_slga <- function(
   "4224ddff" = list(
     dir = "SND",
     prefix = "SND",
+    description = "Sand content % (SLGA)",
     version = "v2",
     date = "20210902",
     suffix = "AU_TRN_N"
@@ -248,6 +251,7 @@ read_slga <- function(
   "11375f04" = list(
     dir = "SLT",
     prefix = "SLT",
+    description = "Silt content % (SLGA)",
     version = "v2",
     date = "20210902",
     suffix = "AU_TRN_N"
@@ -255,6 +259,7 @@ read_slga <- function(
   "95978aec" = list(
     dir = "BDW",
     prefix = "BDW",
+    description = "Bulk Density whole earth (g/cm3) (SLGA)",
     version = "v2",
     date = "20230607",
     suffix = "AU_TRN_N"
@@ -262,6 +267,7 @@ read_slga <- function(
   "258afc98" = list(
     dir = "pHc",
     prefix = "PHC",
+    description = "pH (CaCl2) (SLGA)",
     version = "v2",
     date = "20210913",
     suffix = "AU_NAT_C"
@@ -269,6 +275,7 @@ read_slga <- function(
   "c37439a5" = list(
     dir = "PHW",
     prefix = "PHW",
+    description = "pH (water) (SLGA)",
     version = "v1",
     date = "20220520",
     suffix = "AU_TRN_N"
@@ -276,6 +283,7 @@ read_slga <- function(
   "e9484508" = list(
     dir = "NTO",
     prefix = "NTO",
+    description = "Total Nitrogen % (SLGA)",
     version = "v2",
     date = "20231101",
     suffix = "AU_NAT_C"
@@ -283,6 +291,7 @@ read_slga <- function(
   "c6ef289b" = list(
     dir = "AVP",
     prefix = "AVP",
+    description = "Available Phosphorus (mg/kg) (SLGA)",
     version = "v1",
     date = "20220826",
     suffix = "AU_TRN_N"
@@ -290,6 +299,7 @@ read_slga <- function(
   "be382e63" = list(
     dir = "PTO",
     prefix = "PTO",
+    description = "Total Phosphorus % (SLGA)",
     version = "v2",
     date = "20231101",
     suffix = "AU_NAT_C"
@@ -297,6 +307,7 @@ read_slga <- function(
   "5b4b2991" = list(
     dir = "CEC",
     prefix = "CEC",
+    description = "Cation Exchange Capacity (meq/100g) (SLGA)",
     version = "v1",
     date = "20220826",
     suffix = "AU_TRN_N"
@@ -304,6 +315,7 @@ read_slga <- function(
   "0d27cf8b" = list(
     dir = "ECE",
     prefix = "ECE",
+    description = "Effective Cation Exchange Capacity (meq/100g) (SLGA)",
     version = "v1",
     date = "20140801",
     suffix = "AU_NAT_C"
@@ -311,6 +323,7 @@ read_slga <- function(
   "de9ddc12" = list(
     dir = "DUL",
     prefix = "DUL",
+    description = "Drained upper limit water content % (SLGA)",
     version = "v1",
     date = "20210614",
     suffix = "AU_TRN_N"
@@ -318,6 +331,7 @@ read_slga <- function(
   "4443f5df" = list(
     dir = "L15",
     prefix = "L15",
+    description = "15 bar lower limit water content % (SLGA)",
     version = "v1",
     date = "20210614",
     suffix = "AU_TRN_N"
@@ -332,7 +346,7 @@ read_slga <- function(
 #'
 #' @param did Normalised dispatch ID (e.g.\ \code{"482301c2"}, \code{"slga_cly"}).
 #' @param dots Named list of \code{...} args from [read_tern()].
-#' @param api_key URL-encoded API key.
+#' @param api_key TERN API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the requested SLGA attribute/depth/statistic.
 #'
@@ -373,11 +387,11 @@ read_slga <- function(
     cfg$date
   )
   full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/%s/%s/%s",
-    api_key,
+    "/vsicurl/https://data.tern.org.au/model-derived/slga/NationalMaps/SoilAndLandscapeGrid/%s/%s/%s",
     cfg$dir,
     cfg$version,
     fname
   )
+  .set_tern_auth(api_key)
   return(.read_cog(full_url, max_tries, initial_delay))
 }

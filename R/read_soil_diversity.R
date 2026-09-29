@@ -71,7 +71,7 @@ read_soil_diversity <- function(
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of \code{...} args from [read_tern()].
-#' @param api_key URL-encoded API key.
+#' @param api_key TERN API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the requested soil diversity layer.
 #'
@@ -109,9 +109,9 @@ read_soil_diversity <- function(
 
   fname <- sprintf("NMDS_%s_%d_%s_pred.tif", collection, axis, collection)
   full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/Other/SoilBetaDiversity/%s",
-    api_key,
+    "/vsicurl/https://data.tern.org.au/model-derived/slga/NationalMaps/Other/SoilBetaDiversity/%s",
     fname
   )
+  .set_tern_auth(api_key)
   return(.read_cog(full_url, max_tries, initial_delay))
 }

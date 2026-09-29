@@ -11,8 +11,16 @@
   initial_delay = NULL,
   opts = NULL
 ) {
-  max_tries <- max_tries %||% getOption("nert.max_tries", 3L)
-  initial_delay <- initial_delay %||% getOption("nert.initial_delay", 1L)
+  max_tries <- if (is.null(max_tries)) {
+    getOption("nert.max_tries", 3L)
+  } else {
+    max_tries
+  }
+  initial_delay <- if (is.null(initial_delay)) {
+    getOption("nert.initial_delay", 1L)
+  } else {
+    initial_delay
+  }
 
   params <- suppressWarnings(as.integer(c(max_tries, initial_delay)))
   max_tries <- params[[1L]]
@@ -53,13 +61,36 @@
   cli::cli_abort("Download failed after {max_tries} attempts.")
 }
 
-#' Fix improper API keys
+#' Pass the TERN API key to GDAL
 #'
-#' @param api_key A `string` value containing a TERN API key for checking
+#' Sets the GDAL `GDAL_HTTP_USERPWD` option, which stays set for the rest of the
+#' R session because terra reads raster values only when they are used. Warns
+#' the first time it is set. When the key changes, TERN files are no longer
+#' cached, so a read that failed with the old key is not reused.
 #'
-#' @returns A `string` value with replacement of troublesome characters if
-#'  necessary.
+#' @param api_key A `string` value containing a TERN API key.
+#' @returns `invisible(NULL)`. This function is called for its side effect.
 #' @dev
-.check_api_key <- function(api_key) {
-  return(gsub("/", "%2f", api_key, fixed = TRUE))
+.set_tern_auth <- function(api_key) {
+  userpwd <- paste0("apikey:", api_key)
+  current <- unname(terra::getGDALconfig("GDAL_HTTP_USERPWD"))
+  if (identical(current, userpwd)) {
+    return(invisible(NULL))
+  }
+  if (nzchar(current)) {
+    terra::setGDALconfig(
+      "CPL_VSIL_CURL_NON_CACHED",
+      "/vsicurl/https://data.tern.org.au/"
+    )
+  } else {
+    cli::cli_warn(c(
+      "nert has set the GDAL option {.envvar GDAL_HTTP_USERPWD} to your TERN
+       API key for the rest of this R session.",
+      "i" = "GDAL sends the key with every {.code /vsicurl} request in this
+       session, including requests to servers other than TERN.",
+      "i" = "Restart R to clear it."
+    ))
+  }
+  terra::setGDALconfig("GDAL_HTTP_USERPWD", userpwd)
+  return(invisible(NULL))
 }

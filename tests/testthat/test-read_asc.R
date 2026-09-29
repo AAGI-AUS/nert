@@ -52,10 +52,15 @@ test_that("read_asc returns the raster supplied by the mocked .read_cog", {
   expect_named(r, "Class")
 })
 
-test_that("read_asc URL-encodes a '/' in the api_key", {
+test_that("read_asc passes the api_key to GDAL, not the URL", {
+  .local_gdal_config("GDAL_HTTP_USERPWD", "apikey:test-key-0000")
   sink <- .use_mocked_cog()
   read_asc(api_key = "abc/def")
-  expect_match(sink$urls, "apikey:abc%2fdef@", fixed = TRUE)
+  expect_no_match(sink$urls, "abc", fixed = TRUE)
+  expect_identical(
+    unname(terra::getGDALconfig("GDAL_HTTP_USERPWD")),
+    "apikey:abc/def"
+  )
 })
 
 test_that("read_asc dispatches via the ASC alias in read_tern", {

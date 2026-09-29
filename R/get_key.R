@@ -45,6 +45,13 @@
 #' TERN_API_KEY=your_api_key
 #' ```
 #'
+#' # How the key is sent
+#'
+#' When you read a dataset, \pkg{nert} gives the key to GDAL as the
+#'   `GDAL_HTTP_USERPWD` setting, which stays set until the \R session ends.
+#'   The key does not appear in [terra::sources()]. GDAL also sends it with any
+#'   other `/vsicurl` request made in the same session.
+#'
 #' @returns A string value with your \acronym{API} key value.
 #'
 #' @examples

@@ -34,6 +34,8 @@
 #'   `"CANOPY"` \tab `TERN/36c98155` \tab Canopy Height (30 m) \cr
 #'   `"PHENOLOGY"` \tab `TERN/2bb0c81a` \tab Land Surface Phenology (500 m) \cr
 #' }
+#' [show_datasets()] returns this table as a data frame.
+#'
 #' Convenience wrappers [read_smips()], [read_asc()], [read_aet()],
 #' [read_slga()], [read_soil_diversity()], [read_canopy_height()], and
 #' [read_phenology()] are also provided for simplified access to each dataset.
@@ -385,7 +387,7 @@ read_tern <- function(
   if (!is.null(entry$validate)) {
     entry$validate(dots, dataset_id)
   }
-  api_key <- .check_api_key(api_key %||% get_key())
+  api_key <- if (is.null(api_key)) get_key() else api_key
 
   return(entry$read(did, dots, api_key, max_tries, initial_delay))
 }
@@ -399,8 +401,10 @@ read_tern <- function(
 #' from this list, so a dataset is defined in one place. The SLGA entries are
 #' generated from [.slga_config].
 #'
-#' Each entry is a `list` with an `alias` (upper-case short name), a `read`
-#' handler invoked as `read(did, dots, api_key, max_tries, initial_delay)`, and
+#' Each entry is a `list` with an `alias` (upper-case short name), the
+#' `temporal`, `resolution` and `description` shown by [show_datasets()], a
+#' `read` handler invoked as `read(did, dots, api_key, max_tries,
+#' initial_delay)`, and
 #' an optional `validate` function invoked as `validate(dots, dataset_id)`
 #' before the API key is checked. Both the validator (where present) and the
 #' handler live in the dataset's own `R/read_<name>.R` file. Datasets with no
@@ -411,26 +415,59 @@ read_tern <- function(
   list(
     "d1995ee8" = list(
       alias = "SMIPS",
+      temporal = "Daily",
+      resolution = "1 km",
+      description = "Soil Moisture Integration & Prediction System",
       validate = .validate_smips,
       read = .read_tern_smips
     ),
-    "15728dba" = list(alias = "ASC", read = .read_tern_asc),
+    "15728dba" = list(
+      alias = "ASC",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Australian Soil Classification (soil order)",
+      read = .read_tern_asc
+    ),
     "9fefa68b" = list(
       alias = "AET",
+      temporal = "Monthly",
+      resolution = "30 m",
+      description = "Actual Evapotranspiration via CMRSET",
       validate = .validate_aet,
       read = .read_tern_aet
     ),
-    "4a428d52" = list(alias = "SOILDIV", read = .read_tern_soil_diversity),
-    "36c98155" = list(alias = "CANOPY", read = .read_tern_canopy_height),
+    "4a428d52" = list(
+      alias = "SOILDIV",
+      temporal = "Static",
+      resolution = "90 m",
+      description = "Soil Beta Diversity (NMDS components)",
+      read = .read_tern_soil_diversity
+    ),
+    "36c98155" = list(
+      alias = "CANOPY",
+      temporal = "Static",
+      resolution = "30 m",
+      description = "Canopy Height composites (OzTreeMap)",
+      read = .read_tern_canopy_height
+    ),
     "2bb0c81a" = list(
       alias = "PHENOLOGY",
+      temporal = "Annual",
+      resolution = "500 m",
+      description = "Land Surface Phenology",
       validate = .validate_phenology,
       read = .read_tern_phenology
     )
   ),
   # SLGA from .slga_config.
   lapply(.slga_config, function(cfg) {
-    list(alias = cfg$prefix, read = .read_tern_slga)
+    list(
+      alias = cfg$prefix,
+      temporal = "Static",
+      resolution = "90 m",
+      description = cfg$description,
+      read = .read_tern_slga
+    )
   })
 )
 

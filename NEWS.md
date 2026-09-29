@@ -3,6 +3,21 @@
 - `plot()` on a `read_smips()` raster now shows the correct values. It used
   to draw from the file's overviews, which hold wrong values at the coast.
 
+- The TERN API key is passed to GDAL as the `GDAL_HTTP_USERPWD` setting
+  instead of in the file URL, so `terra::sources()` no longer shows it. The
+  setting lasts for the R session and GDAL sends it to every server read with
+  `/vsicurl`, so the first read warns about this.
+
+- The screenshots in the *Getting started* vignette and the plot in the README
+  now have alt-text.
+
+- New `show_datasets()` returns the datasets nert can read, with their
+  aliases, TERN IDs, time steps, resolutions and descriptions. The table that
+  `collect_tern_data()` prints comes from the same source.
+
+- Michael Sumner and Shandiya Balasubramaniam added as package reviewers
+  (rOpenSci review, ropensci/software-review#785).
+
 - Breaking change: `collect_tern_data()` takes each row's PHENOLOGY value from
   the year of that row's `date`, and leaves rows dated outside 2003--2018 as
   `NA` with a warning. PHENOLOGY columns no longer carry the year

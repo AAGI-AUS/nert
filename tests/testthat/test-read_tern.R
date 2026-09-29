@@ -100,14 +100,14 @@ test_that("read_tern SMIPS builds correct URL filename via internal helper", {
 
 test_that("read_tern AET builds correct URL via .make_aet_url", {
   month <- .check_aet_date("2023-06-01")
-  url <- .make_aet_url("ETa", month, "testkey")
+  url <- .make_aet_url("ETa", month)
   expect_match(url, "2023/2023_06_01/CMRSET_LANDSAT_V2_2_2023_06_01_ETa.vrt")
 })
 
 test_that(".make_aet_url errors for invalid collection", {
   month <- .check_aet_date("2023-06-01")
   expect_error(
-    .make_aet_url("bad_collection", month, "testkey"),
+    .make_aet_url("bad_collection", month),
     "bad_collection"
   )
 })

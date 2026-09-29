@@ -80,7 +80,7 @@ read_asc <- function(
 #'
 #' @param did Normalised 8-char dataset ID (unused; uniform handler signature).
 #' @param dots Named list of \code{...} args from [read_tern()].
-#' @param api_key URL-encoded API key.
+#' @param api_key TERN API key.
 #' @param max_tries,initial_delay Passed to [.read_cog()].
 #' @returns A [terra::SpatRaster] object for the requested ASC collection.
 #'
@@ -97,9 +97,9 @@ read_asc <- function(
 
   dl_file <- sprintf("ASC_%s_C_P_AU_TRN_N.cog.tif", collection)
   full_url <- sprintf(
-    "/vsicurl/https://apikey:%s@data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
-    api_key,
+    "/vsicurl/https://data.tern.org.au/model-derived/slga/NationalMaps/SoilClassifications/ASC/90m/%s",
     dl_file
   )
+  .set_tern_auth(api_key)
   return(.read_cog(full_url, max_tries, initial_delay))
 }
