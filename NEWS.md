@@ -4,6 +4,9 @@
   aliases, TERN IDs, time steps, resolutions and descriptions. The table that
   `collect_tern_data()` prints comes from the same source.
 
+- Michael Sumner and Shandiya Balasubramaniam added as package reviewers
+  (rOpenSci review, ropensci/software-review#785).
+
 - Breaking change: `collect_tern_data()` takes each row's PHENOLOGY value from
   the year of that row's `date`, and leaves rows dated outside 2003--2018 as
   `NA` with a warning. PHENOLOGY columns no longer carry the year
