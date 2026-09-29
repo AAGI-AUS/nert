@@ -14,6 +14,10 @@
 - **Max Moldovan**. Maintainer, author.
   [](https://orcid.org/0000-0001-9680-8474)
 
+- **Michael Sumner**. Reviewer.
+
+- **Shandiya Balasubramaniam**. Reviewer.
+
 - **Grains Research and Development Corporation**. Funder, copyright
   holder.
   [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/02xwr1996)  

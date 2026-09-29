@@ -49,6 +49,10 @@ Authors:
 
 Other contributors:
 
+- Michael Sumner \[reviewer\]
+
+- Shandiya Balasubramaniam \[reviewer\]
+
 - Grains Research and Development Corporation
   ([ROR](https://ror.org/02xwr1996)) (GRDC Project CUR2210-005OPX
   (AAGI-CU), UOA2301-005OPX (AAGI-AU)) \[funder, copyright holder\]

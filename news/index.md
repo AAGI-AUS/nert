@@ -2,6 +2,9 @@
 
 ## nert (development version)
 
+- Michael Sumner and Shandiya Balasubramaniam added as package reviewers
+  (rOpenSci review, ropensci/software-review#785).
+
 - Breaking change:
   [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
   takes each row’s PHENOLOGY value from the year of that row’s `date`,
