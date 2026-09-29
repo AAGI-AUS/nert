@@ -50,6 +50,15 @@ opens, then restart R:
     R_KEYRING_BACKEND=env
     TERN_API_KEY=your_api_key
 
+## How the key is sent
+
+When you read a dataset, nert gives the key to GDAL as the
+`GDAL_HTTP_USERPWD` setting, which stays set until the R session ends.
+The key does not appear in
+[`terra::sources()`](https://rspatial.github.io/terra/reference/sources.html).
+GDAL also sends it with any other `/vsicurl` request made in the same
+session.
+
 ## Examples
 
 ``` r

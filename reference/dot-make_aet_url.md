@@ -5,7 +5,7 @@ Build a GDAL vsicurl URL to retrieve AET data
 ## Usage
 
 ``` r
-.make_aet_url(.collection, .month, .api_key)
+.make_aet_url(.collection, .month)
 ```
 
 ## Arguments
@@ -17,10 +17,6 @@ Build a GDAL vsicurl URL to retrieve AET data
 - .month:
 
   The validated `POSIXct` date snapped to the first of the month.
-
-- .api_key:
-
-  The URL-encoded API key.
 
 ## Value
 

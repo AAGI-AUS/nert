@@ -40,7 +40,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="nert-development-version">nert (development version)<a class="anchor" aria-label="anchor" href="#nert-development-version"></a></h2>
-<ul><li><p>The screenshots in the <em>Getting started</em> vignette and the plot in the README now have alt-text.</p></li>
+<ul><li><p>The TERN API key is passed to GDAL as the <code>GDAL_HTTP_USERPWD</code> setting instead of in the file URL, so <code><a href="https://rspatial.github.io/terra/reference/sources.html" class="external-link">terra::sources()</a></code> no longer shows it. The setting lasts for the R session and GDAL sends it to every server read with <code>/vsicurl</code>, so the first read warns about this.</p></li>
+<li><p>The screenshots in the <em>Getting started</em> vignette and the plot in the README now have alt-text.</p></li>
 <li><p>New <code><a href="../reference/show_datasets.html">show_datasets()</a></code> returns the datasets nert can read, with their aliases, TERN IDs, time steps, resolutions and descriptions. The table that <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> prints comes from the same source.</p></li>
 <li><p>Michael Sumner and Shandiya Balasubramaniam added as package reviewers (rOpenSci review, ropensci/software-review#785).</p></li>
 <li><p>Breaking change: <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> takes each row’s PHENOLOGY value from the year of that row’s <code>date</code>, and leaves rows dated outside 2003–2018 as <code>NA</code> with a warning. PHENOLOGY columns no longer carry the year (<code>PHENOLOGY_SGS_y2018_s1</code> becomes <code>PHENOLOGY_SGS_s1</code>) (<a href="https://github.com/AAGI-AUS/nert/issues/95" class="external-link">#95</a>).</p></li>

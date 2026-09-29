@@ -21,7 +21,7 @@ Internal handler for Land Surface Phenology (`TERN/2bb0c81a`)
 
 - api_key:
 
-  URL-encoded API key.
+  TERN API key.
 
 - max_tries, initial_delay:
 

@@ -23,7 +23,7 @@ attribute has a fixed file-naming pattern encoded in
 
 - api_key:
 
-  URL-encoded API key.
+  TERN API key.
 
 - max_tries, initial_delay:
 

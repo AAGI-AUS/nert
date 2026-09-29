@@ -21,7 +21,7 @@ Internal handler for retrieving ASC rasters
 
 - api_key:
 
-  URL-encoded API key.
+  TERN API key.
 
 - max_tries, initial_delay:
 

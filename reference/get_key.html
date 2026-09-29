@@ -91,6 +91,13 @@ instead.  Set both variables in the <code>.Renviron</code> file that
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>R_KEYRING_BACKEND<span class="ot">=</span>env</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>TERN_API_KEY<span class="ot">=</span>your_api_key</span></code></pre><p></p></div>
     </div>
+    <div class="section level2">
+    <h2 id="how-the-key-is-sent">How the key is sent<a class="anchor" aria-label="anchor" href="#how-the-key-is-sent"></a></h2>
+    <p>When you read a dataset, <span class="pkg">nert</span> gives the key to GDAL as the
+<code>GDAL_HTTP_USERPWD</code> setting, which stays set until the <span style="R">R</span> session ends.
+The key does not appear in <code><a href="https://rspatial.github.io/terra/reference/sources.html" class="external-link">terra::sources()</a></code>. GDAL also sends it with any
+other <code>/vsicurl</code> request made in the same session.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

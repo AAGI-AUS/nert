@@ -2,6 +2,13 @@
 
 ## nert (development version)
 
+- The TERN API key is passed to GDAL as the `GDAL_HTTP_USERPWD` setting
+  instead of in the file URL, so
+  [`terra::sources()`](https://rspatial.github.io/terra/reference/sources.html)
+  no longer shows it. The setting lasts for the R session and GDAL sends
+  it to every server read with `/vsicurl`, so the first read warns about
+  this.
+
 - The screenshots in the *Getting started* vignette and the plot in the
   README now have alt-text.
 
