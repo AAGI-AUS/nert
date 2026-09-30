@@ -27,4 +27,5 @@ importFrom(data.table,
   setnames
 )
 importFrom(ggplot2,autoplot)
+importFrom(rlang,"%||%")
 importFrom(tidyterra,autoplot)
