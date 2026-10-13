@@ -34,7 +34,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Michael Sumner [reviewer]
-  \item Shandiya Balasubramaniam [reviewer]
+  \item Shandiya Balasubramaniam (\href{https://orcid.org/0000-0001-9928-9964}{ORCID}) [reviewer]
   \item Grains Research and Development Corporation (\href{https://ror.org/02xwr1996}{ROR}) (GRDC Project CUR2210-005OPX (AAGI-CU), UOA2301-005OPX (AAGI-AU)) [funder, copyright holder]
 }
 
