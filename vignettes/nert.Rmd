@@ -125,11 +125,11 @@ library(nert)
 r <- read_smips(date = "2025-06-30", collection = "SMindex")
 ```
 
-Note that {nert} re-exports `tidyterra::autoplot()` for ease of visualising the TERN data.
+Plot the data with `tidyterra::autoplot()`.
 
 
 ``` r
-autoplot(r)
+tidyterra::autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 
@@ -170,7 +170,7 @@ By default, the soil classifications are retrieved:
 ``` r
 asc <- read_asc()
 
-autoplot(asc)
+tidyterra::autoplot(asc)
 #> <SpatRaster> resampled to 500388 cells.
 ```
 
@@ -194,7 +194,7 @@ fetches and views the raster for the soil clay content at a depth of 30-60cm by 
 ``` r
 cly <- read_slga("CLY", depth = "030_060")
 
-autoplot(cly)
+tidyterra::autoplot(cly)
 #> <SpatRaster> resampled to 500388 cells.
 ```
 

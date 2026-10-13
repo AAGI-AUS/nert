@@ -48,11 +48,11 @@ Australia.
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Read bacterial diversity NMDS axis 1
 r <- read_soil_diversity()
-autoplot(r)
+tidyterra::autoplot(r)
 
 # Read fungal diversity NMDS axis 2
 r_f2 <- read_soil_diversity(collection = "Fungi", axis = 2)
-autoplot(r_f2)
+tidyterra::autoplot(r_f2)
 \dontshow{\}) # examplesIf}
 }
 \references{

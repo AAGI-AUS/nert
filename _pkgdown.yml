@@ -23,7 +23,6 @@ reference:
     contents:
       - get_key
       - show_datasets
-      - autoplot
   - title: "Data"
     desc: "Example datasets bundled with the package."
     contents:

@@ -69,7 +69,7 @@ bucket-level collections (\code{"bucket1"}, \code{"bucket2"},
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Total volumetric soil moisture across both buckets (default)
 r <- read_smips("2024-01-15")
-autoplot(r)
+tidyterra::autoplot(r)
 
 # Soil moisture index (0-1)
 r_smi <- read_smips("2024-01-15", collection = "SMindex")

@@ -128,10 +128,10 @@ library(nert)
 r <- read_smips(date = "2025-06-30", collection = "SMindex")
 ```
 
-Note that {nert} re-exports `tidyterra::autoplot()` for ease of visualising the TERN data.
+Plot the data with `tidyterra::autoplot()`.
 
 ```{r, test-plot-smips, fig.cap = "A plot of SMIPS SMindex data for all of Australia on 2025-06-30."}
-autoplot(r)
+tidyterra::autoplot(r)
 ```
 
 However, if you wish to fetch only data for a single point or points, you can use the `terra::extract()` function.
@@ -153,7 +153,7 @@ By default, the soil classifications are retrieved:
 ```{r asc, fig.cap = "A plot of Australian Soils Classification data."}
 asc <- read_asc()
 
-autoplot(asc)
+tidyterra::autoplot(asc)
 ```
 
 If you wanted to see the confusion index instead (which provides a measure of the uncertainty associated with each classification), you can specify that
@@ -169,7 +169,7 @@ fetches and views the raster for the soil clay content at a depth of 30-60cm by 
 ```{r slga, fig.cap = "A plot of the soil clay content (%) at a 30-60cm soil depth."}
 cly <- read_slga("CLY", depth = "030_060")
 
-autoplot(cly)
+tidyterra::autoplot(cly)
 ```
 
 That's it, you're all set!

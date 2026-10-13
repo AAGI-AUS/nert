@@ -44,11 +44,11 @@
 #' @examplesIf interactive()
 #' # Australian Soil Classification (soil orders as character)
 #' r_asc <- read_asc()
-#' autoplot(r_asc)
+#' tidyterra::autoplot(r_asc)
 #'
 #' # Confusion Index (uncertainty of the classification, higher=more uncertain)
 #' r_ci <- read_asc(collection = "CI")
-#' autoplot(r_ci)
+#' tidyterra::autoplot(r_ci)
 #'
 #' @references
 #'   Searle, R. (2021). Australian Soil Classification Map. Version 1.

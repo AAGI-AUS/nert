@@ -142,12 +142,10 @@ extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #> 1  1                      46.07692 138.6037 -34.93254
 ```
 
-The {nert} package also re-exports {tidyterra}’s `autoplot()` function,
-which can be used to create a visualisation of the Australia-wide data
-rasters.
+Plot the Australia-wide rasters with `tidyterra::autoplot()`.
 
 ``` r
-autoplot(r)
+tidyterra::autoplot(r)
 #> <SpatRaster> resampled to 501270 cells.
 ```
 

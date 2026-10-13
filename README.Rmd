@@ -119,14 +119,14 @@ r <- read_smips(date = "2024-01-01")
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 ```
 
-The {nert} package also re-exports {tidyterra}'s `autoplot()` function, which can be used to create a visualisation of the Australia-wide data rasters.
+Plot the Australia-wide rasters with `tidyterra::autoplot()`.
 
 ```{r}
 #| label: example_cog
 #| eval: true
 #| fig.alt: "A map of SMIPS total soil moisture (mm) across Australia on 2024-01-01."
 
-autoplot(r)
+tidyterra::autoplot(r)
 ```
 
 ## Extract values in bulk given Lat/Lon values
