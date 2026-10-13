@@ -32,6 +32,11 @@
   terra::setGDALconfig("GDAL_HTTP_MAX_RETRY", as.character(max_tries - 1L))
   terra::setGDALconfig("GDAL_HTTP_RETRY_DELAY", as.character(initial_delay))
 
+  # .aux.xml holds the ASC class names
+  old_ext <- terra::getGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS")
+  terra::setGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ".tif,.vrt,.aux.xml")
+  on.exit(terra::setGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", old_ext))
+
   return(tryCatch(
     terra::rast(full_url, opts = opts),
     error = function(e) {
