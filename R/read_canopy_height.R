@@ -15,10 +15,10 @@
 #'   raised. Default=`NULL`, in which case the maximum retry number is
 #'   resolved from the option `nert.max_tries` if that option exists.
 #'   (Defaults to 3 retries if `nert.max_tries` has not been set.)
-#' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt). Default=`NULL`, in which case the initial delay is
-#'   resolved from the option `nert.initial_delay` if that option exists.
-#'   (Defaults to a 1 second initial delay if `nert.initial_delay` has
+#' @param initial_delay Initial retry delay in seconds. Each later delay is
+#'   2 to 2.5 times the one before. Default=`NULL`, in which case the initial
+#'   delay is resolved from the option `nert.initial_delay` if that option
+#'   exists. (Defaults to a 1 second initial delay if `nert.initial_delay` has
 #'   not been set.)
 #'
 #' @returns

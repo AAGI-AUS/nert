@@ -157,10 +157,10 @@
 #'   raised. Default=`NULL`, in which case the maximum retry number is
 #'   resolved from the option `nert.max_tries` if that option exists.
 #'   (Defaults to 3 retries if `nert.max_tries` has not been set.)
-#' @param initial_delay Initial retry delay in seconds (doubles with each
-#'   attempt). Default=`NULL`, in which case the initial delay is
-#'   resolved from the option `nert.initial_delay` if that option exists.
-#'   (Defaults to a 1 second initial delay if `nert.initial_delay` has
+#' @param initial_delay Initial retry delay in seconds. Each later delay is
+#'   2 to 2.5 times the one before. Default=`NULL`, in which case the initial
+#'   delay is resolved from the option `nert.initial_delay` if that option
+#'   exists. (Defaults to a 1 second initial delay if `nert.initial_delay` has
 #'   not been set.)
 #'
 #' @returns A [terra::SpatRaster] object for the requested dataset.
@@ -173,7 +173,7 @@
 #'   \item{`nert.max_tries`}{Default maximum number of download
 #'     retries.  Default `3L`.}
 #'   \item{`nert.initial_delay`}{Default initial retry delay in
-#'     seconds (doubles each attempt).  Default `1L`.}
+#'     seconds.  Default `1L`.}
 #' }
 #' Per-call values supplied via the `max_tries` or
 #' `initial_delay` arguments always override the option.  Example:

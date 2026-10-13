@@ -31,10 +31,10 @@ raised. Default=\code{NULL}, in which case the maximum retry number is
 resolved from the option \code{nert.max_tries} if that option exists.
 (Defaults to 3 retries if \code{nert.max_tries} has not been set.)}
 
-\item{initial_delay}{Initial retry delay in seconds (doubles with each
-attempt). Default=\code{NULL}, in which case the initial delay is
-resolved from the option \code{nert.initial_delay} if that option exists.
-(Defaults to a 1 second initial delay if \code{nert.initial_delay} has
+\item{initial_delay}{Initial retry delay in seconds. Each later delay is
+2 to 2.5 times the one before. Default=\code{NULL}, in which case the initial
+delay is resolved from the option \code{nert.initial_delay} if that option
+exists. (Defaults to a 1 second initial delay if \code{nert.initial_delay} has
 not been set.)}
 }
 \value{
@@ -211,7 +211,7 @@ set to package defaults at load time and may be overridden globally
 \item{\code{nert.max_tries}}{Default maximum number of download
 retries.  Default \code{3L}.}
 \item{\code{nert.initial_delay}}{Default initial retry delay in
-seconds (doubles each attempt).  Default \code{1L}.}
+seconds.  Default \code{1L}.}
 }
 Per-call values supplied via the \code{max_tries} or
 \code{initial_delay} arguments always override the option.  Example:
