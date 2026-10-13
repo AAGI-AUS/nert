@@ -17,8 +17,8 @@
   setting lasts for the R session and GDAL sends it to every server read with
   `/vsicurl`, so the first read warns about this.
 
-- The screenshots in the *Getting started* vignette and the plot in the README
-  now have alt-text.
+- The screenshots in the *Getting started* vignette and the plots in the README
+  and the *Bandwidth-safe spatial subsetting* vignette now have alt-text.
 
 - New `show_datasets()` returns the datasets nert can read, with their
   aliases, TERN IDs, time steps, resolutions and descriptions. The table that
