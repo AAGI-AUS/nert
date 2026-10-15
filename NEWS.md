@@ -4,8 +4,8 @@
   README and vignettes now plot with `plot()` from terra. Code that called
   `autoplot()` can use `tidyterra::autoplot()` instead.
 
-- nert now requires R 4.1.0 or later, the oldest version on which ggplot2 and
-  testthat install.
+- nert now requires R 4.1.0 or later, the oldest version on which testthat
+  installs.
 
 - Retries are handled by GDAL through `GDAL_HTTP_MAX_RETRY` and
   `GDAL_HTTP_RETRY_DELAY`, set from `max_tries` and `initial_delay`. GDAL

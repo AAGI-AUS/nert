@@ -205,19 +205,6 @@
     },
     "4": {
       "@type": "SoftwareApplication",
-      "identifier": "ggplot2",
-      "name": "ggplot2",
-      "version": ">= 3.5.0",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
-    },
-    "5": {
-      "@type": "SoftwareApplication",
       "identifier": "lubridate",
       "name": "lubridate",
       "provider": {
@@ -228,7 +215,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lubridate"
     },
-    "6": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -240,7 +227,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    "7": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "terra",
       "name": "terra",
@@ -252,24 +239,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=terra"
     },
-    "8": {
-      "@type": "SoftwareApplication",
-      "identifier": "tidyterra",
-      "name": "tidyterra",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=tidyterra"
-    },
     "SystemRequirements": null
   },
   "applicationCategory": "Tools",
   "isPartOf": "https://grdc.com.au/research/partnerships-and-initiatives/strategic-partnerships/aagi",
   "keywords": ["TERN", "soil-data", "Australia", "earth-science", "data-access"],
-  "fileSize": "1911.755KB",
+  "fileSize": "1979.436KB",
   "citation": [
     {
       "@type": "SoftwareSourceCode",

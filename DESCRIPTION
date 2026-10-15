@@ -43,7 +43,6 @@ Imports:
     rlang,
     terra
 Suggests:
-    ggplot2 (>= 3.5.0),
     keyring,
     knitr,
     nlme,
