@@ -75,7 +75,7 @@ round(ncell(smips) / ncell(smips_clare))
 
 Plotting the cropped object is now a local, instant operation.
 
-```{r smips-clare-plot}
+```{r smips-clare-plot, fig.alt = "A map of SMIPS total soil moisture (mm) around Clare, South Australia, on 2024-01-15, ranging from below 10 mm in the south-west to about 45 mm in the centre."}
 plot(smips_clare, main = "SMIPS soil moisture, Clare district, 2024-01-15")
 ```
 
