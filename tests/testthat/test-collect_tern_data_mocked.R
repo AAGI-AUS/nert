@@ -43,6 +43,34 @@ test_that("collect_tern_data emits one COG read per work item (vectorised)", {
   expect_length(sink$urls, 3L)
 })
 
+test_that("collect_tern_data keeps the allowed extensions set while it extracts", {
+  .use_mocked_cog()
+  during <- NULL
+  testthat::local_mocked_bindings(
+    extract = function(x, y, ...) {
+      during <<- unname(terra::getGDALconfig(
+        "CPL_VSIL_CURL_ALLOWED_EXTENSIONS"
+      ))
+      data.frame(ID = 1L, value = 1)
+    },
+    .package = "terra"
+  )
+  withr::defer(terra::setGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ""))
+  collect_tern_data(
+    date_range = as.Date(c("2024-01-01", "2024-01-01")),
+    lon = 138.6,
+    lat = -34.9,
+    datasets = "SMIPS",
+    api_key = KEY,
+    verbose = FALSE
+  )
+  expect_identical(during, ".tif,.vrt,.aux.xml")
+  expect_identical(
+    unname(terra::getGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS")),
+    ""
+  )
+})
+
 test_that("collect_tern_data resolves API key once before work-item loop", {
   .use_mocked_cog()
   calls <- 0L

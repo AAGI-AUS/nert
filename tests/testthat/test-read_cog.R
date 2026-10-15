@@ -42,6 +42,34 @@ test_that(".read_cog sets GDAL's HTTP retries from max_tries and initial_delay",
   )
 })
 
+test_that(".read_cog sets the allowed extensions only while it opens the file", {
+  fake <- .fixture_numeric_raster()
+  during <- NULL
+  testthat::local_mocked_bindings(
+    rast = function(x, ...) {
+      during <<- unname(terra::getGDALconfig(
+        "CPL_VSIL_CURL_ALLOWED_EXTENSIONS"
+      ))
+      fake
+    },
+    .package = "terra"
+  )
+  withr::defer(terra::setGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ""))
+  .read_cog("/vsicurl/https://example", 1L, 0L)
+  expect_identical(during, ".tif,.vrt,.aux.xml")
+  expect_identical(
+    unname(terra::getGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS")),
+    ""
+  )
+
+  terra::setGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ".nc")
+  .read_cog("/vsicurl/https://example", 1L, 0L)
+  expect_identical(
+    unname(terra::getGDALconfig("CPL_VSIL_CURL_ALLOWED_EXTENSIONS")),
+    ".nc"
+  )
+})
+
 test_that(".read_cog opens the file once and reports a failure", {
   attempts <- 0L
   testthat::local_mocked_bindings(
