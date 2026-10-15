@@ -55,10 +55,11 @@ read_slga(
 
 - initial_delay:
 
-  Initial retry delay in seconds (doubles with each attempt).
-  Default=`NULL`, in which case the initial delay is resolved from the
-  option `nert.initial_delay` if that option exists. (Defaults to a 1
-  second initial delay if `nert.initial_delay` has not been set.)
+  Initial retry delay in seconds. Each later delay is roughly double the
+  one before. Default=`NULL`, in which case the initial delay is
+  resolved from the option `nert.initial_delay` if that option exists.
+  (Defaults to a 1 second initial delay if `nert.initial_delay` has not
+  been set.)
 
 ## Value
 

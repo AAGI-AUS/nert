@@ -51,7 +51,8 @@ Other contributors:
 
 - Michael Sumner \[reviewer\]
 
-- Shandiya Balasubramaniam \[reviewer\]
+- Shandiya Balasubramaniam
+  ([ORCID](https://orcid.org/0000-0001-9928-9964)) \[reviewer\]
 
 - Grains Research and Development Corporation
   ([ROR](https://ror.org/02xwr1996)) (GRDC Project CUR2210-005OPX

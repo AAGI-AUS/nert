@@ -132,11 +132,11 @@ resolved from the option <code>nert.max_tries</code> if that option exists.
 
 
 <dt id="arg-initial-delay">initial_delay<a class="anchor" aria-label="anchor" href="#arg-initial-delay"></a></dt>
-<dd><p>Initial retry delay in seconds (doubles with each
-attempt). Default=<code>NULL</code>, in which case the initial delay is
-resolved from the option <code>nert.initial_delay</code> if that option exists.
-(Defaults to a 1 second initial delay if <code>nert.initial_delay</code> has
-not been set.)</p></dd>
+<dd><p>Initial retry delay in seconds. Each later delay is
+roughly double the one before. Default=<code>NULL</code>, in which case the
+initial delay is resolved from the option <code>nert.initial_delay</code> if that
+option exists. (Defaults to a 1 second initial delay if
+<code>nert.initial_delay</code> has not been set.)</p></dd>
 
 </dl></div>
     <div class="section level2">

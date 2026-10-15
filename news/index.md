@@ -28,8 +28,9 @@
   it to every server read with `/vsicurl`, so the first read warns about
   this.
 
-- The screenshots in the *Getting started* vignette and the plot in the
-  README now have alt-text.
+- The screenshots in the *Getting started* vignette and the plots in the
+  README and the *Bandwidth-safe spatial subsetting* vignette now have
+  alt-text.
 
 - New
   [`show_datasets()`](https://aagi-aus.github.io/nert/reference/show_datasets.md)

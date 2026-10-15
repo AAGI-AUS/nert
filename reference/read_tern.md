@@ -51,10 +51,11 @@ read_tern(
 
 - initial_delay:
 
-  Initial retry delay in seconds (doubles with each attempt).
-  Default=`NULL`, in which case the initial delay is resolved from the
-  option `nert.initial_delay` if that option exists. (Defaults to a 1
-  second initial delay if `nert.initial_delay` has not been set.)
+  Initial retry delay in seconds. Each later delay is roughly double the
+  one before. Default=`NULL`, in which case the initial delay is
+  resolved from the option `nert.initial_delay` if that option exists.
+  (Defaults to a 1 second initial delay if `nert.initial_delay` has not
+  been set.)
 
 ## Value
 
@@ -284,8 +285,7 @@ package defaults at load time and may be overridden globally (e.g. in
 
 - `nert.initial_delay`:
 
-  Default initial retry delay in seconds (doubles each attempt). Default
-  `1L`.
+  Default initial retry delay in seconds. Default `1L`.
 
 Per-call values supplied via the `max_tries` or `initial_delay`
 arguments always override the option. Example:
