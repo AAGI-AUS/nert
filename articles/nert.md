@@ -181,17 +181,23 @@ retrieves the “SMindex” raster for June 30, 2025:
 ``` r
 
 library(nert)
+library(terra)
+#> terra 1.9.46
+
 r <- read_smips(date = "2025-06-30", collection = "SMindex")
+#> Warning: nert has set the GDAL option `GDAL_HTTP_USERPWD` to your TERN API key for the
+#> rest of this R session.
+#> ℹ GDAL sends the key with every `/vsicurl` request in this session, including
+#>   requests to servers other than TERN.
+#> ℹ Restart R to clear it.
 ```
 
-Note that {nert} re-exports
-[`tidyterra::autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
-for ease of visualising the TERN data.
+Plot the data with
+[`plot()`](https://rspatial.github.io/terra/reference/plot.html).
 
 ``` r
 
-autoplot(r)
-#> <SpatRaster> resampled to 501270 cells.
+plot(r)
 ```
 
 ![A plot of SMIPS SMindex data for all of Australia on
@@ -212,17 +218,6 @@ dataset:
 
 ``` r
 
-library(terra)
-#> terra 1.9.34
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
-#> The following objects are masked from 'package:testthat':
-#> 
-#>     compare, describe
-
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #>   ID smips_smi_perc_20250630        x         y
 #> 1  1               0.1554503 138.6037 -34.93254
@@ -239,8 +234,8 @@ date. By default, the soil classifications are retrieved:
 
 asc <- read_asc()
 
-autoplot(asc)
-#> <SpatRaster> resampled to 500388 cells.
+plot(asc)
+#> Warning: [plot] unknown categories in raster values
 ```
 
 ![A plot of Australian Soils Classification data.](asc-1.png)
@@ -265,8 +260,7 @@ fetches and views the raster for the soil clay content at a depth of
 
 cly <- read_slga("CLY", depth = "030_060")
 
-autoplot(cly)
-#> <SpatRaster> resampled to 500388 cells.
+plot(cly)
 ```
 
 ![A plot of the soil clay content (%) at a 30-60cm soil

@@ -6,8 +6,8 @@ dataset-specific handlers based on the dataset requested (e.g., SMIPS,
 SLGA, AET, and so on), and passes any additional arguments through
 `...`. The returned object is a
 [terra::SpatRaster](https://rspatial.github.io/terra/reference/SpatRaster-class.html)
-that can be plotted, cropped, or extracted with standard terra or
-tidyterra workflows.
+that can be plotted, cropped, or extracted with standard terra
+workflows.
 
 ## Usage
 
@@ -511,7 +511,7 @@ if (FALSE) { # interactive()
 # Using aliases (recommended)
 r <- read_tern("SMIPS", date = "2024-01-15")
 r_asc <- read_tern("ASC")
-autoplot(r_asc)
+terra::plot(r_asc)
 
 # SLGA soil attributes
 r_clay <- read_tern("CLY", depth = "000_005")

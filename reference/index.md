@@ -36,9 +36,6 @@ Helper functions for working with TERN data.
   Get or Set Up API Key for TERN
 - [`show_datasets()`](https://aagi-aus.github.io/nert/reference/show_datasets.md)
   : Show the Available TERN Datasets
-- [`reexports`](https://aagi-aus.github.io/nert/reference/reexports.md)
-  [`autoplot`](https://aagi-aus.github.io/nert/reference/reexports.md) :
-  Objects exported from other packages
 
 ## Data
 

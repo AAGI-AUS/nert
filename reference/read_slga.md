@@ -283,7 +283,7 @@ object of the requested SLGA soil attribute.
 if (FALSE) { # interactive()
 # Read clay content at 0-5 cm depth (default depth)
 r <- read_slga("CLY")
-autoplot(r)
+terra::plot(r)
 
 # Read available water capacity at 15-30 cm
 r_awc <- read_slga("AWC", depth = "015_030")

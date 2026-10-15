@@ -90,7 +90,7 @@ options(o) # reset options
 COGs are not like working with other datasets in R that you might fetch
 from the web. They only fetch the information about the object for you
 in your R session and only at the time that you call it, *e.g.*,
-[`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html) or
+[`plot()`](https://rspatial.github.io/terra/reference/plot.html) or
 [`writeRaster()`](https://rspatial.github.io/terra/reference/writeRaster.html).
 
 A normal GeoTIFF is like downloading an entire 500-page book because you
@@ -129,27 +129,25 @@ disk-space savings.
 
 library(nert)
 library(terra)
-#> terra 1.8.86
+#> terra 1.9.46
 
 r <- read_smips(date = "2024-01-01")
-#> Warning in default_backend_auto(): Selecting 'env' backend. Secrets are stored
-#> in environment variables
-#> Warning in warn_for_keyring(keyring): The 'env' backend does not support
-#> multiple keyrings, the 'keyring' argument is ignored
+#> Warning: nert has set the GDAL option `GDAL_HTTP_USERPWD` to your TERN API key for the
+#> rest of this R session.
+#> ℹ GDAL sends the key with every `/vsicurl` request in this session, including
+#>   requests to servers other than TERN.
+#> ℹ Restart R to clear it.
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 #>   ID smips_totalbucket_mm_20240101        x         y
 #> 1  1                      46.07692 138.6037 -34.93254
 ```
 
-The {nert} package also re-exports {tidyterra}’s
-[`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
-function, which can be used to create a visualisation of the
-Australia-wide data rasters.
+Plot the Australia-wide rasters with
+[`plot()`](https://rspatial.github.io/terra/reference/plot.html).
 
 ``` r
 
-autoplot(r)
-#> <SpatRaster> resampled to 501270 cells.
+plot(r)
 ```
 
 ![A map of SMIPS total soil moisture (mm) across Australia on
@@ -176,10 +174,6 @@ dat <- collect_tern_data(
   stat = "EV",
   verbose = FALSE
 )
-#> Warning in default_backend_auto(): Selecting 'env' backend. Secrets are stored
-#> in environment variables
-#> Warning in warn_for_keyring(keyring): The 'env' backend does not support
-#> multiple keyrings, the 'keyring' argument is ignored
 head(dat)
 #>          date    lon    lat SMIPS_totalbucket CLY_EV_000_005 CLY_EV_005_015
 #>        <Date>  <num>  <num>             <num>          <num>          <num>

@@ -75,6 +75,6 @@ TERN Canopy Height model Point-of-truth metadata URL:
 ``` r
 if (FALSE) { # interactive()
 r <- read_canopy_height()
-autoplot(r)
+terra::plot(r)
 }
 ```

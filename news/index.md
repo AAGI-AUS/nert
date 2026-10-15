@@ -2,8 +2,15 @@
 
 ## nert (development version)
 
-- nert now requires R 4.1.0 or later, the oldest version on which its
-  dependencies ggplot2 and tidyterra install.
+- Breaking change: nert no longer re-exports `autoplot()`. The examples,
+  README and vignettes now plot with
+  [`plot()`](https://rspatial.github.io/terra/reference/plot.html) from
+  terra. Code that called `autoplot()` can use
+  [`tidyterra::autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+  instead.
+
+- nert now requires R 4.1.0 or later, the oldest version on which
+  testthat installs.
 
 - [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
   is faster. GDAL no longer checks TERN for file types nert does not

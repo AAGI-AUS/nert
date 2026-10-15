@@ -4,14 +4,12 @@ data from the TERN Data Portal. This function effectively
 dispatches to dataset-specific handlers based on the dataset requested
 (e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
 through ....  The returned object is a terra::SpatRaster that
-can be plotted, cropped, or extracted with standard terra or
-tidyterra workflows."><meta property="og:description" content="A unified interface for reading Cloud Optimised GeoTIFF (COG)
+can be plotted, cropped, or extracted with standard terra workflows."><meta property="og:description" content="A unified interface for reading Cloud Optimised GeoTIFF (COG)
 data from the TERN Data Portal. This function effectively
 dispatches to dataset-specific handlers based on the dataset requested
 (e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
 through ....  The returned object is a terra::SpatRaster that
-can be plotted, cropped, or extracted with standard terra or
-tidyterra workflows."><meta property="og:image" content="https://aagi-aus.github.io/nert/logo.svg"></head><body>
+can be plotted, cropped, or extracted with standard terra workflows."><meta property="og:image" content="https://aagi-aus.github.io/nert/logo.svg"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -57,8 +55,7 @@ data from the <acronym>TERN</acronym> Data Portal. This function effectively
 dispatches to dataset-specific handlers based on the dataset requested
 (e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
 through <code>...</code>.  The returned object is a <a href="https://rspatial.github.io/terra/reference/SpatRaster-class.html" class="external-link">terra::SpatRaster</a> that
-can be plotted, cropped, or extracted with standard <span class="pkg">terra</span> or
-<span class="pkg">tidyterra</span> workflows.</p>
+can be plotted, cropped, or extracted with standard <span class="pkg">terra</span> workflows.</p>
     </div>
 
     <div class="section level2">
@@ -491,7 +488,7 @@ TERN Point-of-truth metadata URL:
 <span class="r-in"><span><span class="co"># Using aliases (recommended)</span></span></span>
 <span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"SMIPS"</span>, date <span class="op">=</span> <span class="st">"2024-01-15"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">r_asc</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"ASC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r_asc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_asc</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># SLGA soil attributes</span></span></span>
 <span class="r-in"><span><span class="va">r_clay</span> <span class="op">&lt;-</span> <span class="fu">read_tern</span><span class="op">(</span><span class="st">"CLY"</span>, depth <span class="op">=</span> <span class="st">"000_005"</span><span class="op">)</span></span></span>

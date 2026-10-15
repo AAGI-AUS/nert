@@ -33,8 +33,8 @@ str(grain)
 #>  $ Site             : Factor w/ 10 levels "Adelaide","Barossa Valley",..: 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Latitude         : num  -34.9 -34.9 -34.9 -34.9 -34.9 ...
 #>  $ Longitude        : num  139 139 139 139 139 ...
-#>  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" "2022-05-20" "2022-05-20" ...
-#>  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" "2022-06-04" "2022-06-04" ...
+#>  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" ...
+#>  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" ...
 #>  $ Rep              : Factor w/ 3 levels "1","2","3": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Variety          : Factor w/ 8 levels "Variety_A","Variety_B",..: 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ Nitrogen_kgNha   : Factor w/ 4 levels "0","30","60",..: 1 1 1 2 2 2 3 3 3 4 ...
@@ -149,6 +149,11 @@ for (i in seq_along(date_range)) {
     )
   )
 }
+#> Warning: nert has set the GDAL option `GDAL_HTTP_USERPWD` to your TERN API key for the
+#> rest of this R session.
+#> ℹ GDAL sends the key with every `/vsicurl` request in this session, including
+#>   requests to servers other than TERN.
+#> ℹ Restart R to clear it.
 
 head(smips_data)
 #>         Date Longitude  Latitude  smips_smi
@@ -266,14 +271,11 @@ augmented_model.Neffects
 #> Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058
 ```
 
-We can use {ggplot2} plotting to graph the confidence intervals for the
-simple model versus the augmented model, and illuminate the difference
-attained when we include the soil moisture as a confounding term in our
-modelling:
+We can graph the confidence intervals for the simple model versus the
+augmented model, and illuminate the difference attained when we include
+the soil moisture as a confounding term in our modelling:
 
 ``` r
-
-library(ggplot2)
 
 ci <- rbind(
   data.frame(simple_model.Neffects, model = "Simple Model"),
@@ -281,12 +283,24 @@ ci <- rbind(
 )
 ci$term <- paste0("Nitrogen_kgNha", c(30, 60, 90))
 
-pd <- position_dodge(-0.4)
-ggplot(ci, aes(x = est., y = term, colour = model)) +
-  scale_y_discrete(limits = rev) +
-  geom_point(position = pd) +
-  geom_errorbarh(aes(xmin = lower, xmax = upper), position = pd, height = 0.2) +
-  labs(y = "predictor", x = "estimate")
+terms <- rev(unique(ci$term))
+models <- unique(ci$model)
+colours <- palette.colors(3)[2:3]
+ci$y <- match(ci$term, terms) + ifelse(ci$model == models[1], 0.1, -0.1)
+ci$colour <- colours[match(ci$model, models)]
+
+par(mar = c(4, 9, 3, 1))
+plot(
+  ci$est., ci$y,
+  xlim = range(ci$lower, ci$upper), ylim = c(0.6, 3.4),
+  pch = 19, col = ci$colour, yaxt = "n", xlab = "estimate", ylab = ""
+)
+segments(ci$lower, ci$y, ci$upper, ci$y, col = ci$colour)
+axis(2, at = 1:3, labels = terms, las = 1)
+legend(
+  "top", legend = models, col = colours, pch = 19, lty = 1,
+  horiz = TRUE, bty = "n", inset = -0.25, xpd = TRUE
+)
 ```
 
 ![Nitrogen effect estimates compared between the simple model and the

@@ -151,10 +151,10 @@ TERN Land Surface Phenology Point-of-truth metadata URL:
 if (FALSE) { # interactive()
 # Read Start of Growing Season for 2018, Season 1
 r <- read_phenology(year = 2018)
-autoplot(r)
+terra::plot(r)
 
 # Read End of Growing Season for 2015, Season 2
 r_egs <- read_phenology(year = 2015, season = 2, collection = "EGS")
-autoplot(r_egs)
+terra::plot(r_egs)
 }
 ```

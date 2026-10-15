@@ -89,10 +89,10 @@ TERN ASC Point-of-truth metadata URL:
 if (FALSE) { # interactive()
 # Australian Soil Classification (soil orders as character)
 r_asc <- read_asc()
-autoplot(r_asc)
+terra::plot(r_asc)
 
 # Confusion Index (uncertainty of the classification, higher=more uncertain)
 r_ci <- read_asc(collection = "CI")
-autoplot(r_ci)
+terra::plot(r_ci)
 }
 ```

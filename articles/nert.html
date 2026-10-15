@@ -234,12 +234,18 @@ specific SMIPS dataset to download. For instance, the following R code
 retrieves the “SMindex” raster for June 30, 2025:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aagi-aus.github.io/nert/">nert</a></span><span class="op">)</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2025-06-30"</span>, collection <span class="op">=</span> <span class="st">"SMindex"</span><span class="op">)</span></span></code></pre></div>
-<p>Note that {nert} re-exports <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">tidyterra::autoplot()</a></code> for
-ease of visualising the TERN data.</p>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.9.46</span></span>
+<span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_smips.html">read_smips</a></span><span class="op">(</span>date <span class="op">=</span> <span class="st">"2025-06-30"</span>, collection <span class="op">=</span> <span class="st">"SMindex"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: nert has set the GDAL option `GDAL_HTTP_USERPWD` to your TERN API key for the</span></span>
+<span><span class="co">#&gt; rest of this R session.</span></span>
+<span><span class="co">#&gt; ℹ GDAL sends the key with every `/vsicurl` request in this session, including</span></span>
+<span><span class="co">#&gt;   requests to servers other than TERN.</span></span>
+<span><span class="co">#&gt; ℹ Restart R to clear it.</span></span></code></pre></div>
+<p>Plot the data with <code><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 501270 cells.</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="test-plot-smips-1.png" alt="A plot of SMIPS SMindex data for all of Australia on 2025-06-30."><p class="caption">
 A plot of SMIPS SMindex data for all of Australia on 2025-06-30.
@@ -253,18 +259,7 @@ rasters are stored on the TERN Data Portal as Cloud-Optimised GeoTIFFs
 ask for</strong>. The below R code downloads only the data at the
 coordinates specified, rather than fetching the entire dataset:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.9.34</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     spin</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:testthat':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     compare, describe</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">r</span>, xy <span class="op">=</span> <span class="cn">TRUE</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">138.6007</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">34.9285</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   ID smips_smi_perc_20250630        x         y</span></span>
 <span><span class="co">#&gt; 1  1               0.1554503 138.6037 -34.93254</span></span></code></pre></div>
 <p>Reading rasters for the other available datasets works mostly the
@@ -276,8 +271,8 @@ are retrieved:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">asc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_asc.html">read_asc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">asc</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 500388 cells.</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">asc</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: [plot] unknown categories in raster values</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="asc-1.png" alt="A plot of Australian Soils Classification data."><p class="caption">
 A plot of Australian Soils Classification data.
@@ -295,8 +290,7 @@ at a depth of 30-60cm by specifying the <code>depth</code> argument:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cly</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_slga.html">read_slga</a></span><span class="op">(</span><span class="st">"CLY"</span>, depth <span class="op">=</span> <span class="st">"030_060"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">cly</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;SpatRaster&gt; resampled to 500388 cells.</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cly</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="slga-1.png" alt="A plot of the soil clay content (%) at a 30-60cm soil depth."><p class="caption">
 A plot of the soil clay content (%) at a 30-60cm soil depth.

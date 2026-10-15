@@ -100,8 +100,8 @@ this dataset with:</p>
 <span><span class="co">#&gt;  $ Site             : Factor w/ 10 levels "Adelaide","Barossa Valley",..: 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ Latitude         : num  -34.9 -34.9 -34.9 -34.9 -34.9 ...</span></span>
 <span><span class="co">#&gt;  $ Longitude        : num  139 139 139 139 139 ...</span></span>
-<span><span class="co">#&gt;  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" "2022-05-20" "2022-05-20" ...</span></span>
-<span><span class="co">#&gt;  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" "2022-06-04" "2022-06-04" ...</span></span>
+<span><span class="co">#&gt;  $ SowDate          : Date, format: "2022-05-20" "2022-05-20" ...</span></span>
+<span><span class="co">#&gt;  $ NitrogenDate     : Date, format: "2022-06-04" "2022-06-04" ...</span></span>
 <span><span class="co">#&gt;  $ Rep              : Factor w/ 3 levels "1","2","3": 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ Variety          : Factor w/ 8 levels "Variety_A","Variety_B",..: 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ Nitrogen_kgNha   : Factor w/ 4 levels "0","30","60",..: 1 1 1 2 2 2 3 3 3 4 ...</span></span>
@@ -207,6 +207,11 @@ first, followed by latitude.)</p>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
+<span><span class="co">#&gt; Warning: nert has set the GDAL option `GDAL_HTTP_USERPWD` to your TERN API key for the</span></span>
+<span><span class="co">#&gt; rest of this R session.</span></span>
+<span><span class="co">#&gt; ℹ GDAL sends the key with every `/vsicurl` request in this session, including</span></span>
+<span><span class="co">#&gt;   requests to servers other than TERN.</span></span>
+<span><span class="co">#&gt; ℹ Restart R to clear it.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">smips_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         Date Longitude  Latitude  smips_smi</span></span>
@@ -303,25 +308,34 @@ application treatments for this augmented model are then as follows:</p>
 <span><span class="co">#&gt; Nitrogen_kgNha30 -0.03984861 0.2000454 0.4399395</span></span>
 <span><span class="co">#&gt; Nitrogen_kgNha60  0.31409573 0.5539898 0.7938838</span></span>
 <span><span class="co">#&gt; Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058</span></span></code></pre></div>
-<p>We can use {ggplot2} plotting to graph the confidence intervals for
-the simple model versus the augmented model, and illuminate the
-difference attained when we include the soil moisture as a confounding
-term in our modelling:</p>
+<p>We can graph the confidence intervals for the simple model versus the
+augmented model, and illuminate the difference attained when we include
+the soil moisture as a confounding term in our modelling:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">simple_model.Neffects</span>, model <span class="op">=</span> <span class="st">"Simple Model"</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">augmented_model.Neffects</span>, model <span class="op">=</span> <span class="st">"SMIPS-Augmented Model"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">ci</span><span class="op">$</span><span class="va">term</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Nitrogen_kgNha"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">pd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.4</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">ci</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">est.</span>, y <span class="op">=</span> <span class="va">term</span>, colour <span class="op">=</span> <span class="va">model</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_y_discrete</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="va">rev</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>position <span class="op">=</span> <span class="va">pd</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html" class="external-link">geom_errorbarh</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">lower</span>, xmax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span>, position <span class="op">=</span> <span class="va">pd</span>, height <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"predictor"</span>, x <span class="op">=</span> <span class="st">"estimate"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">terms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/flip.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ci</span><span class="op">$</span><span class="va">term</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ci</span><span class="op">$</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="va">colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette.colors</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
+<span><span class="va">ci</span><span class="op">$</span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">ci</span><span class="op">$</span><span class="va">term</span>, <span class="va">terms</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ci</span><span class="op">$</span><span class="va">model</span> <span class="op">==</span> <span class="va">models</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="va">ci</span><span class="op">$</span><span class="va">colour</span> <span class="op">&lt;-</span> <span class="va">colours</span><span class="op">[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">ci</span><span class="op">$</span><span class="va">model</span>, <span class="va">models</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">9</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">ci</span><span class="op">$</span><span class="va">est.</span>, <span class="va">ci</span><span class="op">$</span><span class="va">y</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">ci</span><span class="op">$</span><span class="va">lower</span>, <span class="va">ci</span><span class="op">$</span><span class="va">upper</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">3.4</span><span class="op">)</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="va">ci</span><span class="op">$</span><span class="va">colour</span>, yaxt <span class="op">=</span> <span class="st">"n"</span>, xlab <span class="op">=</span> <span class="st">"estimate"</span>, ylab <span class="op">=</span> <span class="st">""</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/segments.html" class="external-link">segments</a></span><span class="op">(</span><span class="va">ci</span><span class="op">$</span><span class="va">lower</span>, <span class="va">ci</span><span class="op">$</span><span class="va">y</span>, <span class="va">ci</span><span class="op">$</span><span class="va">upper</span>, <span class="va">ci</span><span class="op">$</span><span class="va">y</span>, col <span class="op">=</span> <span class="va">ci</span><span class="op">$</span><span class="va">colour</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">2</span>, at <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, labels <span class="op">=</span> <span class="va">terms</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
+<span>  <span class="st">"top"</span>, legend <span class="op">=</span> <span class="va">models</span>, col <span class="op">=</span> <span class="va">colours</span>, pch <span class="op">=</span> <span class="fl">19</span>, lty <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  horiz <span class="op">=</span> <span class="cn">TRUE</span>, bty <span class="op">=</span> <span class="st">"n"</span>, inset <span class="op">=</span> <span class="op">-</span><span class="fl">0.25</span>, xpd <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="ploteffects-1.png" alt="Nitrogen effect estimates compared between the simple model and
   the SMIPS-augmented model." width="100%"><p class="caption">

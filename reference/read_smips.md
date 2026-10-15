@@ -114,7 +114,7 @@ TERN SMIPS Point-of-truth metadata URL:
 if (FALSE) { # interactive()
 # Total volumetric soil moisture across both buckets (default)
 r <- read_smips("2024-01-15")
-autoplot(r)
+terra::plot(r)
 
 # Soil moisture index (0-1)
 r_smi <- read_smips("2024-01-15", collection = "SMindex")
