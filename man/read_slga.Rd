@@ -78,7 +78,7 @@ each with six standard depth layers (0-5cm, 5-15cm, 15-30cm, 30-60cm,
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Read clay content at 0-5 cm depth (default depth)
 r <- read_slga("CLY")
-autoplot(r)
+terra::plot(r)
 
 # Read available water capacity at 15-30 cm
 r_awc <- read_slga("AWC", depth = "015_030")

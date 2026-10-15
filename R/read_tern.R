@@ -5,8 +5,7 @@
 #' dispatches to dataset-specific handlers based on the dataset requested
 #' (e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
 #' through `...`.  The returned object is a [terra::SpatRaster] that
-#' can be plotted, cropped, or extracted with standard \pkg{terra} or
-#' \pkg{tidyterra} workflows.
+#' can be plotted, cropped, or extracted with standard \pkg{terra} workflows.
 #'
 #' @section Dataset aliases:
 #' In addition to full \acronym{TERN} portal keys and 8-character prefixes,
@@ -185,7 +184,7 @@
 #' # Using aliases (recommended)
 #' r <- read_tern("SMIPS", date = "2024-01-15")
 #' r_asc <- read_tern("ASC")
-#' autoplot(r_asc)
+#' terra::plot(r_asc)
 #'
 #' # SLGA soil attributes
 #' r_clay <- read_tern("CLY", depth = "000_005")

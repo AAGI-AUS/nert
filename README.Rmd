@@ -90,7 +90,7 @@ options(o) # reset options
 ## A note on working with COGs
 
 COGs are not like working with other datasets in R that you might fetch from the web.
-They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `autoplot()` or `writeRaster()`.
+They only fetch the information about the object for you in your R session and only at the time that you call it, *e.g.*, `plot()` or `writeRaster()`.
 
 A normal GeoTIFF is like downloading an entire 500-page book because you want one paragraph.
 
@@ -119,14 +119,14 @@ r <- read_smips(date = "2024-01-01")
 extract(r, xy = TRUE, data.frame(lon = 138.6007, lat = -34.9285))
 ```
 
-The {nert} package also re-exports {tidyterra}'s `autoplot()` function, which can be used to create a visualisation of the Australia-wide data rasters.
+Plot the Australia-wide rasters with `plot()`.
 
 ```{r}
 #| label: example_cog
 #| eval: true
 #| fig.alt: "A map of SMIPS total soil moisture (mm) across Australia on 2024-01-01."
 
-autoplot(r)
+plot(r)
 ```
 
 ## Extract values in bulk given Lat/Lon values

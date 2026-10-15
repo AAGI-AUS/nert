@@ -44,7 +44,7 @@ periods between 2007 and 2020.
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 r <- read_canopy_height()
-autoplot(r)
+terra::plot(r)
 \dontshow{\}) # examplesIf}
 }
 \references{

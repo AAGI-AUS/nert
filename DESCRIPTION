@@ -40,11 +40,9 @@ Depends:
 Imports:
     cli,
     data.table,
-    ggplot2 (>= 3.5.0),
     lubridate,
     rlang,
-    terra,
-    tidyterra
+    terra
 Suggests:
     keyring,
     knitr,

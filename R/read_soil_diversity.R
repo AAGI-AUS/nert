@@ -32,11 +32,11 @@
 #' @examplesIf interactive()
 #' # Read bacterial diversity NMDS axis 1
 #' r <- read_soil_diversity()
-#' autoplot(r)
+#' terra::plot(r)
 #'
 #' # Read fungal diversity NMDS axis 2
 #' r_f2 <- read_soil_diversity(collection = "Fungi", axis = 2)
-#' autoplot(r_f2)
+#' terra::plot(r_f2)
 #'
 #' @references
 #'   Dobarco, M., Wadoux, A. & Xue, P. (2024). Soil and Landscape Grid National

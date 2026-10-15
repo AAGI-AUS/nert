@@ -31,7 +31,7 @@
 #'
 #' @examplesIf interactive()
 #' r <- read_canopy_height()
-#' autoplot(r)
+#' terra::plot(r)
 #'
 #' @references
 #'   Pucino, N., McVicar, T., Levick, S. & Albert van Dijk (2025).

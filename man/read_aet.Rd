@@ -50,7 +50,7 @@ satellite image data provided by MODIS, VIIRS, Landsat and Sentinel-2.
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Actual evapotranspiration (ETa) for June 2023 (mm/month)
 r_eta <- read_aet("2023-06-01")
-autoplot(r_eta)
+terra::plot(r_eta)
 
 # January 2023 ET
 r_jan <- read_aet("2023-01-01")
