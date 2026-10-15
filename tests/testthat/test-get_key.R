@@ -64,8 +64,11 @@ test_that(".set_tern_key aborts in non-interactive sessions", {
 })
 
 test_that("get_key reports a missing keyring package as a missing package", {
+  is_installed <- rlang::is_installed
   testthat::local_mocked_bindings(
-    is_installed = function(pkg, ...) !identical(pkg, "keyring"),
+    is_installed = function(pkg, ...) {
+      !identical(pkg, "keyring") && is_installed(pkg, ...)
+    },
     .package = "rlang"
   )
 
