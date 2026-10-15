@@ -5,6 +5,11 @@
 - nert now requires R 4.1.0 or later, the oldest version on which its
   dependencies ggplot2 and tidyterra install.
 
+- [`collect_tern_data()`](https://aagi-aus.github.io/nert/reference/collect_tern_data.md)
+  is faster. GDAL no longer checks TERN for file types nert does not
+  read: nert sets `CPL_VSIL_CURL_ALLOWED_EXTENSIONS` to
+  `.tif,.vrt,.aux.xml` while it reads and then restores your own value.
+
 - Retries are handled by GDAL through `GDAL_HTTP_MAX_RETRY` and
   `GDAL_HTTP_RETRY_DELAY`, set from `max_tries` and `initial_delay`.
   GDAL retries busy and server-error responses, both when a file is
