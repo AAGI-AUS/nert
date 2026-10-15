@@ -46,8 +46,7 @@ data from the \acronym{TERN} Data Portal. This function effectively
 dispatches to dataset-specific handlers based on the dataset requested
 (e.g., SMIPS, SLGA, AET, and so on), and passes any additional arguments
 through \code{...}.  The returned object is a \link[terra:SpatRaster]{terra::SpatRaster} that
-can be plotted, cropped, or extracted with standard \pkg{terra} or
-\pkg{tidyterra} workflows.
+can be plotted, cropped, or extracted with standard \pkg{terra} workflows.
 }
 \section{Dataset aliases}{
 
@@ -225,7 +224,7 @@ Per-call values supplied via the \code{max_tries} or
 # Using aliases (recommended)
 r <- read_tern("SMIPS", date = "2024-01-15")
 r_asc <- read_tern("ASC")
-tidyterra::autoplot(r_asc)
+terra::plot(r_asc)
 
 # SLGA soil attributes
 r_clay <- read_tern("CLY", depth = "000_005")

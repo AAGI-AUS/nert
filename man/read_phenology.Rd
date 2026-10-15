@@ -96,11 +96,11 @@ monthly time resolution).}
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # Read Start of Growing Season for 2018, Season 1
 r <- read_phenology(year = 2018)
-tidyterra::autoplot(r)
+terra::plot(r)
 
 # Read End of Growing Season for 2015, Season 2
 r_egs <- read_phenology(year = 2015, season = 2, collection = "EGS")
-tidyterra::autoplot(r_egs)
+terra::plot(r_egs)
 \dontshow{\}) # examplesIf}
 }
 \references{

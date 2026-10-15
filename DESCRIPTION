@@ -49,7 +49,6 @@ Suggests:
     nlme,
     rmarkdown,
     testthat (>= 3.2.0),
-    tidyterra,
     usethis,
     withr,
     xml2
