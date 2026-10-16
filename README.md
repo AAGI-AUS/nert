@@ -241,7 +241,7 @@ citation("nert")
 #> 
 #>   Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026).
 #>   nert: Curated Access to TERN Environmental Raster Data. R package
-#>   version 1.1.0. https://aagi-aus.github.io/nert/
+#>   version 2.0.0. https://aagi-aus.github.io/nert/
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -249,7 +249,7 @@ citation("nert")
 #>     title = {{nert}: Curated Access to TERN Environmental Raster Data},
 #>     author = {Adam H. Sparks and Wasin Pipattungsakul and Russell Edson and Sam Rogers and Max Moldovan},
 #>     year = {2026},
-#>     note = {R package version 1.1.0},
+#>     note = {R package version 2.0.0},
 #>     url = {https://aagi-aus.github.io/nert/},
 #>   }
 ```

@@ -1,6 +1,6 @@
 Package: nert
 Title: Curated Access to TERN Environmental Raster Data
-Version: 1.1.0
+Version: 2.0.0
 Authors@R: c(
     person("Adam H.", "Sparks", , "adamhsparks@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0002-0061-8359")),
@@ -44,6 +44,7 @@ Imports:
     rlang,
     terra
 Suggests:
+    ggplot2 (>= 3.5.0),
     keyring,
     knitr,
     nlme,

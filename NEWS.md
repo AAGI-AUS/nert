@@ -1,4 +1,4 @@
-# nert (development version)
+# nert 2.0.0
 
 - Breaking change: nert no longer re-exports `autoplot()`. The examples,
   README and vignettes now plot with `plot()` from terra. Code that called
