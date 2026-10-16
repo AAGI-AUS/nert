@@ -27,7 +27,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/AAGI-AUS/nert/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/AAGI-AUS/nert/blob/v2.0.0/inst/CITATION)
 
 Sparks AH, Pipattungsakul W, Edson R, Rogers S, Moldovan M (2026). nert:
 Curated Access to TERN Environmental Raster Data. R package version
