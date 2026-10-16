@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +93,7 @@ multiple dates:</p>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Datasets to Collect ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ── Datasets to Collect ─────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SMIPS</span></span>
 <span><span class="co">#&gt; TERN/d1995ee8</span></span>
@@ -130,12 +130,18 @@ multiple dates:</p>
 <span><span class="co">#&gt; SMIPS runoff 2024-01-04</span></span>
 <span><span class="co">#&gt; Collected 4 rows x 9 columns</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          date   lon   lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1 SMIPS_bucket2 SMIPS_deepD SMIPS_runoff</span></span>
-<span><span class="co">#&gt;        &lt;Date&gt; &lt;num&gt; &lt;num&gt;             &lt;num&gt;         &lt;num&gt;         &lt;num&gt;         &lt;num&gt;       &lt;num&gt;        &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: 2024-01-01 138.6 -34.9          18.54933     0.1870453      3.394019      15.15531   0.9680446            0</span></span>
-<span><span class="co">#&gt; 2: 2024-01-02 138.6 -34.9          18.46742     0.1862194      4.307706      14.15972   0.9044515            0</span></span>
-<span><span class="co">#&gt; 3: 2024-01-03 138.6 -34.9          15.73218     0.1586381      2.443130      13.28905   0.8488376            0</span></span>
-<span><span class="co">#&gt; 4: 2024-01-04 138.6 -34.9          14.46397     0.1458499      2.101511      12.36246   0.7896519            0</span></span></code></pre></div>
+<span><span class="co">#&gt;          date   lon   lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1</span></span>
+<span><span class="co">#&gt;        &lt;Date&gt; &lt;num&gt; &lt;num&gt;             &lt;num&gt;         &lt;num&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: 2024-01-01 138.6 -34.9          18.54933     0.1870453      3.394019</span></span>
+<span><span class="co">#&gt; 2: 2024-01-02 138.6 -34.9          18.46742     0.1862194      4.307706</span></span>
+<span><span class="co">#&gt; 3: 2024-01-03 138.6 -34.9          15.73218     0.1586381      2.443130</span></span>
+<span><span class="co">#&gt; 4: 2024-01-04 138.6 -34.9          14.46397     0.1458499      2.101511</span></span>
+<span><span class="co">#&gt;    SMIPS_bucket2 SMIPS_deepD SMIPS_runoff</span></span>
+<span><span class="co">#&gt;            &lt;num&gt;       &lt;num&gt;        &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:      15.15531   0.9680446            0</span></span>
+<span><span class="co">#&gt; 2:      14.15972   0.9044515            0</span></span>
+<span><span class="co">#&gt; 3:      13.28905   0.8488376            0</span></span>
+<span><span class="co">#&gt; 4:      12.36246   0.7896519            0</span></span></code></pre></div>
 <p>When <code>verbose = TRUE</code> (default), a list of the datasets
 that will be collected is generated in the output, together with
 progress messages as the data points are downloaded.</p>
@@ -160,8 +166,12 @@ span a 90% interval):</p>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060" "AWC_EV_060_100" "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030" "AWC_05_030_060"</span></span>
-<span><span class="co">#&gt; [14] "AWC_05_060_100" "AWC_05_100_200" "AWC_95_000_005" "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100" "AWC_95_100_200"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "date"           "lon"            "lat"            "AWC_EV_000_005"</span></span>
+<span><span class="co">#&gt;  [5] "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060" "AWC_EV_060_100"</span></span>
+<span><span class="co">#&gt;  [9] "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030"</span></span>
+<span><span class="co">#&gt; [13] "AWC_05_030_060" "AWC_05_060_100" "AWC_05_100_200" "AWC_95_000_005"</span></span>
+<span><span class="co">#&gt; [17] "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100"</span></span>
+<span><span class="co">#&gt; [21] "AWC_95_100_200"</span></span></code></pre></div>
 <p>This ensures that, by default, you get the most comprehensive data
 for each dataset. The arguments for <code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> can
 always be used to specify variants where desired. For example, if we
@@ -180,7 +190,8 @@ arguments:</p>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "date"           "lon"            "lat"            "AWC_EV_000_005"</span></span>
+<span><span class="co">#&gt; [5] "AWC_EV_005_015"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="efficiently-download-data-points-at-multiple-spatial-locations">Efficiently download data points at multiple spatial locations<a class="anchor" aria-label="anchor" href="#efficiently-download-data-points-at-multiple-spatial-locations"></a>
@@ -205,14 +216,14 @@ location/date combination.</p>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dt_multi</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          date   lon   lat SMIPS_SMindex CANOPY</span></span>
-<span><span class="co">#&gt;        &lt;Date&gt; &lt;num&gt; &lt;num&gt;         &lt;num&gt;  &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: 2024-01-01 138.6 -34.9    0.18704529      9</span></span>
-<span><span class="co">#&gt; 2: 2024-01-01 139.5 -35.2    0.18135567      0</span></span>
-<span><span class="co">#&gt; 3: 2024-01-01 140.1 -34.5    0.02390325      6</span></span>
-<span><span class="co">#&gt; 4: 2024-01-02 138.6 -34.9    0.18621944      9</span></span>
-<span><span class="co">#&gt; 5: 2024-01-02 139.5 -35.2    0.16365331      0</span></span>
-<span><span class="co">#&gt; 6: 2024-01-02 140.1 -34.5    0.02078163      6</span></span></code></pre></div>
+<span><span class="co">#&gt;          date   lon   lat SMIPS_SMindex CANOPY_best_pick CANOPY_median</span></span>
+<span><span class="co">#&gt;        &lt;Date&gt; &lt;num&gt; &lt;num&gt;         &lt;num&gt;            &lt;num&gt;         &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1: 2024-01-01 138.6 -34.9    0.18704529                9            10</span></span>
+<span><span class="co">#&gt; 2: 2024-01-01 139.5 -35.2    0.18135567                0             0</span></span>
+<span><span class="co">#&gt; 3: 2024-01-01 140.1 -34.5    0.02390325                6             7</span></span>
+<span><span class="co">#&gt; 4: 2024-01-02 138.6 -34.9    0.18621944                9            10</span></span>
+<span><span class="co">#&gt; 5: 2024-01-02 139.5 -35.2    0.16365331                0             0</span></span>
+<span><span class="co">#&gt; 6: 2024-01-02 140.1 -34.5    0.02078163                6             7</span></span></code></pre></div>
 <p>For convenience, you can also provide the longitude and latitude
 coordinates as columns <code>lon</code>, <code>lat</code> inside a
 <code>data.frame</code>. You can then pass this to the <code>xy</code>

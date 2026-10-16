@@ -46,6 +46,11 @@ for the 0-5 cm depth layer.
 ``` r
 
 clay <- read_slga("CLY")
+#> Warning: nert has set the GDAL option `GDAL_HTTP_USERPWD` to your TERN API key for the
+#> rest of this R session.
+#> ℹ GDAL sends the key with every `/vsicurl` request in this session, including
+#>   requests to servers other than TERN.
+#> ℹ Restart R to clear it.
 dim(clay)
 #> [1] 40800 49200     1
 ncell(clay)
@@ -78,15 +83,15 @@ smips <- read_smips(date = "2024-01-15")
 aoi <- ext(138.4, 138.9, -34.1, -33.6)
 smips_clare <- crop(smips, aoi)
 smips_clare
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 50, 50, 1  (nrow, ncol, nlyr)
 #> resolution  : 0.009997566, 0.009997122  (x, y)
 #> extent      : 138.3988, 138.8987, -34.09778, -33.59792  (xmin, xmax, ymin, ymax)
-#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326)
 #> source(s)   : memory
-#> varname     : smips_totalbucket_mm_20240115 
-#> name        : smips_totalbucket_mm_20240115 
-#> min value   :                      3.287303 
+#> varname     : smips_totalbucket_mm_20240115
+#> name        : smips_totalbucket_mm_20240115
+#> min value   :                      3.287303
 #> max value   :                     48.746872
 ```
 
@@ -192,15 +197,15 @@ re-expresses the same rectangle in the raster’s own coordinate system.
 aoi_albers <- project(vect(aoi, crs = "EPSG:4326"), crs(canopy))
 canopy_clare <- crop(canopy, aoi_albers)
 canopy_clare
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 1936, 1628, 1  (nrow, ncol, nlyr)
 #> resolution  : 30, 30  (x, y)
 #> extent      : 587393.3, 636233.3, -3738994, -3680914  (xmin, xmax, ymin, ymax)
-#> coord. ref. : GDA94 / Australian Albers (EPSG:3577) 
+#> coord. ref. : GDA94 / Australian Albers (EPSG:3577)
 #> source(s)   : memory
-#> varname     : best_pick_files_bhLNnun 
-#> name        : best_pick_files_bhLNnun 
-#> min value   :                       0 
+#> varname     : best_pick_files_bhLNnun
+#> name        : best_pick_files_bhLNnun
+#> min value   :                       0
 #> max value   :                      61
 ```
 
@@ -220,13 +225,13 @@ local_tif <- file.path(tempdir(), "smips_clare_2024-01-15.tif")
 writeRaster(smips_clare, local_tif, overwrite = TRUE)
 smips_local <- rast(local_tif)
 smips_local
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 50, 50, 1  (nrow, ncol, nlyr)
 #> resolution  : 0.009997566, 0.009997122  (x, y)
 #> extent      : 138.3988, 138.8987, -34.09778, -33.59792  (xmin, xmax, ymin, ymax)
-#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : smips_clare_2024-01-15.tif 
-#> name        : smips_totalbucket_mm_20240115 
-#> min value   :                      3.287303 
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326)
+#> source      : smips_clare_2024-01-15.tif
+#> name        : smips_totalbucket_mm_20240115
+#> min value   :                      3.287303
 #> max value   :                     48.746872
 ```

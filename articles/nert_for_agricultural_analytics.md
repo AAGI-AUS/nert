@@ -271,11 +271,14 @@ augmented_model.Neffects
 #> Nitrogen_kgNha90  0.33961765 0.5795117 0.8194058
 ```
 
-We can graph the confidence intervals for the simple model versus the
-augmented model, and illuminate the difference attained when we include
-the soil moisture as a confounding term in our modelling:
+We can use {ggplot2} plotting to graph the confidence intervals for the
+simple model versus the augmented model, and illuminate the difference
+attained when we include the soil moisture as a confounding term in our
+modelling:
 
 ``` r
+
+library(ggplot2)
 
 ci <- rbind(
   data.frame(simple_model.Neffects, model = "Simple Model"),
@@ -283,24 +286,12 @@ ci <- rbind(
 )
 ci$term <- paste0("Nitrogen_kgNha", c(30, 60, 90))
 
-terms <- rev(unique(ci$term))
-models <- unique(ci$model)
-colours <- palette.colors(3)[2:3]
-ci$y <- match(ci$term, terms) + ifelse(ci$model == models[1], 0.1, -0.1)
-ci$colour <- colours[match(ci$model, models)]
-
-par(mar = c(4, 9, 3, 1))
-plot(
-  ci$est., ci$y,
-  xlim = range(ci$lower, ci$upper), ylim = c(0.6, 3.4),
-  pch = 19, col = ci$colour, yaxt = "n", xlab = "estimate", ylab = ""
-)
-segments(ci$lower, ci$y, ci$upper, ci$y, col = ci$colour)
-axis(2, at = 1:3, labels = terms, las = 1)
-legend(
-  "top", legend = models, col = colours, pch = 19, lty = 1,
-  horiz = TRUE, bty = "n", inset = -0.25, xpd = TRUE
-)
+pd <- position_dodge(-0.4)
+ggplot(ci, aes(x = est., y = term, colour = model)) +
+  scale_y_discrete(limits = rev) +
+  geom_point(position = pd) +
+  geom_errorbarh(aes(xmin = lower, xmax = upper), position = pd, height = 0.2) +
+  labs(y = "predictor", x = "estimate")
 ```
 
 ![Nitrogen effect estimates compared between the simple model and the

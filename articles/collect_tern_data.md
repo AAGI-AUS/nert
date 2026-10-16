@@ -29,7 +29,7 @@ dt <- collect_tern_data(
   verbose = TRUE
 )
 #> 
-#> ── Datasets to Collect ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ── Datasets to Collect ─────────────────────────────────────────────────────────
 #> 
 #> SMIPS
 #> TERN/d1995ee8
@@ -66,12 +66,18 @@ dt <- collect_tern_data(
 #> SMIPS runoff 2024-01-04
 #> Collected 4 rows x 9 columns
 head(dt)
-#>          date   lon   lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1 SMIPS_bucket2 SMIPS_deepD SMIPS_runoff
-#>        <Date> <num> <num>             <num>         <num>         <num>         <num>       <num>        <num>
-#> 1: 2024-01-01 138.6 -34.9          18.54933     0.1870453      3.394019      15.15531   0.9680446            0
-#> 2: 2024-01-02 138.6 -34.9          18.46742     0.1862194      4.307706      14.15972   0.9044515            0
-#> 3: 2024-01-03 138.6 -34.9          15.73218     0.1586381      2.443130      13.28905   0.8488376            0
-#> 4: 2024-01-04 138.6 -34.9          14.46397     0.1458499      2.101511      12.36246   0.7896519            0
+#>          date   lon   lat SMIPS_totalbucket SMIPS_SMindex SMIPS_bucket1
+#>        <Date> <num> <num>             <num>         <num>         <num>
+#> 1: 2024-01-01 138.6 -34.9          18.54933     0.1870453      3.394019
+#> 2: 2024-01-02 138.6 -34.9          18.46742     0.1862194      4.307706
+#> 3: 2024-01-03 138.6 -34.9          15.73218     0.1586381      2.443130
+#> 4: 2024-01-04 138.6 -34.9          14.46397     0.1458499      2.101511
+#>    SMIPS_bucket2 SMIPS_deepD SMIPS_runoff
+#>            <num>       <num>        <num>
+#> 1:      15.15531   0.9680446            0
+#> 2:      14.15972   0.9044515            0
+#> 3:      13.28905   0.8488376            0
+#> 4:      12.36246   0.7896519            0
 ```
 
 When `verbose = TRUE` (default), a list of the datasets that will be
@@ -101,8 +107,12 @@ dt <- collect_tern_data(
   verbose = FALSE
 )
 names(dt)
-#>  [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060" "AWC_EV_060_100" "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030" "AWC_05_030_060"
-#> [14] "AWC_05_060_100" "AWC_05_100_200" "AWC_95_000_005" "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100" "AWC_95_100_200"
+#>  [1] "date"           "lon"            "lat"            "AWC_EV_000_005"
+#>  [5] "AWC_EV_005_015" "AWC_EV_015_030" "AWC_EV_030_060" "AWC_EV_060_100"
+#>  [9] "AWC_EV_100_200" "AWC_05_000_005" "AWC_05_005_015" "AWC_05_015_030"
+#> [13] "AWC_05_030_060" "AWC_05_060_100" "AWC_05_100_200" "AWC_95_000_005"
+#> [17] "AWC_95_005_015" "AWC_95_015_030" "AWC_95_030_060" "AWC_95_060_100"
+#> [21] "AWC_95_100_200"
 ```
 
 This ensures that, by default, you get the most comprehensive data for
@@ -125,7 +135,8 @@ dt <- collect_tern_data(
   verbose = FALSE
 )
 names(dt)
-#> [1] "date"           "lon"            "lat"            "AWC_EV_000_005" "AWC_EV_005_015"
+#> [1] "date"           "lon"            "lat"            "AWC_EV_000_005"
+#> [5] "AWC_EV_005_015"
 ```
 
 ## Efficiently download data points at multiple spatial locations
@@ -153,14 +164,14 @@ dt_multi <- collect_tern_data(
   verbose = FALSE
 )
 head(dt_multi)
-#>          date   lon   lat SMIPS_SMindex CANOPY
-#>        <Date> <num> <num>         <num>  <num>
-#> 1: 2024-01-01 138.6 -34.9    0.18704529      9
-#> 2: 2024-01-01 139.5 -35.2    0.18135567      0
-#> 3: 2024-01-01 140.1 -34.5    0.02390325      6
-#> 4: 2024-01-02 138.6 -34.9    0.18621944      9
-#> 5: 2024-01-02 139.5 -35.2    0.16365331      0
-#> 6: 2024-01-02 140.1 -34.5    0.02078163      6
+#>          date   lon   lat SMIPS_SMindex CANOPY_best_pick CANOPY_median
+#>        <Date> <num> <num>         <num>            <num>         <num>
+#> 1: 2024-01-01 138.6 -34.9    0.18704529                9            10
+#> 2: 2024-01-01 139.5 -35.2    0.18135567                0             0
+#> 3: 2024-01-01 140.1 -34.5    0.02390325                6             7
+#> 4: 2024-01-02 138.6 -34.9    0.18621944                9            10
+#> 5: 2024-01-02 139.5 -35.2    0.16365331                0             0
+#> 6: 2024-01-02 140.1 -34.5    0.02078163                6             7
 ```
 
 For convenience, you can also provide the longitude and latitude

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nert</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,8 +39,8 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="nert-development-version">nert (development version)<a class="anchor" aria-label="anchor" href="#nert-development-version"></a></h2>
-<ul><li><p>Breaking change: nert no longer re-exports <code>autoplot()</code>. The examples, README and vignettes now plot with <code><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot()</a></code> from terra. Code that called <code>autoplot()</code> can use <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">tidyterra::autoplot()</a></code> instead.</p></li>
+<h2 class="pkg-version" data-toc-text="2.0.0" id="nert-200">nert 2.0.0<a class="anchor" aria-label="anchor" href="#nert-200"></a></h2>
+<ul><li><p>Breaking change: nert no longer re-exports <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code>. The examples, README and vignettes now plot with <code><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot()</a></code> from terra. Code that called <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> can use <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">tidyterra::autoplot()</a></code> instead.</p></li>
 <li><p>nert now requires R 4.1.0 or later, the oldest version on which testthat installs.</p></li>
 <li><p><code><a href="../reference/collect_tern_data.html">collect_tern_data()</a></code> is faster. GDAL no longer checks TERN for file types nert does not read: nert sets <code>CPL_VSIL_CURL_ALLOWED_EXTENSIONS</code> to <code>.tif,.vrt,.aux.xml</code> while it reads and then restores your own value.</p></li>
 <li><p>Retries are handled by GDAL through <code>GDAL_HTTP_MAX_RETRY</code> and <code>GDAL_HTTP_RETRY_DELAY</code>, set from <code>max_tries</code> and <code>initial_delay</code>. GDAL retries busy and server-error responses, both when a file is opened and when its values are read later. The previous retry loop could not recover, because GDAL remembered the first failure.</p></li>

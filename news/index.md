@@ -1,11 +1,14 @@
 # Changelog
 
-## nert (development version)
+## nert 2.0.0
 
-- Breaking change: nert no longer re-exports `autoplot()`. The examples,
-  README and vignettes now plot with
+- Breaking change: nert no longer re-exports
+  [`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html).
+  The examples, README and vignettes now plot with
   [`plot()`](https://rspatial.github.io/terra/reference/plot.html) from
-  terra. Code that called `autoplot()` can use
+  terra. Code that called
+  [`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+  can use
   [`tidyterra::autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
   instead.
 
